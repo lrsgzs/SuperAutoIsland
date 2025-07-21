@@ -53,7 +53,7 @@ Blockly.Msg['CONTROLS_IF_TOOLTIP_2'] = '如果值为真，则执行第一块语�
 Blockly.Msg['CONTROLS_IF_TOOLTIP_3'] =
     '如果第一个值为真，则执行第一块的语句。否则，如果第二个值为真，则执行第二块的语句。';
 Blockly.Msg['CONTROLS_IF_TOOLTIP_4'] =
-    '如果第一个值为真，则执行第一块对语句。否则，如果第二个值为真，则执行语句的第二块。如果没有值为真，则执行最后一块的语句。';
+    '如果第一个值为真，则执行第一块的语句。否则，如果第二个值为真，则执行语句的第二块。如果没有值为真，则执行最后一块的语句。';
 Blockly.Msg['CONTROLS_REPEAT_HELPURL'] = 'https://zh.wikipedia.org/wiki/For循环';
 Blockly.Msg['CONTROLS_REPEAT_INPUT_DO'] = '执行';
 Blockly.Msg['CONTROLS_REPEAT_TITLE'] = '重复 %1 次';
@@ -286,12 +286,12 @@ Blockly.Msg['MATH_TRIG_COS'] = 'cos';
 Blockly.Msg['MATH_TRIG_HELPURL'] = 'https://zh.wikipedia.org/wiki/三角函数';
 Blockly.Msg['MATH_TRIG_SIN'] = 'sin';
 Blockly.Msg['MATH_TRIG_TAN'] = 'tan';
-Blockly.Msg['MATH_TRIG_TOOLTIP_ACOS'] = '返回一个数的 acos。';
-Blockly.Msg['MATH_TRIG_TOOLTIP_ASIN'] = '返回一个数的 asin。';
-Blockly.Msg['MATH_TRIG_TOOLTIP_ATAN'] = '返回一个数的 atan。';
-Blockly.Msg['MATH_TRIG_TOOLTIP_COS'] = '返回角度（非弧度）的 cos。';
-Blockly.Msg['MATH_TRIG_TOOLTIP_SIN'] = '返回角度（非弧度）的 sin。';
-Blockly.Msg['MATH_TRIG_TOOLTIP_TAN'] = '返回角度（非弧度）的 tan。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_ACOS'] = '返回一个数的 acos 反余弦。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_ASIN'] = '返回一个数的 asin 反正弦。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_ATAN'] = '返回一个数的 atan 反正切。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_COS'] = '返回角度（非弧度）的 cos 余弦。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_SIN'] = '返回角度（非弧度）的 sin 正弦。';
+Blockly.Msg['MATH_TRIG_TOOLTIP_TAN'] = '返回角度（非弧度）的 tan 正切。';
 Blockly.Msg['MOVE_BLOCK'] = 'Move Block'; // untranslated
 Blockly.Msg['NEW_COLOUR_VARIABLE'] = '创建颜色变量...';
 Blockly.Msg['NEW_NUMBER_VARIABLE'] = '创建数变量...';
