@@ -71,4 +71,8 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.jsx', '.ts', '.js', '.wasm'],
     },
+    devServer: {
+        compress: true,
+        port: 8080,
+    },
 };

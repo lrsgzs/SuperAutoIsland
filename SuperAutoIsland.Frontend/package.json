@@ -9,6 +9,7 @@
     "scripts": {
         "build:dev": "webpack --config webpack.dev.js --progress",
         "build:prod": "webpack --config webpack.prod.js --progress",
+        "dev": "webpack serve --config webpack.prod.js --progress",
         "format": "prettier . --write"
     },
     "dependencies": {
