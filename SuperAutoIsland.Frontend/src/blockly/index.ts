@@ -8,6 +8,7 @@ import blocklyLangZhHans from './langs/zh-hans';
 
 Blockly.common.defineBlocks(exampleBlocks);
 Blockly.setLocale(blocklyLangZhHans);
+Blockly.ContextMenuItems.registerCommentOptions();
 Object.assign(javascriptGenerator.forBlock, forBlock);
 
 const defaultTheme = Blockly.Theme.defineTheme('default', {
