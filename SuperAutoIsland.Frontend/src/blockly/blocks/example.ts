@@ -10,11 +10,11 @@ const blockShowAlert = {
             check: 'String',
         },
     ],
-    previousStatement: null,
-    nextStatement: null,
-    colour: 160,
     tooltip: '',
     helpUrl: '',
+    style: 'my_blocks',
+    previousStatement: null,
+    nextStatement: null,
 };
 
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([blockShowAlert]);

@@ -1,9 +1,11 @@
-﻿export const toolbox = {
+﻿import { type ToolboxInfo } from './types/toolbox';
+
+export const toolbox: ToolboxInfo = {
     kind: 'categoryToolbox',
     contents: [
         {
             kind: 'category',
-            name: 'Logic',
+            name: '逻辑',
             categorystyle: 'logic_category',
             contents: [
                 {
@@ -38,7 +40,7 @@
         },
         {
             kind: 'category',
-            name: 'Loops',
+            name: '循环',
             categorystyle: 'loop_category',
             contents: [
                 {
@@ -101,7 +103,7 @@
         },
         {
             kind: 'category',
-            name: 'Math',
+            name: '数学',
             categorystyle: 'math_category',
             contents: [
                 {
@@ -307,7 +309,7 @@
         },
         {
             kind: 'category',
-            name: 'Text',
+            name: '文本',
             categorystyle: 'text_category',
             contents: [
                 {
@@ -481,7 +483,7 @@
         },
         {
             kind: 'category',
-            name: 'Lists',
+            name: '列表',
             categorystyle: 'list_category',
             contents: [
                 {
@@ -587,8 +589,23 @@
         },
         {
             kind: 'category',
+            name: '变量',
+            categorystyle: 'variable_category',
+            custom: 'VARIABLE',
+        },
+        {
+            kind: 'category',
+            name: '函数',
+            categorystyle: 'procedure_category',
+            custom: 'PROCEDURE',
+        },
+        {
+            kind: 'sep',
+        },
+        {
+            kind: 'category',
             name: 'Example',
-            categorystyle: 'list_category',
+            categorystyle: 'my_category',
             contents: [
                 {
                     kind: 'block',
@@ -605,21 +622,6 @@
                     },
                 },
             ],
-        },
-        {
-            kind: 'sep',
-        },
-        {
-            kind: 'category',
-            name: 'Variables',
-            categorystyle: 'variable_category',
-            custom: 'VARIABLE',
-        },
-        {
-            kind: 'category',
-            name: 'Functions',
-            categorystyle: 'procedure_category',
-            custom: 'PROCEDURE',
         },
     ],
 };
