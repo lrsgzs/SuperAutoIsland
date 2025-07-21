@@ -4,9 +4,28 @@ import { forBlock } from './generators/javascript';
 import { javascriptGenerator } from 'blockly/javascript';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
+import blocklyLangZhHans from './langs/zh-hans';
 
 Blockly.common.defineBlocks(exampleBlocks);
+Blockly.setLocale(blocklyLangZhHans);
 Object.assign(javascriptGenerator.forBlock, forBlock);
+
+const defaultTheme = Blockly.Theme.defineTheme('default', {
+    base: Blockly.Themes.Classic,
+    name: 'default',
+    blockStyles: {
+        my_blocks: {
+            colourPrimary: '#00AAFF',
+            colourSecondary: '#00C2FF',
+            colourTertiary: '#007cb8',
+        },
+    },
+    categoryStyles: {
+        my_category: {
+            colour: '#00AAFF',
+        },
+    },
+});
 
 export const runCode = (workspace: Blockly.Workspace) => {
     console.log(workspace);
@@ -20,6 +39,7 @@ export const injectBlockly = (dom: HTMLElement) => {
         toolbox,
         zoom: { controls: true },
         media: './media/',
+        theme: defaultTheme,
     }) as Blockly.Workspace;
 
     Reflect.set(window, 'workspace', workspace);
