@@ -602,26 +602,5 @@ export const toolbox: ToolboxInfo = {
         {
             kind: 'sep',
         },
-        {
-            kind: 'category',
-            name: 'Example',
-            categorystyle: 'my_category',
-            contents: [
-                {
-                    kind: 'block',
-                    type: 'show_alert',
-                    inputs: {
-                        TEXT: {
-                            shadow: {
-                                type: 'text',
-                                fields: {
-                                    TEXT: 'Hello',
-                                },
-                            },
-                        },
-                    },
-                },
-            ],
-        },
     ],
 };

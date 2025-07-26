@@ -1,20 +1,31 @@
-﻿import * as Blockly from 'blockly/core';
+﻿import { addBlock } from '../blockGenerator';
+import { Order } from 'blockly/javascript';
 
-const blockShowAlert = {
-    type: 'show_alert',
-    message0: 'Show Alert %1',
-    args0: [
-        {
-            type: 'input_value',
-            name: 'TEXT',
-            check: 'String',
+addBlock(
+    {
+        type: 'show_alert',
+        message: 'Show Alert %1',
+        inputs: {
+            TEXT: {
+                type: 'input_value',
+                blockType: 'text',
+                check: 'String',
+                fields: {
+                    TEXT: 'Hello',
+                },
+            },
         },
-    ],
-    tooltip: '',
-    helpUrl: '',
-    style: 'my_blocks',
-    previousStatement: null,
-    nextStatement: null,
-};
-
-export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([blockShowAlert]);
+        tooltip: 'Show a alert to user.',
+        style: 'my_blocks',
+    },
+    (block, generator) => {
+        const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
+        const addText = generator.provideFunction_(
+            'showAlert',
+            `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text) {
+                alert(text);
+            }`,
+        );
+        return `${addText}(${text});\n`;
+    },
+);
