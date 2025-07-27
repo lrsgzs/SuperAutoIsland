@@ -14,8 +14,8 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    # 单次部署的工作描述
-    deploy:
+    # 编译工作流
+    build:
         runs-on: ubuntu-latest
         steps:
             # 签出分支
@@ -28,32 +28,34 @@ jobs:
               with:
                   node-version: lts/*
 
-            # 切换工作目录
-            - name: Change Work Folder
-              run: cd SuperAutoIsland.Frontend
-
             # 安装依赖
             - name: Install dependencies
-              run: npm install
+              run: |
+                cd SuperAutoIsland.Frontend
+                npm install
 
             # 构建 dev
             - name: Build dev bundle
-              run: npm run build:dev
+              run: |
+                cd SuperAutoIsland.Frontend
+                npm run build:dev
 
             # 上传打包结果
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
                   name: frontend-dev-bundle
-                  path: "./dist"
+                  path: "./SuperAutoIsland.Frontend/dist"
 
             # 构建 prod
             - name: Build prod bundle
-              run: npm run build:prod
+              run: |
+                cd SuperAutoIsland.Frontend
+                npm run build:prod
 
             # 上传打包结果
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: frontend-dev-bundle
-                  path: "./dist"
+                  name: frontend-prod-bundle
+                  path: "./SuperAutoIsland.Frontend/dist"
