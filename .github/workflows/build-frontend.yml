@@ -1,0 +1,59 @@
+name: Build SuperAutoIsland.Frontend
+
+on:
+    # 仅在推送到默认分支时运行
+    push:
+        branches: ["master"]
+
+    # 这个选项可以使你手动在 Action tab 页面触发工作流
+    workflow_dispatch:
+
+# 允许一个并发部署
+concurrency:
+    group: "build-frontend"
+    cancel-in-progress: true
+
+jobs:
+    # 单次部署的工作描述
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            # 签出分支
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            # 配置环境
+            - name: Set up Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+
+            # 切换工作目录
+            - name: Change Work Folder
+              run: cd SuperAutoIsland.Frontend
+
+            # 安装依赖
+            - name: Install dependencies
+              run: npm install
+
+            # 构建 dev
+            - name: Build dev bundle
+              run: npm run build:dev
+
+            # 上传打包结果
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: frontend-dev-bundle
+                  path: "./dist"
+
+            # 构建 prod
+            - name: Build prod bundle
+              run: npm run build:prod
+
+            # 上传打包结果
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: frontend-dev-bundle
+                  path: "./dist"
