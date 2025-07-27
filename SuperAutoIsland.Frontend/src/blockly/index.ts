@@ -3,25 +3,29 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
-import { type BlocklyBlockDefinition, data, type GeneratorFunction, setup } from './blockGenerator';
+import { type BlocklyBlockDefinition, data, type GeneratorFunction, setup } from './utils/blockGenerator';
 import type { StaticCategoryInfo } from './types/toolbox';
 
-const exampleBlocks: BlocklyBlockDefinition[] = [];
-const exampleForBlocks: Record<string, GeneratorFunction> = {};
-const exampleCategory: StaticCategoryInfo = {
+import * as prettier from 'prettier';
+import * as prettierEstreePlugin from 'prettier/plugins/estree';
+import * as prettierBabelPlugin from 'prettier/plugins/babel';
+
+const actionBlocks: BlocklyBlockDefinition[] = [];
+const actionForBlocks: Record<string, GeneratorFunction> = {};
+const actionCategory: StaticCategoryInfo = {
     kind: 'category',
-    name: 'Example',
+    name: '行动',
     categorystyle: 'my_category',
     contents: [],
 };
-setup(exampleForBlocks, exampleCategory, exampleBlocks);
+setup(actionForBlocks, actionCategory, actionBlocks);
 
 // @ts-ignore
-await import('./blocks/example');
+await import('./blocks/action');
 
-toolbox.contents.push(exampleCategory);
-Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(exampleBlocks));
-Object.assign(javascriptGenerator.forBlock, exampleForBlocks);
+toolbox.contents.push(actionCategory);
+Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(actionBlocks));
+Object.assign(javascriptGenerator.forBlock, actionForBlocks);
 
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
@@ -46,12 +50,23 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
     },
 });
 
-export const runCode = (workspace: Blockly.Workspace) => {
+export const runCode = async (workspace: Blockly.Workspace) => {
     console.log(workspace);
-    const code = javascriptGenerator.workspaceToCode(workspace);
+    let code = javascriptGenerator.workspaceToCode(workspace);
+    code = `function callAction(id, data) { console.log("Calling Action:", id, data) }\n` + code;
+    code = `(async () => {\n${code}\n})();\n`;
+    code = await prettier.format(code, {
+        semi: true,
+        singleQuote: true,
+        trailingComma: 'all',
+        parser: 'babel',
+        plugins: [prettierEstreePlugin, prettierBabelPlugin],
+    });
     console.log(code);
-    // eval(code);
+    eval(code);
 };
+
+Reflect.set(window, 'runCode', runCode);
 
 export const injectBlockly = (dom: HTMLElement) => {
     const workspace = Blockly.inject(dom, {
@@ -67,7 +82,7 @@ export const injectBlockly = (dom: HTMLElement) => {
 
     if (workspace) {
         load(workspace);
-        runCode(workspace);
+        // runCode(workspace);
 
         workspace.addChangeListener((e: Blockly.Events.Abstract) => {
             if (e.isUiEvent) return;
