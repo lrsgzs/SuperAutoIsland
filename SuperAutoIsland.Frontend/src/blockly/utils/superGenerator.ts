@@ -45,8 +45,9 @@ export interface Metadata {
     id: string;
     name: string;
     args: Record<string, MetaArgs>;
-    inline: boolean;
+    inline?: boolean;
     dropdownUseNumbers?: boolean;
+    isRule?: boolean;
 }
 
 export function addMetaBlock(metadata: Metadata) {
@@ -103,6 +104,8 @@ export function addMetaBlock(metadata: Metadata) {
             inputs: inputs,
             inline: metadata.inline,
             style: 'my_blocks',
+            output: metadata.isRule ? 'Boolean' : undefined,
+            isReporter: metadata.isRule,
         },
         (block, generator) => {
             let argsCode = '';
@@ -120,12 +123,13 @@ export function addMetaBlock(metadata: Metadata) {
                 argsCode += `${value}, `;
             }
 
+            const functionName = metadata.isRule ? 'return getRuleState' : 'callAction';
             const wrapper = generator.provideFunction_(
                 type,
                 `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(${args.map(a => a[0]).join(', ')}) {
                 const actionId = "${metadata.id}";
                 const actionData = { ${args.map(a => a[0]).join(', ')} };
-                callAction(actionId, actionData);
+                ${functionName}(actionId, actionData);
             }`,
             );
             return `${wrapper}(${argsCode});\n`;

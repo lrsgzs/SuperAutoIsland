@@ -3,35 +3,27 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
-import { type BlocklyBlockDefinition, data, type GeneratorFunction, setup } from './utils/blockGenerator';
-import type { StaticCategoryInfo } from './types/toolbox';
+import { preSetupCategory, postSetupCategory, settingUpCategory } from './utils/quickSetup';
 
 import * as prettier from 'prettier';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
 
-const actionBlocks: BlocklyBlockDefinition[] = [];
-const actionForBlocks: Record<string, GeneratorFunction> = {};
-const actionCategory: StaticCategoryInfo = {
-    kind: 'category',
-    name: '行动',
-    categorystyle: 'my_category',
-    contents: [],
-};
-setup(actionForBlocks, actionCategory, actionBlocks);
-
+preSetupCategory('规则');
 // @ts-ignore
-await import('./blocks/action');
+await import('./blocks/rules');
+postSetupCategory();
 
-toolbox.contents.push(actionCategory);
-Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(actionBlocks));
-Object.assign(javascriptGenerator.forBlock, actionForBlocks);
+preSetupCategory('行动');
+// @ts-ignore
+await import('./blocks/actions');
+postSetupCategory();
 
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
 
-console.log('Blockly 初始化完成！blockGenerator data:');
-console.log(data);
+const callActionDefinition = `function callAction(id, data) { console.log("Calling Action:", id, data) }`;
+const getRuleStateDefinition = `function callAction(id, data) { console.log("Getting Rule State:", id, data); return false; }`;
 
 const defaultTheme = Blockly.Theme.defineTheme('default', {
     base: Blockly.Themes.Classic,
@@ -53,7 +45,7 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
 export const runCode = async (workspace: Blockly.Workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
-    code = `function callAction(id, data) { console.log("Calling Action:", id, data) }\n` + code;
+    code = `${callActionDefinition}\n${getRuleStateDefinition}\n` + code;
     code = `(async () => {\n${code}\n})();\n`;
     code = await prettier.format(code, {
         semi: true,

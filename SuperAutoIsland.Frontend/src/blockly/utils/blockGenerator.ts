@@ -161,6 +161,7 @@ export interface BlockDefinition {
     colour?: number;
     style?: string;
     inline?: boolean;
+    isReporter?: boolean;
 }
 
 export interface GeneratorOutput {
@@ -235,8 +236,12 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
             helpUrl: block.helpUrl,
             colour: block.colour,
             style: block.style,
-            previousStatement: null,
-            nextStatement: null,
+            ...(block.isReporter
+                ? {}
+                : {
+                      previousStatement: null,
+                      nextStatement: null,
+                  }),
         },
     };
 }

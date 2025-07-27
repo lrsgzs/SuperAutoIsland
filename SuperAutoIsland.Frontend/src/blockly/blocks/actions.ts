@@ -1,11 +1,6 @@
-﻿import { addBlock, type ArgDefinition } from '../utils/blockGenerator';
+﻿import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
 import { addMetaBlock } from '../utils/superGenerator';
-
-const quote_ = (text: string) => {
-    // @ts-ignore
-    return "'" + text.replaceAll("'", "\\'") + "'";
-};
 
 const componentsConfigs: [string, string][] = [['Default', 'Default']];
 
