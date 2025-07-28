@@ -19,11 +19,16 @@ preSetupCategory('行动');
 await import('./blocks/actions');
 postSetupCategory();
 
+preSetupCategory('调试');
+// @ts-ignore
+await import('./blocks/debug');
+postSetupCategory();
+
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
 
 const callActionDefinition = `function callAction(id, data) { console.log("Calling Action:", id, data) }`;
-const getRuleStateDefinition = `function callAction(id, data) { console.log("Getting Rule State:", id, data); return false; }`;
+const getRuleStateDefinition = `function getRuleState(id, data) { console.log("Getting Rule State:", id, data); return false; }`;
 
 const defaultTheme = Blockly.Theme.defineTheme('default', {
     base: Blockly.Themes.Classic,
