@@ -4,6 +4,8 @@ import { addMetaBlock } from '../utils/superGenerator';
 
 const componentsConfigs: [string, string][] = [['Default', 'Default']];
 
+// TODO: 审查 dropdown 是否真的为目标类型
+
 addMetaBlock({
     id: 'classisland.broadcastSignal',
     name: '广播信号',
