@@ -39,13 +39,15 @@ const dummyInput: ArgDefinition = {
 
 export type CommonMetaArgs = [string, 'dummy' | 'text' | 'number' | 'boolean'];
 export type DropDownMetaArgs = [string, 'dropdown', [string, string][]];
-export type MetaArgs = CommonMetaArgs | DropDownMetaArgs;
+export type CheckboxMetaArgs = [string, 'checkbox', boolean?];
+export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs;
 
 export interface Metadata {
     id: string;
     name: string;
     args: Record<string, MetaArgs>;
-    inline?: boolean;
+    inlineBlock?: boolean;
+    inlineField?: boolean;
     dropdownUseNumbers?: boolean;
     isRule?: boolean;
 }
@@ -55,7 +57,7 @@ export function addMetaBlock(metadata: Metadata) {
     const type = metadata.id.replaceAll('.', '_');
     let message = `[${metadata.name}]`;
     const inputs: Record<string, ArgDefinition> = {};
-    const args: [string, 'field_dropdown' | 'block'][] = [];
+    const args: [string, 'field_dropdown' | 'field_checkbox' | 'block'][] = [];
 
     let i = 0;
     for (const argName in metadata.args) {
@@ -88,8 +90,18 @@ export function addMetaBlock(metadata: Metadata) {
                         options: arg[2],
                     },
                 };
-                if (!metadata.inline) message += '\n';
+                if (!metadata.inlineField) message += '\n';
                 args.push([argName, 'field_dropdown']);
+                break;
+            case 'checkbox':
+                inputDefinition = {
+                    type: 'field_checkbox',
+                    data: {
+                        checked: arg[2],
+                    },
+                };
+                if (!metadata.inlineField) message += '\n';
+                args.push([argName, 'field_checkbox']);
                 break;
             default:
                 inputDefinition = dummyInput;
@@ -102,7 +114,7 @@ export function addMetaBlock(metadata: Metadata) {
             type: type,
             message: message,
             inputs: inputs,
-            inline: metadata.inline,
+            inline: metadata.inlineBlock,
             style: 'my_blocks',
             output: metadata.isRule ? 'Boolean' : undefined,
             isReporter: metadata.isRule,
@@ -118,6 +130,9 @@ export function addMetaBlock(metadata: Metadata) {
                     case 'field_dropdown':
                         value = block.getFieldValue(argName);
                         if (!metadata.dropdownUseNumbers) value = quote_(value);
+                        break;
+                    case 'field_checkbox':
+                        value = block.getFieldValue(argName);
                         break;
                 }
                 argsCode += `${value}, `;

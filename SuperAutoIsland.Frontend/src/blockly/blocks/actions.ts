@@ -10,7 +10,8 @@ addMetaBlock({
     args: {
         SignalName: ['', 'text'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 addMetaBlock({
@@ -19,7 +20,8 @@ addMetaBlock({
     args: {
         Value: ['修改为', 'dropdown', componentsConfigs],
     },
-    inline: true,
+    inlineBlock: true,
+    inlineField: true,
 });
 
 addMetaBlock({
@@ -36,7 +38,8 @@ addMetaBlock({
             ],
         ],
     },
-    inline: true,
+    inlineBlock: true,
+    inlineField: true,
     dropdownUseNumbers: true,
 });
 
@@ -57,7 +60,8 @@ addMetaBlock({
             ],
         ],
     },
-    inline: true,
+    inlineBlock: true,
+    inlineField: true,
     dropdownUseNumbers: true,
 });
 
@@ -74,7 +78,8 @@ addMetaBlock({
             ],
         ],
     },
-    inline: true,
+    inlineBlock: true,
+    inlineField: true,
     dropdownUseNumbers: true,
 });
 
@@ -84,7 +89,8 @@ addMetaBlock({
     args: {
         Value: ['修改为', 'number'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 addMetaBlock({
@@ -93,7 +99,8 @@ addMetaBlock({
     args: {
         Value: ['修改为', 'number'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 addMetaBlock({
@@ -103,7 +110,8 @@ addMetaBlock({
         Value: ['', 'text'],
         Arg: ['应用程序启动参数', 'text'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 addMetaBlock({
@@ -122,7 +130,8 @@ addMetaBlock({
         IsEffectEnabled: ['启用提醒特效', 'boolean'],
         IsSoundEffectEnabled: ['启用提醒音效', 'boolean'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 // 不使用 MetaBlock
@@ -174,7 +183,8 @@ addMetaBlock({
             ],
         ],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
     dropdownUseNumbers: true,
 });
 
@@ -182,7 +192,8 @@ addMetaBlock({
     id: 'classisland.app.quit',
     name: '退出 ClassIsland',
     args: {},
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
 
 addMetaBlock({
@@ -191,5 +202,6 @@ addMetaBlock({
     args: {
         Value: ['静默重启:', 'boolean'],
     },
-    inline: false,
+    inlineBlock: false,
+    inlineField: false,
 });
