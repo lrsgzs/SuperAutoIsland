@@ -3,11 +3,14 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
-import { preSetupCategory, postSetupCategory, settingUpCategory } from './utils/quickSetup';
+import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
 
 import * as prettier from 'prettier';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
+
+import { FieldIcon } from './fields/FieldIcon';
+Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
 preSetupCategory('规则');
 // @ts-ignore

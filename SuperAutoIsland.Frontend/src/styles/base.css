@@ -12,3 +12,8 @@ body,
 .blocklyScrollbarVertical.blocklyFlyoutScrollbar {
     display: none !important;
 }
+
+@font-face {
+    font-family: 'Fluent System Icons';
+    src: url('../assets/fonts/FluentSystemIcons.ttf');
+}
