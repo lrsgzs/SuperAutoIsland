@@ -133,6 +133,7 @@ export function addMetaBlock(metadata: Metadata) {
                         break;
                     case 'field_checkbox':
                         value = block.getFieldValue(argName);
+                        value = { TRUE: true, FALSE: false }[value];
                         break;
                 }
                 argsCode += `${value}, `;
