@@ -129,7 +129,7 @@ export function addMetaBlock(metadata: Metadata) {
             isReporter: metadata.isRule,
         },
         (block, generator) => {
-            let argsCode = '';
+            let argsCode = '{';
             for (let [argName, argType] of args) {
                 let value;
                 switch (argType) {
@@ -145,23 +145,14 @@ export function addMetaBlock(metadata: Metadata) {
                         value = { TRUE: true, FALSE: false }[value];
                         break;
                 }
-                argsCode += `${value}, `;
+                argsCode += `${argName}: ${value}, `;
             }
-
-            const functionName = metadata.isRule ? 'return getRuleState' : 'callAction';
-            const wrapper = generator.provideFunction_(
-                type,
-                `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(${args.map(a => a[0]).join(', ')}) {
-                const actionId = "${metadata.id}";
-                const actionData = { ${args.map(a => a[0]).join(', ')} };
-                ${functionName}(actionId, actionData);
-            }`,
-            );
+            argsCode += '}';
 
             if (metadata.isRule) {
-                return [`${wrapper}(${argsCode})\n`, Order.MEMBER];
+                return [`getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
             } else {
-                return `${wrapper}(${argsCode});\n`;
+                return `callAction("${metadata.id}", ${argsCode});\n`;
             }
         },
     );
