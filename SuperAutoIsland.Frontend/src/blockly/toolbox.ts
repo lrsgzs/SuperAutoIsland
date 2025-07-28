@@ -591,7 +591,7 @@ export const toolbox: ToolboxInfo = {
             kind: 'category',
             name: '变量',
             categorystyle: 'variable_category',
-            custom: 'VARIABLE',
+            custom: 'VARIABLE_DYNAMIC',
         },
         {
             kind: 'category',
