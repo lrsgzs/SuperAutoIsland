@@ -148,7 +148,12 @@ export function addMetaBlock(metadata: Metadata) {
                 ${functionName}(actionId, actionData);
             }`,
             );
-            return `${wrapper}(${argsCode});\n`;
+
+            if (metadata.isRule) {
+                return [`${wrapper}(${argsCode})\n`, Order.MEMBER];
+            } else {
+                return `${wrapper}(${argsCode});\n`;
+            }
         },
     );
 }

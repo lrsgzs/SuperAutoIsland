@@ -1,6 +1,7 @@
 ﻿import type { BlockInfo, StaticCategoryInfo } from '../types/toolbox';
 import * as Blockly from 'blockly/core';
 import type { ConnectionState } from 'blockly/core/serialization/blocks.js';
+import { Order } from 'blockly/javascript';
 
 export interface BlocklyArgDefinition {
     type: 'input_value';
@@ -42,10 +43,10 @@ interface _DummyArgDef extends _UnkArgDef {
 
 interface _BlockArgDef extends _UnkArgDef {
     type: 'input_value';
-    blockType: string;
+    blockType?: string;
     /* 一个只包含类名的字符串 */
-    check: string;
-    fields: Record<string, any>;
+    check?: string;
+    fields?: Record<string, any>;
 }
 
 interface _NumberBlockArgDef extends _BlockArgDef {
@@ -169,7 +170,7 @@ export interface GeneratorOutput {
     definition: BlocklyBlockDefinition;
 }
 
-export type GeneratorFunction = (block: Blockly.Block, generator: Blockly.CodeGenerator) => string;
+export type GeneratorFunction = (block: Blockly.Block, generator: Blockly.CodeGenerator) => string | [string, Order];
 
 interface _DataObject {
     initialized: boolean;
@@ -205,12 +206,14 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
                 toolboxFields[fieldName] = block.inputs[inputName].fields[fieldName];
             }
 
-            toolboxInputs[inputName] = {
-                shadow: {
-                    type: block.inputs[inputName].blockType,
-                    fields: toolboxFields,
-                },
-            };
+            if (block.inputs[inputName].blockType) {
+                toolboxInputs[inputName] = {
+                    shadow: {
+                        type: block.inputs[inputName].blockType,
+                        fields: toolboxFields,
+                    },
+                };
+            }
         }
 
         definitionArgs.push({
