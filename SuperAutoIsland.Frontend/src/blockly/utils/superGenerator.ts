@@ -45,6 +45,7 @@ export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs;
 export interface Metadata {
     id: string;
     name: string;
+    icon: [name: string, icon: string];
     args: Record<string, MetaArgs>;
     inlineBlock?: boolean;
     inlineField?: boolean;
@@ -55,11 +56,19 @@ export interface Metadata {
 export function addMetaBlock(metadata: Metadata) {
     // @ts-ignore
     const type = metadata.id.replaceAll('.', '_');
-    let message = `[${metadata.name}]`;
+    let message = `[%1 ${metadata.name}]`;
     const inputs: Record<string, ArgDefinition> = {};
     const args: [string, 'field_dropdown' | 'field_checkbox' | 'block'][] = [];
 
-    let i = 0;
+    inputs['ICON'] = {
+        type: 'field_icon',
+        data: {
+            text: metadata.icon[0],
+            icon: metadata.icon[1],
+        },
+    };
+
+    let i = 1;
     for (const argName in metadata.args) {
         const arg = metadata.args[argName];
 

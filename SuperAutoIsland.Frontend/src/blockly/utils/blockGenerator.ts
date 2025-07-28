@@ -136,6 +136,14 @@ interface _VariableArgDef extends _UnkArgDef {
     };
 }
 
+interface _IconArgDef extends _UnkArgDef {
+    type: 'field_icon';
+    data: {
+        icon: string;
+        text: string;
+    };
+}
+
 export type ArgDefinition =
     | _DummyArgDef
     | _BlockArgDef
@@ -149,7 +157,8 @@ export type ArgDefinition =
     | _SerializableLabelArgDef
     | _NumberArgDef
     | _InputArgDef
-    | _VariableArgDef;
+    | _VariableArgDef
+    | _IconArgDef;
 
 export interface BlockDefinition {
     type: string;

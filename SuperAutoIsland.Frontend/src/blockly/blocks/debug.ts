@@ -4,8 +4,15 @@ import { Order } from 'blockly/javascript';
 addBlock(
     {
         type: 'console_log',
-        message: '[控制台] log %1',
+        message: '[%1 控制台] log %2',
         inputs: {
+            ICON: {
+                type: 'field_icon',
+                data: {
+                    text: '控制台',
+                    icon: '\uF498',
+                },
+            },
             VALUE: {
                 type: 'input_value',
                 check: null,
