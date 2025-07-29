@@ -1,4 +1,4 @@
-﻿import { addBlock, type ArgDefinition } from './blockGenerator';
+﻿import { addBlock, type ArgDefinition, data } from './blockGenerator';
 import { Order } from 'blockly/javascript';
 
 const quote_ = (text: string) => {
@@ -156,4 +156,11 @@ export function addMetaBlock(metadata: Metadata) {
             }
         },
     );
+}
+
+export function addLabel(label: string) {
+    data.category.contents.push({
+        kind: 'label',
+        text: label,
+    });
 }
