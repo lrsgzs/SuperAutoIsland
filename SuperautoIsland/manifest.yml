@@ -1,0 +1,17 @@
+# 插件清单文件使用 YAML 格式存储。
+# YAML 教程：https://www.runoob.com/w3cnote/yaml-intro.html
+# 插件清单格式：https://docs.classisland.tech/zh-cn/latest/dev/plugins/create-project/#%E6%8F%92%E4%BB%B6%E6%B8%85%E5%8D%95%E6%96%87%E4%BB%B6
+
+id: lrs2187.sai
+name: SuperAutoIsland
+description: 超级汽车岛
+entranceAssembly: "SuperAutoIsland.dll"
+url: https://github.com/lrsgzs/SuperAutoIsland
+version: 0.1.0.0
+apiVersion: 1.6.0.5
+author: lrsgzs
+readme: README.md
+icon: icon.png
+repoOwner: lrsgzs
+repoName: SuperAutoIsland
+assetsRoot: master/SuperAutoIsland
