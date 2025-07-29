@@ -5,8 +5,6 @@ import '../types/extraData.d.ts';
 
 const componentsConfigs: [string, string][] = [['Default', 'Default']];
 
-// TODO: 审查 dropdown 是否真的为目标类型
-
 addLabel('ClassIsland');
 
 addMetaBlock({

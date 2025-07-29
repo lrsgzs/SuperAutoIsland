@@ -1,8 +1,6 @@
 ﻿import { addLabel, addMetaBlock } from '../utils/superGenerator';
 import '../types/extraData.d.ts';
 
-// TODO: 审查 dropdown 是否真的为目标类型
-
 const lessons: [string, string][] = [
     ['语文', 'guid1'],
     ['数学', 'guid2'],
@@ -114,6 +112,7 @@ addMetaBlock({
     inlineField: true,
 });
 
+// TODO: 后端 转换为 TimeState enum
 addMetaBlock({
     id: 'classisland.lessons.timeState',
     name: '当前时间状态是',
