@@ -24,4 +24,13 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\" />
+      <Folder Include="Automations\Actions\" />
+      <Folder Include="Automations\Rules\" />
+      <Folder Include="Configs\" />
+      <Folder Include="Controls\Components\" />
+      <Folder Include="Shared\Converters\" />
+    </ItemGroup>
 </Project>
