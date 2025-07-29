@@ -76,6 +76,6 @@ export class FieldIcon extends Blockly.Field<IconData> {
         this.size_.height = height - 12;
         this.borderRect_.setAttribute('width', '0');
         this.borderRect_.setAttribute('height', '0');
-        this.textElement_.style.transform = `translate(-9px, 20px)`;
+        this.textElement_.style.transform = `translate(-9px, 19px)`;
     }
 }
