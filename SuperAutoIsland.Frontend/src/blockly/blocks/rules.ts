@@ -1,4 +1,5 @@
-﻿import { addMetaBlock } from '../utils/superGenerator';
+﻿import { addLabel, addMetaBlock } from '../utils/superGenerator';
+import '../types/extraData.d.ts';
 
 // TODO: 审查 dropdown 是否真的为目标类型
 
@@ -13,6 +14,8 @@ const weathers: [string, string][] = [
     ['阴', '1'],
     ['多云', '2'],
 ];
+
+addLabel('ClassIsland');
 
 addMetaBlock({
     id: 'classisland.windows.className',
@@ -173,3 +176,12 @@ addMetaBlock({
     inlineBlock: false,
     inlineField: false,
 });
+
+for (let pluginName in window.extraBlocks) {
+    if (window.extraBlocks[pluginName].rules.length == 0) continue;
+
+    addLabel(pluginName);
+    for (let block of window.extraBlocks[pluginName].rules) {
+        addMetaBlock(block);
+    }
+}

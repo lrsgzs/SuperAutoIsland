@@ -4,6 +4,7 @@ import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
+import './types/extraData.d.ts';
 
 import * as prettier from 'prettier';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
@@ -11,6 +12,57 @@ import * as prettierBabelPlugin from 'prettier/plugins/babel';
 
 import { FieldIcon } from './fields/FieldIcon';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
+
+// Load Blocks from SuperAutoIsland
+window.extraBlocks = {
+    ExtraIsland: {
+        rules: [
+            {
+                id: 'extraIsland.rule.todayIs.simple',
+                name: '今天是',
+                icon: ['未知', '\uEDFB'],
+                args: {
+                    Target: [
+                        '',
+                        'dropdown',
+                        [
+                            ['工作日', '0'],
+                            ['周末', '1'],
+                        ],
+                    ],
+                },
+                isRule: true,
+                inlineBlock: false,
+                inlineField: true,
+            },
+            {
+                id: 'extraIsland.rule.todayIs.single',
+                name: '今天是',
+                icon: ['未知', '\uEDFB'],
+                args: {
+                    label1: ['星期...', 'dummy'],
+                    TargetDayOfWeek: [
+                        '',
+                        'dropdown',
+                        [
+                            ['一', '0'],
+                            ['二', '1'],
+                            ['三', '2'],
+                            ['四', '3'],
+                            ['五', '4'],
+                            ['六', '5'],
+                            ['日', '6'],
+                        ],
+                    ],
+                },
+                isRule: true,
+                inlineBlock: true,
+                inlineField: true,
+            },
+        ],
+        actions: [],
+    },
+};
 
 preSetupCategory('规则');
 // @ts-ignore

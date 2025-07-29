@@ -1,10 +1,13 @@
 ﻿import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
-import { addMetaBlock } from '../utils/superGenerator';
+import { addLabel, addMetaBlock } from '../utils/superGenerator';
+import '../types/extraData.d.ts';
 
 const componentsConfigs: [string, string][] = [['Default', 'Default']];
 
 // TODO: 审查 dropdown 是否真的为目标类型
+
+addLabel('ClassIsland');
 
 addMetaBlock({
     id: 'classisland.broadcastSignal',
@@ -226,3 +229,12 @@ addMetaBlock({
     inlineBlock: false,
     inlineField: false,
 });
+
+for (let pluginName in window.extraBlocks) {
+    if (window.extraBlocks[pluginName].actions.length == 0) continue;
+
+    addLabel(pluginName);
+    for (let block of window.extraBlocks[pluginName].actions) {
+        addMetaBlock(block);
+    }
+}
