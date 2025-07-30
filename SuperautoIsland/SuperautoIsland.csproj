@@ -31,7 +31,6 @@
       <Folder Include="Automations\Actions\" />
       <Folder Include="Automations\Rules\" />
       <Folder Include="Controls\Components\" />
-      <Folder Include="Services\" />
       <Folder Include="Shared\Converters\" />
     </ItemGroup>
 </Project>
