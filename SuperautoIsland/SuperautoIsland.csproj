@@ -11,6 +11,7 @@
         <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.104-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
+        <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,8 +30,8 @@
       <Folder Include="Assets\" />
       <Folder Include="Automations\Actions\" />
       <Folder Include="Automations\Rules\" />
-      <Folder Include="Configs\" />
       <Folder Include="Controls\Components\" />
+      <Folder Include="Services\" />
       <Folder Include="Shared\Converters\" />
     </ItemGroup>
 </Project>

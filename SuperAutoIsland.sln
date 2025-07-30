@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperautoIsland", "SuperautoIsland\SuperautoIsland.csproj", "{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperAutoIsland.Interface", "SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj", "{CC064410-4503-4FC2-955F-094B9B033202}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC064410-4503-4FC2-955F-094B9B033202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC064410-4503-4FC2-955F-094B9B033202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC064410-4503-4FC2-955F-094B9B033202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC064410-4503-4FC2-955F-094B9B033202}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
