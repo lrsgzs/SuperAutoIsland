@@ -26,8 +26,7 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
         level = level.ToUpper();
 
         var messageList = messages
-            .Select(e => e.ToString())
-            .SelectMany(e => (e ?? string.Empty).Split("\n"));
+            .Select(e => e.ToString() ?? "");
 
         foreach (var message in messageList)
         {
@@ -39,7 +38,8 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
             {
                 Console.Write($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ");
             }
-            Console.WriteLine($"[{level}] {message}");
+            Console.WriteLine($"[{level}]");
+            Console.WriteLine(message);
             
             // 写入根 logger
             Root.AddLog(new LogData()

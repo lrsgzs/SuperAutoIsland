@@ -26,7 +26,8 @@ public class Plugin : PluginBase
     {
         // ascii 字符画后续再补
         
-        _logger.Info("SuperAutoIsland ==> 初期化中...");
+        _logger.Info("欢迎使用 SuperAutoIsland");
+        _logger.Info("初期化中...");
         
         _logger.Info("注册日志筛选器...");
         services.AddTransient<SaiLogsViewModel>();
