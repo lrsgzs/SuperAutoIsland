@@ -1,11 +1,10 @@
-﻿using ClassIsland.Core.Abstractions.Services;
-using SuperAutoIsland.ConfigHandlers;
-using Microsoft.Extensions.Logging;
+﻿using SuperAutoIsland.ConfigHandlers;
 
 namespace SuperAutoIsland.Shared;
 
 public static class GlobalConstants
 {
+    public static string? PluginFolder { get; set; }
     public static string? PluginConfigFolder { get; set; }
 
     public static class Configs

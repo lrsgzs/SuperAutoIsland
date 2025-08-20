@@ -1,6 +1,6 @@
 ﻿using SuperAutoIsland.Interface;
 
-namespace SuperAutoIsland.Shared;
+namespace SuperAutoIsland.Server;
 
 public static class SaiServerSaver
 {

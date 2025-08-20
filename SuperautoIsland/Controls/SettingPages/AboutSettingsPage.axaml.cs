@@ -1,6 +1,3 @@
-using Avalonia.Controls;
-using Avalonia.Media;
-using ClassIsland.Core;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Enums.SettingsWindow;

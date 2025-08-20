@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperautoIsland", "SuperautoIsland\SuperautoIsland.csproj", "{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperAutoIsland", "SuperAutoIsland\SuperAutoIsland.csproj", "{3962B7FD-523C-4FAE-A5D8-AC192584FD9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperAutoIsland.Interface", "SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj", "{CC064410-4503-4FC2-955F-094B9B033202}"
 EndProject

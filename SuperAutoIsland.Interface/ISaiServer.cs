@@ -5,4 +5,6 @@ namespace SuperAutoIsland.Interface;
 public interface ISaiServer
 {
     public void RegisterBlocks(string pluginName, RegisterData data);
+
+    public void Shutdown();
 }

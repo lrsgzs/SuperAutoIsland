@@ -1,7 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
-using ClassIsland.Core;
-using ClassIsland.Core.Abstractions.Controls;
+﻿using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using SuperAutoIsland.ConfigHandlers;
 using SuperAutoIsland.Shared;

@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDynamicLoading>True</EnableDynamicLoading>
+        <RootNamespace>SuperautoIsland</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,10 +25,14 @@
         <None Update="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        
+        <Content Include="assets/wwwroot/**/*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
-
+    
+    
     <ItemGroup>
-      <Folder Include="Assets\" />
       <Folder Include="Automations\Actions\" />
       <Folder Include="Automations\Rules\" />
       <Folder Include="Controls\Components\" />
