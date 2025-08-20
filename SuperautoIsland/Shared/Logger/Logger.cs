@@ -54,6 +54,12 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     public void Error(params object[] message) => BaseLog("ERROR", message);
     
     public void Debug(params object[] message) => BaseLog("DEBUG", message);
-    
-    public void FormatException() => Error(Environment.StackTrace);
+
+    public void FormatException(Exception e)
+    {
+        Error(e.Message);
+        if (e.StackTrace != null) Error(e.StackTrace);
+        if (e.HelpLink != null) Error($"HelpLink: {e.HelpLink}");
+        Error($"UserData: {e.Data}");
+    }
 }

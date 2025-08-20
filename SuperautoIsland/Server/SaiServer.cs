@@ -54,9 +54,9 @@ public class SaiServer
             {
                 _logger.Info("呃呃呃啊哦呃，服务器已经关了呢喵...");
             }
-            catch
+            catch (Exception e)
             {
-                _logger.FormatException();
+                _logger.FormatException(e);
             }
         }
     }
@@ -98,7 +98,8 @@ public class SaiServer
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                     _logger.Info($"收到消息: {message}");
-
+                    object jsonReturnData;
+                    
                     try
                     {
                         var messageJson = JsonDocument.Parse(message);
@@ -106,17 +107,23 @@ public class SaiServer
                         var messageType = messageJsonType.GetString()!;
                         
                         _logger.Debug($"Type: {messageType}");
+                        jsonReturnData = new
+                        {
+                            type = "result",
+                        };
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        _logger.FormatException();
-                        // 回显。
+                        _logger.FormatException(e);
+                        jsonReturnData = new
+                        {
+                            type = "error",
+                        };
                     }
-                    
-                    
-                    // 回显消息
-                    var response = $"服务器回复: {DateTime.Now:HH:mm:ss} - {message}";
-                    var responseBytes = Encoding.UTF8.GetBytes(response);
+
+                    var returnJson = JsonSerializer.Serialize(jsonReturnData);
+                    _logger.Info($"服务器回复: {returnJson}");
+                    var responseBytes = Encoding.UTF8.GetBytes(returnJson);
                     await websocket.SendAsync(
                         new ArraySegment<byte>(responseBytes),
                         WebSocketMessageType.Text,
@@ -125,9 +132,9 @@ public class SaiServer
                 }
             }
         }
-        catch
+        catch (Exception e)
         {
-            _logger.FormatException();
+            _logger.FormatException(e);
         }
     }
 
