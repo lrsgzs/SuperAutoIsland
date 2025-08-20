@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
-using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using SuperAutoIsland.Shared.Logger;
 
@@ -12,7 +11,7 @@ public partial class SaiLogsViewModel : ObservableRecipient
     private ReadOnlyObservableCollection<LogData> _logs = null!;
     public ReadOnlyObservableCollection<LogData> Logs => _logs;
     private IDisposable? _prevSubscription;
-    public RootLogger RootLogger = Logger.Root;
+    public readonly RootLogger RootLogger = Logger.Root;
     
     [ObservableProperty] private bool _isFilteredError = true;
     [ObservableProperty] private bool _isFilteredWarning = true;
