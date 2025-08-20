@@ -1,10 +1,12 @@
 ﻿using SuperAutoIsland.Interface.Shared;
+using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Server;
 
 public class SaiServerInstance
 {
     private SaiServer? _server;
+    private readonly Logger _logger = new("lrs2187.sai -> SaiServerInstance");
     
     public void RegisterBlocks(string pluginName, RegisterData data)
     {
@@ -13,9 +15,9 @@ public class SaiServerInstance
 
     public async Task LoadServer(string port)
     {
-        Console.WriteLine("服务器已经启动个毛");
+        _logger.Info("服务器已经启动个毛");
         _server = new SaiServer(port);
-        Console.WriteLine($"服务器地址：{_server.Url}");
+        _logger.Info($"服务器地址：{_server.Url}");
         await _server.Serve();
     }
 

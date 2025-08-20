@@ -11,30 +11,33 @@ using SuperAutoIsland.Interface;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Shared;
+using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland;
 
 [PluginEntrance]
 public class Plugin : PluginBase
 {
+    private readonly Logger _logger = new("lrs2187.sai");
+    
     public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
         
-        Console.WriteLine("SuperAutoIsland ==> 初期化中...");
+        _logger.Info("SuperAutoIsland ==> 初期化中...");
         
-        Console.WriteLine("SuperAutoIsland ==> 加载配置...");
+        _logger.Info("加载配置...");
         GlobalConstants.PluginFolder = Info.PluginFolderPath;
         GlobalConstants.PluginConfigFolder = PluginConfigFolder;
         GlobalConstants.Configs.MainConfig = new MainConfigHandler();
         
-        Console.WriteLine("SuperAutoIsland ==> 注册服务器...");
+        _logger.Info("注册服务器...");
         services.AddSingleton<ISaiServer, SaiServerBridger>();
         
-        Console.WriteLine("SuperAutoIsland ==> 注册不存在的自动化元素...");
+        _logger.Info("注册不存在的自动化元素...");
         // 等待。
         
-        Console.WriteLine("SuperAutoIsland ==> 添加设置页面...");
+        _logger.Info("添加设置页面...");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<AutomationSettingsPage>();
         services.AddSettingsPage<AboutSettingsPage>();
@@ -48,11 +51,11 @@ public class Plugin : PluginBase
         {
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
+            _logger.Info("已尝试关闭，5 秒后将会强行关闭 SuperAutoIsland.Server ...");
             
-            Console.WriteLine("已尝试关闭，5 秒后将会强行关闭 SuperAutoIsland.Server ...");
             new Thread(() => {
                 Thread.Sleep(5000);
-                Console.WriteLine("正在关闭...");
+                _logger.Info("正在关闭...");
                 Environment.Exit(0);
             }).Start();
         };
