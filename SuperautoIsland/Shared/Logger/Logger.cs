@@ -2,6 +2,8 @@
 
 public class Logger(string name, bool showTime = true, Theme? theme = null)
 {
+    public static readonly RootLogger Root = new RootLogger();
+    
     public readonly string Name = name;
     public bool ShowTime = showTime;
     public Theme Theme = theme ?? DefaultThemes.Default;
@@ -38,6 +40,15 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
                 Console.Write($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ");
             }
             Console.WriteLine($"[{level}] {message}");
+            
+            // 写入根 logger
+            Root.AddLog(new LogData()
+            {
+                Scope = Name,
+                Level = level,
+                Message = message,
+                Time = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}"
+            });
             
             Console.ForegroundColor = originColor;
         }

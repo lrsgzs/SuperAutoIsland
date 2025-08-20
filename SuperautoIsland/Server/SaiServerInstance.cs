@@ -6,7 +6,7 @@ namespace SuperAutoIsland.Server;
 public class SaiServerInstance
 {
     private SaiServer? _server;
-    private readonly Logger _logger = new("lrs2187.sai -> SaiServerInstance");
+    private readonly Logger _logger = new("SaiServerInstance");
     
     public void RegisterBlocks(string pluginName, RegisterData data)
     {

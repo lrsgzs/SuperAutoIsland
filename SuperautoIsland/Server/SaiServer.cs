@@ -17,7 +17,7 @@ public class SaiServer
     public readonly string Url;
     private readonly string _wwwRoot;
     private readonly HttpListener _listener;
-    private readonly Logger _logger = new("lrs2187.sai -> SaiServer");
+    private readonly Logger _logger = new("SaiServer");
     
     public SaiServer(string port)
     {

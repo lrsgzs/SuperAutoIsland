@@ -1,6 +1,9 @@
-﻿using ClassIsland.Core.Abstractions.Controls;
+﻿using Avalonia.Interactivity;
+using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Shared;
 using SuperAutoIsland.ConfigHandlers;
+using SuperAutoIsland.Controls.Windows;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Controls.SettingPages;
@@ -24,5 +27,10 @@ public partial class MainSettingsPage : SettingsPageBase {
         
         RequestRestart();
         _isRequestedRestart = true;
+    }
+
+    private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        IAppHost.GetService<SaiLogsWindow>().Open();
     }
 }

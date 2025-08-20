@@ -28,6 +28,15 @@
                 </fa:InfoBar.Content>
             </fa:InfoBar>
         
+            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
+                <fa:SettingsExpander.Footer>
+                    <Button Margin="3,0,6,0"
+                            HorizontalContentAlignment="Center"
+                            Click="ViewLogsButton_OnClick"
+                            Content="查看日志"/>
+                </fa:SettingsExpander.Footer>
+            </fa:SettingsExpander>
+            
             <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
                 <fa:SettingsExpander.Footer>
                     <TextBox MinWidth="20"

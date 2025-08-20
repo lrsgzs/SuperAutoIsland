@@ -7,24 +7,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.ConfigHandlers;
 using SuperAutoIsland.Controls.SettingPages;
+using SuperAutoIsland.Controls.Windows;
 using SuperAutoIsland.Interface;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
+using SuperAutoIsland.ViewModel;
 
 namespace SuperAutoIsland;
 
 [PluginEntrance]
 public class Plugin : PluginBase
 {
-    private readonly Logger _logger = new("lrs2187.sai");
+    private readonly Logger _logger = new("Plugin");
     
     public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
         
         _logger.Info("SuperAutoIsland ==> 初期化中...");
+        
+        _logger.Info("注册日志筛选器...");
+        services.AddTransient<SaiLogsViewModel>();
         
         _logger.Info("加载配置...");
         GlobalConstants.PluginFolder = Info.PluginFolderPath;
@@ -38,6 +43,7 @@ public class Plugin : PluginBase
         // 等待。
         
         _logger.Info("添加设置页面...");
+        services.AddSingleton<SaiLogsWindow>();
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<AutomationSettingsPage>();
         services.AddSettingsPage<AboutSettingsPage>();
