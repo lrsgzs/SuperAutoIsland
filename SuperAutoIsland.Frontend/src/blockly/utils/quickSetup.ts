@@ -3,7 +3,6 @@ import type { StaticCategoryInfo } from '../types/toolbox';
 import { toolbox } from '../toolbox';
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
-import { object } from 'blockly/core/utils';
 
 interface CategoryData {
     blocks?: BlocklyBlockDefinition[];
@@ -32,10 +31,10 @@ export function preSetupCategory(name: string) {
 export function postSetupCategory() {
     if (!settingUpCategory.initialized) throw new Error('还没初始化呢！你先别急');
 
-    toolbox.contents.push(settingUpCategory.category);
-    Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(settingUpCategory.blocks));
+    toolbox.contents.push(settingUpCategory.category!);
+    Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(settingUpCategory.blocks!));
     Object.assign(javascriptGenerator.forBlock, settingUpCategory.forBlocks);
-    console.log(`${settingUpCategory.category.name} 初始化完成！settingUpCategory:`, settingUpCategory);
+    console.log(`${settingUpCategory.category!.name} 初始化完成！settingUpCategory:`, { ...settingUpCategory });
     delete settingUpCategory.category;
     delete settingUpCategory.blocks;
     delete settingUpCategory.forBlocks;

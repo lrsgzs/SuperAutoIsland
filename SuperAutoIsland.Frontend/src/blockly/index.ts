@@ -4,6 +4,8 @@ import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
+import type { Metadata } from './utils/superGenerator';
+import { wsWaitMessage } from './utils/wsUtils';
 import './types/extraData.d.ts';
 
 import * as prettier from 'prettier';
@@ -13,8 +15,16 @@ import * as prettierBabelPlugin from 'prettier/plugins/babel';
 import { FieldIcon } from './fields/FieldIcon';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
-// Load Blocks from SuperAutoIsland
-window.extraBlocks = {};
+const ws = new WebSocket('/');
+ws.addEventListener('message', ev => console.log(ev));
+await new Promise(resolve => {
+    setTimeout(resolve, 500);
+});
+
+const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getExtraBlocks' });
+window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions', Metadata[]>>;
+window.saiWS = ws;
+window.saiWaitMessage = wsWaitMessage;
 
 preSetupCategory('规则');
 // @ts-ignore
@@ -34,8 +44,26 @@ postSetupCategory();
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
 
-const callActionDefinition = `function callAction(id, data) { console.log("Calling Action:", id, data) }`;
-const getRuleStateDefinition = `function getRuleState(id, data) { console.log("Getting Rule State:", id, data); return false; }`;
+const callActionDefinition = `
+async function callAction(id, data) {
+    console.log("Calling Action:", id, data);
+    await window.saiWaitMessage(window.saiWS, {
+        type: "runAction",
+        id: id,
+        settings: data,
+    });
+}`;
+
+const getRuleStateDefinition = `
+async function getRuleState(id, data) {
+    console.log("Getting Rule State:", id, data);
+    const result = await window.saiWaitMessage(window.saiWS, {
+        type: "runRule",
+        id: id,
+        settings: data,
+    });
+    return result.result;
+}`;
 
 const defaultTheme = Blockly.Theme.defineTheme('default', {
     base: Blockly.Themes.Classic,
@@ -57,7 +85,7 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
 export const runCode = async (workspace: Blockly.Workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
-    code = `${callActionDefinition}\n${getRuleStateDefinition}\n` + code;
+    code = `${callActionDefinition}\n${getRuleStateDefinition}\n\n` + code;
     code = `(async () => {\n${code}\n})();\n`;
     code = await prettier.format(code, {
         semi: true,
@@ -97,4 +125,7 @@ export const injectBlockly = (dom: HTMLElement) => {
     return null;
 };
 
+// @ts-ignore
 export { Blockly };
+// @ts-ignore
+// nothing

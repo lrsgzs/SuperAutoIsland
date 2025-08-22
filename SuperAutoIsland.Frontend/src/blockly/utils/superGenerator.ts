@@ -75,7 +75,7 @@ export function addMetaBlock(metadata: Metadata) {
         i++;
         message += ` ${arg[0]} %${i}`;
 
-        let inputDefinition: ArgDefinition = null;
+        let inputDefinition: ArgDefinition | null = null;
         switch (arg[1]) {
             case 'dummy':
                 inputDefinition = dummyInput;
@@ -142,7 +142,7 @@ export function addMetaBlock(metadata: Metadata) {
                         break;
                     case 'field_checkbox':
                         value = block.getFieldValue(argName);
-                        value = { TRUE: true, FALSE: false }[value];
+                        value = { TRUE: true, FALSE: false }[value as "TRUE" | "FALSE"];
                         break;
                 }
                 argsCode += `${argName}: ${value}, `;
@@ -150,16 +150,16 @@ export function addMetaBlock(metadata: Metadata) {
             argsCode += '}';
 
             if (metadata.isRule) {
-                return [`getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
+                return [`await getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
             } else {
-                return `callAction("${metadata.id}", ${argsCode});\n`;
+                return `await callAction("${metadata.id}", ${argsCode});\n`;
             }
         },
     );
 }
 
 export function addLabel(label: string) {
-    data.category.contents.push({
+    data.category?.contents.push({
         kind: 'label',
         text: label,
     });

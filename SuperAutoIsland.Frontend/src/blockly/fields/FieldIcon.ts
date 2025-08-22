@@ -6,10 +6,10 @@ type IconData = {
 };
 
 export class FieldIcon extends Blockly.Field<IconData> {
-    private displayValue_: IconData;
-    private isValueValid_: boolean;
+    private displayValue_: IconData | undefined;
+    private isValueValid_: boolean | undefined;
 
-    constructor(value?: IconData, validator?: Blockly.FieldValidator<IconData>) {
+    constructor(value: IconData, validator?: Blockly.FieldValidator<IconData>) {
         super(value, validator);
 
         this.SERIALIZABLE = false;
@@ -42,40 +42,40 @@ export class FieldIcon extends Blockly.Field<IconData> {
     }
 
     getText() {
-        return `(${this.displayValue_.text})`;
+        return `(${this.displayValue_?.text})`;
     }
 
     render_() {
-        this.textContent_.nodeValue = this.value_.icon;
-        this.textElement_.style.fontFamily = "'Fluent System Icons'";
-        this.textElement_.style.fontSize = '16px';
+        this.textContent_!.nodeValue = this.value_!.icon;
+        this.textElement_!.style.fontFamily = "'Fluent System Icons'";
+        this.textElement_!.style.fontSize = '16px';
         this._changeColor();
         this.updateSize_();
     }
 
     private _changeColor() {
         const sourceBlock = this.sourceBlock_;
-        if (sourceBlock.isShadow()) {
-            this.textElement_.parentElement
-                .querySelector('rect')
+        if (sourceBlock!.isShadow()) {
+            this.textElement_!.parentElement!
+                .querySelector('rect')!
                 // @ts-ignore
                 .setAttribute('fill', sourceBlock.style.colourSecondary);
         } else {
-            this.textElement_.parentElement
-                .querySelector('rect')
+            this.textElement_!.parentElement!
+                .querySelector('rect')!
                 // @ts-ignore
                 .setAttribute('fill', sourceBlock.style.colourPrimary);
         }
     }
 
     updateSize_() {
-        const bbox = this.textElement_.getBBox();
+        const bbox = this.textElement_!.getBBox();
         let width = bbox.width;
         let height = bbox.height;
         this.size_.width = width - 17;
         this.size_.height = height - 12;
-        this.borderRect_.setAttribute('width', '0');
-        this.borderRect_.setAttribute('height', '0');
-        this.textElement_.style.transform = `translate(-9px, 19px)`;
+        this.borderRect_!.setAttribute('width', '0');
+        this.borderRect_!.setAttribute('height', '0');
+        this.textElement_!.style.transform = `translate(-9px, 19px)`;
     }
 }

@@ -50,7 +50,7 @@ public class BlockMetadata
     public required string Name { get; set; }
 
     [JsonPropertyName("icon")]
-    public required Tuple<string, string> Icon { get; set; }
+    public required (string, string) Icon { get; set; }
 
     [JsonPropertyName("args")]
     public required Dictionary<string, MetaArgsBase> Args { get; set; }

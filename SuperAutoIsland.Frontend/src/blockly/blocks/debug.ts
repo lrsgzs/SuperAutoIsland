@@ -15,7 +15,6 @@ addBlock(
             },
             VALUE: {
                 type: 'input_value',
-                check: null,
             },
         },
         inline: false,

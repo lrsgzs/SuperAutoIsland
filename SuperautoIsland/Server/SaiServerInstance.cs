@@ -1,4 +1,5 @@
-﻿using SuperAutoIsland.Interface.Shared;
+﻿using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.Shared;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Server;
@@ -13,6 +14,16 @@ public class SaiServerInstance
         _server!.ExtraBlocks[pluginName] = data;
     }
 
+    public void RegisterWrapper(string id, ActionWrapper wrapper)
+    {
+        _server!.ActionWrappers[id] = wrapper;
+    }
+
+    public void RegisterWrapper(string id, RuleWrapper wrapper)
+    {
+        _server!.RuleWrappers[id] = wrapper;
+    }
+    
     public async Task LoadServer(string port)
     {
         _logger.Info("服务器已经启动个毛");

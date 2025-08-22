@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using SuperAutoIsland.Interface;
 using SuperAutoIsland.Interface.Shared;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
@@ -12,6 +13,8 @@ namespace SuperAutoIsland.Server;
 public class SaiServer
 {
     public readonly Dictionary<string, RegisterData> ExtraBlocks = new();
+    public readonly Dictionary<string, ActionWrapper> ActionWrappers = new();
+    public readonly Dictionary<string, RuleWrapper> RuleWrappers = new();
     private bool _isRunning;
     
     public readonly string Url;
@@ -103,14 +106,44 @@ public class SaiServer
                     try
                     {
                         var messageJson = JsonDocument.Parse(message);
-                        messageJson.RootElement.TryGetProperty("type", out var messageJsonType);
+                        var messageJsonType = messageJson.RootElement.GetProperty("type");
                         var messageType = messageJsonType.GetString()!;
                         
                         _logger.Debug($"Type: {messageType}");
-                        jsonReturnData = new
+                        switch (messageType)
                         {
-                            type = "result",
-                        };
+                            case "getExtraBlocks":
+                                var extraBlocks = GenerateExtraBlocksJson();
+                                jsonReturnData = new
+                                {
+                                    type = "result",
+                                    blocksString = extraBlocks,
+                                };
+                                break;
+                            case "runAction":
+                                var actionId = messageJson.RootElement.GetProperty("id").GetString()!;
+                                await ActionWrappers[actionId](messageJson.RootElement.GetProperty("settings"));
+                                jsonReturnData = new
+                                {
+                                    type = "result"
+                                };
+                                break;
+                            case "runRule":
+                                var ruleId = messageJson.RootElement.GetProperty("id").GetString()!;
+                                var resultBoolean = await RuleWrappers[ruleId](messageJson.RootElement.GetProperty("settings"));
+                                jsonReturnData = new
+                                {
+                                    type = "result",
+                                    result = resultBoolean
+                                };
+                                break;
+                            default:
+                                jsonReturnData = new 
+                                {
+                                    type = "result"
+                                };
+                                break;
+                        }
                     }
                     catch (Exception e)
                     {

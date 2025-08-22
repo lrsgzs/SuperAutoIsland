@@ -1,6 +1,7 @@
 ﻿import type { BlockInfo, StaticCategoryInfo } from '../types/toolbox';
 import * as Blockly from 'blockly/core';
-import type { ConnectionState } from 'blockly/core/serialization/blocks.js';
+// @ts-ignore
+import type { ConnectionState } from 'blockly/core/serialization/blocks';
 import { Order } from 'blockly/javascript';
 
 export interface BlocklyArgDefinition {
@@ -206,12 +207,13 @@ export function setup(
 export function generateBlock(block: BlockDefinition): GeneratorOutput {
     if (!data.initialized) throw new Error('未初始化 generator!');
 
-    const toolboxInputs = {};
+    const toolboxInputs: Record<string, any> = {};
     const definitionArgs = [];
     for (let inputName in block.inputs) {
         if (block.inputs[inputName].type == 'input_value') {
-            const toolboxFields = {};
+            const toolboxFields: Record<string, any> = {};
             for (let fieldName in block.inputs[inputName].fields) {
+                // @ts-ignore
                 toolboxFields[fieldName] = block.inputs[inputName].fields[fieldName];
             }
 
@@ -242,6 +244,7 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
         definition: {
             type: block.type,
             message0: block.message,
+            // @ts-ignore
             args0: definitionArgs,
             output: block.output,
             tooltip: block.tooltip,
@@ -262,7 +265,7 @@ export function addBlock(block: BlockDefinition, generator: GeneratorFunction) {
     if (!data.initialized) throw new Error('未初始化 generator!');
 
     const blockDefinition = generateBlock(block);
-    data.category.contents.push(blockDefinition.toolbox);
-    data.blocks.push(blockDefinition.definition);
-    data.forBlock[block.type] = generator;
+    data.category?.contents.push(blockDefinition.toolbox);
+    data.blocks?.push(blockDefinition.definition);
+    data.forBlock![block.type] = generator;
 }

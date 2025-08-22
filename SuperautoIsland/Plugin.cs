@@ -9,6 +9,7 @@ using SuperAutoIsland.ConfigHandlers;
 using SuperAutoIsland.Controls.SettingPages;
 using SuperAutoIsland.Controls.Windows;
 using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.Shared;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Shared;
@@ -41,7 +42,7 @@ public class Plugin : PluginBase
         services.AddSingleton<ISaiServer, SaiServerBridger>();
         
         _logger.Info("注册不存在的自动化元素...");
-        // 等待。
+        // 等待
         
         _logger.Info("添加设置页面...");
         services.AddSingleton<SaiLogsWindow>();
@@ -52,16 +53,54 @@ public class Plugin : PluginBase
         AppBase.Current.AppStarted += (_, _) =>
         {
             SaiServerSaver.Save(IAppHost.GetService<ISaiServer>());
+            
+            _logger.Info("注册 SuperAutoIsland 积木");
+            var saiService = IAppHost.GetService<ISaiServer>();
+            saiService.RegisterBlocks("SuperAutoIsland", new RegisterData()
+            {
+                Actions = [
+                    new BlockMetadata()
+                    {
+                        Id = "sai.test",
+                        Name = "测试",
+                        Icon = ("未知", "\uEDFB"),
+                        Args = new Dictionary<string, MetaArgsBase>(),
+                        InlineBlock = false,
+                        InlineField = false
+                    }
+                ],
+                Rules = [
+                    new BlockMetadata()
+                    {
+                        Id = "sai.test.true",
+                        Name = "测试得到 true",
+                        Icon = ("未知", "\uEDFB"),
+                        Args = new Dictionary<string, MetaArgsBase>(),
+                        InlineBlock = false,
+                        InlineField = false,
+                        IsRule = true,
+                    }
+                ],
+            });
+            saiService.RegisterWrapper("sai.test", async settings =>
+            {
+                _logger.Debug("Called sai.test");
+            });
+            saiService.RegisterWrapper("sai.test.true", async settings =>
+            {
+                _logger.Debug("Called sai.test.true");
+                return true;
+            });
         };
         
         AppBase.Current.AppStopping += (_,_) =>
         {
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
-            _logger.Info("已尝试关闭，5 秒后将会强行关闭 SuperAutoIsland.Server ...");
+            _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server ...");
             
             new Thread(() => {
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 _logger.Info("正在关闭...");
                 Environment.Exit(0);
             }).Start();
