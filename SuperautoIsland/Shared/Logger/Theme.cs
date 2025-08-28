@@ -34,7 +34,7 @@ public class Theme
 
     public ConsoleColor GetTheme(string themeKey)
     {
-        return _themeData[themeKey];
+        return _themeData.GetValueOrDefault(themeKey, ConsoleColor.Gray);
     }
     
     public ConsoleColor this[string themeKey] => GetTheme(themeKey);

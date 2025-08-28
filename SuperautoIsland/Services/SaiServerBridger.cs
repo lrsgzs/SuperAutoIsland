@@ -1,5 +1,5 @@
 ﻿using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.Shared;
+using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
@@ -8,8 +8,8 @@ namespace SuperAutoIsland.Services;
 
 public class SaiServerBridger : ISaiServer
 {
-    public static readonly SaiServerInstance Instance = new();
-    private readonly Logger _logger = new("SaiServerBridger");
+    private static readonly SaiServerInstance Instance = new();
+    private readonly Logger<SaiServerBridger> _logger = new();
 
     public SaiServerBridger()
     {
@@ -25,13 +25,13 @@ public class SaiServerBridger : ISaiServer
 
     public void RegisterWrapper(string id, ActionWrapper wrapper)
     {
-        Instance.RegisterWrapper(id, wrapper);
+        ActionAndRuleRunner.ActionWrappers[id] = wrapper;
         _logger.Info($"已注册 id 为 {id} 的 ActionWrapper");
     }
 
     public void RegisterWrapper(string id, RuleWrapper wrapper)
     {
-        Instance.RegisterWrapper(id, wrapper);
+        ActionAndRuleRunner.RuleWrappers[id] = wrapper;
         _logger.Info($"已注册 id 为 {id} 的 RuleWrapper");
     }
     

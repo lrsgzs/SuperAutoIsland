@@ -1,5 +1,5 @@
 ﻿using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.Shared;
+using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Server;
@@ -7,21 +7,11 @@ namespace SuperAutoIsland.Server;
 public class SaiServerInstance
 {
     private SaiServer? _server;
-    private readonly Logger _logger = new("SaiServerInstance");
+    private readonly Logger<SaiServerInstance> _logger = new();
     
     public void RegisterBlocks(string pluginName, RegisterData data)
     {
         _server!.ExtraBlocks[pluginName] = data;
-    }
-
-    public void RegisterWrapper(string id, ActionWrapper wrapper)
-    {
-        _server!.ActionWrappers[id] = wrapper;
-    }
-
-    public void RegisterWrapper(string id, RuleWrapper wrapper)
-    {
-        _server!.RuleWrappers[id] = wrapper;
     }
     
     public async Task LoadServer(string port)

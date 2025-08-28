@@ -1,8 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <EnableDynamicLoading>True</EnableDynamicLoading>
+        <RootNamespace>SuperAutoIsland.Interface</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ClassIsland.Core" Version="1.7.105-dev-v2">
+            <ExcludeAssets>runtime; native</ExcludeAssets>
+        </PackageReference>
+    </ItemGroup>
 </Project>

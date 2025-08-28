@@ -1,0 +1,50 @@
+<ci:SettingsPageBase x:Class="SuperAutoIsland.Views.SettingPages.MainSettingsPage"
+                     xmlns="https://github.com/avaloniaui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                     xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                     xmlns:ciCommands="clr-namespace:ClassIsland.Core.Commands;assembly=ClassIsland.Core"
+                     xmlns:settingPages="clr-namespace:SuperAutoIsland.Views.SettingPages"
+                     mc:Ignorable="d">
+    <ScrollViewer DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
+        <StackPanel Classes="settings-container animated-intro">
+            <fa:InfoBar IsOpen="True" IsVisible="True" Severity="Informational">
+                <fa:InfoBar.Message>
+                    欢迎使用 SuperAutoIsland！本插件使用了 Google Blockly，在此致谢。
+                </fa:InfoBar.Message>
+                
+                <fa:InfoBar.Content>
+                    <StackPanel Orientation="Horizontal" Margin="2">
+                        <TextBlock VerticalAlignment="Center">文档：</TextBlock>
+                        <Button Theme="{StaticResource TransparentButton}"
+                                Content="https://example.com"
+                                VerticalAlignment="Center"
+                                Command="{x:Static ciCommands:UriNavigationCommands.UriNavigationCommand}"
+                                CommandParameter="https://example.com"/>
+                    </StackPanel>
+                </fa:InfoBar.Content>
+            </fa:InfoBar>
+        
+            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
+                <fa:SettingsExpander.Footer>
+                    <Button Margin="3,0,6,0"
+                            HorizontalContentAlignment="Center"
+                            Click="ViewLogsButton_OnClick"
+                            Content="查看日志"/>
+                </fa:SettingsExpander.Footer>
+            </fa:SettingsExpander>
+            
+            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
+                <fa:SettingsExpander.Footer>
+                    <TextBox MinWidth="20"
+                             Margin="3,0,6,0"
+                             HorizontalContentAlignment="Center"
+                             InputMethod.IsInputMethodEnabled="False"
+                             Text="{Binding Settings.ServerPort, Mode=TwoWay}"/>
+                </fa:SettingsExpander.Footer>
+            </fa:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
+</ci:SettingsPageBase>

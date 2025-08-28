@@ -5,13 +5,22 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDynamicLoading>True</EnableDynamicLoading>
-        <RootNamespace>SuperautoIsland</RootNamespace>
+        <RootNamespace>SuperAutoIsland</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.104-dev-v2">
+        <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.105-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.ClearScript.V8" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.linux-arm64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.linux-x64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.osx-arm64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.win-arm64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" Version="7.5.0" />
+        <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x86" Version="7.5.0" />
+        <PackageReference Include="V8.Extended" Version="1.0.4" />
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
     </ItemGroup>
 
@@ -33,9 +42,29 @@
     
     
     <ItemGroup>
-      <Folder Include="Automations\Actions\" />
-      <Folder Include="Automations\Rules\" />
-      <Folder Include="Controls\Components\" />
       <Folder Include="Shared\Converters\" />
+    </ItemGroup>
+    
+    
+    <ItemGroup>
+      <Compile Update="Views\SaiLogsWindow.axaml.cs">
+        <DependentUpon>SaiLogsWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+    
+    
+    <ItemGroup>
+      <AdditionalFiles Include="Views\SaiLogsWindow.axaml" />
+      <AdditionalFiles Include="Views\SettingPages\AboutSettingsPage.axaml" />
+      <AdditionalFiles Include="Views\SettingPages\AutomationSettingsPage.axaml" />
+      <AdditionalFiles Include="Views\SettingPages\MainSettingsPage.axaml" />
+    </ItemGroup>
+    
+    
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Controls\SettingPages\AboutSettingsPage.axaml" />
+      <UpToDateCheckInput Remove="Controls\SettingPages\AutomationSettingsPage.axaml" />
+      <UpToDateCheckInput Remove="Controls\SettingPages\MainSettingsPage.axaml" />
     </ItemGroup>
 </Project>

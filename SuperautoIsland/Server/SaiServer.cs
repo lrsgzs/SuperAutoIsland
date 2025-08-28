@@ -3,8 +3,11 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Shared;
 using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.Shared;
+using SuperAutoIsland.Interface.Enums;
+using SuperAutoIsland.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -13,14 +16,13 @@ namespace SuperAutoIsland.Server;
 public class SaiServer
 {
     public readonly Dictionary<string, RegisterData> ExtraBlocks = new();
-    public readonly Dictionary<string, ActionWrapper> ActionWrappers = new();
-    public readonly Dictionary<string, RuleWrapper> RuleWrappers = new();
+    private readonly ActionAndRuleRunner _runner = new();
     private bool _isRunning;
     
     public readonly string Url;
     private readonly string _wwwRoot;
     private readonly HttpListener _listener;
-    private readonly Logger _logger = new("SaiServer");
+    private readonly Logger<SaiServer> _logger = new();
     
     public SaiServer(string port)
     {
@@ -87,7 +89,7 @@ public class SaiServer
 
         try
         {
-            var buffer = new byte[1024];
+            var buffer = new byte[81920];
             while (websocket.State == WebSocketState.Open)
             {
                 var result = await websocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
@@ -109,6 +111,7 @@ public class SaiServer
                         var messageJsonType = messageJson.RootElement.GetProperty("type");
                         var messageType = messageJsonType.GetString()!;
                         
+                        // 以后有时间了抽离此处逻辑
                         _logger.Debug($"Type: {messageType}");
                         switch (messageType)
                         {
@@ -122,7 +125,7 @@ public class SaiServer
                                 break;
                             case "runAction":
                                 var actionId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                await ActionWrappers[actionId](messageJson.RootElement.GetProperty("settings"));
+                                await _runner.RunAction(actionId, messageJson.RootElement.GetProperty("settings"));
                                 jsonReturnData = new
                                 {
                                     type = "result"
@@ -130,17 +133,96 @@ public class SaiServer
                                 break;
                             case "runRule":
                                 var ruleId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                var resultBoolean = await RuleWrappers[ruleId](messageJson.RootElement.GetProperty("settings"));
+                                var resultBoolean = _runner.RunRule(ruleId, messageJson.RootElement.GetProperty("settings"));
                                 jsonReturnData = new
                                 {
                                     type = "result",
                                     result = resultBoolean
                                 };
                                 break;
+                            case "save":
+                                var projectData = messageJson.RootElement.GetProperty("data");
+                                switch (projectData.GetProperty("type").GetString()!)
+                                {
+                                    case "blocklyAction":
+                                        var guid1 = projectData.GetProperty("guid").GetGuid();
+                                        if (guid1 == Guid.Empty)
+                                        {
+                                            guid1 = Guid.NewGuid();
+                                        }
+                                        var project1 = ProjectsConfigManager.GetOrCreateProject(
+                                            ProjectsType.BlocklyAction,
+                                            guid1, null);
+                                        ProjectsConfigManager.SaveBlocklyProject(
+                                            project1,
+                                            projectData.GetProperty("workspace").GetString()!,
+                                            projectData.GetProperty("code").GetString()!);
+                                        
+                                        jsonReturnData = new 
+                                        {
+                                            type = "result"
+                                        };
+                                        break;
+                                    default:
+                                        jsonReturnData = new 
+                                        {
+                                            type = "not-recognized-project-type"
+                                        };
+                                        break;
+                                }
+                                break;
+                            case "load":
+                                var guid2 = messageJson.RootElement.GetProperty("guid").GetGuid();
+                                if (guid2 == Guid.Empty)
+                                {
+                                    guid2 = Guid.NewGuid();
+                                }
+
+                                var project2 = ProjectsConfigManager.GetOrCreateProject(
+                                    ProjectsType.BlocklyAction,
+                                    guid2, null);
+                                string workspace;
+                                try
+                                {
+                                    workspace = ProjectsConfigManager.LoadProject(project2);
+                                }
+                                catch (Exception e)
+                                {
+                                    _logger.FormatException(e);
+                                    workspace = "{}";
+                                }
+                                jsonReturnData = new 
+                                {
+                                    type = "result",
+                                    workspace,
+                                    guid = project2.Id,
+                                };
+                                break;
+                            case "getSubjects":
+                                var profileService = IAppHost.GetService<IProfileService>();
+                                var subjects = profileService.Profile.Subjects
+                                    .Select(kvp => new { Id = kvp.Key, kvp.Value.Name })
+                                    .ToList();
+                                
+                                jsonReturnData = new 
+                                {
+                                    type = "result",
+                                    subjects,
+                                };
+                                break;
+                            case "getComponentConfigs":
+                                var componentService = IAppHost.GetService<IComponentsService>();
+                                
+                                jsonReturnData = new 
+                                {
+                                    type = "result",
+                                    configs = componentService.ComponentConfigs,
+                                };
+                                break;
                             default:
                                 jsonReturnData = new 
                                 {
-                                    type = "result"
+                                    type = "not-recognized-command-type"
                                 };
                                 break;
                         }

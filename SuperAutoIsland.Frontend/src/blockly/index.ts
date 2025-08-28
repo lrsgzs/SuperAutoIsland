@@ -1,11 +1,11 @@
 ﻿import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
-import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
 import type { Metadata } from './utils/superGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
+import { v4 as uuid } from 'uuid';
 import './types/extraData.d.ts';
 
 import * as prettier from 'prettier';
@@ -44,12 +44,17 @@ postSetupCategory();
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
 
+let projectUuid = new URLSearchParams(location.search).get("id") || "";
+if (projectUuid === "") {
+    location.href = `/?id=${uuid()}`;
+}
+
 const callActionDefinition = `
 async function callAction(id, data) {
     console.log("Calling Action:", id, data);
     await window.saiWaitMessage(window.saiWS, {
         type: "runAction",
-        id: id,
+        id: id, 
         settings: data,
     });
 }`;
@@ -82,7 +87,7 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
     },
 });
 
-export const runCode = async (workspace: Blockly.Workspace) => {
+export const runCode = async (workspace: Blockly.Workspace = window.workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
     code = `${callActionDefinition}\n${getRuleStateDefinition}\n\n` + code;
@@ -97,10 +102,33 @@ export const runCode = async (workspace: Blockly.Workspace) => {
     console.log(code);
     eval(code);
 };
+window.runCode = runCode;
 
-Reflect.set(window, 'runCode', runCode);
+export const saveCode = async (workspace: Blockly.Workspace = window.workspace) => {
+    console.log(workspace);
+    let code = javascriptGenerator.workspaceToCode(workspace);
+    code = `(async () => {\n${code}\n})();\n`;
+    code = await prettier.format(code, {
+        semi: true,
+        singleQuote: true,
+        trailingComma: 'all',
+        parser: 'babel',
+        plugins: [prettierEstreePlugin, prettierBabelPlugin],
+    });
+    console.log(code);
 
-export const injectBlockly = (dom: HTMLElement) => {
+    await wsWaitMessage(ws, { type: "save",
+        data: {
+            type: "blocklyAction",
+            guid: projectUuid,
+            workspace: JSON.stringify(Blockly.serialization.workspaces.save(workspace)),
+            code: code
+        }
+    })
+}
+window.saveCode = saveCode;
+
+export const injectBlockly = async (dom: HTMLElement) => {
     const workspace = Blockly.inject(dom, {
         toolbox,
         zoom: { controls: true },
@@ -108,18 +136,25 @@ export const injectBlockly = (dom: HTMLElement) => {
         theme: defaultTheme,
     }) as Blockly.Workspace;
 
-    Reflect.set(window, 'workspace', workspace);
+    window.workspace = workspace;
     Reflect.set(window, 'javascriptGenerator', javascriptGenerator);
     Reflect.set(window, 'Blockly', Blockly);
 
     if (workspace) {
-        load(workspace);
-        // runCode(workspace);
+        let data: { type: string; workspace: string; guid: string; };
+        try {
+            data = await wsWaitMessage<{ workspace: string; guid: string; }>(ws, { type: "load", guid: projectUuid });
+            if (data.guid !== projectUuid) {
+                location.href = `/?id=${data.guid}`;
+            }
 
-        workspace.addChangeListener((e: Blockly.Events.Abstract) => {
-            if (e.isUiEvent) return;
-            save(workspace);
-        });
+            Blockly.Events.disable();
+            Blockly.serialization.workspaces.load(JSON.parse(data.workspace), workspace, undefined);
+            Blockly.Events.enable();
+        } catch {
+            console.log("Load Failed!")
+        }
+
         return workspace;
     }
     return null;

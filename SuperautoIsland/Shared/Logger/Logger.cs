@@ -2,7 +2,7 @@
 
 public class Logger(string name, bool showTime = true, Theme? theme = null)
 {
-    public static readonly RootLogger Root = new RootLogger();
+    public static readonly RootLogger Root = new();
     
     public readonly string Name = name;
     public bool ShowTime = showTime;
@@ -39,6 +39,8 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
                 Console.Write($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ");
             }
             Console.WriteLine($"[{level}]");
+            Console.ForegroundColor = originColor;
+            
             Console.WriteLine(message);
             
             // 写入根 logger
@@ -49,8 +51,6 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
                 Message = message,
                 Time = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}"
             });
-            
-            Console.ForegroundColor = originColor;
         }
     }
     
@@ -66,11 +66,11 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     
     public void Debug(params object[] message) => BaseLog("DEBUG", message);
 
-    public void FormatException(Exception e)
+    public void FormatException(Exception exception)
     {
-        Error(e.Message);
-        if (e.StackTrace != null) Error(e.StackTrace);
-        if (e.HelpLink != null) Error($"HelpLink: {e.HelpLink}");
-        Error($"UserData: {e.Data}");
+        var exceptionType = exception.GetType().ToString();
+        Error($"{exceptionType}: {exception.Message}\nStackTrace:\n{exception.StackTrace}\nHelpLink: {exception.HelpLink}");
     }
 }
+
+public class Logger<TObject>(bool showTime = true, Theme? theme = null) : Logger(typeof(TObject).ToString(), showTime, theme);

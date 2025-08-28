@@ -6,9 +6,11 @@ export default function BlocklyContainer({ ...props }: HTMLAttributes<HTMLDivEle
     const containerRef = useRef<HTMLDivElement>(null);
     const workspace = useRef<Blockly.Workspace>(null);
     useEffect(() => {
-        if (containerRef.current) {
-            workspace.current = injectBlockly(containerRef.current);
-        }
+        (async () => {
+            if (containerRef.current) {
+                workspace.current = await injectBlockly(containerRef.current);
+            }
+        })();
     }, [containerRef]);
 
     return <div {...props} ref={containerRef} />;

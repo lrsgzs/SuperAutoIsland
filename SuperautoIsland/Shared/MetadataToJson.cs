@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using SuperAutoIsland.Interface.Shared;
+using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.MetaData;
+using SuperAutoIsland.Interface.MetaData.ArgsType;
 
 namespace SuperAutoIsland.Shared;
 

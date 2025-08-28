@@ -1,4 +1,4 @@
-﻿using SuperAutoIsland.Interface;
+﻿using SuperAutoIsland.Interface.Services;
 
 namespace SuperAutoIsland.Server;
 

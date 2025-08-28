@@ -8,10 +8,10 @@
 
     const resolver = (event: MessageEvent) => {
         const message: { type: string } & T = JSON.parse(event.data as string);
-        if (message.type === 'error') {
-            promiseReject(message);
-        } else {
+        if (message.type === 'result') {
             promiseResolve(message);
+        } else {
+            promiseReject(JSON.stringify(message));
         }
         ws.removeEventListener('message', resolver);
     };
