@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using ClassIsland.Core.Models.Ruleset;
+﻿using ClassIsland.Core.Models.Ruleset;
 using ClassIsland.Shared.Models.Automation;
 
 namespace SuperAutoIsland.Interface.Services;

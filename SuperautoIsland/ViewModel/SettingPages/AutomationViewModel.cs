@@ -4,7 +4,6 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Models.Settings;
-using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.ViewModel.SettingPages;

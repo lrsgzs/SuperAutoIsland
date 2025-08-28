@@ -3,7 +3,6 @@ using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models.Settings;
-using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Views.SettingPages;

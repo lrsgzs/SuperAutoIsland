@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using System.Text.Json;
+﻿using System.Text.Json;
 using ClassIsland.Shared;
 using Microsoft.ClearScript.JavaScript;
 using SuperAutoIsland.Shared.Logger;

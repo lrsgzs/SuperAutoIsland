@@ -23,9 +23,10 @@ public class BlocklyRunner
         _v8Intervals.StartEventsLoopBackground();
     }
 
-    ~BlocklyRunner()
+    public void Dispose()
     {
         _v8Intervals.StopEventsLoop();
+        GC.SuppressFinalize(this);
     }
     
     public void RunJavaScript(string script)

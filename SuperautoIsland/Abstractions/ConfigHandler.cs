@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using ClassIsland.Shared.Helpers;
-using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Abstractions;
