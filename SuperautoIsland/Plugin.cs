@@ -1,3 +1,5 @@
+using System.Net;
+using System.Runtime.InteropServices;
 using ClassIsland.Core;
 using ClassIsland.Core.Abstractions;
 using ClassIsland.Core.Abstractions.Services;
@@ -9,9 +11,6 @@ using DynamicData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
-using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.MetaData;
-using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
@@ -36,10 +35,79 @@ public class Plugin : PluginBase
     public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
-        
+
         _logger.Info("欢迎使用 SuperAutoIsland");
         _logger.Info("初期化中...");
         
+        _logger.Info("检查并补全 ClearScripts 中...");
+        ClearScriptPackages.Initialize();
+        
+        string platform;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            platform = "win";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            platform = "linux";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            platform = "osx";
+        }
+        else
+        {
+            _logger.Error("未知平台，退出 SuperAutoIsland.");
+            return;
+        }
+
+        string arch;
+        switch (RuntimeInformation.ProcessArchitecture)
+        {
+            case Architecture.X86:
+                arch = "x86";
+                break;
+            case Architecture.X64:
+                arch = "x64";
+                break;
+            case Architecture.Arm64:
+                arch = "arm64";
+                break;
+            case Architecture.Arm:
+            case Architecture.Wasm:
+            case Architecture.S390x:
+            case Architecture.LoongArch64:
+            case Architecture.Armv6:
+            case Architecture.Ppc64le:
+            default:
+                _logger.Error("未知架构，退出 SuperAutoIsland.");
+                return;
+        }
+
+        var target = $"{platform}-{arch}";
+        var packageInfo = ClearScriptPackages.Infos[target];
+        var packagePath = $"{Info.PluginFolderPath}/runtimes/{target}/native/{packageInfo.FileName}";
+
+        if (!File.Exists(packagePath))
+        {
+            _logger.Info("不存在依赖库！开始下载...");
+            
+            // 已过时
+            // using var web = new WebClient();
+            // web.DownloadFile(packageInfo.Url, packagePath);
+            
+            var httpClient = new HttpClient();
+            using var response = httpClient.GetAsync(packageInfo.Url).Result;
+            using var fs = File.Create(packagePath);
+            response.Content.CopyToAsync(fs).Wait();
+            
+            _logger.Info("依赖库下载完毕！");
+        }
+        else
+        {
+            _logger.Info("存在依赖库！继续执行");
+        }
+
         _logger.Info("加载配置...");
         GlobalConstants.PluginFolder = Info.PluginFolderPath;
         GlobalConstants.PluginConfigFolder = PluginConfigFolder;
@@ -86,6 +154,9 @@ public class Plugin : PluginBase
         
         AppBase.Current.AppStopping += (_,_) =>
         {
+            var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+            blocklyRunner.Dispose();
+            
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
             _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server ...");
