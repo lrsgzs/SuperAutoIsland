@@ -7,6 +7,26 @@
         <RootNamespace>SuperAutoIsland.Interface</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <Authors>lrs2187</Authors>
+        <Company>lrs2187.Dev</Company>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/lrs2187/SuperAutoIsland</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/lrs2187/SuperAutoIsland</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Copyright>Copyright (c) 2025 lrs2187</Copyright>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>classisland;plugin;addin;</PackageTags>
+        <Description>SuperAutoIsland 的接口库，用于扩充 SuperAutoIsland 的 Blockly 的积木。</Description>
+        <PackageVersion>0.1.0-alpha</PackageVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="ClassIsland.Core" Version="1.7.105-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>
