@@ -61,7 +61,7 @@ public class Plugin : PluginBase
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", "\uF3AF"));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
-            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uf44f")
+            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049")
         ]);
         
         _logger.Info("添加设置页面...");

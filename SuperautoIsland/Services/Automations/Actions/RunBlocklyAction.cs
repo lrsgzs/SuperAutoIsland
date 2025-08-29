@@ -5,7 +5,7 @@ using SuperAutoIsland.Models.Actions;
 
 namespace SuperAutoIsland.Services.Automations.Actions;
 
-[ActionInfo("sai.actions.runBlockly", "运行 Blockly 项目", "\uf44f", false)]
+[ActionInfo("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049", false)]
 public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
 {
     private static readonly BlocklyRunner.BlocklyRunner Runner = IAppHost.GetService<BlocklyRunner.BlocklyRunner>();
