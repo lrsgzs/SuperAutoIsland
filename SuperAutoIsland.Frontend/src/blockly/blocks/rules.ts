@@ -204,7 +204,7 @@ addMetaBlock({
     icon: ['雨', '\uF43F'],
     args: {
         label1: ['\n', 'dummy'], // dummy 废了？强行换行！
-        IsRemainingTime: ['是否为剩余时间:', 'checkbox', false],
+        IsRemainingTime: ['是否为距离结束:', 'checkbox', false],
         RainTimeMinutes: ['距离开始/结束剩余时间（分钟）', 'number'],
     },
     isRule: true,

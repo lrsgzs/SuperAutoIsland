@@ -144,7 +144,7 @@ addMetaBlock({
     icon: ['窗口集', '\uF4B1'],
     args: {
         Value: ['', 'text'],
-        Arg: ['应用程序启动参数', 'text'],
+        Args: ['应用程序启动参数', 'text'],
     },
     dropdownUseNumbers: true,
     inlineBlock: false,
@@ -227,7 +227,7 @@ addMetaBlock({
     name: '显示天气提醒',
     icon: ['多云', '\uF44F'],
     args: {
-        Value: [
+        NotificationKind: [
             '',
             'dropdown',
             [
