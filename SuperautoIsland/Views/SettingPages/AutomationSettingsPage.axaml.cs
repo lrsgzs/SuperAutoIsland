@@ -9,6 +9,7 @@ using SuperAutoIsland.Interface.Enums;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Shared;
+using SuperAutoIsland.Shared.Logger;
 using SuperAutoIsland.ViewModel.SettingPages;
 
 namespace SuperAutoIsland.Views.SettingPages;
@@ -27,7 +28,8 @@ public partial class AutomationSettingsPage : SettingsPageBase
 {
     private bool IsPanelOpened { get; set; }
     private AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
-    private BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+    private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+    private readonly Logger<AutomationSettingsPage> _logger = new();
 
     public static readonly ProjectTypeNode[] ProjectTypeNodes = [
         new()
@@ -70,7 +72,14 @@ public partial class AutomationSettingsPage : SettingsPageBase
 
     private void RunProjectButton_Click(object? sender, RoutedEventArgs e)
     {
-        _blocklyRunner.RunProject(ViewModel.SelectedProject!);
+        try
+        {
+            _blocklyRunner.RunProject(ViewModel.SelectedProject!);
+        }
+        catch (Exception exception)
+        {
+            _logger.FormatException(exception);
+        }
     }
 
     private void DeleteProjectButton_Click(object? sender, RoutedEventArgs e)
