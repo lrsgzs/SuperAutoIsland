@@ -138,9 +138,22 @@
                                                     <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
                                                 </Button>
                                                 
-                                                <Button Margin="4 4 0 0" HorizontalAlignment="Right"
-                                                        Click="DeleteProjectButton_Click">
+                                                <Button Margin="4 4 0 0" HorizontalAlignment="Right">
                                                     <ci:IconText Glyph="&#xE61D;" Text="删除" Foreground="IndianRed" />
+                                                    
+                                                    <Button.Flyout>
+                                                        <Flyout>
+                                                            <StackPanel Spacing="8">
+                                                                <TextBlock FontWeight="Bold">
+                                                                    <Run Text="要删除项目「" />
+                                                                    <Run Text="{Binding Name}" />
+                                                                    <Run Text="」吗？" />
+                                                                </TextBlock>
+                                                                <TextBlock Text="此操作无法撤销。" />
+                                                                <Button Content="删除" Classes="accent" Click="DeleteProjectButton_Click"/>
+                                                            </StackPanel>   
+                                                        </Flyout>
+                                                    </Button.Flyout>
                                                 </Button>
                                             </StackPanel>
                                         </Grid>
