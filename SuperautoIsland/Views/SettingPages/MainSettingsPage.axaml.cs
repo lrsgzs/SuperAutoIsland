@@ -7,6 +7,9 @@ using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Views.SettingPages;
 
+/// <summary>
+/// 「SuperAutoIsland 主设置」视图
+/// </summary>
 [SettingsPageInfo("sai.master","SuperAutoIsland 主设置","\uF3AF","\uF3AE")]
 public partial class MainSettingsPage : SettingsPageBase {
     public MainConfigModel Settings { get; set; }
@@ -28,6 +31,9 @@ public partial class MainSettingsPage : SettingsPageBase {
         _isRequestedRestart = true;
     }
 
+    /// <summary>
+    /// 查看日志点击事件
+    /// </summary>
     private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         IAppHost.GetService<SaiLogsWindow>().Open();

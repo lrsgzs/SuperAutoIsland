@@ -2,6 +2,9 @@
 
 namespace SuperAutoIsland.Interface.MetaData.ArgsType;
 
+/// <summary>
+/// 复选框元数据
+/// </summary>
 public class CheckboxMetaArgs : MetaArgsBase
 {
     [JsonPropertyName("defaultValue")]

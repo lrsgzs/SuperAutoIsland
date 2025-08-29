@@ -14,13 +14,30 @@ using SuperAutoIsland.ViewModel.SettingPages;
 
 namespace SuperAutoIsland.Views.SettingPages;
 
+/// <summary>
+/// 项目类型节点
+/// </summary>
 public struct ProjectTypeNode
 {
+    /// <summary>
+    /// 类型
+    /// </summary>
     public ProjectsType Type { get; set; }
+    
+    /// <summary>
+    /// 名称
+    /// </summary>
     public string Name { get; set; }
+    
+    /// <summary>
+    /// 图标
+    /// </summary>
     public string IconGlyph { get; set; }
 }
 
+/// <summary>
+/// 「SuperAutoIsland 自动化」视图
+/// </summary>
 [HidePageTitle]
 [FullWidthPage]
 [SettingsPageInfo("sai.automation","SuperAutoIsland 自动化","\uEDC1","\uEDC0")]
@@ -40,6 +57,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
         }
     ];
 
+    /// <summary>
+    /// 类型-字符串转换器
+    /// </summary>
     public static readonly FuncValueConverter<ProjectsType, string> ProjectsTypeNameConverter = new(x => x switch
     {
         ProjectsType.BlocklyAction => "Blockly 行动",
@@ -56,11 +76,17 @@ public partial class AutomationSettingsPage : SettingsPageBase
         IsPanelOpened = true;
     }
 
+    /// <summary>
+    /// 创建项目点击事件
+    /// </summary>
     private void CreateBlocklyActionProjectButton_OnClick(object? sender, RoutedEventArgs e)
     {
         ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新项目");
     }
 
+    /// <summary>
+    /// 打开项目编辑器点击事件
+    /// </summary>
     private void OpenProjectEditorButton_Click(object? sender, RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo
@@ -70,6 +96,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
         });
     }
 
+    /// <summary>
+    /// 运行项目点击事件
+    /// </summary>
     private void RunProjectButton_Click(object? sender, RoutedEventArgs e)
     {
         try
@@ -82,6 +111,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
         }
     }
 
+    /// <summary>
+    /// 删除项目点击事件
+    /// </summary>
     private void DeleteProjectButton_Click(object? sender, RoutedEventArgs e)
     {
         ProjectsConfigManager.DeleteProject(ViewModel.SelectedProject!);

@@ -2,6 +2,9 @@
 
 namespace SuperAutoIsland.Interface.MetaData.ArgsType;
 
+/// <summary>
+/// 基类元数据
+/// </summary>
 public abstract class MetaArgsBase
 {
     [JsonPropertyName("name")]

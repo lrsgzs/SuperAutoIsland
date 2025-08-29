@@ -3,8 +3,9 @@ using SuperAutoIsland.Interface.MetaData.ArgsType;
 
 namespace SuperAutoIsland.Interface.MetaData;
 
-// 类型定义（与之前相同） 
-
+/// <summary>
+/// 积木元数据
+/// </summary>
 public class BlockMetadata
 {
     [JsonPropertyName("id")]

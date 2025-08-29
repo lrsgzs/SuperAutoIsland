@@ -4,6 +4,9 @@ import { toolbox } from '../toolbox';
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
 
+/**
+ * 类别数据接口
+ */
 interface CategoryData {
     blocks?: BlocklyBlockDefinition[];
     forBlocks?: Record<string, GeneratorFunction>;
@@ -15,6 +18,10 @@ export const settingUpCategory: CategoryData = {
     initialized: false,
 };
 
+/**
+ * 初始化当前设置的类别
+ * @param name 类别名称
+ */
 export function preSetupCategory(name: string) {
     settingUpCategory.blocks = [];
     settingUpCategory.forBlocks = {};
@@ -28,6 +35,9 @@ export function preSetupCategory(name: string) {
     setup(settingUpCategory.forBlocks, settingUpCategory.category, settingUpCategory.blocks);
 }
 
+/**
+ * 结束定义当前设置的类别
+ */
 export function postSetupCategory() {
     if (!settingUpCategory.initialized) throw new Error('还没初始化呢！你先别急');
 

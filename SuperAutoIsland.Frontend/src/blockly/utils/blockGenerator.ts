@@ -4,6 +4,9 @@ import * as Blockly from 'blockly/core';
 import type { ConnectionState } from 'blockly/core/serialization/blocks';
 import { Order } from 'blockly/javascript';
 
+/**
+ * Blockly 参数定义
+ */
 export interface BlocklyArgDefinition {
     type: 'input_value';
     name: string;
@@ -12,6 +15,9 @@ export interface BlocklyArgDefinition {
     checked?: boolean;
 }
 
+/**
+ * Blockly 积木定义
+ */
 export interface BlocklyBlockDefinition {
     type: string;
     message0: string;
@@ -145,6 +151,9 @@ interface _IconArgDef extends _UnkArgDef {
     };
 }
 
+/**
+ * 参数定义类型
+ */
 export type ArgDefinition =
     | _DummyArgDef
     | _BlockArgDef
@@ -161,6 +170,9 @@ export type ArgDefinition =
     | _VariableArgDef
     | _IconArgDef;
 
+/**
+ * 积木定义接口
+ */
 export interface BlockDefinition {
     type: string;
     inputs: Record<string, ArgDefinition>;
@@ -175,11 +187,17 @@ export interface BlockDefinition {
     isReporter?: boolean;
 }
 
+/**
+ * 积木生成器输出接口
+ */
 export interface GeneratorOutput {
     toolbox: BlockInfo;
     definition: BlocklyBlockDefinition;
 }
 
+/**
+ * 代码生成器函数
+ */
 export type GeneratorFunction = (block: Blockly.Block, generator: Blockly.CodeGenerator) => string | [string, Order];
 
 interface _DataObject {
@@ -193,6 +211,9 @@ export const data: _DataObject = {
     initialized: false,
 };
 
+/**
+ * 配置环境
+ */
 export function setup(
     forBlock: Record<string, GeneratorFunction>,
     category: StaticCategoryInfo,
@@ -204,6 +225,10 @@ export function setup(
     data.initialized = true;
 }
 
+/**
+ * 生成积木
+ * @param block 积木定义
+ */
 export function generateBlock(block: BlockDefinition): GeneratorOutput {
     if (!data.initialized) throw new Error('未初始化 generator!');
 
@@ -261,6 +286,11 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
     };
 }
 
+/**
+ * 在当前环境添加积木
+ * @param block 积木定义
+ * @param generator 代码生成器函数
+ */
 export function addBlock(block: BlockDefinition, generator: GeneratorFunction) {
     if (!data.initialized) throw new Error('未初始化 generator!');
 

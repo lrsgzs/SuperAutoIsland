@@ -5,6 +5,9 @@ type IconData = {
     text: string;
 };
 
+/**
+ * icon 字段
+ */
 export class FieldIcon extends Blockly.Field<IconData> {
     private displayValue_: IconData | undefined;
     private isValueValid_: boolean | undefined;

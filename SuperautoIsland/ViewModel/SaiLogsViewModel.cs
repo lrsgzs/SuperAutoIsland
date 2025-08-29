@@ -6,6 +6,9 @@ using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.ViewModel;
 
+/// <summary>
+/// 日志视图模型
+/// </summary>
 public partial class SaiLogsViewModel : ObservableRecipient
 {
     private ReadOnlyObservableCollection<LogData> _logs = null!;
@@ -32,6 +35,9 @@ public partial class SaiLogsViewModel : ObservableRecipient
         this.ObservableForProperty(x => x.FilterText).Subscribe(_ => RefreshSource());
     }
 
+    /// <summary>
+    /// 刷新来源
+    /// </summary>
     private void RefreshSource()
     {
         _prevSubscription?.Dispose();

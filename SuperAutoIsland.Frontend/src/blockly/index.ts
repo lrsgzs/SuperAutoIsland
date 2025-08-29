@@ -87,6 +87,10 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
     },
 });
 
+/**
+ * 运行代码
+ * @param workspace 工作区实例
+ */
 export const runCode = async (workspace: Blockly.Workspace = window.workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
@@ -104,6 +108,10 @@ export const runCode = async (workspace: Blockly.Workspace = window.workspace) =
 };
 window.runCode = runCode;
 
+/**
+ * 保存代码
+ * @param workspace 工作区实例
+ */
 export const saveCode = async (workspace: Blockly.Workspace = window.workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
@@ -128,6 +136,10 @@ export const saveCode = async (workspace: Blockly.Workspace = window.workspace) 
 }
 window.saveCode = saveCode;
 
+/**
+ * 注入 blockly
+ * @param dom 要注入的 dom 元素
+ */
 export const injectBlockly = async (dom: HTMLElement) => {
     const workspace = Blockly.inject(dom, {
         toolbox,

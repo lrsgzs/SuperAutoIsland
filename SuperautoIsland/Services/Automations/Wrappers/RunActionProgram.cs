@@ -4,8 +4,16 @@ using SuperAutoIsland.Models.Actions;
 
 namespace SuperAutoIsland.Services.Automations.Wrappers;
 
+/// <summary>
+/// 「运行应用程序」包装器
+/// </summary>
 public static class RunActionProgram
 {
+    /// <summary>
+    /// 包装器本体
+    /// </summary>
+    /// <param name="actionItem">行动项目</param>
+    /// <returns>修改后的行动项目</returns>
     public static ActionItem Wrapper(ActionItem actionItem)
     {
         var settingsJson = JsonSerializer.Serialize(actionItem.Settings);

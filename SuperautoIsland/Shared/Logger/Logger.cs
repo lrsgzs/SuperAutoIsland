@@ -1,5 +1,11 @@
 ﻿namespace SuperAutoIsland.Shared.Logger;
 
+/// <summary>
+/// 日志
+/// </summary>
+/// <param name="name">区域名称</param>
+/// <param name="showTime">控制台是否显示时间</param>
+/// <param name="theme">主题</param>
 public class Logger(string name, bool showTime = true, Theme? theme = null)
 {
     public static readonly RootLogger Root = new();
@@ -8,19 +14,11 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     public bool ShowTime = showTime;
     public Theme Theme = theme ?? DefaultThemes.Default;
 
-    public void Config(bool? showTime = null, Theme? theme = null)
-    {
-        ShowTime = showTime ?? ShowTime;
-        Theme = theme ?? Theme;
-    }
-
-    public Logger Sub(string subName)
-    {
-        var newLogger = new Logger($"{Name} -> {subName}");
-        newLogger.Config(ShowTime, Theme);
-        return newLogger;
-    }
-
+    /// <summary>
+    /// 基本日志函数
+    /// </summary>
+    /// <param name="level">日志等级</param>
+    /// <param name="messages">消息</param>
     public void BaseLog(string level, params object[] messages)
     {
         level = level.ToUpper();
@@ -66,6 +64,9 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     
     public void Debug(params object[] message) => BaseLog("DEBUG", message);
 
+    /// <summary>
+    /// 渲染 Exception
+    /// </summary>
     public void FormatException(Exception exception)
     {
         var exceptionType = exception.GetType().ToString();
@@ -73,4 +74,10 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     }
 }
 
+/// <summary>
+/// 日志
+/// </summary>
+/// <param name="showTime">控制台是否显示时间</param>
+/// <param name="theme">主题</param>
+/// <typeparam name="TObject">日志所在对象</typeparam>
 public class Logger<TObject>(bool showTime = true, Theme? theme = null) : Logger(typeof(TObject).ToString(), showTime, theme);

@@ -5,8 +5,17 @@ using SuperAutoIsland.Interface.MetaData.ArgsType;
 
 namespace SuperAutoIsland.Shared;
 
+/// <summary>
+/// 元数据 json 生成器（为什么会有这个？）
+/// </summary>
 public static class MetadataGenerator
 {
+    /// <summary>
+    /// 生成 json
+    /// </summary>
+    /// <param name="data">积木元数据</param>
+    /// <returns>积木 json</returns>
+    /// <exception cref="InvalidOperationException">无效操作错误</exception>
     public static string GenerateMetaBlock(BlockMetadata data)
     {
         // 配置 JSON 序列化选项
@@ -33,14 +42,18 @@ public static class MetadataGenerator
     }
 }
 
-// 自定义转换器处理多态类型
+/// <summary>
+/// 自定义转换器处理多态类型
+/// </summary>
 public class MetaArgsConverter : JsonConverter<MetaArgsBase>
 {
+    /// <inheritdoc />
     public override MetaArgsBase Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException("This converter is for serialization only");
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, MetaArgsBase value, JsonSerializerOptions options)
     {
         // 根据实际类型进行序列化
@@ -64,8 +77,13 @@ public class MetaArgsConverter : JsonConverter<MetaArgsBase>
     }
 }
 
+
+/// <summary>
+/// 元组转换器，好像不工作？不知道啊
+/// </summary>
 public class TupleConverter : JsonConverter<ValueTuple<string, string>>
 {
+    /// <inheritdoc />
     public override (string, string) Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
@@ -80,6 +98,7 @@ public class TupleConverter : JsonConverter<ValueTuple<string, string>>
         return (item1, item2);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, (string, string) value, JsonSerializerOptions options)
     {
         writer.WriteStartArray();

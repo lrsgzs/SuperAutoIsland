@@ -1,5 +1,3 @@
-using System.Net;
-using System.Runtime.InteropServices;
 using ClassIsland.Core;
 using ClassIsland.Core.Abstractions;
 using ClassIsland.Core.Abstractions.Services;
@@ -27,11 +25,19 @@ using SuperAutoIsland.Views.SettingPages;
 
 namespace SuperAutoIsland;
 
+/// <summary>
+/// 插件本体
+/// </summary>
 [PluginEntrance]
 public class Plugin : PluginBase
 {
     private readonly Logger<Plugin> _logger = new();
     
+    /// <summary>
+    /// 初始化插件
+    /// </summary>
+    /// <param name="context">上下文</param>
+    /// <param name="services">服务</param>
     public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
@@ -70,6 +76,7 @@ public class Plugin : PluginBase
         services.AddSettingsPage<AutomationSettingsPage>();
         // services.AddSettingsPage<AboutSettingsPage>();
 
+        // 应用启动完毕
         AppBase.Current.AppStarted += (_, _) =>
         {
             var saiServerService = IAppHost.GetService<ISaiServer>();
@@ -78,11 +85,12 @@ public class Plugin : PluginBase
             _logger.Debug("注册 SuperAutoIsland 元素...");
             saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
             
-            _logger.Debug("尝试运行 JS");
-            var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
-            blocklyRunner.RunJavaScript("logger.Info('Hello from Javascript')");
+            // _logger.Debug("尝试运行 JS");
+            // var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+            // blocklyRunner.RunJavaScript("logger.Info('Hello from Javascript')");
         };
         
+        // 应用退出
         AppBase.Current.AppStopping += (_,_) =>
         {
             var blocklyRunner = IAppHost.GetService<BlocklyRunner>();

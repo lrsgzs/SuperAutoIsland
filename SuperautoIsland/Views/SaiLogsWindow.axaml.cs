@@ -9,8 +9,14 @@ using SuperAutoIsland.ViewModel;
 
 namespace SuperAutoIsland.Views;
 
+/// <summary>
+/// 日志窗口视图
+/// </summary>
 public partial class SaiLogsWindow : MyWindow
 {
+    /// <summary>
+    /// 等级-图标 转换器
+    /// </summary>
     public static readonly FuncValueConverter<string, string> LogLevelToIconGlyphConverter = new(x => x switch
     {
         "ERROR" => "\uE808",
@@ -20,6 +26,9 @@ public partial class SaiLogsWindow : MyWindow
         _ => "\uEDF6"
     });
     
+    /// <summary>
+    /// 等级-可读文字 转换器
+    /// </summary>
     public static readonly FuncValueConverter<string, string> LogLevelToNameConverter = new(x => x switch
     {
         "ERROR" => "错误",
@@ -37,7 +46,10 @@ public partial class SaiLogsWindow : MyWindow
     {
         InitializeComponent();
     }
-
+    
+    /// <summary>
+    /// 打开窗口
+    /// </summary>
     public void Open()
     {
         if (!_isOpened)
@@ -56,11 +68,17 @@ public partial class SaiLogsWindow : MyWindow
         }
     }
     
+    /// <summary>
+    /// 清理日志点击事件
+    /// </summary>
     private void ButtonClearLogs_OnClick(object? sender, RoutedEventArgs e)
     {
         ViewModel.RootLogger.ClearLogs();
     }
 
+    /// <summary>
+    /// 复制选中的日志点击事件
+    /// </summary>
     private void ButtonCopySelectedLogs_OnClick(object? sender, RoutedEventArgs e)
     {
         try

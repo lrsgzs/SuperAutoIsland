@@ -13,8 +13,14 @@ using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Server;
 
+/// <summary>
+/// SuperAutoIsland 服务器
+/// </summary>
 public class SaiServer
 {
+    /// <summary>
+    /// 额外积木批发
+    /// </summary>
     public readonly Dictionary<string, RegisterData> ExtraBlocks = new();
     private readonly ActionAndRuleRunner _runner = new();
     private bool _isRunning;
@@ -24,6 +30,10 @@ public class SaiServer
     private readonly HttpListener _listener;
     private readonly Logger<SaiServer> _logger = new();
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="port"></param>
     public SaiServer(string port)
     {
         Url = $"http://localhost:{port}/";
@@ -37,6 +47,9 @@ public class SaiServer
         _logger.Info("已启动 SaiServer");
     }
 
+    /// <summary>
+    /// 服务器 启动启动启动
+    /// </summary>
     public async Task Serve()
     {
         while (_isRunning)
@@ -66,6 +79,9 @@ public class SaiServer
         }
     }
 
+    /// <summary>
+    /// 停止服务器，但是不工作
+    /// </summary>
     public void Shutdown()
     {
         _logger.Debug("开始关闭服务器...");
@@ -80,11 +96,14 @@ public class SaiServer
     // Generated base server by DeepSeek（
     // features written by lrs2187（
     
-    // 处理WebSocket连接
+    /// <summary>
+    /// 处理WebSocket连接
+    /// </summary>
+    /// <param name="context">listener 上下文</param>
     private async Task HandleWebSocketAsync(HttpListenerContext context)
     {
         WebSocketContext wsContext = await context.AcceptWebSocketAsync(null);
-        WebSocket websocket = wsContext.WebSocket;
+        var websocket = wsContext.WebSocket;
         _logger.Info($"WebSocket连接已建立: {context.Request.RemoteEndPoint}");
 
         try
@@ -115,14 +134,16 @@ public class SaiServer
                         _logger.Debug($"Type: {messageType}");
                         switch (messageType)
                         {
+                            // 获取额外积木
                             case "getExtraBlocks":
                                 var extraBlocks = GenerateExtraBlocksJson();
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    blocksString = extraBlocks,
+                                    blocksString = extraBlocks  // 直接返回 json 避免问题。前端有 JSON.parse
                                 };
                                 break;
+                            // 运行行动
                             case "runAction":
                                 var actionId = messageJson.RootElement.GetProperty("id").GetString()!;
                                 await _runner.RunAction(actionId, messageJson.RootElement.GetProperty("settings"));
@@ -131,6 +152,7 @@ public class SaiServer
                                     type = "result"
                                 };
                                 break;
+                            // 运行规则
                             case "runRule":
                                 var ruleId = messageJson.RootElement.GetProperty("id").GetString()!;
                                 var resultBoolean = _runner.RunRule(ruleId, messageJson.RootElement.GetProperty("settings"));
@@ -140,6 +162,7 @@ public class SaiServer
                                     result = resultBoolean
                                 };
                                 break;
+                            // 保存项目
                             case "save":
                                 var projectData = messageJson.RootElement.GetProperty("data");
                                 switch (projectData.GetProperty("type").GetString()!)
@@ -171,6 +194,7 @@ public class SaiServer
                                         break;
                                 }
                                 break;
+                            // 加载项目
                             case "load":
                                 var guid2 = messageJson.RootElement.GetProperty("guid").GetGuid();
                                 if (guid2 == Guid.Empty)
@@ -184,7 +208,7 @@ public class SaiServer
                                 string workspace;
                                 try
                                 {
-                                    workspace = ProjectsConfigManager.LoadProject(project2);
+                                    workspace = ProjectsConfigManager.LoadBlocklyProjectWorkspace(project2);
                                 }
                                 catch (Exception e)
                                 {
@@ -198,6 +222,7 @@ public class SaiServer
                                     guid = project2.Id,
                                 };
                                 break;
+                            // 数据 - 获取学科
                             case "getSubjects":
                                 var profileService = IAppHost.GetService<IProfileService>();
                                 var subjects = profileService.Profile.Subjects
@@ -210,6 +235,7 @@ public class SaiServer
                                     subjects,
                                 };
                                 break;
+                            // 数据 - 获取组件配置
                             case "getComponentConfigs":
                                 var componentService = IAppHost.GetService<IComponentsService>();
                                 
@@ -219,6 +245,7 @@ public class SaiServer
                                     configs = componentService.ComponentConfigs,
                                 };
                                 break;
+                            // 默认行为
                             default:
                                 jsonReturnData = new 
                                 {
@@ -253,7 +280,10 @@ public class SaiServer
         }
     }
 
-    // 处理静态文件请求
+    /// <summary>
+    /// 处理静态文件请求
+    /// </summary>
+    /// <param name="context">listener 上下文</param>
     private async Task ServeStaticFileAsync(HttpListenerContext context)
     {
         try
@@ -291,7 +321,11 @@ public class SaiServer
         }
     }
 
-    // 获取MIME类型
+    /// <summary>
+    /// 获取 MIME类型
+    /// </summary>
+    /// <param name="extension">类型扩展名字符串</param>
+    /// <returns>MIME 类型字符串</returns>
     private static string GetMimeType(string extension) => extension.ToLower() switch
     {
         ".html" => "text/html",
@@ -304,6 +338,10 @@ public class SaiServer
         _ => "application/octet-stream"
     };
     
+    /// <summary>
+    /// 生成额外积木 json
+    /// </summary>
+    /// <returns>额外积木 json</returns>
     private string GenerateExtraBlocksJson()
     {
         var options = new JsonSerializerOptions

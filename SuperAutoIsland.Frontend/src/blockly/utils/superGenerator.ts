@@ -40,8 +40,15 @@ const dummyInput: ArgDefinition = {
 export type CommonMetaArgs = [string, 'dummy' | 'text' | 'number' | 'boolean'];
 export type DropDownMetaArgs = [string, 'dropdown', [string, string][]];
 export type CheckboxMetaArgs = [string, 'checkbox', boolean?];
+
+/**
+ * 积木参数类型
+ */
 export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs;
 
+/**
+ * 积木元数据接口
+ */
 export interface Metadata {
     id: string;
     name: string;
@@ -53,6 +60,10 @@ export interface Metadata {
     isRule?: boolean;
 }
 
+/**
+ * 添加积木
+ * @param metadata 积木元数据
+ */
 export function addMetaBlock(metadata: Metadata) {
     // @ts-ignore
     const type = metadata.id.replaceAll('.', '_');

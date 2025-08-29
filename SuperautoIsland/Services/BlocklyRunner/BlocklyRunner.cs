@@ -6,12 +6,19 @@ using V8Extended;
 
 namespace SuperAutoIsland.Services.BlocklyRunner;
 
+/// <summary>
+/// Blockly 项目运行器
+/// </summary>
 public class BlocklyRunner
 {
     private readonly Logger<BlocklyRunner> _logger = new();
     private readonly V8ScriptEngine _engine = new();
     private readonly Intervals _v8Intervals = new();
 
+    /// <summary>
+    /// 构造函数
+    /// <see cref="BlocklyRunner"/>
+    /// </summary>
     public BlocklyRunner()
     {
         _engine.AddHostObject("logger", _logger);
@@ -23,12 +30,19 @@ public class BlocklyRunner
         _v8Intervals.StartEventsLoopBackground();
     }
 
+    /// <summary>
+    /// 销毁函数
+    /// </summary>
     public void Dispose()
     {
         _v8Intervals.StopEventsLoop();
         GC.SuppressFinalize(this);
     }
     
+    /// <summary>
+    /// 运行 js 脚本
+    /// </summary>
+    /// <param name="script">脚本代码</param>
     public void RunJavaScript(string script)
     {
         _logger.Log("开始运行 JavaScript 脚本");
@@ -37,11 +51,16 @@ public class BlocklyRunner
         _engine.Execute(script);
     }
 
+    /// <summary>
+    /// 运行项目
+    /// </summary>
+    /// <param name="project">项目实例</param>
+    /// <exception cref="NotSupportedException">遇到不支持的项目会报这个错误</exception>
     public void RunProject(Project project)
     {
         if (project.Type == ProjectsType.BlocklyAction)
         {
-            var script = ProjectsConfigManager.LoadProjectJs(project);
+            var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
             RunJavaScript(script);
             return;
         }
