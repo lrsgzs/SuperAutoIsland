@@ -9,7 +9,7 @@
     <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:RunBlocklyActionSettingsControl}}">
         <Grid ColumnDefinitions="Auto, *, Auto">
             <ComboBox Grid.Column="0"
-                      ItemsSource="{Binding ProjectConfig.Projects}"
+                      ItemsSource="{Binding FilteredProjects}"
                       SelectedValue="{Binding Settings.ProjectGuid}"
                       SelectedValueBinding="{Binding Id}"
                       PlaceholderText="项目">

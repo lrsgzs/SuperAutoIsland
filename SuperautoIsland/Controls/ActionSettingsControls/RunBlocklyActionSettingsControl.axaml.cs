@@ -16,9 +16,19 @@ public partial class RunBlocklyActionSettingsControl : ActionSettingsControlBase
     private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
     private readonly Logger<RunBlocklyActionSettingsControl> _logger = new();
     
+    private readonly ReadOnlyObservableCollection<Project> _filteredProjects;
+    public ReadOnlyObservableCollection<Project> FilteredProjects => _filteredProjects;
+
     public RunBlocklyActionSettingsControl()
     {
         InitializeComponent();
+
+        ProjectConfig.Projects
+            .ToObservableChangeSet()
+            .Filter(e => e.Type is ProjectsType.BlocklyAction)
+            .Bind(out _filteredProjects)
+            .DisposeMany()
+            .Subscribe();
     }
     
     private void RunProjectButton_Click(object? sender, RoutedEventArgs e)
