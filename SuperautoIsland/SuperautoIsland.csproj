@@ -8,6 +8,11 @@
         <RootNamespace>SuperAutoIsland</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <Authors>lrs2187</Authors>
+        <PackageVersion>0.1.2.0-alpha</PackageVersion>
+    </PropertyGroup>
+    
     <ItemGroup>
         <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.105-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>

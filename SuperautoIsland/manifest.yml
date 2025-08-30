@@ -7,7 +7,7 @@ name: SuperAutoIsland
 description: 超级汽车岛
 entranceAssembly: "SuperAutoIsland.dll"
 url: https://github.com/lrsgzs/SuperAutoIsland
-version: 0.1.0.0
+version: 0.1.2.0
 apiVersion: 1.6.0.5
 author: lrsgzs
 readme: README.md
