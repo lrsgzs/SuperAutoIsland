@@ -56,7 +56,7 @@ public class BlocklyRunner
     /// </summary>
     /// <param name="project">项目实例</param>
     /// <exception cref="NotSupportedException">遇到不支持的项目会报这个错误</exception>
-    public void RunProject(Project project)
+    public void RunActionProject(Project project)
     {
         if (project.Type == ProjectsType.BlocklyAction)
         {

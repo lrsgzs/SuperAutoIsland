@@ -66,7 +66,7 @@ public class ConfigHandler<TData> where TData : INotifyPropertyChanged, new()
     /// <summary>
     /// 保存数据到配置文件，记录日志并在发生异常时进行处理。
     /// </summary>
-    protected void Save()
+    public void Save()
     {
         _logger.Info("保存配置中...");
         try

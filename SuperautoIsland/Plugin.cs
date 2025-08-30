@@ -9,7 +9,9 @@ using DynamicData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
+using SuperAutoIsland.Controls.RuleSettingsControls;
 using SuperAutoIsland.Interface.Services;
+using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations.Actions;
@@ -55,6 +57,7 @@ public class Plugin : PluginBase
         _logger.Info("注册运行器...");
         services.AddSingleton<ActionAndRuleRunner>();
         services.AddSingleton<BlocklyRunner>();
+        services.AddSingleton<CiRunner>();
         
         _logger.Info("注册服务器...");
         services.AddSingleton<ISaiServer, SaiServerBridger>();
@@ -64,11 +67,20 @@ public class Plugin : PluginBase
         services.AddTransient<AutomationViewModel>();
         
         _logger.Info("注册自动化元素...");
+        // 行动
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
+        
+        // 行动树
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", "\uF3AF"));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
             new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049")
         ]);
+
+        // 规则
+        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行 可复用的规则集", "\uF17E");
+        
+        // 规则处理器
+        services.AddSingleton<RuleHandlerService>();
         
         _logger.Info("添加设置页面...");
         services.AddSingleton<SaiLogsWindow>();
@@ -79,8 +91,12 @@ public class Plugin : PluginBase
         // 应用启动完毕
         AppBase.Current.AppStarted += (_, _) =>
         {
+            _logger.BaseLog("TRACE", "保存 SaiServer 实例...");
             var saiServerService = IAppHost.GetService<ISaiServer>();
             SaiServerSaver.Save(saiServerService);
+            
+            _logger.Debug("初始化规则处理器...");
+            IAppHost.GetService<RuleHandlerService>();
             
             _logger.Debug("注册 SuperAutoIsland 元素...");
             saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
@@ -93,12 +109,16 @@ public class Plugin : PluginBase
         // 应用退出
         AppBase.Current.AppStopping += (_,_) =>
         {
+            _logger.Info("兜底：保存全部配置...");
+            GlobalConstants.Configs.MainConfig.Save();
+            GlobalConstants.Configs.ProjectConfig.Save();
+            
             var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
             blocklyRunner.Dispose();
             
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
-            _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server ...");
+            _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server...");
             
             new Thread(() => {
                 Thread.Sleep(3000);

@@ -19,6 +19,6 @@ public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();
-        Runner.RunProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
+        Runner.RunActionProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
     }
 }

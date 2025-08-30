@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Shared;
-using SuperAutoIsland.Interface.Enums;
+using CommunityToolkit.Mvvm.Input;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.BlocklyRunner;
@@ -46,15 +46,23 @@ public partial class AutomationSettingsPage : SettingsPageBase
 {
     private bool IsPanelOpened { get; set; }
     private AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
-    private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
     private readonly Logger<AutomationSettingsPage> _logger = new();
+    
+    private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+    private readonly CiRunner _ciRunner = IAppHost.GetService<CiRunner>();
 
     public static readonly ProjectTypeNode[] ProjectTypeNodes = [
         new()
         {
             Type = ProjectsType.BlocklyAction,
             Name = "Blockly 行动",
-            IconGlyph = "\uE50A"
+            IconGlyph = "\uE049"
+        },
+        new()
+        {
+            Type = ProjectsType.CiRuleset,
+            Name = "可复用的规则集",
+            IconGlyph = "\uF17E"
         }
     ];
 
@@ -64,6 +72,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     public static readonly FuncValueConverter<ProjectsType, string> ProjectsTypeNameConverter = new(x => x switch
     {
         ProjectsType.BlocklyAction => "Blockly 行动",
+        ProjectsType.CiRuleset => "可复用的规则集",
         _ => "未知"
     });
     
@@ -76,13 +85,24 @@ public partial class AutomationSettingsPage : SettingsPageBase
     {
         IsPanelOpened = true;
     }
-
+    
     /// <summary>
-    /// 创建项目点击事件
+    /// 创建项目命令
     /// </summary>
-    private void CreateBlocklyActionProjectButton_OnClick(object? sender, RoutedEventArgs e)
+    [RelayCommand]
+    private void CreateProject(ProjectsType type)
     {
-        ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新项目");
+        switch (type)
+        {
+            case ProjectsType.BlocklyAction:
+                ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新 Blockly 行动");
+                break;
+            case ProjectsType.CiRuleset:
+                ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.CiRuleset, "新可复用的规则集");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
     }
 
     /// <summary>
@@ -104,7 +124,17 @@ public partial class AutomationSettingsPage : SettingsPageBase
     {
         try
         {
-            _blocklyRunner.RunProject(ViewModel.SelectedProject!);
+            switch (ViewModel.SelectedProject!.Type)
+            {
+                case ProjectsType.BlocklyAction:
+                    _blocklyRunner.RunActionProject(ViewModel.SelectedProject!);
+                    break;
+                case ProjectsType.CiRuleset:
+                    _ciRunner.RunRulesetProject(ViewModel.SelectedProject);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         catch (Exception exception)
         {

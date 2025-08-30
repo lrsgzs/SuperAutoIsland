@@ -1,4 +1,5 @@
 <ci:SettingsPageBase x:Class="SuperAutoIsland.Views.SettingPages.AutomationSettingsPage"
+                     x:Name="Page"
                      xmlns="https://github.com/avaloniaui"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -44,7 +45,8 @@
                             <DataTemplate DataType="{x:Type local:ProjectTypeNode}">
                                 <fa:MenuFlyoutItem
                                     Text="{Binding Name}"
-                                    Click="CreateBlocklyActionProjectButton_OnClick" >
+                                    Command="{Binding #Page.CreateProjectCommand}"
+                                    CommandParameter="{Binding Type} ">
                                     <fa:MenuFlyoutItem.IconSource>
                                         <ci:FluentIconSource Glyph="{Binding IconGlyph}" />
                                     </fa:MenuFlyoutItem.IconSource>
@@ -121,25 +123,42 @@
                                         <ci:IconText Glyph="&#xE9E4;" Text="项目信息" />
                                     </Expander.Header>
                                     <StackPanel>
-                                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
+                                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *">
                                             <TextBlock Grid.Row="0" Grid.Column="0"
-                                                       VerticalAlignment="Center" Margin="0 0 4 0"
+                                                       VerticalAlignment="Center" Margin="0 0 4 4"
                                                        Text="项目名称：" />
-                                            <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                            <TextBox Grid.Row="0" Grid.Column="1"
+                                                     VerticalAlignment="Center" Margin="0 0 4 4"
                                                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                                        Orientation="Horizontal">
-                                                <Button Margin="0 4 0 0" HorizontalAlignment="Right"
-                                                        Click="OpenProjectEditorButton_Click">
+                                            
+                                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                                       VerticalAlignment="Center" Margin="0 0 4 4"
+                                                       Text="项目类型：" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1"
+                                                       VerticalAlignment="Center" Margin="0 0 4 4"
+                                                       Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}" />
+                                            
+                                            
+                                            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                                        Orientation="Horizontal" Margin="0 0 0 4">
+                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right"
+                                                        Click="OpenProjectEditorButton_Click"
+                                                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.BlocklyAction}}">
                                                     <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
                                                 </Button>
                                                 
-                                                <Button Margin="4 4 0 0" HorizontalAlignment="Right"
+                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right"
                                                         Click="RunProjectButton_Click">
+                                                    <Button.IsVisible>
+                                                        <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.BlocklyAction}" />
+                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.CiRuleset}" />
+                                                        </MultiBinding>
+                                                    </Button.IsVisible>
                                                     <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
                                                 </Button>
                                                 
-                                                <Button Margin="4 4 0 0" HorizontalAlignment="Right">
+                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right">
                                                     <ci:IconText Glyph="&#xE61D;" Text="删除" Foreground="IndianRed" />
                                                     
                                                     <Button.Flyout>
@@ -159,6 +178,14 @@
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
+                                </Expander>
+                                
+                                <Expander Classes="compact stretch-header"
+                                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.CiRuleset}}">
+                                    <Expander.Header>
+                                        <ci:IconText Glyph="&#xF17E;" Text="规则集" />
+                                    </Expander.Header>
+                                    <ci:RulesetControl Ruleset="{Binding Ruleset}" ShowTitle="False" />
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>

@@ -1,0 +1,23 @@
+﻿<ci:RuleSettingsControlBase x:Class="SuperAutoIsland.Controls.RuleSettingsControls.RunCiRulesetSettingsControl"
+                            x:TypeArguments="ruleSettings:RunCiRulesetSettings"
+                            xmlns="https://github.com/avaloniaui"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                            xmlns:local="clr-namespace:SuperAutoIsland.Controls.RuleSettingsControls"
+                            xmlns:ruleSettings="clr-namespace:SuperAutoIsland.Models.Rules">
+    <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:RunCiRulesetSettingsControl}}">
+        <Grid ColumnDefinitions="Auto, *, Auto">
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding FilteredProjects}"
+                      SelectedValue="{Binding Settings.ProjectGuid}"
+                      SelectedValueBinding="{Binding Id}"
+                      PlaceholderText="项目">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+    </Panel>
+</ci:RuleSettingsControlBase>
