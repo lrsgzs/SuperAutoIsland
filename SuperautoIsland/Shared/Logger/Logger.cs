@@ -57,8 +57,6 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     public void Info(params object[] message) => BaseLog("INFO", message);
 
     public void Warn(params object[] message) => BaseLog("WARN", message);
-
-    public void Warning(params object[] message) => BaseLog("WARN", message);
     
     public void Error(params object[] message) => BaseLog("ERROR", message);
     

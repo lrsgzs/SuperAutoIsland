@@ -24,7 +24,7 @@ public static class JavaScriptNamespace
     {
         var dataJson = JsonSerializer.Serialize(data);
         var jsonDocument = JsonDocument.Parse(dataJson);
-        Logger.Debug($"Calling Action: {id} {dataJson}");
+        Logger.BaseLog("TRACE", $"Calling Action: {id} {dataJson}");
         
         var runnerService = IAppHost.GetService<ActionAndRuleRunner>();
         await runnerService.RunAction(id, jsonDocument.RootElement);
@@ -37,7 +37,7 @@ public static class JavaScriptNamespace
     {
         var dataJson = JsonSerializer.Serialize(data);
         var jsonDocument = JsonDocument.Parse(dataJson);
-        Logger.Debug($"Getting Rule State: {id} {dataJson}");
+        Logger.BaseLog("TRACE", $"Getting Rule State: {id} {dataJson}");
 
         var runnerService = IAppHost.GetService<ActionAndRuleRunner>();
         return runnerService.RunRule(id, jsonDocument.RootElement);
