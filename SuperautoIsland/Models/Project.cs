@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SuperAutoIsland.Interface.Enums;
+﻿using ClassIsland.Core.Enums;
+using ClassIsland.Core.Models.Ruleset;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SuperAutoIsland.Enums;
 
 namespace SuperAutoIsland.Models;
 
@@ -22,4 +24,12 @@ public partial class Project : ObservableRecipient
     /// 项目类型
     /// </summary>
     [ObservableProperty] private ProjectsType _type = ProjectsType.BlocklyAction;
+
+    /// <summary>
+    /// 规则集（仅在 ProjectsType.CiRuleset）下可用。
+    /// </summary>
+    [ObservableProperty] private Ruleset _ruleset = new()
+    {
+        Mode = RulesetLogicalMode.Or
+    };
 }

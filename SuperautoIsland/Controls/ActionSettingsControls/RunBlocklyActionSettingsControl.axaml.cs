@@ -4,7 +4,7 @@ using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Shared;
 using DynamicData;
 using DynamicData.Binding;
-using SuperAutoIsland.Interface.Enums;
+using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Models.Actions;
 using SuperAutoIsland.Models.Settings;
@@ -50,7 +50,7 @@ public partial class RunBlocklyActionSettingsControl : ActionSettingsControlBase
         try
         {
             var selectedProject = ProjectsConfigManager.GetProject(Settings.ProjectGuid);
-            _blocklyRunner.RunProject(selectedProject);
+            _blocklyRunner.RunActionProject(selectedProject);
         }
         catch (Exception exception)
         {

@@ -1,4 +1,4 @@
-﻿using SuperAutoIsland.Interface.Enums;
+﻿using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;

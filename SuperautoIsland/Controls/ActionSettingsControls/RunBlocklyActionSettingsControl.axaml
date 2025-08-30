@@ -2,7 +2,6 @@
                               x:TypeArguments="actionSettings:RunBlocklyActionSettings"
                               xmlns="https://github.com/avaloniaui"
                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                               xmlns:ci="http://classisland.tech/schemas/xaml/core"
                               xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
                               xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">

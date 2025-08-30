@@ -1,4 +1,4 @@
-﻿namespace SuperAutoIsland.Interface.Enums;
+﻿namespace SuperAutoIsland.Enums;
 
 /// <summary>
 /// 项目类型
@@ -6,11 +6,15 @@
 public enum ProjectsType
 {
     /// <summary>
-    /// blockly 行动
+    /// Blockly 行动
     /// </summary>
     BlocklyAction,
     // 预留的瓜
     // BlocklyRuleset,
     // CiActionSet,
-    // CiRuleset,
+    
+    /// <summary>
+    /// 可复用的规则集
+    /// </summary>
+    CiRuleset,
 }

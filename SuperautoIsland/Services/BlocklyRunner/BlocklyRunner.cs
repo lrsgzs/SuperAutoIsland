@@ -1,5 +1,5 @@
 ﻿using Microsoft.ClearScript.V8;
-using SuperAutoIsland.Interface.Enums;
+using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared.Logger;
 using V8Extended;

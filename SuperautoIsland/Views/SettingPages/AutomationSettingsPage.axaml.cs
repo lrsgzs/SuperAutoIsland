@@ -6,6 +6,7 @@ using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Enums;
+using SuperAutoIsland.Enums;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Shared;
