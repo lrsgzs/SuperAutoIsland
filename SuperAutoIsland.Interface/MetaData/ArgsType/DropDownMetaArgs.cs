@@ -8,5 +8,5 @@ namespace SuperAutoIsland.Interface.MetaData.ArgsType;
 public class DropDownMetaArgs : MetaArgsBase
 {
     [JsonPropertyName("options")]
-    public required List<Tuple<string, string>> Options { get; set; }
+    public required List<(string, string)> Options { get; set; }
 }

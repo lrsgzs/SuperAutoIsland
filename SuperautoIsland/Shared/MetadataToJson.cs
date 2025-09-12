@@ -47,33 +47,43 @@ public static class MetadataGenerator
 /// </summary>
 public class MetaArgsConverter : JsonConverter<MetaArgsBase>
 {
-    /// <inheritdoc />
     public override MetaArgsBase Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException("This converter is for serialization only");
     }
 
-    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, MetaArgsBase value, JsonSerializerOptions options)
     {
-        // 根据实际类型进行序列化
+        writer.WriteStartArray();
+        
+        // 写入名称
+        writer.WriteStringValue(value.Name);
+        
+        // 写入类型（小写）
+        writer.WriteStringValue(value.Type.ToString().ToLower());
+        
+        // 根据类型写入额外数据
         switch (value)
         {
-            case CommonMetaArgs common:
-                JsonSerializer.Serialize(writer, common, options);
-                break;
-                
             case DropDownMetaArgs dropdown:
-                JsonSerializer.Serialize(writer, dropdown, options);
+                // 写入选项数组
+                writer.WriteStartArray();
+                foreach (var option in dropdown.Options)
+                {
+                    writer.WriteStartArray();
+                    writer.WriteStringValue(option.Item1);
+                    writer.WriteStringValue(option.Item2);
+                    writer.WriteEndArray();
+                }
+                writer.WriteEndArray();
                 break;
                 
-            case CheckboxMetaArgs checkbox:
-                JsonSerializer.Serialize(writer, checkbox, options);
+            case CheckboxMetaArgs checkbox when checkbox.DefaultValue.HasValue:
+                writer.WriteBooleanValue(checkbox.DefaultValue.Value);
                 break;
-                
-            default:
-                throw new JsonException($"Unknown MetaArgs type: {value.GetType()}");
         }
+        
+        writer.WriteEndArray();
     }
 }
 
