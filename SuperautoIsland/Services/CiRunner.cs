@@ -35,6 +35,8 @@ public class CiRunner
                     ActionItems = project.Actions
                 });
             });
+            
+            return;
         }
 
         throw new NotSupportedException();

@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using ClassIsland.Core;
 using ClassIsland.Core.Abstractions;
 using ClassIsland.Core.Abstractions.Services;
@@ -6,10 +7,15 @@ using ClassIsland.Core.Extensions.Registry;
 using ClassIsland.Core.Models.Automation;
 using ClassIsland.Shared;
 using DynamicData;
+using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
 using SuperAutoIsland.Controls.RuleSettingsControls;
+using SuperAutoIsland.Enums;
+using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.MetaData;
+using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Server;
@@ -101,6 +107,80 @@ public class Plugin : PluginBase
             IAppHost.GetService<RuleHandlerService>();
             
             _logger.Debug("注册 SuperAutoIsland 元素...");
+            saiServerService.RegisterBlocks("SuperAutoIsland", new RegisterData
+            {
+                Actions = [
+                    new BlockMetadata
+                    {
+                        Id = "sai.actions.runBlockly",
+                        Name = "运行 Blockly 项目",
+                        Icon = ("Blockly 项目", "\uE049"),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["ProjectGuid"] = new DropDownMetaArgs
+                            {
+                                Name = "",
+                                Type = MetaType.dropdown,
+                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                    .Where(e => e.Type is ProjectsType.BlocklyAction)
+                                    .Select(e => (e.Name, e.Id.ToString()))
+                                    .ToList()
+                            }
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false,
+                        IsRule = false
+                    },
+                    new BlockMetadata
+                    {
+                        Id = "sai.actions.runActionSet",
+                        Name = "运行可复用的行动组",
+                        Icon = ("行动组", "\uE01F"),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["ProjectGuid"] = new DropDownMetaArgs
+                            {
+                                Name = "",
+                                Type = MetaType.dropdown,
+                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                    .Where(e => e.Type is ProjectsType.CiActionSet)
+                                    .Select(e => (e.Name, e.Id.ToString()))
+                                    .ToList()
+                            }
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false,
+                        IsRule = false
+                    }
+                ],
+                Rules = [
+                    new BlockMetadata
+                    {
+                        Id = "sai.rules.runCiRuleset",
+                        Name = "运行可复用的规则集",
+                        Icon = ("规则集", "\uF17E"),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["ProjectGuid"] = new DropDownMetaArgs
+                            {
+                                Name = "",
+                                Type = MetaType.dropdown,
+                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                    .Where(e => e.Type is ProjectsType.CiRuleset)
+                                    .Select(e => (e.Name, e.Id.ToString()))
+                                    .ToList()
+                            }
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false,
+                        IsRule = true
+                    }
+                ]
+            });
+        
             saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
             
             // _logger.Debug("尝试运行 JS");
