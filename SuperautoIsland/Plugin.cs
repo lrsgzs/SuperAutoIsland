@@ -79,7 +79,7 @@ public class Plugin : PluginBase
         ]);
 
         // 规则
-        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行 可复用的规则集", "\uF17E");
+        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行可复用的规则集", "\uF17E");
         
         // 规则处理器
         services.AddSingleton<RuleHandlerService>();

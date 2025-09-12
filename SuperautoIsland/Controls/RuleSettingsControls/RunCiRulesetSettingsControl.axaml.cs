@@ -11,7 +11,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Controls.RuleSettingsControls;
 
 /// <summary>
-/// 「运行 可复用的规则集」规则
+/// 「运行可复用的规则集」规则
 /// </summary>
 public partial class RunCiRulesetSettingsControl : RuleSettingsControlBase<RunCiRulesetSettings>
 {
