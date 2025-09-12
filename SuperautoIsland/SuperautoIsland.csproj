@@ -47,11 +47,6 @@
     
     
     <ItemGroup>
-      <Folder Include="Shared\Converters\" />
-    </ItemGroup>
-    
-    
-    <ItemGroup>
       <Compile Update="Views\SaiLogsWindow.axaml.cs">
         <DependentUpon>SaiLogsWindow.axaml</DependentUpon>
         <SubType>Code</SubType>

@@ -10,7 +10,13 @@
                      xmlns:local="clr-namespace:SuperAutoIsland.Views.SettingPages"
                      xmlns:models="clr-namespace:SuperAutoIsland.Models"
                      xmlns:enums="clr-namespace:SuperAutoIsland.Enums"
+                     xmlns:converters="clr-namespace:SuperAutoIsland.Shared.Converters"
+                     xmlns:ciControlsAutomation="clr-namespace:ClassIsland.Core.Controls.Automation;assembly=ClassIsland.Core"
                      mc:Ignorable="d">
+    <ci:SettingsPageBase.Resources>
+        <converters:ActionsToActionSetConverter x:Key="ActionsToActionSetConverter" />
+    </ci:SettingsPageBase.Resources>
+    
     <controls:ListDetailView Margin="12 12 0 0" ShowTitleWhenNotCompressed="True"
                              DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AutomationSettingsPage}}"
                              IsPanelOpened="{Binding IsPanelOpened, Mode=TwoWay}">
@@ -153,6 +159,7 @@
                                                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
                                                             <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.BlocklyAction}" />
                                                             <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.CiRuleset}" />
+                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.CiActionSet}" />
                                                         </MultiBinding>
                                                     </Button.IsVisible>
                                                     <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
@@ -186,6 +193,14 @@
                                         <ci:IconText Glyph="&#xF17E;" Text="规则集" />
                                     </Expander.Header>
                                     <ci:RulesetControl Ruleset="{Binding Ruleset}" ShowTitle="False" />
+                                </Expander>
+                                
+                                <Expander Classes="compact stretch-header"
+                                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.CiActionSet}}">
+                                    <Expander.Header>
+                                        <ci:IconText Glyph="&#xE01F;" Text="行动组" />
+                                    </Expander.Header>
+                                    <ciControlsAutomation:ActionControl ActionSet="{Binding ., Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>

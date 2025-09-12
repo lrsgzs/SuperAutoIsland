@@ -63,6 +63,12 @@ public partial class AutomationSettingsPage : SettingsPageBase
             Type = ProjectsType.CiRuleset,
             Name = "可复用的规则集",
             IconGlyph = "\uF17E"
+        },
+        new()
+        {
+            Type = ProjectsType.CiActionSet,
+            Name = "可复用的行动组",
+            IconGlyph = "\uE01F"
         }
     ];
 
@@ -73,6 +79,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     {
         ProjectsType.BlocklyAction => "Blockly 行动",
         ProjectsType.CiRuleset => "可复用的规则集",
+        ProjectsType.CiActionSet => "可复用的行动组",
         _ => "未知"
     });
     
@@ -100,6 +107,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
             case ProjectsType.CiRuleset:
                 ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.CiRuleset, "新可复用的规则集");
                 break;
+            case ProjectsType.CiActionSet:
+                ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.CiActionSet, "新可复用的行动组");
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
@@ -120,7 +130,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     /// <summary>
     /// 运行项目点击事件
     /// </summary>
-    private void RunProjectButton_Click(object? sender, RoutedEventArgs e)
+    private async void RunProjectButton_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -131,6 +141,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
                     break;
                 case ProjectsType.CiRuleset:
                     _ciRunner.RunRulesetProject(ViewModel.SelectedProject);
+                    break;
+                case ProjectsType.CiActionSet:
+                    await _ciRunner.RunActionSetProject(ViewModel.SelectedProject);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

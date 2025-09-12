@@ -9,12 +9,17 @@ public enum ProjectsType
     /// Blockly 行动
     /// </summary>
     BlocklyAction,
-    // 预留的瓜
-    // BlocklyRuleset,
-    // CiActionSet,
     
     /// <summary>
     /// 可复用的规则集
     /// </summary>
     CiRuleset,
+    
+    /// <summary>
+    /// 可复用的行动组
+    /// </summary>
+    CiActionSet,
+    
+    // 预留的瓜
+    // BlocklyRuleset,
 }

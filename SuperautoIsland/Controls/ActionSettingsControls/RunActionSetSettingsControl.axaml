@@ -1,0 +1,27 @@
+﻿<ci:ActionSettingsControlBase x:Class="SuperAutoIsland.Controls.ActionSettingsControls.RunActionSetSettingsControl"
+                              x:TypeArguments="actionSettings:RunActionSetSettings"
+                              xmlns="https://github.com/avaloniaui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                              xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                              xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
+                              xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">
+    <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:RunActionSetSettingsControl}}">
+        <Grid ColumnDefinitions="Auto, *, Auto">
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding FilteredProjects}"
+                      SelectedValue="{Binding Settings.ProjectGuid}"
+                      SelectedValueBinding="{Binding Id}"
+                      PlaceholderText="项目">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Grid.Column="2" Margin="4 4 0 0" HorizontalAlignment="Right"
+                    Click="RunProjectButton_Click">
+                <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
+            </Button>
+        </Grid>
+    </Panel>
+</ci:ActionSettingsControlBase>

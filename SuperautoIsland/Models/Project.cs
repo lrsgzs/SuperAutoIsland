@@ -1,5 +1,7 @@
-﻿using ClassIsland.Core.Enums;
+﻿using System.Collections.ObjectModel;
+using ClassIsland.Core.Enums;
 using ClassIsland.Core.Models.Ruleset;
+using ClassIsland.Shared.Models.Automation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SuperAutoIsland.Enums;
 
@@ -32,4 +34,9 @@ public partial class Project : ObservableRecipient
     {
         Mode = RulesetLogicalMode.Or
     };
+    
+    /// <summary>
+    /// 行动组（仅在 ProjectsType.CiActionSet）下可用。
+    /// </summary>
+    [ObservableProperty] private ObservableCollection<ActionItem> _actions = [];
 }

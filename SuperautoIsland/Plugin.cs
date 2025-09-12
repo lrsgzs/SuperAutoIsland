@@ -69,11 +69,13 @@ public class Plugin : PluginBase
         _logger.Info("注册自动化元素...");
         // 行动
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
+        services.AddAction<RunActionSet, RunActionSetSettingsControl>();
         
         // 行动树
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", "\uF3AF"));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
-            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049")
+            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049"),
+            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", "\uE01F")
         ]);
 
         // 规则
