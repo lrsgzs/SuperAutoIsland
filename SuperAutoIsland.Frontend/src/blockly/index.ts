@@ -3,7 +3,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
-import type { Metadata } from './utils/superGenerator';
+import { addLabel, addMetaBlock, Metadata } from './utils/superGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
 import './types/extraData.d.ts';
@@ -26,15 +26,41 @@ window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rul
 window.saiWS = ws;
 window.saiWaitMessage = wsWaitMessage;
 
-preSetupCategory('规则');
+
+
+preSetupCategory('ClassIsland');
+
+addLabel('规则');
 // @ts-ignore
 await import('./blocks/rules');
-postSetupCategory();
 
-preSetupCategory('行动');
+addLabel('行动');
 // @ts-ignore
 await import('./blocks/actions');
+
 postSetupCategory();
+
+for (let pluginName in window.extraBlocks) {
+    preSetupCategory(pluginName);
+
+    if (window.extraBlocks[pluginName].rules.length != 0) {
+        addLabel("规则");
+
+        for (let block of window.extraBlocks[pluginName].rules) {
+            addMetaBlock(block);
+        }
+    }
+
+    if (window.extraBlocks[pluginName].actions.length != 0) {
+        addLabel("行动");
+
+        for (let block of window.extraBlocks[pluginName].actions) {
+            addMetaBlock(block);
+        }
+    }
+
+    postSetupCategory();
+}
 
 preSetupCategory('调试');
 // @ts-ignore

@@ -50,8 +50,6 @@ const weathers: [string, string][] = [
     ['未知', '99'],
 ];
 
-addLabel('ClassIsland');
-
 addMetaBlock({
     id: 'classisland.windows.className',
     name: '前台窗口类名',
@@ -211,12 +209,3 @@ addMetaBlock({
     inlineBlock: false,
     inlineField: false,
 });
-
-for (let pluginName in window.extraBlocks) {
-    if (window.extraBlocks[pluginName].rules.length == 0) continue;
-
-    addLabel(pluginName);
-    for (let block of window.extraBlocks[pluginName].rules) {
-        addMetaBlock(block);
-    }
-}

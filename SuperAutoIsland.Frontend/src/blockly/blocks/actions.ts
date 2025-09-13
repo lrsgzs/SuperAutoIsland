@@ -8,8 +8,6 @@ const componentsConfigsResponse = await wsWaitMessage<{ configs: string[] }>(win
 
 const componentsConfigs: [string, string][] = componentsConfigsResponse.configs.map(e => [e, e]);
 
-addLabel('ClassIsland');
-
 addMetaBlock({
     id: 'classisland.broadcastSignal',
     name: '广播信号',
@@ -261,12 +259,3 @@ addMetaBlock({
     inlineBlock: false,
     inlineField: false,
 });
-
-for (let pluginName in window.extraBlocks) {
-    if (window.extraBlocks[pluginName].actions.length == 0) continue;
-
-    addLabel(pluginName);
-    for (let block of window.extraBlocks[pluginName].actions) {
-        addMetaBlock(block);
-    }
-}
