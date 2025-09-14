@@ -1,3 +1,5 @@
+# 警告：请勿安装此插件！有重大bug导致应用无法正常关闭！
+
 ﻿<div align="center">
 
 ![Super Auto Island](./assets/icon.png)
