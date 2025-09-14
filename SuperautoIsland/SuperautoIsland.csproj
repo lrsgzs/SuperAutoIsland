@@ -10,11 +10,11 @@
 
     <PropertyGroup>
         <Authors>lrs2187</Authors>
-        <PackageVersion>0.1.2.0-alpha</PackageVersion>
+        <PackageVersion>0.1.2.1</PackageVersion>
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.105-dev-v2">
+        <PackageReference Include="ClassIsland.PluginSdk" Version="1.7.105.1-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.ClearScript.V8" Version="7.5.0" />
