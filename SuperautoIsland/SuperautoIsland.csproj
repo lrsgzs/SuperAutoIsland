@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <Authors>lrs2187</Authors>
-        <PackageVersion>0.1.2.1</PackageVersion>
+        <PackageVersion>0.1.2.2</PackageVersion>
     </PropertyGroup>
     
     <ItemGroup>
