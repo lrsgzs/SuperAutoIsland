@@ -103,8 +103,9 @@ public class Plugin : PluginBase
             var saiServerService = IAppHost.GetService<ISaiServer>();
             SaiServerSaver.Save(saiServerService);
             
-            _logger.Debug("初始化规则处理器...");
+            _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
+            IAppHost.GetService<BlocklyRunner>();
             
             _logger.Debug("注册 SuperAutoIsland 元素...");
             saiServerService.RegisterBlocks("SuperAutoIsland", new RegisterData
