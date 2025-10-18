@@ -122,10 +122,12 @@ public class Plugin : PluginBase
                             {
                                 Name = "",
                                 Type = MetaType.dropdown,
-                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                    .Where(e => e.Type is ProjectsType.BlocklyAction)
-                                    .Select(e => (e.Name, e.Id.ToString()))
-                                    .ToList()
+                                Options = EnsureListHasItemOrDefaultListItem(
+                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                        .Where(e => e.Type is ProjectsType.BlocklyAction)
+                                        .Select(e => (e.Name, e.Id.ToString()))
+                                        .ToList(),
+                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -144,10 +146,12 @@ public class Plugin : PluginBase
                             {
                                 Name = "",
                                 Type = MetaType.dropdown,
-                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                    .Where(e => e.Type is ProjectsType.CiActionSet)
-                                    .Select(e => (e.Name, e.Id.ToString()))
-                                    .ToList()
+                                Options = EnsureListHasItemOrDefaultListItem(
+                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                        .Where(e => e.Type is ProjectsType.CiActionSet)
+                                        .Select(e => (e.Name, e.Id.ToString()))
+                                        .ToList(),
+                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -168,10 +172,12 @@ public class Plugin : PluginBase
                             {
                                 Name = "",
                                 Type = MetaType.dropdown,
-                                Options = GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                    .Where(e => e.Type is ProjectsType.CiRuleset)
-                                    .Select(e => (e.Name, e.Id.ToString()))
-                                    .ToList()
+                                Options = EnsureListHasItemOrDefaultListItem(
+                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                                        .Where(e => e.Type is ProjectsType.CiRuleset)
+                                        .Select(e => (e.Name, e.Id.ToString()))
+                                        .ToList(),
+                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -209,5 +215,10 @@ public class Plugin : PluginBase
                 Environment.Exit(0);
             }).Start();
         };
+    }
+
+    private List<T> EnsureListHasItemOrDefaultListItem<T>(List<T> data, T defaultItem)
+    {
+        return data.Count > 0 ? data : [defaultItem];
     }
 }

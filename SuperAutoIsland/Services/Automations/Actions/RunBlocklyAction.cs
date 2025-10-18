@@ -2,6 +2,7 @@
 using ClassIsland.Core.Attributes;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models.Actions;
+using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations.Actions;
 
@@ -19,6 +20,9 @@ public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();
+        if (Settings.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
+            return;
+        
         Runner.RunActionProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
     }
 }

@@ -32,5 +32,6 @@ public static class GlobalConstants
     public static class Assets
     {
         public static readonly string AsciiLogo = "稍后再说";
+        public static readonly Guid ProjectNullGuid = Guid.Parse("8ca34af7-03cb-47ab-a630-0083dc942135");
     }
 }
