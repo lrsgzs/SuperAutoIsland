@@ -1,12 +1,19 @@
 <div align="center">
 
-![Super Auto Island](./assets/icon.png)
+![Super Auto Island](https://livefile.xesimg.com/programme/python_assets/56095bcdbf1492a1602e0bb221aabebe.png)
 # SuperAutoIsland
 > 课是地 自动化 进化
 > 
 > 超级 ~~汽 车~~ 自动化岛 for ClassIsland
 
 </div>
+
+## 用途
+- 复用 ClassIsland 工作流内容：
+  - 可复用的行动组
+  - 可复用的规则集
+- Blockly 内容：（搭积木）
+  - Blockly 行动
 
 ## FAQ
 - 我的超级汽车岛怎么不工作？
