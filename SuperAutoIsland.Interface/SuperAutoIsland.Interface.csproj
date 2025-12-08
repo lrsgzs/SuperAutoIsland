@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <EnableDynamicLoading>True</EnableDynamicLoading>
         <RootNamespace>SuperAutoIsland.Interface</RootNamespace>
+        <Version>0.1.2.4</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -20,7 +21,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>classisland;plugin;addin;</PackageTags>
         <Description>SuperAutoIsland 的接口库，用于扩充 SuperAutoIsland 的 Blockly 的积木。</Description>
-        <PackageVersion>0.1.2.1</PackageVersion>
+        <PackageVersion>0.1.2.4</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
