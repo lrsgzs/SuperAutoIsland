@@ -28,7 +28,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="ClassIsland.Core" Version="1.7.105.1-dev-v2">
+        <PackageReference Include="ClassIsland.Core" Version="1.7.106.2-dev-v2">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
     </ItemGroup>
