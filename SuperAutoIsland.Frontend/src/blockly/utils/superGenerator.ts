@@ -140,7 +140,7 @@ export function addMetaBlock(metadata: Metadata) {
             isReporter: metadata.isRule,
         },
         (block, generator) => {
-            let argsCode = '{';
+            let argsCode = '(() => { let a = {};';
             for (let [argName, argType] of args) {
                 let value;
                 switch (argType) {
@@ -156,9 +156,17 @@ export function addMetaBlock(metadata: Metadata) {
                         value = { TRUE: true, FALSE: false }[value as "TRUE" | "FALSE"];
                         break;
                 }
-                argsCode += `${argName}: ${value}, `;
+
+                if (argName.includes(".")) {
+                    const parts = argName.split(".");
+                    for (let i = 1; i < parts.length; i++) {
+                        const path = parts.slice(0, i).join(".");
+                        argsCode += `if (!a.${path}) a.${path} = {};\n`;
+                    }
+                }
+                argsCode += `a.${argName} = ${value};`;
             }
-            argsCode += '}';
+            argsCode += 'return a; })()';
 
             if (metadata.isRule) {
                 return [`await getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
