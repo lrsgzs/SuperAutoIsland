@@ -8,6 +8,7 @@ namespace SuperAutoIsland.Services;
 public class RuleHandlerService
 {
     private readonly IRulesetService _rulesetService = IAppHost.GetService<IRulesetService>();
+    private readonly ILessonsService _lessonsService = IAppHost.GetService<ILessonsService>();
 
     public RuleHandlerService()
     {
@@ -20,7 +21,23 @@ public class RuleHandlerService
             if (s.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
                 return false;
             
-            return ciRunner.RunRulesetProject(ProjectsConfigManager.GetProject(s.ProjectGuid));
+            var project = ProjectsConfigManager.GetProject(s.ProjectGuid);
+            if (project.RulesetState != null)
+            {
+                return project.RulesetState.Value;
+            }
+            
+            var state = ciRunner.RunRulesetProject(project);
+            project.RulesetState = state;
+            _rulesetService.StatusUpdated += ClearState;
+            
+            return state;
+            
+            void ClearState(object? sender, EventArgs e)
+            {
+                project.RulesetState = null;
+                _rulesetService.StatusUpdated -= ClearState;
+            }
         });
     }
 }

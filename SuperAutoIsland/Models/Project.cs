@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 using ClassIsland.Core.Enums;
 using ClassIsland.Core.Models.Ruleset;
 using ClassIsland.Shared.Models.Automation;
@@ -28,15 +29,31 @@ public partial class Project : ObservableRecipient
     [ObservableProperty] private ProjectsType _type = ProjectsType.BlocklyAction;
 
     /// <summary>
-    /// 规则集（仅在 ProjectsType.CiRuleset）下可用。
+    /// 规则集（仅在 ProjectsType.CiRuleset 下可用）。
     /// </summary>
     [ObservableProperty] private Ruleset _ruleset = new()
     {
         Mode = RulesetLogicalMode.Or
     };
+    private bool? _rulesetState = null;
     
     /// <summary>
-    /// 行动组（仅在 ProjectsType.CiActionSet）下可用。
+    /// 规则集状态（仅在 ProjectsType.CiRuleset 下可用）。
+    /// </summary>
+    [JsonIgnore]
+    public bool? RulesetState
+    {
+        get => _rulesetState;
+        set
+        {
+            OnPropertyChanging();
+            _rulesetState = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    /// <summary>
+    /// 行动组（仅在 ProjectsType.CiActionSet 下可用）。
     /// </summary>
     [ObservableProperty] private ObservableCollection<ActionItem> _actions = [];
 }
