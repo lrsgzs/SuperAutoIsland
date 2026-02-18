@@ -1,10 +1,10 @@
 # SuperAutoIsland
 
 > 超级自动化岛~~（岛？）~~
+> 
 > 为 ClassIsland 带来可复用的行动组/规则集，以及 Blockly 积木式自动化编程。
 
-![图片](https://livefile.xesimg.com/programme/python_assets/56095bcdbf1492a1602e0bb221aabebe.png)  
-*（图片仅示意，实际以插件界面为准）*
+![图片](https://livefile.xesimg.com/programme/python_assets/56095bcdbf1492a1602e0bb221aabebe.png) 
 
 ## 功能特性
 
@@ -36,4 +36,4 @@
 
 ## 许可证
 
-本项目基于 [MIT 许可证](LICENSE) 开源。
+本项目基于 [GPL 3.0](LICENSE) 开源。
