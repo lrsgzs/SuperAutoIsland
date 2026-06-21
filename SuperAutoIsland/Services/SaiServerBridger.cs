@@ -1,6 +1,5 @@
 ﻿using SuperAutoIsland.Interface;
 using SuperAutoIsland.Interface.Services;
-using SuperAutoIsland.Server;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -11,7 +10,7 @@ namespace SuperAutoIsland.Services;
 /// </summary>
 public class SaiServerBridger : ISaiServer
 {
-    private static readonly SaiServerInstance Instance = new();
+    private readonly SaiServer _instance;
     private readonly Logger<SaiServerBridger> _logger = new();
 
     /// <summary>
@@ -20,14 +19,17 @@ public class SaiServerBridger : ISaiServer
     /// </summary>
     public SaiServerBridger()
     {
-        _ = Instance.LoadServer(GlobalConstants.Configs.MainConfig!.Data.ServerPort);
-        _logger.Info("已初始化 SaiServerInstance！");
+        _instance = new SaiServer(GlobalConstants.Configs.MainConfig!.Data.ServerPort);
+        _logger.Info($"服务器地址：{_instance.Url}");
+        _ = _instance.Serve();
+        
+        _logger.Info("已初始化 SaiServer！");
     }
     
     /// <inheritdoc />
     public void RegisterBlocks(string pluginName, RegisterData data)
     {
-        Instance.RegisterBlocks(pluginName, data);
+        _instance.ExtraBlocks[pluginName] = data;
         _logger.Info($"{pluginName} 已注册 blocks");
     }
     
@@ -48,6 +50,6 @@ public class SaiServerBridger : ISaiServer
     /// <inheritdoc />
     public void Shutdown()
     {
-        Instance.ShutdownServer();
+        _instance.Shutdown();
     }
 }

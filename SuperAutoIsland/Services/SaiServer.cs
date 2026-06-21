@@ -7,11 +7,10 @@ using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface;
-using SuperAutoIsland.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
-namespace SuperAutoIsland.Server;
+namespace SuperAutoIsland.Services;
 
 /// <summary>
 /// SuperAutoIsland 服务器

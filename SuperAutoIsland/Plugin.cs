@@ -18,7 +18,6 @@ using SuperAutoIsland.Interface.MetaData;
 using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Rules;
-using SuperAutoIsland.Server;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations.Actions;
 using SuperAutoIsland.Services.Automations.Wrappers;
@@ -101,7 +100,6 @@ public class Plugin : PluginBase
         {
             _logger.BaseLog("TRACE", "保存 SaiServer 实例...");
             var saiServerService = IAppHost.GetService<ISaiServer>();
-            SaiServerSaver.Save(saiServerService);
             
             _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
