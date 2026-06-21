@@ -44,7 +44,7 @@ public class Plugin : PluginBase
     /// </summary>
     /// <param name="context">上下文</param>
     /// <param name="services">服务</param>
-    public override async void Initialize(HostBuilderContext context, IServiceCollection services)
+    public override void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
 
@@ -118,17 +118,11 @@ public class Plugin : PluginBase
                         Icon = ("Blockly 项目", "\uE049"),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
-                            ["ProjectGuid"] = new DropDownMetaArgs
+                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
                             {
                                 Name = "",
-                                Type = MetaType.dropdown,
-                                Options = EnsureListHasItemOrDefaultListItem(
-                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                        .Where(e => e.Type is ProjectsType.BlocklyAction)
-                                        .Select(e => (e.Name, e.Id.ToString()))
-                                        .ToList(),
-                                    new ValueTuple<string, string>("???",
-                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                Type = MetaType.dynamic_dropdown,
+                                Id = "sai.actions.runBlockly.options"
                             }
                         },
                         DropdownUseNumbers = false,
@@ -143,17 +137,11 @@ public class Plugin : PluginBase
                         Icon = ("行动组", "\uE01F"),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
-                            ["ProjectGuid"] = new DropDownMetaArgs
+                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
                             {
                                 Name = "",
-                                Type = MetaType.dropdown,
-                                Options = EnsureListHasItemOrDefaultListItem(
-                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                        .Where(e => e.Type is ProjectsType.CiActionSet)
-                                        .Select(e => (e.Name, e.Id.ToString()))
-                                        .ToList(),
-                                    new ValueTuple<string, string>("???",
-                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                Type = MetaType.dynamic_dropdown,
+                                Id = "sai.actions.runActionSet.options"
                             }
                         },
                         DropdownUseNumbers = false,
@@ -171,17 +159,11 @@ public class Plugin : PluginBase
                         Icon = ("规则集", "\uF17E"),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
-                            ["ProjectGuid"] = new DropDownMetaArgs
+                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
                             {
                                 Name = "",
-                                Type = MetaType.dropdown,
-                                Options = EnsureListHasItemOrDefaultListItem(
-                                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                                        .Where(e => e.Type is ProjectsType.CiRuleset)
-                                        .Select(e => (e.Name, e.Id.ToString()))
-                                        .ToList(),
-                                    new ValueTuple<string, string>("???",
-                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                Type = MetaType.dynamic_dropdown,
+                                Id = "sai.rules.runCiRuleset.options"
                             }
                         },
                         DropdownUseNumbers = false,
@@ -193,7 +175,34 @@ public class Plugin : PluginBase
             });
 
             saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
-            
+
+            saiServerService.RegisterDynamicDropdown("sai.actions.runBlockly.options", () =>
+                EnsureListHasItemOrDefaultListItem(
+                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                        .Where(e => e.Type is ProjectsType.BlocklyAction)
+                        .Select(e => (e.Name, e.Id.ToString()))
+                        .ToList(),
+                    new ValueTuple<string, string>("???",
+                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
+
+            saiServerService.RegisterDynamicDropdown("sai.actions.runActionSet.options", () =>
+                EnsureListHasItemOrDefaultListItem(
+                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                        .Where(e => e.Type is ProjectsType.CiActionSet)
+                        .Select(e => (e.Name, e.Id.ToString()))
+                        .ToList(),
+                    new ValueTuple<string, string>("???",
+                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
+
+            saiServerService.RegisterDynamicDropdown("sai.rules.runCiRuleset.options", () =>
+                EnsureListHasItemOrDefaultListItem(
+                    GlobalConstants.Configs.ProjectConfig.Data.Projects
+                        .Where(e => e.Type is ProjectsType.CiRuleset)
+                        .Select(e => (e.Name, e.Id.ToString()))
+                        .ToList(),
+                    new ValueTuple<string, string>("???",
+                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
+
             _logger.Info("加载 V8 引擎...");
             await V8Loader.InitializationTask;
         };

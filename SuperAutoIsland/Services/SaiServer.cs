@@ -259,7 +259,7 @@ public class SaiServer
                                 else
                                 {
                                     _logger.Warn($"未找到 DynamicDropdown getter {dynamicDropdownId}");
-                                    options = (List<(string, string)>)[("???", "???")];
+                                    options = [("???", "???")];
                                 }
                                 
                                 jsonReturnData = new 
