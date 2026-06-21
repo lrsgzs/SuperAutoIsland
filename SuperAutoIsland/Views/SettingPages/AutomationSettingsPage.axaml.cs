@@ -139,7 +139,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
             switch (ViewModel.SelectedProject!.Type)
             {
                 case ProjectsType.BlocklyAction:
-                    _blocklyRunner.RunActionProject(ViewModel.SelectedProject!);
+                    await _blocklyRunner.RunActionProject(ViewModel.SelectedProject!);
                     break;
                 case ProjectsType.CiRuleset:
                     _ciRunner.RunRulesetProject(ViewModel.SelectedProject);

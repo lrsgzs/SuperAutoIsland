@@ -23,6 +23,6 @@ public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
         if (Settings.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
             return;
         
-        Runner.RunActionProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
+        await Runner.RunActionProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
     }
 }

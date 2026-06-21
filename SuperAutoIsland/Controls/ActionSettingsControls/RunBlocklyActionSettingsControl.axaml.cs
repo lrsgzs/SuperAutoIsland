@@ -50,7 +50,7 @@ public partial class RunBlocklyActionSettingsControl : ActionSettingsControlBase
         try
         {
             var selectedProject = ProjectsConfigManager.GetProject(Settings.ProjectGuid);
-            _blocklyRunner.RunActionProject(selectedProject);
+            _ = _blocklyRunner.RunActionProject(selectedProject);
         }
         catch (Exception exception)
         {

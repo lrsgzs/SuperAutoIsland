@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using ClassIsland.Core;
 using ClassIsland.Core.Abstractions;
 using ClassIsland.Core.Abstractions.Services;
@@ -8,7 +7,6 @@ using ClassIsland.Core.Icons;
 using ClassIsland.Core.Models.Automation;
 using ClassIsland.Shared;
 using DynamicData;
-using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
@@ -40,43 +38,43 @@ namespace SuperAutoIsland;
 public class Plugin : PluginBase
 {
     private readonly Logger<Plugin> _logger = new();
-    
+
     /// <summary>
     /// 初始化插件
     /// </summary>
     /// <param name="context">上下文</param>
     /// <param name="services">服务</param>
-    public override void Initialize(HostBuilderContext context, IServiceCollection services)
+    public override async void Initialize(HostBuilderContext context, IServiceCollection services)
     {
         // ascii 字符画后续再补
 
         _logger.Info("欢迎使用 SuperAutoIsland");
         _logger.Info("初期化中...");
-        
+
         _logger.Info("加载配置...");
         GlobalConstants.PluginFolder = Info.PluginFolderPath;
         GlobalConstants.PluginConfigFolder = PluginConfigFolder;
         GlobalConstants.Configs.MainConfig = new MainConfigHandler();
         GlobalConstants.Configs.ProjectConfig = new ProjectConfigHandler();
         ProjectsConfigManager.Initialization();
-        
+
         _logger.Info("注册运行器...");
         services.AddSingleton<ActionAndRuleRunner>();
         services.AddSingleton<BlocklyRunner>();
         services.AddSingleton<CiRunner>();
-        
+
         _logger.Info("注册服务器...");
         services.AddSingleton<ISaiServer, SaiServerBridger>();
-        
+
         _logger.Info("注册视图模型...");
         services.AddTransient<SaiLogsViewModel>();
         services.AddTransient<AutomationViewModel>();
-        
+
         _logger.Info("注册自动化元素...");
         // 行动
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
-        
+
         // 行动树
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", "\uF3AF"));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
@@ -85,11 +83,12 @@ public class Plugin : PluginBase
         ]);
 
         // 规则
-        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行可复用的规则集", "\uF17E");
-        
+        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行可复用的规则集",
+            "\uF17E");
+
         // 规则处理器
         services.AddSingleton<RuleHandlerService>();
-        
+
         _logger.Info("添加设置页面...");
         services.AddSingleton<SaiLogsWindow>();
         services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
@@ -98,19 +97,20 @@ public class Plugin : PluginBase
         // services.AddSettingsPage<AboutSettingsPage>();
 
         // 应用启动完毕
-        AppBase.Current.AppStarted += (_, _) =>
+        AppBase.Current.AppStarted += async (_, _) =>
         {
             _logger.BaseLog("TRACE", "保存 SaiServer 实例...");
             var saiServerService = IAppHost.GetService<ISaiServer>();
-            
+
             _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
             IAppHost.GetService<BlocklyRunner>();
-            
+
             _logger.Debug("注册 SuperAutoIsland 元素...");
             saiServerService.RegisterBlocks("SuperAutoIsland", new RegisterData
             {
-                Actions = [
+                Actions =
+                [
                     new BlockMetadata
                     {
                         Id = "sai.actions.runBlockly",
@@ -127,7 +127,8 @@ public class Plugin : PluginBase
                                         .Where(e => e.Type is ProjectsType.BlocklyAction)
                                         .Select(e => (e.Name, e.Id.ToString()))
                                         .ToList(),
-                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                    new ValueTuple<string, string>("???",
+                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -151,7 +152,8 @@ public class Plugin : PluginBase
                                         .Where(e => e.Type is ProjectsType.CiActionSet)
                                         .Select(e => (e.Name, e.Id.ToString()))
                                         .ToList(),
-                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                    new ValueTuple<string, string>("???",
+                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -160,7 +162,8 @@ public class Plugin : PluginBase
                         IsRule = false
                     }
                 ],
-                Rules = [
+                Rules =
+                [
                     new BlockMetadata
                     {
                         Id = "sai.rules.runCiRuleset",
@@ -177,7 +180,8 @@ public class Plugin : PluginBase
                                         .Where(e => e.Type is ProjectsType.CiRuleset)
                                         .Select(e => (e.Name, e.Id.ToString()))
                                         .ToList(),
-                                    new ValueTuple<string, string>("???", GlobalConstants.Assets.ProjectNullGuid.ToString()))
+                                    new ValueTuple<string, string>("???",
+                                        GlobalConstants.Assets.ProjectNullGuid.ToString()))
                             }
                         },
                         DropdownUseNumbers = false,
@@ -187,26 +191,26 @@ public class Plugin : PluginBase
                     }
                 ]
             });
-        
+
             saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
             
-            // _logger.Debug("尝试运行 JS");
-            // var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
-            // blocklyRunner.RunJavaScript("logger.Info('Hello from Javascript')");
+            _logger.Info("加载 V8 引擎...");
+            await V8Loader.InitializationTask;
         };
-        
+
         // 应用退出
-        AppBase.Current.AppStopping += (_,_) =>
+        AppBase.Current.AppStopping += (_, _) =>
         {
             _logger.Info("兜底：保存全部配置...");
             GlobalConstants.Configs.MainConfig.Save();
             GlobalConstants.Configs.ProjectConfig.Save();
-            
+
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
             _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server...");
-            
-            new Thread(() => {
+
+            new Thread(() =>
+            {
                 Thread.Sleep(3000);
                 _logger.Info("正在关闭...");
                 Environment.Exit(0);
