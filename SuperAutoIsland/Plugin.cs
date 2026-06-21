@@ -202,9 +202,6 @@ public class Plugin : PluginBase
             GlobalConstants.Configs.MainConfig.Save();
             GlobalConstants.Configs.ProjectConfig.Save();
             
-            var blocklyRunner = IAppHost.GetService<BlocklyRunner>();
-            blocklyRunner.Dispose();
-            
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
             _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server...");

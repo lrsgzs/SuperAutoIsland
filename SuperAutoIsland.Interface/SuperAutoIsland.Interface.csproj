@@ -29,7 +29,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="ClassIsland.Core" Version="1.7.106.2-dev-v2">
+        <PackageReference Include="ClassIsland.Core" Version="2.1.0">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
     </ItemGroup>

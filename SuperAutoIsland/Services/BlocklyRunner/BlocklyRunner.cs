@@ -2,7 +2,6 @@
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared.Logger;
-using V8Extended;
 
 namespace SuperAutoIsland.Services.BlocklyRunner;
 
@@ -13,7 +12,6 @@ public class BlocklyRunner
 {
     private readonly Logger<BlocklyRunner> _logger = new();
     private readonly V8ScriptEngine _engine = new();
-    private readonly Intervals _v8Intervals = new();
 
     /// <summary>
     /// 构造函数
@@ -25,18 +23,6 @@ public class BlocklyRunner
         _engine.AddHostObject("callAction", JavaScriptNamespace.CallAction);
         _engine.AddHostObject("getRuleState", JavaScriptNamespace.GetRuleState);
         _engine.AddHostObject("console", JavaScriptNamespace.Console);
-
-        _v8Intervals.Extend(_engine);
-        _v8Intervals.StartEventsLoopBackground();
-    }
-
-    /// <summary>
-    /// 销毁函数
-    /// </summary>
-    public void Dispose()
-    {
-        _v8Intervals.StopEventsLoop();
-        GC.SuppressFinalize(this);
     }
     
     /// <summary>

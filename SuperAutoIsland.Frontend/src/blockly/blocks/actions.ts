@@ -207,13 +207,7 @@ addBlock(
             `async function ${generator.FUNCTION_NAME_PLACEHOLDER_}(value) {
                 const actionId = "classisland.action.sleep";
                 const actionData = { Value: value };
-                console.log('Internal Action', actionId, JSON.stringify(actionData));
-                await new Promise(resolve => {
-                    setTimeout(() => {
-                        console.log('Internal Action Sleep Completed');
-                        resolve();
-                    }, actionData.Value * 1000);
-                });
+                await callAction(actionId, actionData);
             }`,
         );
         return `await ${wrapper}(${value});\n`;

@@ -37,7 +37,7 @@ public class SaiServer
     public SaiServer(string port)
     {
         Url = $"http://localhost:{port}/";
-        _wwwRoot = Path.Combine(GlobalConstants.PluginFolder!, "assets", "wwwroot");
+        _wwwRoot = Path.Combine(GlobalConstants.PluginFolder!, "Assets", "wwwroot");
         _isRunning = true;
         
         _listener = new HttpListener();
