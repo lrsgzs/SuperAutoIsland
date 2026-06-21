@@ -1,4 +1,4 @@
-﻿import { addLabel, addMetaBlock } from '../utils/superGenerator';
+﻿import { addMetaBlock } from '../utils/superGenerator';
 import '../types/extraData.d.ts';
 import { wsWaitMessage } from '../utils/wsUtils';
 
@@ -50,7 +50,7 @@ const weathers: [string, string][] = [
     ['未知', '99'],
 ];
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.windows.className',
     name: '前台窗口类名',
     icon: ['窗口指纹', '\uF4A2'],
@@ -63,7 +63,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.windows.text',
     name: '前台窗口标题',
     icon: ['文本字段', '\uF26B'],
@@ -76,7 +76,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.windows.status',
     name: '前台窗口状态是',
     icon: ['面板独立窗口', '\uEC83'],
@@ -98,7 +98,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.windows.processName',
     name: '前台窗口进程',
     icon: ['窗口AD人', '\uF488'],
@@ -111,7 +111,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.lessons.currentSubject',
     name: '科目是',
     icon: ['书', '\uE215'],
@@ -123,7 +123,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.lessons.nextSubject',
     name: '下节课科目是',
     icon: ['创建书', '\uE217'],
@@ -135,7 +135,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.lessons.previousSubject',
     name: '上节课科目是',
     icon: ['删除书', '\uE226'],
@@ -147,7 +147,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.lessons.timeState',
     name: '当前时间状态是',
     icon: ['钟表', '\uE4C4'],
@@ -170,7 +170,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.weather.currentWeather',
     name: '当前天气是',
     icon: ['多云', '\uE4DC'],
@@ -183,7 +183,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.weather.hasWeatherAlert',
     name: '存在气象预警',
     icon: ['警告', '\uF431'],
@@ -196,7 +196,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.weather.rainTime',
     name: '距离降水开始/结束还剩',
     icon: ['雨', '\uF43F'],

@@ -1,6 +1,6 @@
 ﻿import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
-import { addLabel, addMetaBlock } from '../utils/superGenerator';
+import { addMetaBlock } from '../utils/superGenerator';
 import '../types/extraData.d.ts';
 import { wsWaitMessage } from '../utils/wsUtils';
 
@@ -8,7 +8,7 @@ const componentsConfigsResponse = await wsWaitMessage<{ configs: string[] }>(win
 
 const componentsConfigs: [string, string][] = componentsConfigsResponse.configs.map(e => [e, e]);
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.broadcastSignal',
     name: '广播信号',
     icon: ['广播', '\uE561'],
@@ -19,7 +19,7 @@ addMetaBlock({
     inlineField: false,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.currentComponentConfig',
     name: '组件配置方案',
     icon: ['Apps', '\uE06F'],
@@ -30,7 +30,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.theme',
     name: '应用主题',
     icon: ['主题', '\uE5CB'],
@@ -50,7 +50,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.windowDockingLocation',
     name: '窗口停靠位置',
     icon: ['TV', '\uF397'],
@@ -73,7 +73,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.windowLayer',
     name: '窗口层级',
     icon: ['层级', '\uEA2F'],
@@ -92,7 +92,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.windowDockingOffsetX',
     name: '窗口向右偏移',
     icon: ['左右箭头', '\uE099'],
@@ -103,7 +103,7 @@ addMetaBlock({
     inlineField: false,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.settings.windowDockingOffsetY',
     name: '窗口向下偏移',
     icon: ['下箭头', '\uE094'],
@@ -114,7 +114,7 @@ addMetaBlock({
     inlineField: false,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.os.run',
     name: '运行',
     icon: ['打开', '\uEC2E'],
@@ -136,7 +136,7 @@ addMetaBlock({
     inlineField: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.os.run.program',
     name: '运行程序',
     icon: ['窗口集', '\uF4B1'],
@@ -149,7 +149,7 @@ addMetaBlock({
     inlineField: false,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.showNotification',
     name: '显示提醒',
     icon: ['提醒', '\uE02B'],
@@ -214,7 +214,7 @@ addBlock(
     },
 );
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.notification.weather',
     name: '显示天气提醒',
     icon: ['多云', '\uF44F'],
@@ -234,7 +234,7 @@ addMetaBlock({
     dropdownUseNumbers: true,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.app.quit',
     name: '退出 ClassIsland',
     icon: ['退出', '\uE0DE'],
@@ -243,7 +243,7 @@ addMetaBlock({
     inlineField: false,
 });
 
-addMetaBlock({
+await addMetaBlock({
     id: 'classisland.app.restart',
     name: '重启 ClassIsland',
     icon: ['转圈箭头', '\uE0BD'],

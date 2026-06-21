@@ -14,6 +14,11 @@ public delegate ActionItem ActionWrapper(ActionItem action);
 public delegate Rule RuleWrapper(Rule rule);
 
 /// <summary>
+/// 动态下拉框 getter
+/// </summary>
+public delegate List<(string, string)> DynamicDropdownGetter();
+
+/// <summary>
 /// 服务器接口
 /// </summary>
 public interface ISaiServer
@@ -38,6 +43,13 @@ public interface ISaiServer
     /// <param name="id">规则 id</param>
     /// <param name="wrapper">wrapper 函数</param>
     public void RegisterWrapper(string id, RuleWrapper wrapper);
+    
+    /// <summary>
+    /// 注册动态下拉框 getter
+    /// </summary>
+    /// <param name="id">动态下拉框 id</param>
+    /// <param name="getter">获取函数</param>
+    public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter);
 
     /// <summary>
     /// 结束服务器（好像不能用）

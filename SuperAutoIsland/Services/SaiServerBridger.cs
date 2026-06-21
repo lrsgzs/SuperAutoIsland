@@ -46,7 +46,13 @@ public class SaiServerBridger : ISaiServer
         ActionAndRuleRunner.RuleWrappers[id] = wrapper;
         _logger.Info($"已注册 id 为 {id} 的 RuleWrapper");
     }
-    
+
+    public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter)
+    {
+        _instance.DynamicDropdowns[id] = getter;
+        _logger.Info($"已注册 id 为 {id} 的  DynamicDropdownGetter");
+    }
+
     /// <inheritdoc />
     public void Shutdown()
     {

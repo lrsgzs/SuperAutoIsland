@@ -77,6 +77,11 @@ public class MetaArgsConverter : JsonConverter<MetaArgsBase>
                 }
                 writer.WriteEndArray();
                 break;
+            
+            case DynamicDropdownMetaArgs dynamicDropdown:
+                // 写入选项数组
+                writer.WriteStringValue(dynamicDropdown.Id);
+                break;
                 
             case CheckboxMetaArgs checkbox when checkbox.DefaultValue.HasValue:
                 writer.WriteBooleanValue(checkbox.DefaultValue.Value);

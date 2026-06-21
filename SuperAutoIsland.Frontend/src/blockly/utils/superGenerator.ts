@@ -1,5 +1,6 @@
 ﻿import { addBlock, type ArgDefinition, data } from './blockGenerator';
 import { Order } from 'blockly/javascript';
+import { wsWaitMessage } from '../utils/wsUtils';
 
 const quote_ = (text: string) => {
     // @ts-ignore
@@ -40,11 +41,12 @@ const dummyInput: ArgDefinition = {
 export type CommonMetaArgs = [string, 'dummy' | 'text' | 'number' | 'boolean'];
 export type DropDownMetaArgs = [string, 'dropdown', [string, string][]];
 export type CheckboxMetaArgs = [string, 'checkbox', boolean?];
+export type DynamicDropdownMetaArgs = [string, 'dynamic_dropdown', string];
 
 /**
  * 积木参数类型
  */
-export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs;
+export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs | DynamicDropdownMetaArgs;
 
 /**
  * 积木元数据接口
@@ -64,7 +66,7 @@ export interface Metadata {
  * 添加积木
  * @param metadata 积木元数据
  */
-export function addMetaBlock(metadata: Metadata) {
+export async function addMetaBlock(metadata: Metadata) {
     // @ts-ignore
     const type = metadata.id.replaceAll('.', '_');
     let message = `[%1 ${metadata.name}]`;
@@ -108,6 +110,17 @@ export function addMetaBlock(metadata: Metadata) {
                     type: 'field_dropdown',
                     data: {
                         options: arg[2],
+                    },
+                };
+                if (!metadata.inlineField) message += '\n';
+                args.push([argName, 'field_dropdown']);
+                break;
+            case 'dynamic_dropdown':
+                let data = await wsWaitMessage<{ options: [string, string][] }>(window.saiWS, { type: 'getDynamicDropdownContent', id: arg[2] });
+                inputDefinition = {
+                    type: 'field_dropdown',
+                    data: {
+                        options: data.options,
                     },
                 };
                 if (!metadata.inlineField) message += '\n';

@@ -13,5 +13,6 @@ public enum MetaType
     number,
     boolean,
     dropdown,
-    checkbox
+    checkbox,
+    dynamic_dropdown
 }

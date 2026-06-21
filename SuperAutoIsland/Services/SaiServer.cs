@@ -7,6 +7,7 @@ using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -21,6 +22,7 @@ public class SaiServer
     /// 额外积木批发
     /// </summary>
     public readonly Dictionary<string, RegisterData> ExtraBlocks = new();
+    public readonly Dictionary<string, DynamicDropdownGetter> DynamicDropdowns = new();
     private readonly ActionAndRuleRunner _runner = new();
     private bool _isRunning;
     
@@ -242,6 +244,28 @@ public class SaiServer
                                 {
                                     type = "result",
                                     configs = componentService.ComponentConfigs,
+                                };
+                                break;
+                            // 动态下拉框
+                            case "getDynamicDropdownContent":
+                                var dynamicDropdownId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
+                                var getter = DynamicDropdowns.GetValueOrDefault(dynamicDropdownId);
+                                List<(string, string)> options;
+                                
+                                if (getter != null)
+                                {
+                                    options = getter();
+                                }
+                                else
+                                {
+                                    _logger.Warn($"未找到 DynamicDropdown getter {dynamicDropdownId}");
+                                    options = (List<(string, string)>)[("???", "???")];
+                                }
+                                
+                                jsonReturnData = new 
+                                {
+                                    type = "result",
+                                    options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList(),
                                 };
                                 break;
                             // 默认行为

@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/scripts/post-build.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/scripts/post-build.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/template.html" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/template.html" afterDir="false" />
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 保存有提示（">
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/DynamicDropdownMetaArgs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/MetaType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/MetaType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Shared/MetadataToJson.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Shared/MetadataToJson.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,11 +130,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1782046354215</updated>
-      <workItem from="1782046355988" duration="451000" />
+      <workItem from="1782046355988" duration="2043000" />
     </task>
+    <task id="LOCAL-00001" summary="feat: 保存有提示（">
+      <option name="closed" value="true" />
+      <created>1782046997360</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1782046997360</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: 保存有提示（" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 保存有提示（" />
   </component>
 </project>
