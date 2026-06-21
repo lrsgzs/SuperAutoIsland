@@ -1,6 +1,7 @@
 ﻿using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models.Settings;
 using SuperAutoIsland.Shared;
@@ -10,7 +11,8 @@ namespace SuperAutoIsland.Views.SettingPages;
 /// <summary>
 /// 「SuperAutoIsland 主设置」视图
 /// </summary>
-[SettingsPageInfo("sai.master","SuperAutoIsland 主设置","\uF3AF","\uF3AE")]
+[Group("sai.settings")]
+[SettingsPageInfo("sai.settings.main","主设置",FluentIcons.HomeRegular,FluentIcons.HomeFilled)]
 public partial class MainSettingsPage : SettingsPageBase {
     public MainConfigModel Settings { get; set; }
     private bool _isRequestedRestart = false;

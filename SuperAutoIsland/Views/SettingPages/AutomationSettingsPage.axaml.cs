@@ -4,6 +4,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using CommunityToolkit.Mvvm.Input;
 using SuperAutoIsland.Enums;
@@ -41,7 +42,8 @@ public struct ProjectTypeNode
 /// </summary>
 [HidePageTitle]
 [FullWidthPage]
-[SettingsPageInfo("sai.automation","SuperAutoIsland 自动化","\uEDC1","\uEDC0")]
+[Group("sai.settings")]
+[SettingsPageInfo("sai.settings.automation","自动化",FluentIcons.PlayCircleSparkleRegular,FluentIcons.PlayCircleSparkleFilled)]
 public partial class AutomationSettingsPage : SettingsPageBase
 {
     private bool IsPanelOpened { get; set; }

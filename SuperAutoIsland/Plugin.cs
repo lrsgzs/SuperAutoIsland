@@ -4,6 +4,7 @@ using ClassIsland.Core.Abstractions;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Extensions.Registry;
+using ClassIsland.Core.Icons;
 using ClassIsland.Core.Models.Automation;
 using ClassIsland.Shared;
 using DynamicData;
@@ -91,6 +92,7 @@ public class Plugin : PluginBase
         
         _logger.Info("添加设置页面...");
         services.AddSingleton<SaiLogsWindow>();
+        services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<AutomationSettingsPage>();
         // services.AddSettingsPage<AboutSettingsPage>();

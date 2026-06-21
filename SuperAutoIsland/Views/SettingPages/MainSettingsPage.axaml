@@ -14,17 +14,6 @@
                 <fa:InfoBar.Message>
                     欢迎使用 SuperAutoIsland！本插件使用了 Google Blockly，在此致谢。
                 </fa:InfoBar.Message>
-                
-                <fa:InfoBar.Content>
-                    <StackPanel Orientation="Horizontal" Margin="2">
-                        <TextBlock VerticalAlignment="Center">文档：</TextBlock>
-                        <Button Theme="{StaticResource TransparentButton}"
-                                Content="https://example.com"
-                                VerticalAlignment="Center"
-                                Command="{x:Static ciCommands:UriNavigationCommands.UriNavigationCommand}"
-                                CommandParameter="https://example.com"/>
-                    </StackPanel>
-                </fa:InfoBar.Content>
             </fa:InfoBar>
         
             <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
