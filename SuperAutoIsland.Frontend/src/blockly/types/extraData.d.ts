@@ -8,8 +8,8 @@ declare global {
         saiWS: WebSocket;
         saiWaitMessage: typeof wsWaitMessage;
         workspace: Blockly.Workspace;
-        runCode: (workspace?: Blockly.Workspace) => void;
-        saveCode: (workspace?: Blockly.Workspace) => void;
+        runCode: (workspace?: Blockly.Workspace) => Promise<void>;
+        saveCode: (workspace?: Blockly.Workspace) => Promise<void>;
     }
 }
 
