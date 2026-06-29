@@ -12,7 +12,7 @@ public static class V8Loader
     public static bool IsV8Ready { get; private set; } = false;
     public static bool IsV8Denied { get; private set; } = false;
     
-    private static readonly AsyncLock Lock = new AsyncLock();
+    private static readonly AsyncLock Lock = new();
     private static Task<bool>? _initializationTask;
 
     /// <summary>
@@ -124,8 +124,8 @@ public static class V8Loader
             await CommonTaskDialogs.ShowDialog("SuperAutoIsland | 资源缺失", "V8 资源补齐完毕");
         }
 
-        var appBase = AppContext.BaseDirectory;
-        var targetDir = Path.Combine(appBase, "runtimes", rid, "native");
+        var pluginBase = Plugin.Current?.Info.PluginFolderPath ?? AppContext.BaseDirectory;
+        var targetDir = Path.Combine(pluginBase, "runtimes", rid, "native");
         Directory.CreateDirectory(targetDir);
 
         foreach (var item in items)

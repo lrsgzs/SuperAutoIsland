@@ -35,6 +35,13 @@ public class Plugin : PluginBase
 {
     private readonly Logger<Plugin> _logger = new();
 
+    public static Plugin? Current { get; private set; }
+
+    public Plugin()
+    {
+        Current = this;
+    }
+
     /// <summary>
     /// 初始化插件
     /// </summary>
