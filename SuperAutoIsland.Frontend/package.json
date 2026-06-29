@@ -10,7 +10,8 @@
         "build:dev": "webpack --config webpack.dev.js --progress && pwsh ./scripts/post-build.ps1",
         "build:prod": "webpack --config webpack.prod.js --progress && pwsh ./scripts/post-build.ps1",
         "dev": "webpack serve --config webpack.dev.js --progress",
-        "format": "prettier . --write"
+        "format": "prettier . --write",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@tailwindcss/postcss": "^4.1.11",
