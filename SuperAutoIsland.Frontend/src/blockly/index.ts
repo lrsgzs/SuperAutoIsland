@@ -43,26 +43,30 @@ postSetupCategory();
 for (let pluginName in window.extraBlocks) {
     preSetupCategory(pluginName);
 
-    if (window.extraBlocks[pluginName].rules.length != 0) {
+    let rules = window.extraBlocks[pluginName].rules;
+    let actions = window.extraBlocks[pluginName].actions;
+    let data = window.extraBlocks[pluginName].data;
+
+    if (rules != undefined && rules.length != 0) {
         addLabel("规则");
 
-        for (let block of window.extraBlocks[pluginName].rules) {
+        for (let block of rules) {
             await addMetaBlock('action', block);
         }
     }
 
-    if (window.extraBlocks[pluginName].actions.length != 0) {
+    if (actions != undefined && actions.length != 0) {
         addLabel("行动");
 
-        for (let block of window.extraBlocks[pluginName].actions) {
+        for (let block of actions) {
             await addMetaBlock('rule', block);
         }
     }
 
-    if (window.extraBlocks[pluginName].data.length != 0) {
+    if (data != undefined && data.length != 0) {
         addLabel('数据');
 
-        for (let block of window.extraBlocks[pluginName].data) {
+        for (let block of data) {
             await addMetaBlock('data', block);
         }
     }

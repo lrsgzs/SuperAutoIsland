@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="fix: 移除多余的js文件">
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Data/TestData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/DataGetterItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiDataRegistry.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/BlocklyRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/BlocklyRunner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/JavaScriptNamespace.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/JavaScriptNamespace.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,6 +124,7 @@
       <workItem from="1782046355988" duration="2665000" />
       <workItem from="1782718919422" duration="2105000" />
       <workItem from="1782721202604" duration="3010000" />
+      <workItem from="1782726507340" duration="196000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
