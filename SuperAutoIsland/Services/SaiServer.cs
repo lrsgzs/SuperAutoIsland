@@ -109,11 +109,22 @@ public class SaiServer
 
         try
         {
-            var buffer = new byte[81920];
+            var chunk = new byte[4096];
+            var receiveBuffer = new ArraySegment<byte>(chunk);
+            
             while (websocket.State == WebSocketState.Open)
             {
-                var result = await websocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                using var ms = new MemoryStream();
+                WebSocketReceiveResult result;
                 
+                do
+                {
+                    result = await websocket.ReceiveAsync(receiveBuffer, CancellationToken.None);
+                    ms.Write(chunk, 0, result.Count);
+                } while (!result.EndOfMessage);
+
+                ms.Position = 0;
+
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
                     await websocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
@@ -121,17 +132,22 @@ public class SaiServer
                 }
                 else
                 {
-                    var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                    string message;
+                    using (var reader = new StreamReader(ms, Encoding.UTF8))
+                    {
+                        message = await reader.ReadToEndAsync();
+                    }
+                        
                     _logger.Info($"收到消息: {message}");
                     object jsonReturnData;
-                    
+
                     try
                     {
                         var messageJson = JsonDocument.Parse(message);
                         var messageJsonType = messageJson.RootElement.GetProperty("type");
                         var messageType = messageJsonType.GetString()!;
-                        
-                        // 以后有时间了抽离此处逻辑
+
+                        // TODO: 以后有时间了抽离此处逻辑
                         _logger.Debug($"Type: {messageType}");
                         switch (messageType)
                         {
@@ -141,7 +157,7 @@ public class SaiServer
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    blocksString = extraBlocks  // 直接返回 json 避免问题。前端有 JSON.parse
+                                    blocksString = extraBlocks // 直接返回 json 避免问题。前端有 JSON.parse
                                 };
                                 break;
                             // 运行行动
@@ -165,10 +181,10 @@ public class SaiServer
                                 break;
                             // 运行数据
                             case "runData":
-                                var dataId = messageJson.RootElement.GetProperty("id").GetString()!;
+                                var dataId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
                                 var dataParams = messageJson.RootElement.GetProperty("settings")
                                     .Deserialize(SaiDataRegistry.GetGetterType(dataId));
-                                jsonReturnData = new 
+                                jsonReturnData = new
                                 {
                                     type = "result",
                                     data = await SaiDataRegistry.RunData(dataId, dataParams),
@@ -185,6 +201,7 @@ public class SaiServer
                                         {
                                             guid1 = Guid.NewGuid();
                                         }
+                                        
                                         var project1 = ProjectsConfigManager.GetOrCreateProject(
                                             ProjectsType.BlocklyAction,
                                             guid1, null);
@@ -192,19 +209,20 @@ public class SaiServer
                                             project1,
                                             projectData.GetProperty("workspace").GetString()!,
                                             projectData.GetProperty("code").GetString()!);
-                                        
-                                        jsonReturnData = new 
+
+                                        jsonReturnData = new
                                         {
                                             type = "result"
                                         };
                                         break;
                                     default:
-                                        jsonReturnData = new 
+                                        jsonReturnData = new
                                         {
                                             type = "not-recognized-project-type"
                                         };
                                         break;
                                 }
+
                                 break;
                             // 加载项目
                             case "load":
@@ -227,7 +245,8 @@ public class SaiServer
                                     _logger.FormatException(e);
                                     workspace = "{}";
                                 }
-                                jsonReturnData = new 
+
+                                jsonReturnData = new
                                 {
                                     type = "result",
                                     workspace,
@@ -240,8 +259,8 @@ public class SaiServer
                                 var subjects = profileService.Profile.Subjects
                                     .Select(kvp => new { Id = kvp.Key, kvp.Value.Name })
                                     .ToList();
-                                
-                                jsonReturnData = new 
+
+                                jsonReturnData = new
                                 {
                                     type = "result",
                                     subjects,
@@ -250,8 +269,8 @@ public class SaiServer
                             // 数据 - 获取组件配置
                             case "getComponentConfigs":
                                 var componentService = IAppHost.GetService<IComponentsService>();
-                                
-                                jsonReturnData = new 
+
+                                jsonReturnData = new
                                 {
                                     type = "result",
                                     configs = componentService.ComponentConfigs,
@@ -259,10 +278,11 @@ public class SaiServer
                                 break;
                             // 动态下拉框
                             case "getDynamicDropdownContent":
-                                var dynamicDropdownId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
+                                var dynamicDropdownId =
+                                    messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
                                 var getter = DynamicDropdowns.GetValueOrDefault(dynamicDropdownId);
                                 List<(string, string)> options;
-                                
+
                                 if (getter != null)
                                 {
                                     options = await getter();
@@ -272,8 +292,8 @@ public class SaiServer
                                     _logger.Warn($"未找到 DynamicDropdown getter {dynamicDropdownId}");
                                     options = [("???", "???")];
                                 }
-                                
-                                jsonReturnData = new 
+
+                                jsonReturnData = new
                                 {
                                     type = "result",
                                     options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList(),
@@ -281,7 +301,7 @@ public class SaiServer
                                 break;
                             // 默认行为
                             default:
-                                jsonReturnData = new 
+                                jsonReturnData = new
                                 {
                                     type = "not-recognized-command-type"
                                 };
