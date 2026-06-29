@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="fix: 移除多余的js文件">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +54,7 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.build:dev.executor&quot;: &quot;Run&quot;,
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/lrs2187/Projects/SuperAutoIsland/SuperAutoIsland.Frontend/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -101,10 +101,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="npm.dev" />
-      <item itemvalue="npm.format" />
       <item itemvalue="npm.build:dev" />
       <item itemvalue="npm.build:prod" />
+      <item itemvalue="npm.dev" />
+      <item itemvalue="npm.format" />
     </list>
   </component>
   <component name="SharedIndexes">
@@ -124,7 +124,8 @@
       <workItem from="1782046355988" duration="2665000" />
       <workItem from="1782718919422" duration="2105000" />
       <workItem from="1782721202604" duration="3010000" />
-      <workItem from="1782726507340" duration="196000" />
+      <workItem from="1782726507340" duration="480000" />
+      <workItem from="1782726999652" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
