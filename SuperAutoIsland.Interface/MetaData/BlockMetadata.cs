@@ -32,6 +32,7 @@ public class BlockMetadata
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? DropdownUseNumbers { get; set; }
 
+    [Obsolete("use RegisterData's properties instead")]
     [JsonPropertyName("isRule")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? IsRule { get; set; }

@@ -127,8 +127,7 @@ public class Plugin : PluginBase
                         },
                         DropdownUseNumbers = false,
                         InlineField = false,
-                        InlineBlock = false,
-                        IsRule = false
+                        InlineBlock = false
                     },
                     new BlockMetadata
                     {
@@ -146,8 +145,7 @@ public class Plugin : PluginBase
                         },
                         DropdownUseNumbers = false,
                         InlineField = false,
-                        InlineBlock = false,
-                        IsRule = false
+                        InlineBlock = false
                     }
                 ],
                 Rules =
@@ -168,8 +166,7 @@ public class Plugin : PluginBase
                         },
                         DropdownUseNumbers = false,
                         InlineField = false,
-                        InlineBlock = false,
-                        IsRule = true
+                        InlineBlock = false
                     }
                 ]
             });

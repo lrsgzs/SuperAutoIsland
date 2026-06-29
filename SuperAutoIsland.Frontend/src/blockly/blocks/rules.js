@@ -1,13 +1,11 @@
-﻿import { addMetaBlock } from '../utils/superGenerator';
+import { addMetaBlock } from '../utils/superGenerator';
 import '../types/extraData.d.ts';
 import { wsWaitMessage } from '../utils/wsUtils';
-
-const subjectsResponse = await wsWaitMessage<{ subjects: { Id: string; Name: string; }[] }>(window.saiWS, {
+const subjectsResponse = await wsWaitMessage(window.saiWS, {
     type: "getSubjects"
-})
-const subjects: [string, string][] = subjectsResponse.subjects.map(e => [e.Name, e.Id]);
-
-const weathers: [string, string][] = [
+});
+const subjects = subjectsResponse.subjects.map(e => [e.Name, e.Id]);
+const weathers = [
     ['晴', '0'],
     ['多云', '1'],
     ['阴', '2'],
@@ -49,7 +47,6 @@ const weathers: [string, string][] = [
     ['雪', '302'],
     ['未知', '99'],
 ];
-
 await addMetaBlock('rule', {
     id: 'classisland.windows.className',
     name: '前台窗口类名',
@@ -61,7 +58,6 @@ await addMetaBlock('rule', {
     inlineBlock: false,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.windows.text',
     name: '前台窗口标题',
@@ -73,7 +69,6 @@ await addMetaBlock('rule', {
     inlineBlock: false,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.windows.status',
     name: '前台窗口状态是',
@@ -94,7 +89,6 @@ await addMetaBlock('rule', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.windows.processName',
     name: '前台窗口进程',
@@ -106,7 +100,6 @@ await addMetaBlock('rule', {
     inlineBlock: false,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.lessons.currentSubject',
     name: '科目是',
@@ -117,7 +110,6 @@ await addMetaBlock('rule', {
     inlineBlock: true,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.lessons.nextSubject',
     name: '下节课科目是',
@@ -128,7 +120,6 @@ await addMetaBlock('rule', {
     inlineBlock: true,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.lessons.previousSubject',
     name: '上节课科目是',
@@ -139,7 +130,6 @@ await addMetaBlock('rule', {
     inlineBlock: true,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.lessons.timeState',
     name: '当前时间状态是',
@@ -161,7 +151,6 @@ await addMetaBlock('rule', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.weather.currentWeather',
     name: '当前天气是',
@@ -173,7 +162,6 @@ await addMetaBlock('rule', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.weather.hasWeatherAlert',
     name: '存在气象预警',
@@ -185,7 +173,6 @@ await addMetaBlock('rule', {
     inlineBlock: false,
     inlineField: true,
 });
-
 await addMetaBlock('rule', {
     id: 'classisland.weather.rainTime',
     name: '距离降水开始/结束还剩',

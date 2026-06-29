@@ -5,18 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 保存有提示（">
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/DynamicDropdownMetaArgs.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/MetaType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/MetaType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Shared/MetadataToJson.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Shared/MetadataToJson.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,22 +23,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "lrsgzs"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;lrsgzs&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/lrsgzs/SuperAutoIsland",
-    "accountId": "b8887e54-9165-49dc-91d4-79a7b6116f4e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/lrsgzs/SuperAutoIsland&quot;,
+    &quot;accountId&quot;: &quot;b8887e54-9165-49dc-91d4-79a7b6116f4e&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3,
-  "fromUser": false
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3FRmekq4CTqzIMF23oo5EPssJAh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -51,6 +48,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
@@ -64,7 +62,7 @@
     "nodejs_package_manager_path": "npm",
     "npm.build:dev.executor": "Run",
     "npm.dev.executor": "Run",
-    "ts.external.directory.path": "/home/lrs2187/.local/share/JetBrains/Toolbox/apps/webstorm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "/home/lrs2187/Projects/SuperAutoIsland/SuperAutoIsland.Frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -130,7 +128,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1782046354215</updated>
-      <workItem from="1782046355988" duration="2043000" />
+      <workItem from="1782046355988" duration="2665000" />
+      <workItem from="1782718919422" duration="1300000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />

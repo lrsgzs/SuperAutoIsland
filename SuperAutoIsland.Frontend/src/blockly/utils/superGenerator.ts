@@ -1,6 +1,6 @@
 ﻿import { addBlock, type ArgDefinition, data } from './blockGenerator';
 import { Order } from 'blockly/javascript';
-import { wsWaitMessage } from '../utils/wsUtils';
+import { wsWaitMessage } from './wsUtils';
 
 const quote_ = (text: string) => {
     // @ts-ignore
@@ -49,6 +49,11 @@ export type DynamicDropdownMetaArgs = [string, 'dynamic_dropdown', string];
 export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs | DynamicDropdownMetaArgs;
 
 /**
+ * 积木类型
+ */
+export type BlockType = "action" | "rule";
+
+/**
  * 积木元数据接口
  */
 export interface Metadata {
@@ -59,16 +64,16 @@ export interface Metadata {
     inlineBlock?: boolean;
     inlineField?: boolean;
     dropdownUseNumbers?: boolean;
-    isRule?: boolean;
 }
 
 /**
  * 添加积木
+ * @param blockType 积木类型
  * @param metadata 积木元数据
  */
-export async function addMetaBlock(metadata: Metadata) {
+export async function addMetaBlock(blockType: BlockType, metadata: Metadata) {
     // @ts-ignore
-    const type = metadata.id.replaceAll('.', '_');
+    const id = metadata.id.replaceAll('.', '_');
     let message = `[%1 ${metadata.name}]`;
     const inputs: Record<string, ArgDefinition> = {};
     const args: [string, 'field_dropdown' | 'field_checkbox' | 'block'][] = [];
@@ -144,13 +149,13 @@ export async function addMetaBlock(metadata: Metadata) {
 
     addBlock(
         {
-            type: type,
+            type: id,
             message: message,
             inputs: inputs,
             inline: metadata.inlineBlock,
             style: 'my_blocks',
-            output: metadata.isRule ? 'Boolean' : undefined,
-            isReporter: metadata.isRule,
+            output: blockType == 'rule' ? 'Boolean' : undefined,
+            isReporter: blockType == 'rule',
         },
         (block, generator) => {
             let argsCode = '(() => { let a = {};';
@@ -166,14 +171,14 @@ export async function addMetaBlock(metadata: Metadata) {
                         break;
                     case 'field_checkbox':
                         value = block.getFieldValue(argName);
-                        value = { TRUE: true, FALSE: false }[value as "TRUE" | "FALSE"];
+                        value = { TRUE: true, FALSE: false }[value as 'TRUE' | 'FALSE'];
                         break;
                 }
 
-                if (argName.includes(".")) {
-                    const parts = argName.split(".");
+                if (argName.includes('.')) {
+                    const parts = argName.split('.');
                     for (let i = 1; i < parts.length; i++) {
-                        const path = parts.slice(0, i).join(".");
+                        const path = parts.slice(0, i).join('.');
                         argsCode += `if (!a.${path}) a.${path} = {};\n`;
                     }
                 }
@@ -181,7 +186,7 @@ export async function addMetaBlock(metadata: Metadata) {
             }
             argsCode += 'return a; })()';
 
-            if (metadata.isRule) {
+            if (blockType == 'rule') {
                 return [`await getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
             } else {
                 return `await callAction("${metadata.id}", ${argsCode});\n`;

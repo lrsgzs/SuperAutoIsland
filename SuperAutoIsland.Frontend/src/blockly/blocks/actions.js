@@ -1,13 +1,10 @@
-﻿import { addBlock } from '../utils/blockGenerator';
+import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
 import { addMetaBlock } from '../utils/superGenerator';
 import '../types/extraData.d.ts';
 import { wsWaitMessage } from '../utils/wsUtils';
-
-const componentsConfigsResponse = await wsWaitMessage<{ configs: string[] }>(window.saiWS, { type: "getComponentConfigs" });
-
-const componentsConfigs: [string, string][] = componentsConfigsResponse.configs.map(e => [e, e]);
-
+const componentsConfigsResponse = await wsWaitMessage(window.saiWS, { type: "getComponentConfigs" });
+const componentsConfigs = componentsConfigsResponse.configs.map(e => [e, e]);
 await addMetaBlock('action', {
     id: 'classisland.broadcastSignal',
     name: '广播信号',
@@ -18,7 +15,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.currentComponentConfig',
     name: '组件配置方案',
@@ -29,7 +25,6 @@ await addMetaBlock('action', {
     inlineBlock: true,
     inlineField: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.theme',
     name: '应用主题',
@@ -49,7 +44,6 @@ await addMetaBlock('action', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.windowDockingLocation',
     name: '窗口停靠位置',
@@ -72,7 +66,6 @@ await addMetaBlock('action', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.windowLayer',
     name: '窗口层级',
@@ -91,7 +84,6 @@ await addMetaBlock('action', {
     inlineField: true,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.windowDockingOffsetX',
     name: '窗口向右偏移',
@@ -102,7 +94,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.settings.windowDockingOffsetY',
     name: '窗口向下偏移',
@@ -113,7 +104,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.os.run',
     name: '运行',
@@ -135,7 +125,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.os.run.program',
     name: '运行程序',
@@ -148,7 +137,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.showNotification',
     name: '显示提醒',
@@ -159,11 +147,9 @@ await addMetaBlock('action', {
         MaskDurationSeconds: ['标题持续时间(秒)', 'number'],
         Content: ['正文内容', 'text'],
         ContentDurationSeconds: ['正文持续时长(秒)', 'number'],
-
         IsMaskSpeechEnabled: ['启用标题语音', 'boolean'],
         IsContentSpeechEnabled: ['启用正文语音', 'boolean'],
         IsWaitForCompleteEnabled: ['等待提醒结束', 'boolean'],
-
         label2: ['高级设置', 'dummy'],
         IsAdvancedSettingsEnabled: ['启用?', 'checkbox'],
         IsTopmostEnabled: ['置顶提醒', 'boolean'],
@@ -174,46 +160,38 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 // 不使用 MetaBlock
-addBlock(
-    {
-        type: 'classisland_action_sleep',
-        message: '[%1 等待时长] %2 秒',
-        inputs: {
-            ICON: {
-                type: 'field_icon',
-                data: {
-                    text: '沙漏',
-                    icon: '\uE9AE',
-                },
-            },
-            SECONDS: {
-                type: 'input_value',
-                blockType: 'math_number',
-                check: 'Number',
-                fields: {
-                    NUM: 5,
-                },
+addBlock({
+    type: 'classisland_action_sleep',
+    message: '[%1 等待时长] %2 秒',
+    inputs: {
+        ICON: {
+            type: 'field_icon',
+            data: {
+                text: '沙漏',
+                icon: '\uE9AE',
             },
         },
-        inline: true,
-        style: 'my_blocks',
+        SECONDS: {
+            type: 'input_value',
+            blockType: 'math_number',
+            check: 'Number',
+            fields: {
+                NUM: 5,
+            },
+        },
     },
-    (block, generator) => {
-        const value = generator.valueToCode(block, 'SECONDS', Order.NONE) || "''";
-        const wrapper = generator.provideFunction_(
-            'classisland_action_sleep',
-            `async function ${generator.FUNCTION_NAME_PLACEHOLDER_}(value) {
+    inline: true,
+    style: 'my_blocks',
+}, (block, generator) => {
+    const value = generator.valueToCode(block, 'SECONDS', Order.NONE) || "''";
+    const wrapper = generator.provideFunction_('classisland_action_sleep', `async function ${generator.FUNCTION_NAME_PLACEHOLDER_}(value) {
                 const actionId = "classisland.action.sleep";
                 const actionData = { Value: value };
                 await callAction(actionId, actionData);
-            }`,
-        );
-        return `await ${wrapper}(${value});\n`;
-    },
-);
-
+            }`);
+    return `await ${wrapper}(${value});\n`;
+});
 await addMetaBlock('action', {
     id: 'classisland.notification.weather',
     name: '显示天气提醒',
@@ -233,7 +211,6 @@ await addMetaBlock('action', {
     inlineField: false,
     dropdownUseNumbers: true,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.app.quit',
     name: '退出 ClassIsland',
@@ -242,7 +219,6 @@ await addMetaBlock('action', {
     inlineBlock: false,
     inlineField: false,
 });
-
 await addMetaBlock('action', {
     id: 'classisland.app.restart',
     name: '重启 ClassIsland',
