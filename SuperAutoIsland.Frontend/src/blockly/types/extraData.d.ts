@@ -4,7 +4,7 @@ import * as Blockly from 'blockly';
 
 declare global {
     interface Window {
-        extraBlocks: Record<string, Record<'rules' | 'actions', Metadata[]>>;
+        extraBlocks: Record<string, Record<'rules' | 'actions' | 'data', Metadata[]>>;
         saiWS: WebSocket;
         saiWaitMessage: typeof wsWaitMessage;
         workspace: Blockly.Workspace;

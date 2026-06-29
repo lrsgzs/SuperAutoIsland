@@ -42,6 +42,18 @@ public static class JavaScriptNamespace
         var runnerService = IAppHost.GetService<ActionAndRuleRunner>();
         return runnerService.RunRule(id, jsonDocument.RootElement);
     }
+    
+    /// <summary>
+    /// 内部的 GetData 实现
+    /// </summary>
+    private static async Task<string> _getData(string id, object data)
+    {
+        var dataJson = JsonSerializer.Serialize(data);
+        var dataParams = JsonSerializer.Deserialize(dataJson, SaiDataRegistry.GetGetterType(id));
+        Logger.BaseLog("TRACE", $"Getting Data: {id} {dataJson}");
+
+        return await SaiDataRegistry.RunData(id, dataParams);
+    }
 
     /// <summary>
     /// 运行行动
@@ -65,6 +77,18 @@ public static class JavaScriptNamespace
     {
         Logger.BaseLog("TRACE", "收到 GetRuleState");
         return _getRuleState(id, data).ToPromise();
+    }
+    
+    /// <summary>
+    /// 获取规则状态
+    /// </summary>
+    /// <param name="id">规则 id</param>
+    /// <param name="data">规则 settings</param>
+    /// <returns>Promise&lt;string&gt;</returns>
+    public static object GetData(string id, object data)
+    {
+        Logger.BaseLog("TRACE", "收到 GetData");
+        return _getData(id, data).ToPromise();
     }
 
     /// <summary>

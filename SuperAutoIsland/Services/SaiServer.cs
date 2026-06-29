@@ -163,6 +163,17 @@ public class SaiServer
                                     result = resultBoolean
                                 };
                                 break;
+                            // 运行数据
+                            case "runData":
+                                var dataId = messageJson.RootElement.GetProperty("id").GetString()!;
+                                var dataParams = messageJson.RootElement.GetProperty("settings")
+                                    .Deserialize(SaiDataRegistry.GetGetterType(dataId));
+                                jsonReturnData = new 
+                                {
+                                    type = "result",
+                                    data = await SaiDataRegistry.RunData(dataId, dataParams),
+                                };
+                                break;
                             // 保存项目
                             case "save":
                                 var projectData = messageJson.RootElement.GetProperty("data");
@@ -254,7 +265,7 @@ public class SaiServer
                                 
                                 if (getter != null)
                                 {
-                                    options = getter();
+                                    options = await getter();
                                 }
                                 else
                                 {

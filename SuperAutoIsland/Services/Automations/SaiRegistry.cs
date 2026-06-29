@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Enums;
@@ -7,6 +8,7 @@ using SuperAutoIsland.Interface.MetaData;
 using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Actions;
+using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations;
@@ -78,12 +80,34 @@ public static class SaiRegistry
                         InlineField = false,
                         InlineBlock = false
                     }
+                ],
+                Data = 
+                [
+                    // new BlockMetadata
+                    // {
+                    //     Id = "sai.data.test",
+                    //     Name = "测试数据",
+                    //     Icon = ("测试", FluentIcons.AirplaneTakeOffRegular),
+                    //     Args = new Dictionary<string, MetaArgsBase>
+                    //     {
+                    //         ["_dummy1"] = new CommonMetaArgs
+                    //         {
+                    //             Name = "repeat 2x and echo",
+                    //             Type = MetaType.dummy
+                    //         },
+                    //         ["Text"] = new CommonMetaArgs
+                    //         {
+                    //             Name = "",
+                    //             Type = MetaType.text
+                    //         },
+                    //     }
+                    // }
                 ]
             });
 
         SaiServer.RegisterWrapper("classisland.os.run.program", RunActionProgramWrapper);
 
-        SaiServer.RegisterDynamicDropdown("sai.actions.runBlockly.options", () =>
+        SaiServer.RegisterDynamicDropdown("sai.actions.runBlockly.options", async () =>
             EnsureListHasItemOrDefaultListItem(
                 GlobalConstants.Configs.ProjectConfig!.Data.Projects
                     .Where(e => e.Type is ProjectsType.BlocklyAction)
@@ -92,7 +116,7 @@ public static class SaiRegistry
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
 
-        SaiServer.RegisterDynamicDropdown("sai.actions.runActionSet.options", () =>
+        SaiServer.RegisterDynamicDropdown("sai.actions.runActionSet.options", async () =>
             EnsureListHasItemOrDefaultListItem(
                 GlobalConstants.Configs.ProjectConfig!.Data.Projects
                     .Where(e => e.Type is ProjectsType.CiActionSet)
@@ -101,7 +125,7 @@ public static class SaiRegistry
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
 
-        SaiServer.RegisterDynamicDropdown("sai.rules.runCiRuleset.options", () =>
+        SaiServer.RegisterDynamicDropdown("sai.rules.runCiRuleset.options", async () =>
             EnsureListHasItemOrDefaultListItem(
                 GlobalConstants.Configs.ProjectConfig!.Data.Projects
                     .Where(e => e.Type is ProjectsType.CiRuleset)
@@ -109,6 +133,12 @@ public static class SaiRegistry
                     .ToList(),
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
+        
+        // SaiServer.RegisterDataGetter<TestData>("sai.data.test", async (data) =>
+        // {
+        //     if (data is not TestData testData) return "???";
+        //     return testData.Text + testData.Text;
+        // });
     }
     
     /// <summary>

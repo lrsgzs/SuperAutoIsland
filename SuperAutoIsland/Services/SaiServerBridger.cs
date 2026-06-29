@@ -1,5 +1,6 @@
 ﻿using SuperAutoIsland.Interface;
 using SuperAutoIsland.Interface.Services;
+using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -50,7 +51,17 @@ public class SaiServerBridger : ISaiServer
     public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter)
     {
         _instance.DynamicDropdowns[id] = getter;
-        _logger.Info($"已注册 id 为 {id} 的  DynamicDropdownGetter");
+        _logger.Info($"已注册 id 为 {id} 的 DynamicDropdownGetter");
+    }
+
+    public void RegisterDataGetter<T>(string id, DataGetter getter)
+    {
+        SaiDataRegistry.DataGetters[id] = new DataGetterItem
+        {
+            Type = typeof(T),
+            Getter = getter
+        };
+        _logger.Info($"已注册 id 为 {id} 的 DataGetter");
     }
 
     /// <inheritdoc />

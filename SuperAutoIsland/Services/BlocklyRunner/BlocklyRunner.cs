@@ -34,6 +34,7 @@ public class BlocklyRunner
             _engine.AddHostObject("logger", _logger);
             _engine.AddHostObject("callAction", JavaScriptNamespace.CallAction);
             _engine.AddHostObject("getRuleState", JavaScriptNamespace.GetRuleState);
+            _engine.AddHostObject("getData", JavaScriptNamespace.GetData);
             _engine.AddHostObject("console", JavaScriptNamespace.Console);
         }
         

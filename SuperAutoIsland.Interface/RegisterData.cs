@@ -19,4 +19,10 @@ public class RegisterData
     /// </summary>
     [JsonPropertyName("rules")]
     public required List<BlockMetadata> Rules { get; set; }
+    
+    /// <summary>
+    /// 数据
+    /// </summary>
+    [JsonPropertyName("data")]
+    public required List<BlockMetadata> Data { get; set; }
 }

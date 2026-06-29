@@ -22,7 +22,7 @@ await new Promise(resolve => {
 });
 
 const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getExtraBlocks' });
-window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions', Metadata[]>>;
+window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions' | 'data', Metadata[]>>;
 window.saiWS = ws;
 window.saiWaitMessage = wsWaitMessage;
 
@@ -56,6 +56,14 @@ for (let pluginName in window.extraBlocks) {
 
         for (let block of window.extraBlocks[pluginName].actions) {
             await addMetaBlock('rule', block);
+        }
+    }
+
+    if (window.extraBlocks[pluginName].data.length != 0) {
+        addLabel('数据');
+
+        for (let block of window.extraBlocks[pluginName].data) {
+            await addMetaBlock('data', block);
         }
     }
 
@@ -96,6 +104,17 @@ async function getRuleState(id, data) {
     return result.result;
 }`;
 
+const getDataDefinition = `
+async function getData(id, data) {
+    console.log("Getting Data:", id, data);
+    const result = await window.saiWaitMessage(window.saiWS, {
+        type: "runData",
+        id: id,
+        settings: data,
+    });
+    return result.data;
+}`;
+
 const defaultTheme = Blockly.Theme.defineTheme('default', {
     base: Blockly.Themes.Classic,
     name: 'default',
@@ -120,7 +139,7 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
 export const runCode = async (workspace: Blockly.Workspace = window.workspace) => {
     console.log(workspace);
     let code = javascriptGenerator.workspaceToCode(workspace);
-    code = `${callActionDefinition}\n${getRuleStateDefinition}\n\n` + code;
+    code = `${callActionDefinition}\n${getRuleStateDefinition}\n${getDataDefinition}\n\n` + code;
     code = `(async () => {\n${code}\n})();\n`;
     code = await prettier.format(code, {
         semi: true,

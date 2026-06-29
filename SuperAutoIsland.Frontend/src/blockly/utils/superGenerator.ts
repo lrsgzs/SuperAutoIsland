@@ -51,7 +51,7 @@ export type MetaArgs = CommonMetaArgs | DropDownMetaArgs | CheckboxMetaArgs | Dy
 /**
  * 积木类型
  */
-export type BlockType = "action" | "rule";
+export type BlockType = "action" | "rule" | "data";
 
 /**
  * 积木元数据接口
@@ -154,11 +154,11 @@ export async function addMetaBlock(blockType: BlockType, metadata: Metadata) {
             inputs: inputs,
             inline: metadata.inlineBlock,
             style: 'my_blocks',
-            output: blockType == 'rule' ? 'Boolean' : undefined,
-            isReporter: blockType == 'rule',
+            output: blockType == 'rule' ? 'Boolean' : (blockType == 'data' ? "String" : undefined),
+            isReporter: blockType == 'rule' || blockType == 'data',
         },
         (block, generator) => {
-            let argsCode = '(() => { let a = {};';
+            let argsCode = 'await (async () => { let a = {};';
             for (let [argName, argType] of args) {
                 let value;
                 switch (argType) {
@@ -188,6 +188,8 @@ export async function addMetaBlock(blockType: BlockType, metadata: Metadata) {
 
             if (blockType == 'rule') {
                 return [`await getRuleState("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
+            } else if (blockType == 'data') {
+                return [`await getData("${metadata.id}", ${argsCode})\n`, Order.MEMBER];
             } else {
                 return `await callAction("${metadata.id}", ${argsCode});\n`;
             }

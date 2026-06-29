@@ -16,7 +16,12 @@ public delegate Rule RuleWrapper(Rule rule);
 /// <summary>
 /// 动态下拉框 getter
 /// </summary>
-public delegate List<(string, string)> DynamicDropdownGetter();
+public delegate Task<List<(string, string)>> DynamicDropdownGetter();
+
+/// <summary>
+/// 数据 getter
+/// </summary>
+public delegate Task<string> DataGetter(object? parameters);
 
 /// <summary>
 /// 服务器接口
@@ -50,6 +55,13 @@ public interface ISaiServer
     /// <param name="id">动态下拉框 id</param>
     /// <param name="getter">获取函数</param>
     public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter);
+    
+    /// <summary>
+    /// 注册数据 getter
+    /// </summary>
+    /// <param name="id">数据积木 id</param>
+    /// <param name="getter">获取函数</param>
+    public void RegisterDataGetter<T>(string id, DataGetter getter);
 
     /// <summary>
     /// 结束服务器（好像不能用）
