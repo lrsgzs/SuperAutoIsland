@@ -11,15 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
 using SuperAutoIsland.Controls.RuleSettingsControls;
-using SuperAutoIsland.Enums;
-using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.MetaData;
-using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Services;
+using SuperAutoIsland.Services.Automations;
 using SuperAutoIsland.Services.Automations.Actions;
-using SuperAutoIsland.Services.Automations.Wrappers;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
@@ -83,8 +79,8 @@ public class Plugin : PluginBase
         ]);
 
         // 规则
-        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>("sai.rules.runCiRuleset", "运行可复用的规则集",
-            "\uF17E");
+        services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>(
+            "sai.rules.runCiRuleset", "运行可复用的规则集", "\uF17E");
 
         // 规则处理器
         services.AddSingleton<RuleHandlerService>();
@@ -99,106 +95,15 @@ public class Plugin : PluginBase
         // 应用启动完毕
         AppBase.Current.AppStarted += async (_, _) =>
         {
-            _logger.BaseLog("TRACE", "保存 SaiServer 实例...");
-            var saiServerService = IAppHost.GetService<ISaiServer>();
+            _logger.BaseLog("TRACE", "创建 SaiServer 实例...");
+            IAppHost.GetService<ISaiServer>();
 
             _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
             IAppHost.GetService<BlocklyRunner>();
 
             _logger.Debug("注册 SuperAutoIsland 元素...");
-            saiServerService.RegisterBlocks("SuperAutoIsland", new RegisterData
-            {
-                Actions =
-                [
-                    new BlockMetadata
-                    {
-                        Id = "sai.actions.runBlockly",
-                        Name = "运行 Blockly 项目",
-                        Icon = ("Blockly 项目", "\uE049"),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.actions.runBlockly.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                    new BlockMetadata
-                    {
-                        Id = "sai.actions.runActionSet",
-                        Name = "运行可复用的行动组",
-                        Icon = ("行动组", "\uE01F"),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.actions.runActionSet.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    }
-                ],
-                Rules =
-                [
-                    new BlockMetadata
-                    {
-                        Id = "sai.rules.runCiRuleset",
-                        Name = "运行可复用的规则集",
-                        Icon = ("规则集", "\uF17E"),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.rules.runCiRuleset.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    }
-                ]
-            });
-
-            saiServerService.RegisterWrapper("classisland.os.run.program", RunActionProgram.Wrapper);
-
-            saiServerService.RegisterDynamicDropdown("sai.actions.runBlockly.options", () =>
-                EnsureListHasItemOrDefaultListItem(
-                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                        .Where(e => e.Type is ProjectsType.BlocklyAction)
-                        .Select(e => (e.Name, e.Id.ToString()))
-                        .ToList(),
-                    new ValueTuple<string, string>("???",
-                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
-
-            saiServerService.RegisterDynamicDropdown("sai.actions.runActionSet.options", () =>
-                EnsureListHasItemOrDefaultListItem(
-                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                        .Where(e => e.Type is ProjectsType.CiActionSet)
-                        .Select(e => (e.Name, e.Id.ToString()))
-                        .ToList(),
-                    new ValueTuple<string, string>("???",
-                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
-
-            saiServerService.RegisterDynamicDropdown("sai.rules.runCiRuleset.options", () =>
-                EnsureListHasItemOrDefaultListItem(
-                    GlobalConstants.Configs.ProjectConfig.Data.Projects
-                        .Where(e => e.Type is ProjectsType.CiRuleset)
-                        .Select(e => (e.Name, e.Id.ToString()))
-                        .ToList(),
-                    new ValueTuple<string, string>("???",
-                        GlobalConstants.Assets.ProjectNullGuid.ToString())));
+            SaiRegistry.Register();
 
             _logger.Info("加载 V8 引擎...");
             await V8Loader.InitializationTask;
@@ -222,10 +127,5 @@ public class Plugin : PluginBase
                 Environment.Exit(0);
             }).Start();
         };
-    }
-
-    private List<T> EnsureListHasItemOrDefaultListItem<T>(List<T> data, T defaultItem)
-    {
-        return data.Count > 0 ? data : [defaultItem];
     }
 }

@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 保存有提示（">
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 废弃 isRule 参数，转为 blockType">
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Wrappers/RunActionProgram.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +124,7 @@
       <option name="presentableId" value="Default" />
       <updated>1782046354215</updated>
       <workItem from="1782046355988" duration="2665000" />
-      <workItem from="1782718919422" duration="1300000" />
+      <workItem from="1782718919422" duration="2105000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
@@ -139,14 +134,48 @@
       <option name="project" value="LOCAL" />
       <updated>1782046997360</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: 废弃 isRule 参数，转为 blockType">
+      <option name="closed" value="true" />
+      <created>1782720436069</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1782720436069</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: 废弃 isRule 参数，转为 blockType">
+      <option name="closed" value="true" />
+      <created>1782720461182</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1782720461182</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/pages/index.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/langs/zh-hans.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/debug.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/rules.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/components/BlocklyContainer.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/quickSetup.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/wsUtils.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/blockGenerator.js" />
+        <option value="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.js" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: 保存有提示（" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 保存有提示（" />
+    <MESSAGE value="feat: 废弃 isRule 参数，转为 blockType" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 废弃 isRule 参数，转为 blockType" />
   </component>
 </project>
