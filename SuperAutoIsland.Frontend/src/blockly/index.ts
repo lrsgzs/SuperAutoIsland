@@ -51,7 +51,7 @@ for (let pluginName in window.extraBlocks) {
         addLabel("规则");
 
         for (let block of rules) {
-            await addMetaBlock('action', block);
+            await addMetaBlock('rule', block);
         }
     }
 
@@ -59,7 +59,7 @@ for (let pluginName in window.extraBlocks) {
         addLabel("行动");
 
         for (let block of actions) {
-            await addMetaBlock('rule', block);
+            await addMetaBlock('action', block);
         }
     }
 
