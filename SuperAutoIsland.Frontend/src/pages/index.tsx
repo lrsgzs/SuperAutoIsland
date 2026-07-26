@@ -5,8 +5,13 @@ import BlocklyContainer from '../components/BlocklyContainer';
 
 function IndexPage() {
     let saveCode = React.useCallback(async () => {
-        await window.saveCode(window.workspace);
-        alert("保存成功");
+        try {
+            await window.saveCode(window.workspace);
+            alert("保存成功");
+        } catch (e) {
+            console.error('保存失败', e);
+            alert(`保存失败 ${e}`);
+        }
     }, [])
     
     return (

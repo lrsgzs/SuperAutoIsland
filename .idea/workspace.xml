@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="fix: 修复资源问题">
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 解决 Blockly Procedure 不支持异步的问题">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
     </list>
@@ -218,6 +218,7 @@
     <MESSAGE value="fix: Blockly变成RaspberryPiFoundation的了" />
     <MESSAGE value="fix: 前端积木图标偏移" />
     <MESSAGE value="fix: 修复资源问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: 修复资源问题" />
+    <MESSAGE value="feat: 解决 Blockly Procedure 不支持异步的问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 解决 Blockly Procedure 不支持异步的问题" />
   </component>
 </project>
