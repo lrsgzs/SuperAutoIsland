@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 添加保存失败的提示">
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 优化前端 ui、blockly">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/langs/zh-hans.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/langs/zh-hans.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/styles/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/styles/base.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785055844835</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="feat: 优化前端 ui、blockly">
+      <option name="closed" value="true" />
+      <created>1785060524873</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1785060524873</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +259,7 @@
     <MESSAGE value="fix: 修复资源问题" />
     <MESSAGE value="feat: 解决 Blockly Procedure 不支持异步的问题" />
     <MESSAGE value="feat: 添加保存失败的提示" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加保存失败的提示" />
+    <MESSAGE value="feat: 优化前端 ui、blockly" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 优化前端 ui、blockly" />
   </component>
 </project>

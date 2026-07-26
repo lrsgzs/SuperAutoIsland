@@ -10,10 +10,21 @@
                      mc:Ignorable="d">
     <ScrollViewer DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
         <StackPanel Classes="settings-container animated-intro">
-            <fa:InfoBar IsOpen="True" IsVisible="True" Severity="Informational">
+            <fa:InfoBar IsOpen="True" IsClosable="False" Severity="Informational">
                 <fa:InfoBar.Message>
                     欢迎使用 SuperAutoIsland！本插件使用了 Blockly，在此致谢。
                 </fa:InfoBar.Message>
+            </fa:InfoBar>
+            
+            <fa:InfoBar IsOpen="True"
+                        IsClosable="False"
+                        Severity="Informational"
+                        Message="插件社区Q群 ClassIsPlugin 现已建立！点击按钮，即刻加入！">
+                <fa:InfoBar.ActionButton>
+                    <Button Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                            CommandParameter="https://qm.qq.com/q/PeyliibxE4"
+                            Content="加入群组" />
+                </fa:InfoBar.ActionButton>
             </fa:InfoBar>
         
             <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">

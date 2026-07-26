@@ -17,9 +17,10 @@
         <converters:ActionsToActionSetConverter x:Key="ActionsToActionSetConverter" />
     </ci:SettingsPageBase.Resources>
     
-    <controls:ListDetailView Margin="12 12 0 0" ShowTitleWhenNotCompressed="True"
-                             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AutomationSettingsPage}}"
-                             IsPanelOpened="{Binding IsPanelOpened, Mode=TwoWay}">
+    <controls:ListDetailView x:Name="ListDetailView"
+                             Margin="12 12 0 0"
+                             ShowTitleWhenNotCompressed="True"
+                             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AutomationSettingsPage}}">
         <controls:ListDetailView.LeftContent>
             <Grid RowDefinitions="Auto, Auto, *">
                 <TextBlock Grid.Row="0"

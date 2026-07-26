@@ -46,7 +46,6 @@ public struct ProjectTypeNode
 [SettingsPageInfo("sai.settings.automation","自动化",FluentIcons.PlayCircleSparkleRegular,FluentIcons.PlayCircleSparkleFilled)]
 public partial class AutomationSettingsPage : SettingsPageBase
 {
-    private bool IsPanelOpened { get; set; }
     private AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
     private readonly Logger<AutomationSettingsPage> _logger = new();
     
@@ -92,7 +91,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
 
     private void ProjectsListBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        IsPanelOpened = true;
+        ListDetailView?.IsPanelOpened = true;
     }
     
     /// <summary>
@@ -164,5 +163,6 @@ public partial class AutomationSettingsPage : SettingsPageBase
     {
         ProjectsConfigManager.DeleteProject(ViewModel.SelectedProject!);
         ViewModel.SelectedProject = null;
+        ListDetailView?.IsPanelOpened = false;
     }
 }
