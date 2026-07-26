@@ -18,12 +18,13 @@ function IndexPage() {
         <>
             <BlocklyContainer className="w-full h-full" />
             <div className="absolute top-2 right-2 flex gap-2">
-                <button className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400" 
-                        onClick={saveCode}>
+                <button className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400 transition" onClick={saveCode}>
                     保存
                 </button>
-                <button className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400"
-                        onClick={() => window.runCode(window.workspace)}>
+                <button
+                    className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400 transition"
+                    onClick={() => window.runCode(window.workspace)}
+                >
                     运行代码
                 </button>
             </div>
