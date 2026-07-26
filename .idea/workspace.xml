@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="fix: 移除多余的js文件">
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" afterDir="false" />
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: update packages">
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782721359642</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: update packages">
+      <option name="closed" value="true" />
+      <created>1785052805844</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1785052805844</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,6 +180,7 @@
     <MESSAGE value="feat: 保存有提示（" />
     <MESSAGE value="feat: 废弃 isRule 参数，转为 blockType" />
     <MESSAGE value="fix: 移除多余的js文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: 移除多余的js文件" />
+    <MESSAGE value="feat: update packages" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: update packages" />
   </component>
 </project>
