@@ -1,35 +1,34 @@
-<ciControls:MyWindow x:Class="SuperAutoIsland.Views.SaiLogsWindow"
-                    xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:ciControls="clr-namespace:ClassIsland.Core.Controls;assembly=ClassIsland.Core"
-                    xmlns:views="clr-namespace:SuperAutoIsland.Views"
-                    mc:Ignorable="d"
-                    EnableMicaWindow="True"
-                    Title="SuperAutoIsland 日志"
-                    Height="600"
-                    Width="1200">
-    <Grid RowDefinitions="Auto,*,Auto" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:SaiLogsWindow}}">
+<ci:ViewBase x:Class="SuperAutoIsland.Views.SaiLogsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ci="http://classisland.tech/schemas/xaml/core"
+             xmlns:views="clr-namespace:SuperAutoIsland.Views"
+             mc:Ignorable="d"
+             Header="SuperAutoIsland 日志"
+             HostHeight="600"
+             HostWidth="1200">
+    <Grid RowDefinitions="Auto,*,Auto" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:SaiLogsView}}">
         <Grid Grid.Row="0">
             <ListBox HorizontalAlignment="Left"
                      SelectionMode="Multiple,Toggle"
                      Theme="{StaticResource ChipListBoxTheme}"
             >
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredError}">
-                    <ciControls:IconText Glyph="&#xE808;" Text="错误"/>
+                    <ci:IconText Glyph="&#xE808;" Text="错误"/>
                 </ListBoxItem>
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredWarning}">
-                    <ciControls:IconText Glyph="&#xF430;" Text="警告"/>
+                    <ci:IconText Glyph="&#xF430;" Text="警告"/>
                 </ListBoxItem>
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredInfo}">
-                    <ciControls:IconText Glyph="&#xE9E4;" Text="信息"/>
+                    <ci:IconText Glyph="&#xE9E4;" Text="信息"/>
                 </ListBoxItem>
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredDebug}">
-                    <ciControls:IconText Glyph="&#xE2C7;" Text="调试"/>
+                    <ci:IconText Glyph="&#xE2C7;" Text="调试"/>
                 </ListBoxItem>
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredOthers}">
-                    <ciControls:IconText Glyph="&#xEDF6;" Text="其他"/>
+                    <ci:IconText Glyph="&#xEDF6;" Text="其他"/>
                 </ListBoxItem>
             </ListBox>
             
@@ -100,11 +99,11 @@
                                         </Binding.ConverterParameter>
                                     </Binding>
                                 </Classes.Debug>
-                                <ciControls:IconText Glyph="{Binding Level, Converter={x:Static views:SaiLogsWindow.LogLevelToIconGlyphConverter}}"
-                                                     Text="{Binding Level, Converter={x:Static views:SaiLogsWindow.LogLevelToNameConverter}}"
-                                                     VerticalAlignment="Top"
-                                                     HorizontalAlignment="Center"
-                                                     Margin="2 7 2 0"/>
+                                <ci:IconText Glyph="{Binding Level, Converter={x:Static views:SaiLogsView.LogLevelToIconGlyphConverter}}"
+                                             Text="{Binding Level, Converter={x:Static views:SaiLogsView.LogLevelToNameConverter}}"
+                                             VerticalAlignment="Top"
+                                             HorizontalAlignment="Center"
+                                             Margin="2 7 2 0"/>
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -135,12 +134,12 @@
         <WrapPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Theme="{StaticResource TransparentButton}"
                     Click="ButtonClearLogs_OnClick">
-                <ciControls:IconText Glyph="&#xE61D;" Text="清空日志"/>
+                <ci:IconText Glyph="&#xE61D;" Text="清空日志"/>
             </Button>
             <Button Theme="{StaticResource TransparentButton}"
                     Click="ButtonCopySelectedLogs_OnClick">
-                <ciControls:IconText Glyph="&#xE58B;" Text="复制选中"/>
+                <ci:IconText Glyph="&#xE58B;" Text="复制选中"/>
             </Button>
         </WrapPanel>
     </Grid>
-</ciControls:MyWindow>
+</ci:ViewBase>

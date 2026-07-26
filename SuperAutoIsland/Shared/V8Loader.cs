@@ -81,14 +81,14 @@ public static class V8Loader
         {
             logger.Warn("检测到 V8 资源缺失");
             
-            var dialog = new TaskDialog
+            var dialog = new FATaskDialog
             {
                 Title = "SuperAutoIsland | 资源缺失",
                 Content = new TextBlock { Text = "检测到 V8 资源缺失，是否下载？" },
                 Buttons =
                 [
-                    new TaskDialogButton("是", true) { IsDefault = true },
-                    new TaskDialogButton("否", false)
+                    new FATaskDialogButton("是", true) { IsDefault = true },
+                    new FATaskDialogButton("否", false)
                 ],
                 XamlRoot = AppBase.Current.GetRootWindow()
             };

@@ -38,6 +38,6 @@ public partial class MainSettingsPage : SettingsPageBase {
     /// </summary>
     private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        IAppHost.GetService<SaiLogsWindow>().Open();
+        IAppHost.GetService<SaiLogsView>().Open();
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Models.Settings;
@@ -13,23 +11,15 @@ namespace SuperAutoIsland.ViewModel.SettingPages;
 /// </summary>
 public partial class AutomationViewModel : ObservableRecipient
 {
-    /// <summary>
-    /// 当前选中的项目
-    /// </summary>
     [ObservableProperty] private Project? _selectedProject;
+    [ObservableProperty] private bool _isPanelOpened;
     
-    public ProjectConfigModel ProjectConfig { get; } = GlobalConstants.Configs.ProjectConfig!.Data;
+    public ProjectConfigModel ProjectConfig { get; }
     public ObservableCollection<Project> Projects { get; set; }
     
     public AutomationViewModel()
     {
+        ProjectConfig = GlobalConstants.Configs.ProjectConfig!.Data;
         Projects = ProjectConfig.Projects;
-
-        Projects.CollectionChanged += OnProjectsChanged;
-    }
-    
-    private void OnProjectsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        OnPropertyChanged(new PropertyChangedEventArgs("Projects"));
     }
 }

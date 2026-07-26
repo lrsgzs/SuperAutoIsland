@@ -42,7 +42,6 @@ public partial class ProjectConfigModel : ObservableObject
     {
         value.CollectionChanged += (sender, args) =>
         {
-            Console.WriteLine("PCM ==================== SAI CHANGED");
             OnPropertyChanged();
         };
     }

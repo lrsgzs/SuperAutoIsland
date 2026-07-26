@@ -93,7 +93,7 @@ public class Plugin : PluginBase
         services.AddSingleton<RuleHandlerService>();
 
         _logger.Info("添加设置页面...");
-        services.AddSingleton<SaiLogsWindow>();
+        services.AddSingleton<SaiLogsView>();
         services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<AutomationSettingsPage>();

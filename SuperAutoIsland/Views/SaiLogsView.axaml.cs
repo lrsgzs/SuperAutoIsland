@@ -1,7 +1,7 @@
-using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
-using ClassIsland.Core.Controls;
+using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Helpers.UI;
 using ClassIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
@@ -12,7 +12,7 @@ namespace SuperAutoIsland.Views;
 /// <summary>
 /// 日志窗口视图
 /// </summary>
-public partial class SaiLogsWindow : MyWindow
+public partial class SaiLogsView : ViewBase
 {
     /// <summary>
     /// 等级-图标 转换器
@@ -39,33 +39,11 @@ public partial class SaiLogsWindow : MyWindow
     });
     
     public SaiLogsViewModel ViewModel { get; } = IAppHost.GetService<SaiLogsViewModel>();
-    private Logger<SaiLogsWindow> _logger = new();
-    private bool _isOpened = false;
+    private Logger<SaiLogsView> _logger = new();
     
-    public SaiLogsWindow()
+    public SaiLogsView()
     {
         InitializeComponent();
-    }
-    
-    /// <summary>
-    /// 打开窗口
-    /// </summary>
-    public void Open()
-    {
-        if (!_isOpened)
-        {
-            _isOpened = true;
-            Show();
-        }
-        else
-        {
-            if (WindowState == WindowState.Minimized)
-            {
-                WindowState = WindowState.Normal;
-            }
-
-            Activate();
-        }
     }
     
     /// <summary>
@@ -84,7 +62,7 @@ public partial class SaiLogsWindow : MyWindow
         try
         {
             var logs = DataGridMain.SelectedItems.Cast<object?>().Select(x => x?.ToString() ?? "").ToList();
-            Clipboard?.SetTextAsync(string.Join('\n', logs));
+            TopLevel?.Clipboard?.SetTextAsync(string.Join('\n', logs));
             this.ShowSuccessToast($"已将 {logs.Count} 条日志复制到剪贴板。");
         }
         catch (Exception ex)

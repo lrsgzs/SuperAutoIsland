@@ -10,41 +10,41 @@
                      mc:Ignorable="d">
     <ScrollViewer DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
         <StackPanel Classes="settings-container animated-intro">
-            <fa:InfoBar IsOpen="True" IsClosable="False" Severity="Informational">
-                <fa:InfoBar.Message>
+            <fa:FAInfoBar IsOpen="True" IsClosable="False" Severity="Informational">
+                <fa:FAInfoBar.Message>
                     欢迎使用 SuperAutoIsland！本插件使用了 Blockly，在此致谢。
-                </fa:InfoBar.Message>
-            </fa:InfoBar>
+                </fa:FAInfoBar.Message>
+            </fa:FAInfoBar>
             
-            <fa:InfoBar IsOpen="True"
-                        IsClosable="False"
-                        Severity="Informational"
-                        Message="插件社区Q群 ClassIsPlugin 现已建立！点击按钮，即刻加入！">
-                <fa:InfoBar.ActionButton>
+            <fa:FAInfoBar IsOpen="True"
+                          IsClosable="False"
+                          Severity="Informational"
+                          Message="插件社区Q群 ClassIsPlugin 现已建立！点击按钮，即刻加入！">
+                <fa:FAInfoBar.ActionButton>
                     <Button Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
                             CommandParameter="https://qm.qq.com/q/PeyliibxE4"
                             Content="加入群组" />
-                </fa:InfoBar.ActionButton>
-            </fa:InfoBar>
+                </fa:FAInfoBar.ActionButton>
+            </fa:FAInfoBar>
         
-            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
-                <fa:SettingsExpander.Footer>
+            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
+                <fa:FASettingsExpander.Footer>
                     <Button Margin="3,0,6,0"
                             HorizontalContentAlignment="Center"
                             Click="ViewLogsButton_OnClick"
                             Content="查看日志"/>
-                </fa:SettingsExpander.Footer>
-            </fa:SettingsExpander>
+                </fa:FASettingsExpander.Footer>
+            </fa:FASettingsExpander>
             
-            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
-                <fa:SettingsExpander.Footer>
+            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
+                <fa:FASettingsExpander.Footer>
                     <TextBox MinWidth="20"
                              Margin="3,0,6,0"
                              HorizontalContentAlignment="Center"
                              InputMethod.IsInputMethodEnabled="False"
                              Text="{Binding Settings.ServerPort, Mode=TwoWay}"/>
-                </fa:SettingsExpander.Footer>
-            </fa:SettingsExpander>
+                </fa:FASettingsExpander.Footer>
+            </fa:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </ci:SettingsPageBase>

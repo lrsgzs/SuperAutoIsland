@@ -12,15 +12,15 @@
                      xmlns:enums="clr-namespace:SuperAutoIsland.Enums"
                      xmlns:converters="clr-namespace:SuperAutoIsland.Shared.Converters"
                      xmlns:ciControlsAutomation="clr-namespace:ClassIsland.Core.Controls.Automation;assembly=ClassIsland.Core"
+                     x:DataType="local:AutomationSettingsPage"
                      mc:Ignorable="d">
     <ci:SettingsPageBase.Resources>
         <converters:ActionsToActionSetConverter x:Key="ActionsToActionSetConverter" />
     </ci:SettingsPageBase.Resources>
     
-    <controls:ListDetailView x:Name="ListDetailView"
-                             Margin="12 12 0 0"
+    <controls:ListDetailView Margin="12 12 0 0"
                              ShowTitleWhenNotCompressed="True"
-                             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AutomationSettingsPage}}">
+                             IsPanelOpened="{Binding ViewModel.IsPanelOpened}">
         <controls:ListDetailView.LeftContent>
             <Grid RowDefinitions="Auto, Auto, *">
                 <TextBlock Grid.Row="0"
@@ -30,8 +30,8 @@
                 
                 <StackPanel Grid.Row="1" Margin="0 6 0 0" Orientation="Horizontal">
                     <Button Theme="{StaticResource TransparentButton}"
-                            ToolTip.Tip="新建 sai 自动化..."
-                            Classes.invert-foreground-accent="{Binding ViewModel.Projects.Count}" >
+                            ToolTip.Tip="新建 SAI 自动化..."
+                            Classes.invert-foreground-accent="{Binding !!ViewModel.Projects.Count}" >
                         <Button.Styles>
                             <Style Selector="Button.invert-foreground-accent">
                                 <Setter Property="Theme" Value="{StaticResource TransparentButton}"/>
@@ -45,21 +45,20 @@
                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                         
                         <Button.Flyout>
-                            <fa:FAMenuFlyout ItemsSource="{x:Static local:AutomationSettingsPage.ProjectTypeNodes}" />
+                            <fa:FAMenuFlyout ItemsSource="{x:Static local:AutomationSettingsPage.ProjectTypeNodes}">
+                                <fa:FAMenuFlyout.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type local:ProjectTypeNode}">
+                                        <fa:FAMenuFlyoutItem Text="{Binding Name}"
+                                                             Command="{Binding #Page.CreateProjectCommand}"
+                                                             CommandParameter="{Binding Type} ">
+                                            <fa:FAMenuFlyoutItem.IconSource>
+                                                <ci:FluentIconSource Glyph="{Binding IconGlyph}" />
+                                            </fa:FAMenuFlyoutItem.IconSource>
+                                        </fa:FAMenuFlyoutItem>
+                                    </DataTemplate>
+                                </fa:FAMenuFlyout.ItemTemplate>
+                            </fa:FAMenuFlyout>
                         </Button.Flyout>
-                        
-                        <Button.DataTemplates>
-                            <DataTemplate DataType="{x:Type local:ProjectTypeNode}">
-                                <fa:MenuFlyoutItem
-                                    Text="{Binding Name}"
-                                    Command="{Binding #Page.CreateProjectCommand}"
-                                    CommandParameter="{Binding Type} ">
-                                    <fa:MenuFlyoutItem.IconSource>
-                                        <ci:FluentIconSource Glyph="{Binding IconGlyph}" />
-                                    </fa:MenuFlyoutItem.IconSource>
-                                </fa:MenuFlyoutItem>
-                            </DataTemplate>
-                        </Button.DataTemplates>
                     </Button>
                 </StackPanel>
                 
@@ -73,6 +72,7 @@
                                 <VirtualizingStackPanel Classes="animated-intro" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
+                        
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent"
@@ -83,16 +83,14 @@
                                                VerticalAlignment="Center"
                                                Text="{Binding Name}"
                                                FontSize="13"
-                                               FontWeight="Medium"
                                                TextWrapping="Wrap"/>
                                     
                                     <!--  Type  -->
                                     <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}"
-                                               Foreground="Gray"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                FontSize="11"
-                                               FontWeight="Medium"
                                                TextWrapping="Wrap"/>
                                 </Grid>
                             </DataTemplate>
@@ -105,7 +103,7 @@
         <controls:ListDetailView.TitleElement>
             <TextBlock FontWeight="Normal"
                        Text="项目设置"
-                       IsVisible="{Binding IsPanelOpened}"
+                       IsVisible="{Binding ViewModel.IsPanelOpened}"
                        Theme="{StaticResource TitleTextBlockStyle}"/>
         </controls:ListDetailView.TitleElement>
         
@@ -201,22 +199,23 @@
                                     <Expander.Header>
                                         <ci:IconText Glyph="&#xE01F;" Text="行动组" />
                                     </Expander.Header>
-                                    <ciControlsAutomation:ActionControl ActionSet="{Binding ., Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
+                                    <ciControlsAutomation:ActionControl ActionSet="{Binding Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>
                     </DataTemplate>
                 </ci:Emptiable.ContentTemplate>
+                
                 <ci:Emptiable.EmptyContent>
                     <StackPanel VerticalAlignment="Center">
-                        <ci:Empty Text="在左侧选择或添加一个自动化，然后在此处进行设置。"
-                                  IconHeight="75"
-                                  IconWidth="75"
-                                  ToolTip.Tip="光辉矢愿_瞄准">
-                            <ci:Empty.Icon>
-                                <fa:BitmapIconSource UriSource="avares://ClassIsland/Assets/HoYoStickers/光辉矢愿_瞄准.png" />
-                            </ci:Empty.Icon>
-                        </ci:Empty>
+                        <ci:StickerControl Width="75" Height="75"
+                                           StickerSource="avares://ClassIsland/Assets/HoYoStickers/光辉矢愿_瞄准.png"
+                                           StickerToolTip="光辉矢愿_瞄准"
+                                           FallbackIcon="{ci:FluentIconSource &#xEEF1;, FontSize=75}"/>
+                        
+                        <TextBlock Text="在左侧选择或添加一个自动化，然后在此处进行设置。"
+                                   Margin="0 8 0 0"
+                                   HorizontalAlignment="Center"/>
                     </StackPanel>
                 </ci:Emptiable.EmptyContent>
             </ci:Emptiable>
