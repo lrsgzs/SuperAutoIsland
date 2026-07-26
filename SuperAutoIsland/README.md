@@ -14,7 +14,7 @@
 
 ## 致谢
 - [ClassIsland.PluginSdk](https://github.com/ClassIsland/ClassIsland/)
-- [Google Blockly](https://developers.google.com/blockly)
+- [Blockly]([https://developers.google.com/blockly](https://blockly.com/))
 
 ## 许可证
 
