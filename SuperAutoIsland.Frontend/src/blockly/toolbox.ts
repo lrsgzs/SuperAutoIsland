@@ -1,4 +1,4 @@
-﻿import { type ToolboxInfo } from './types/toolbox';
+﻿import type { ToolboxInfo } from './types/toolbox';
 
 export const toolbox: ToolboxInfo = {
     kind: 'categoryToolbox',
