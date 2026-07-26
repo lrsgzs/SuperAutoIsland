@@ -1,4 +1,5 @@
 # SuperAutoIsland.Interface
-> 课是地 自动化进化 积木扩充途径
 
-用于扩充 SuperAutoIsland 的积木。
+> SuperAutoIsland 接口库
+
+用于其他 ClassIsland 插件向 SuperAutoIsland 注册积木。
