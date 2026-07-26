@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: update packages">
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" afterDir="false" />
-    </list>
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="fix: 前端积木图标偏移" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +44,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "master",
     "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "/home/lrs2187/Projects/SuperAutoIsland",
+    "last_opened_file_path": "/home/lrs2187/Projects/SuperAutoIsland/SuperAutoIsland.Frontend/public",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
@@ -62,6 +59,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/SuperAutoIsland.Frontend/public" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.build:dev">
     <configuration name="build:dev" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" />
@@ -170,7 +172,23 @@
       <option name="project" value="LOCAL" />
       <updated>1785052805844</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix: Blockly变成RaspberryPiFoundation的了">
+      <option name="closed" value="true" />
+      <created>1785053266424</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1785053266424</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix: 前端积木图标偏移">
+      <option name="closed" value="true" />
+      <created>1785053278623</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1785053278623</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +199,8 @@
     <MESSAGE value="feat: 废弃 isRule 参数，转为 blockType" />
     <MESSAGE value="fix: 移除多余的js文件" />
     <MESSAGE value="feat: update packages" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: update packages" />
+    <MESSAGE value="fix: Blockly变成RaspberryPiFoundation的了" />
+    <MESSAGE value="fix: 前端积木图标偏移" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: 前端积木图标偏移" />
   </component>
 </project>

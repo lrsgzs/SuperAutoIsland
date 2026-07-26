@@ -389,6 +389,7 @@ public class SaiServer
         ".jpg" or ".jpeg" => "image/jpeg",
         ".gif" => "image/gif",
         ".json" => "application/json",
+        ".svg" => "image/svg+xml",
         _ => "application/octet-stream"
     };
     
