@@ -15,20 +15,31 @@ function IndexPage() {
     }, [])
     
     return (
-        <>
-            <BlocklyContainer className="w-full h-full" />
-            <div className="absolute top-2 right-2 flex gap-2">
-                <button className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400 transition" onClick={saveCode}>
+        <div className="grid grid-rows-[auto_1fr] h-full">
+            <div className="w-full p-2 flex gap-2 bg-neutral-100">
+                <img src="/favicon.ico" alt="logo" className="self-center w-[32px] h-[32px]" />
+
+                <span className="content-center">SuperAutoIsland Blockly 编辑器</span>
+
+                <div className="flex-1" />
+
+                <button
+                    className="p-1 px-2 bg-neutral-300 border border-neutral-600 rounded-xl hover:bg-neutral-400 transition"
+                    onClick={saveCode}
+                >
                     保存
                 </button>
+
                 <button
-                    className="p-2 bg-neutral-300 rounded-2xl hover:bg-neutral-400 transition"
+                    className="p-1 px-2 bg-neutral-300 border border-neutral-600 rounded-xl hover:bg-neutral-400 transition"
                     onClick={() => window.runCode(window.workspace)}
                 >
                     运行代码
                 </button>
             </div>
-        </>
+
+            <BlocklyContainer className="w-full" />
+        </div>
     );
 }
 

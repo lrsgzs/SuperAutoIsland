@@ -454,4 +454,15 @@ Blockly.Msg['PROCEDURES_HUE'] = '290';
 Blockly.Msg['COLOUR_HUE'] = '20';
 Blockly.Msg['VARIABLES_DYNAMIC_HUE'] = '310';
 
+Blockly.Msg.OPEN_BACKPACK = '打开背包';
+Blockly.Msg.CLOSE_BACKPACK = '关闭背包';
+Blockly.Msg.COPY_ALL_TO_BACKPACK = '将所有积木复制到背包';
+Blockly.Msg.COPY_TO_BACKPACK = '复制到背包';
+Blockly.Msg.EMPTY_BACKPACK = '清空背包';
+Blockly.Msg.PASTE_ALL_FROM_BACKPACK = '从背包粘贴所有积木';
+Blockly.Msg.REMOVE_FROM_BACKPACK = '从背包中移除';
+
+Blockly.Msg.FIELD_MULTILINEINPUT_FINISH_EDITING = '完成编辑';
+Blockly.Msg.FIELD_MULTILINEINPUT_NEW_LINE = '换行';
+
 export default Blockly.Msg;

@@ -9,11 +9,25 @@ body,
     height: 100%;
 }
 
-.blocklyScrollbarVertical.blocklyFlyoutScrollbar {
-    display: none !important;
-}
-
 @font-face {
     font-family: 'Fluent System Icons';
     src: url('../assets/fonts/FluentSystemIcons.ttf');
+}
+
+dialog.blocklyDialog {
+    margin: auto;
+    padding: 1em;
+}
+
+.blocklyDialogButtonRow button {
+    border: var(--color-neutral-600) solid 1px;
+    border-radius: 4px;
+    padding-block: 4px;
+    padding-inline: 8px;
+    background: var(--color-neutral-300);
+    transition: background 0.15s;
+}
+
+.blocklyDialogButtonRow button:hover {
+    background: var(--color-neutral-400);
 }

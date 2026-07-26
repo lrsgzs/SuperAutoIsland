@@ -3,6 +3,17 @@ import { type JavascriptGenerator, Order, javascriptGenerator } from 'blockly/ja
 import type { Block } from 'blockly';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
+
+import { Backpack } from '@blockly/workspace-backpack';
+import {
+    ContinuousFlyout,
+    ContinuousMetrics,
+    ContinuousToolbox,
+    RecyclableBlockFlyoutInflater,
+} from '@blockly/continuous-toolbox';
+import { textMultiline } from '@blockly/field-multilineinput';
+import Theme from '@blockly/theme-modern';
+
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
 import { addLabel, addMetaBlock, Metadata } from './utils/superGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
@@ -156,8 +167,34 @@ preSetupCategory('调试');
 await import('./blocks/debug');
 postSetupCategory();
 
+// Continuous Toolbox
+Blockly.registry.register(Blockly.registry.Type.METRICS_MANAGER, 'ContinuousMetrics', ContinuousMetrics, true);
+Blockly.registry.register(Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX, 'ContinuousFlyout', ContinuousFlyout, true);
+Blockly.registry.register(Blockly.registry.Type.TOOLBOX, 'ContinuousToolbox', ContinuousToolbox, true);
+Blockly.registry.register(Blockly.registry.Type.FLYOUT_INFLATER, 'block', RecyclableBlockFlyoutInflater, true);
+
+textMultiline.installBlock({
+    javascript: javascriptGenerator,
+});
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
+
+const defaultTheme = Blockly.Theme.defineTheme('default', {
+    base: Theme,
+    name: 'default',
+    blockStyles: {
+        my_blocks: {
+            colourPrimary: '#00AAFF',
+            colourSecondary: '#00C2FF',
+            colourTertiary: '#007cb8',
+        },
+    },
+    categoryStyles: {
+        my_category: {
+            colour: '#00AAFF',
+        },
+    },
+});
 
 let projectUuid = new URLSearchParams(location.search).get('id') || '';
 if (projectUuid === '') {
@@ -195,23 +232,6 @@ async function getData(id, data) {
     });
     return result.data;
 }`;
-
-const defaultTheme = Blockly.Theme.defineTheme('default', {
-    base: Blockly.Themes.Classic,
-    name: 'default',
-    blockStyles: {
-        my_blocks: {
-            colourPrimary: '#00AAFF',
-            colourSecondary: '#00C2FF',
-            colourTertiary: '#007cb8',
-        },
-    },
-    categoryStyles: {
-        my_category: {
-            colour: '#00AAFF',
-        },
-    },
-});
 
 /**
  * 运行代码
@@ -273,7 +293,15 @@ export const injectBlockly = async (dom: HTMLElement) => {
         zoom: { controls: true },
         media: './media/',
         theme: defaultTheme,
+        plugins: {
+            flyoutsVerticalToolbox: 'ContinuousFlyout',
+            metricsManager: 'ContinuousMetrics',
+            toolbox: 'ContinuousToolbox',
+        },
     }) as Blockly.Workspace;
+
+    const backpack = new Backpack(workspace as any);
+    backpack.init();
 
     window.workspace = workspace;
     Reflect.set(window, 'javascriptGenerator', javascriptGenerator);

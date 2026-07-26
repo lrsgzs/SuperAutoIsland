@@ -318,6 +318,10 @@ export const toolbox: ToolboxInfo = {
                 },
                 {
                     kind: 'block',
+                    type: 'text_multiline',
+                },
+                {
+                    kind: 'block',
                     type: 'text_join',
                 },
                 {
