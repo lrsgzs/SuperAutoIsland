@@ -21,6 +21,7 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
     /// <param name="messages">消息</param>
     public void BaseLog(string level, params object[] messages)
     {
+        
         level = level.ToUpper();
 
         var messageList = messages
@@ -28,6 +29,21 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
 
         foreach (var message in messageList)
         {
+            // 写入根 logger
+            Root.AddLog(new LogData
+            {
+                Scope = Name,
+                Level = level,
+                Message = message,
+                Time = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}"
+            });
+            
+            
+            if (OperatingSystem.IsAndroid())
+            {
+                continue;
+            }
+            
             var originColor = Console.ForegroundColor;
             Console.ForegroundColor = Theme[level];
             
@@ -40,15 +56,6 @@ public class Logger(string name, bool showTime = true, Theme? theme = null)
             Console.ForegroundColor = originColor;
             
             Console.WriteLine(message);
-            
-            // 写入根 logger
-            Root.AddLog(new LogData()
-            {
-                Scope = Name,
-                Level = level,
-                Message = message,
-                Time = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}"
-            });
         }
     }
     
