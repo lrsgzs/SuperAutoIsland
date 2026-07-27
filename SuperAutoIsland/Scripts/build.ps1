@@ -1,1 +1,1 @@
-dotnet publish -p:CreateCipx=true -o .\bin\Release\net8.0-windows\ -c Release
+dotnet publish -p:CreateCipx=true -o .\bin\Release\net10.0\ -c Release
