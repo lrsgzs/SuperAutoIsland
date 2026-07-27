@@ -1,8 +1,10 @@
+using System;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
+using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
@@ -122,11 +124,9 @@ public partial class AutomationSettingsPage : SettingsPageBase
     /// </summary>
     private void OpenProjectEditorButton_Click(object? sender, RoutedEventArgs e)
     {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = $"http://localhost:{GlobalConstants.Configs.MainConfig!.Data.ServerPort}/?id={ViewModel.SelectedProject!.Id}",
-            UseShellExecute = true
-        });
+        var uri = new Uri($"http://localhost:{GlobalConstants.Configs.MainConfig!.Data.ServerPort}/" +
+                          $"?id={ViewModel.SelectedProject!.Id}");
+        IAppHost.TryGetService<IUriNavigationService>()?.NavigateWrapped(uri);
     }
 
     /// <summary>

@@ -32,7 +32,7 @@
                 </ListBoxItem>
             </ListBox>
             
-            <TextBox Watermark="筛选日志…"
+            <TextBox PlaceholderText="筛选日志…"
                      HorizontalAlignment="Right"
                      VerticalAlignment="Center"
                      MinWidth="200"
