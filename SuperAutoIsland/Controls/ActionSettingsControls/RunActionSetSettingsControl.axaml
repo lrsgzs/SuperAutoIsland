@@ -9,7 +9,7 @@
         <Grid ColumnDefinitions="Auto, *, Auto">
             <ComboBox Grid.Column="0"
                       ItemsSource="{Binding FilteredProjects}"
-                      SelectedValue="{Binding Settings.ProjectGuid}"
+                      SelectedValue="{ReflectionBinding Settings.ProjectGuid}"
                       SelectedValueBinding="{Binding Id}"
                       PlaceholderText="项目">
                 <ComboBox.ItemTemplate>

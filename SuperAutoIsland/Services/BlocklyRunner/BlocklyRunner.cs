@@ -1,7 +1,6 @@
-﻿using Microsoft.ClearScript.V8;
+﻿using Jint;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
-using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Services.BlocklyRunner;
@@ -12,49 +11,52 @@ namespace SuperAutoIsland.Services.BlocklyRunner;
 public class BlocklyRunner
 {
     private readonly Logger<BlocklyRunner> _logger = new();
-    private V8ScriptEngine? _engine;
-    
+    private Engine? _engine;
+    private JavaScriptNamespace? _jsNamespace;
+
     /// <summary>
     /// 运行 js 脚本
     /// </summary>
     /// <param name="script">脚本代码</param>
-    public async Task RunJavaScript(string script)
+    /// <param name="cancellationToken">中断 token</param>
+    public async Task RunJavaScript(string script, CancellationToken cancellationToken = default)
     {
-        await V8Loader.InitializationTask;
-        
-        if (V8Loader.IsV8Denied)
-        {
-            _logger.Warn("V8 引擎未就绪");
-            return;
-        }
-
         if (_engine == null)
         {
-            _engine = new V8ScriptEngine();
-            _engine.AddHostObject("logger", _logger);
-            _engine.AddHostObject("callAction", JavaScriptNamespace.CallAction);
-            _engine.AddHostObject("getRuleState", JavaScriptNamespace.GetRuleState);
-            _engine.AddHostObject("getData", JavaScriptNamespace.GetData);
-            _engine.AddHostObject("console", JavaScriptNamespace.Console);
+            _engine = new Engine(options =>
+            {
+                options.Constraints.PromiseTimeout = TimeSpan.Zero;
+            });
+            _jsNamespace = new JavaScriptNamespace
+            {
+                Engine = _engine
+            };
+            
+            _engine.SetValue("logger", _logger);
+            _engine.SetValue("console", _jsNamespace.Console);
+            _engine.SetValue("callAction", _jsNamespace.CallAction);
+            _engine.SetValue("getRuleState", _jsNamespace.GetRuleState);
+            _engine.SetValue("getData", _jsNamespace.GetData);
         }
         
         _logger.Log("开始运行 JavaScript 脚本");
         _logger.Debug(script);
         
-        _engine.Execute(script);
+        await _engine.EvaluateAsync(script, "main.js", cancellationToken);
     }
 
     /// <summary>
     /// 运行项目
     /// </summary>
     /// <param name="project">项目实例</param>
+    /// <param name="cancellationToken">中断 token</param>
     /// <exception cref="NotSupportedException">遇到不支持的项目会报这个错误</exception>
-    public async Task RunActionProject(Project project)
+    public async Task RunActionProject(Project project, CancellationToken cancellationToken = default)
     {
         if (project.Type == ProjectsType.BlocklyAction)
         {
             var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
-            await RunJavaScript(script);
+            await RunJavaScript(script, cancellationToken);
             return;
         }
 

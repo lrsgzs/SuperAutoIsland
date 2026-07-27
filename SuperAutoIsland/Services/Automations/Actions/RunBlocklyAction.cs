@@ -23,6 +23,8 @@ public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
         if (Settings.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
             return;
         
-        await Runner.RunActionProject(ProjectsConfigManager.GetProject(Settings.ProjectGuid));
+        await Runner.RunActionProject(
+            ProjectsConfigManager.GetProject(Settings.ProjectGuid),
+            InterruptCancellationToken);
     }
 }

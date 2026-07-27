@@ -111,9 +111,6 @@ public class Plugin : PluginBase
 
             _logger.Debug("注册 SuperAutoIsland 元素...");
             SaiRegistry.Register();
-
-            _logger.Info("加载 V8 引擎...");
-            await V8Loader.InitializationTask;
         };
 
         // 应用退出
