@@ -27,7 +27,7 @@ public static class SaiRegistry
                     {
                         Id = "sai.actions.runBlockly",
                         Name = "运行 Blockly 项目",
-                        Icon = ("Blockly 项目", "\uE049"),
+                        Icon = ("Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
                             ["ProjectGuid"] = new DynamicDropdownMetaArgs
@@ -45,7 +45,7 @@ public static class SaiRegistry
                     {
                         Id = "sai.actions.runActionSet",
                         Name = "运行可复用的行动组",
-                        Icon = ("行动组", "\uE01F"),
+                        Icon = ("行动组", FluentIcons.AirplaneTakeOffRegular),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
                             ["ProjectGuid"] = new DynamicDropdownMetaArgs
@@ -66,7 +66,7 @@ public static class SaiRegistry
                     {
                         Id = "sai.rules.runCiRuleset",
                         Name = "运行可复用的规则集",
-                        Icon = ("规则集", "\uF17E"),
+                        Icon = ("规则集", FluentIcons.TagMultipleRegular),
                         Args = new Dictionary<string, MetaArgsBase>
                         {
                             ["ProjectGuid"] = new DynamicDropdownMetaArgs

@@ -79,15 +79,16 @@ public class Plugin : PluginBase
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
 
         // 行动树
-        IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", "\uF3AF"));
+        IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", FluentIcons.VehicleCarRegular));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
-            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049"),
-            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", "\uE01F")
+            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
+            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular)
         ]);
 
         // 规则
         services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>(
             "sai.rules.runCiRuleset", "运行可复用的规则集", "\uF17E");
+            "sai.rules.runCiRuleset", "运行可复用的规则集", FluentIcons.TagMultipleRegular);
 
         // 规则处理器
         services.AddSingleton<RuleHandlerService>();

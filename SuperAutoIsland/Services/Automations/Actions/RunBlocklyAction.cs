@@ -1,5 +1,6 @@
 ﻿using ClassIsland.Core.Abstractions.Automation;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models.Actions;
 using SuperAutoIsland.Shared;
@@ -9,7 +10,7 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 /// <summary>
 /// 「运行 Blockly 项目」
 /// </summary>
-[ActionInfo("sai.actions.runBlockly", "运行 Blockly 项目", "\uE049", false)]
+[ActionInfo("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular, false)]
 public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
 {
     private static readonly BlocklyRunner.BlocklyRunner Runner = IAppHost.GetService<BlocklyRunner.BlocklyRunner>();

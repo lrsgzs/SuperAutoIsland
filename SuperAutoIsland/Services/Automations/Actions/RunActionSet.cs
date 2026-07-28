@@ -1,5 +1,6 @@
 ﻿using ClassIsland.Core.Abstractions.Automation;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models.Actions;
 using SuperAutoIsland.Shared;
@@ -9,7 +10,7 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 /// <summary>
 /// 「运行可复用的行动组」
 /// </summary>
-[ActionInfo("sai.actions.runActionSet", "运行可复用的行动组", "\uE01F", false)]
+[ActionInfo("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular, false)]
 public class RunActionSet : ActionBase<RunActionSetSettings>
 {
     private static readonly CiRunner Runner = IAppHost.GetService<CiRunner>();

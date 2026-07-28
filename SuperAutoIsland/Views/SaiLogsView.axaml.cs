@@ -3,6 +3,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Helpers.UI;
+using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 using SuperAutoIsland.ViewModel;
@@ -19,11 +20,11 @@ public partial class SaiLogsView : ViewBase
     /// </summary>
     public static readonly FuncValueConverter<string, string> LogLevelToIconGlyphConverter = new(x => x switch
     {
-        "ERROR" => "\uE808",
-        "WARN" => "\uF430",
-        "INFO" => "\uE9E4",
-        "DEBUG" => "\uE2C7",
-        _ => "\uEDF6"
+        "ERROR" => FluentIcons.ErrorCircleFilled,
+        "WARN" => FluentIcons.WarningFilled,
+        "INFO" => FluentIcons.InfoRegular,
+        "DEBUG" => FluentIcons.BugFilled,
+        _ => FluentIcons.PresenceDndFilled
     });
     
     /// <summary>

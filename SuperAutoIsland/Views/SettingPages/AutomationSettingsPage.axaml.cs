@@ -59,19 +59,19 @@ public partial class AutomationSettingsPage : SettingsPageBase
         {
             Type = ProjectsType.BlocklyAction,
             Name = "Blockly 行动",
-            IconGlyph = "\uE049"
+            IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular
         },
         new()
         {
             Type = ProjectsType.CiRuleset,
             Name = "可复用的规则集",
-            IconGlyph = "\uF17E"
+            IconGlyph = FluentIcons.TagMultipleRegular
         },
         new()
         {
             Type = ProjectsType.CiActionSet,
             Name = "可复用的行动组",
-            IconGlyph = "\uE01F"
+            IconGlyph = FluentIcons.AirplaneTakeOffRegular
         }
     ];
 
