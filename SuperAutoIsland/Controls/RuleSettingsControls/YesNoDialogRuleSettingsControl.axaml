@@ -1,0 +1,105 @@
+<ci:RuleSettingsControlBase xmlns="https://github.com/avaloniaui"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                            xmlns:rules="clr-namespace:SuperAutoIsland.Models.Rules"
+                            xmlns:ruleSettingsControls="clr-namespace:SuperAutoIsland.Controls.RuleSettingsControls"
+                            xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                            mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                            x:Class="SuperAutoIsland.Controls.RuleSettingsControls.YesNoDialogRuleSettingsControl"
+                            x:TypeArguments="rules:YesNoDialogRuleSettings">
+    <ci:RuleSettingsControlBase.Resources>
+        <ScrollViewer x:Key="SettingsDrawer"
+                      x:DataType="ruleSettingsControls:YesNoDialogRuleSettingsControl"
+                      Width="512">
+            <StackPanel Orientation="Vertical" Spacing="8">
+                <TextBlock Text="YesNo 对话框设置" Theme="{DynamicResource TitleTextBlockStyle}" />
+
+                <Separator />
+
+                <TextBlock Text="警告：如果您在组件配置里添加此规则，请立刻移除！或者勾选下方「行为」里的「仅显示一次」。否则每次窗口变化都会弹出一次弹窗，影响教学安全！"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                           Theme="{DynamicResource SubtitleTextBlockStyle}"
+                           HorizontalAlignment="Center" />
+
+                <TextBlock Text="提示：如果您需要用本对话框决定是否展示指定组件，请通过 ExtraIsland 的设标志和 SAI 的 Blockly 行动等途径完成，而不是直接在组件配置添加此规则。"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center" />
+
+                <Separator />
+
+                <GroupBox Header="内容">
+                    <StackPanel Orientation="Vertical" Spacing="4">
+                        <ci:Field Label="标题">
+                            <TextBox Text="{Binding Settings.Header}" />
+                        </ci:Field>
+
+                        <ci:Field Label="消息">
+                            <TextBox Text="{Binding Settings.Message}" />
+                        </ci:Field>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="交互">
+                    <StackPanel Orientation="Vertical" Spacing="4">
+                        <ci:Field Label="「Yes」按钮文本">
+                            <TextBox Text="{Binding Settings.YesText}" />
+                        </ci:Field>
+
+                        <ci:Field Label="「No」按钮文本">
+                            <TextBox Text="{Binding Settings.NoText}" />
+                        </ci:Field>
+
+                        <CheckBox Content="默认按钮为「Yes」？" IsChecked="{Binding Settings.PreferYes}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="行为">
+                    <StackPanel Orientation="Vertical" Spacing="4">
+                        <CheckBox Content="启用倒计时？" IsChecked="{Binding Settings.CountdownEnabled}" />
+
+                        <TextBlock Text="启用倒计时后，该对话框将会在倒计时期间，拦截包括关闭在内的交互，倒计时结束后即恢复。请谨慎启用。"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+
+                        <ci:Field Label="倒计时时长" Suffix="s">
+                            <fa:FANumberBox Minimum="0" Maximum="60"
+                                            SmallChange="1" LargeChange="5"
+                                            Value="{Binding Settings.CountdownTime}" />
+                        </ci:Field>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="安全">
+                    <StackPanel Orientation="Vertical" Spacing="4">
+                        <CheckBox Content="仅显示一次？" IsChecked="{Binding Settings.ShowOnce}" />
+
+                        <TextBlock IsVisible="{Binding Settings.Showed}"
+                                   Text="本次会话中，该对话框已显示过至少一次。" />
+
+                        <TextBlock Text="「仅显示一次」是指在一次 ClassIsland 会话/启动中，该对话框仅会显示一次。如果您需要更具体的策略决定是否显示，请通过规则集短路等方式实现。"
+                                   TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                </GroupBox>
+
+                <Button Content="预览" Classes="accent"
+                        Click="PreviewButton_OnClick" />
+
+                <TextBlock Text="SAI 开发者不对滥用对话框的行为负责。"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </ScrollViewer>
+    </ci:RuleSettingsControlBase.Resources>
+
+    <StackPanel Orientation="Horizontal">
+        <Button Theme="{DynamicResource TransparentButton}"
+                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                Click="ShowSettingsButton_OnClick">
+            <ci:IconText Glyph="{ci:FI SettingsRegular}" Text="打开设置" />
+        </Button>
+    </StackPanel>
+</ci:RuleSettingsControlBase>

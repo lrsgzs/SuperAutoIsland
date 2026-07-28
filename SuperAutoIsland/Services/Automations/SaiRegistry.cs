@@ -8,7 +8,6 @@ using SuperAutoIsland.Interface.MetaData;
 using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Actions;
-using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations;
@@ -75,6 +74,58 @@ public static class SaiRegistry
                                 Type = MetaType.dynamic_dropdown,
                                 Id = "sai.rules.runCiRuleset.options"
                             }
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false
+                    },
+                    new BlockMetadata
+                    {
+                        Id = "sai.rules.dialogs.yesNo",
+                        Name = "YesNo 对话框",
+                        Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["dummy1"] = new CommonMetaArgs
+                            {
+                                Name = "",
+                                Type = MetaType.dummy
+                            },
+                            ["Header"] = new CommonMetaArgs
+                            {
+                                Name = "标题",
+                                Type = MetaType.text
+                            },
+                            ["Message"] = new CommonMetaArgs
+                            {
+                                Name = "消息",
+                                Type = MetaType.text
+                            },
+                            ["YesText"] = new CommonMetaArgs
+                            {
+                                Name = "「Yes」按钮文本",
+                                Type = MetaType.text
+                            },
+                            ["NoText"] = new CommonMetaArgs
+                            {
+                                Name = "「No」按钮文本",
+                                Type = MetaType.text
+                            },
+                            ["PreferYes"] = new CommonMetaArgs
+                            {
+                                Name = "默认按钮为「Yes」？",
+                                Type = MetaType.boolean
+                            },
+                            ["CountdownEnabled"] = new CommonMetaArgs
+                            {
+                                Name = "启用倒计时？",
+                                Type = MetaType.boolean
+                            },
+                            ["CountdownTime"] = new CommonMetaArgs
+                            {
+                                Name = "倒计时时长",
+                                Type = MetaType.number
+                            },
                         },
                         DropdownUseNumbers = false,
                         InlineField = false,

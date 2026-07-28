@@ -87,8 +87,9 @@ public class Plugin : PluginBase
 
         // 规则
         services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>(
-            "sai.rules.runCiRuleset", "运行可复用的规则集", "\uF17E");
             "sai.rules.runCiRuleset", "运行可复用的规则集", FluentIcons.TagMultipleRegular);
+        services.AddRule<YesNoDialogRuleSettings, YesNoDialogRuleSettingsControl>(
+            "sai.rules.dialogs.yesNo", "YesNo 对话框", FluentIcons.WindowHeaderHorizontalRegular);
 
         // 规则处理器
         services.AddSingleton<RuleHandlerService>();
