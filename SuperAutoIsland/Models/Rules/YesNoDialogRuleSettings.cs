@@ -12,6 +12,7 @@ public partial class YesNoDialogRuleSettings : ObservableRecipient
     [ObservableProperty] private string _noText = "否";
     [ObservableProperty] private bool _preferYes = true;
     
+    [ObservableProperty] private bool _topmost = false;
     [ObservableProperty] private bool _countdownEnabled = false;
     [ObservableProperty] private double _countdownTime = 5;
 

@@ -7,6 +7,7 @@ using ClassIsland.Core.Abstractions.Controls;
 using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Services;
+using SuperAutoIsland.Services.Automations;
 
 namespace SuperAutoIsland.Controls.RuleSettingsControls;
 

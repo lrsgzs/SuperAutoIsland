@@ -116,6 +116,11 @@ public static class SaiRegistry
                                 Name = "默认按钮为「Yes」？",
                                 Type = MetaType.boolean
                             },
+                            ["Topmost"] = new CommonMetaArgs
+                            {
+                                Name = "置顶？",
+                                Type = MetaType.boolean
+                            },
                             ["CountdownEnabled"] = new CommonMetaArgs
                             {
                                 Name = "启用倒计时？",

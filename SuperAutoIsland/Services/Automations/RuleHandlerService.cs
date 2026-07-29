@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using ClassIsland.Core;
 using ClassIsland.Core.Abstractions.Services;
@@ -7,7 +8,7 @@ using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Shared;
 
-namespace SuperAutoIsland.Services;
+namespace SuperAutoIsland.Services.Automations;
 
 public class RuleHandlerService
 {
@@ -147,7 +148,17 @@ public class RuleHandlerService
             });
         }
         
-        var result = await dialog.ShowAsync();
+        var task = dialog.ShowAsync();
+        if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
+        {
+            await Task.Delay(100);
+            var topLevel = TopLevel.GetTopLevel(dialog);
+            if (topLevel is Window window)
+            {
+                window.Topmost = true;
+            }
+        }
+        var result = await task;
         return Equals(result, true);
     }
 }
