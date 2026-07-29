@@ -48,13 +48,13 @@
                             <fa:FAMenuFlyout ItemsSource="{x:Static local:AutomationSettingsPage.ProjectTypeNodes}">
                                 <fa:FAMenuFlyout.ItemTemplate>
                                     <DataTemplate DataType="{x:Type local:ProjectTypeNode}">
-                                        <fa:MenuFlyoutItem Text="{Binding Name}"
+                                        <fa:FAMenuFlyoutItem Text="{Binding Name}"
                                                              Command="{Binding #Page.CreateProjectCommand}"
                                                              CommandParameter="{Binding Type} ">
-                                            <fa:MenuFlyoutItem.IconSource>
+                                            <fa:FAMenuFlyoutItem.IconSource>
                                                 <ci:FluentIconSource Glyph="{Binding IconGlyph}" />
-                                            </fa:MenuFlyoutItem.IconSource>
-                                        </fa:MenuFlyoutItem>
+                                            </fa:FAMenuFlyoutItem.IconSource>
+                                        </fa:FAMenuFlyoutItem>
                                     </DataTemplate>
                                 </fa:FAMenuFlyout.ItemTemplate>
                             </fa:FAMenuFlyout>

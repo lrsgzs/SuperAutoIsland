@@ -296,9 +296,9 @@ public static class SaiRegistry
 
     public static async Task<string> ShowDialog(TextDialogDataModel settings)
     {
-        var cancelButton = new TaskDialogButton(settings.CancelText, false);
+        var cancelButton = new FATaskDialogButton(settings.CancelText, false);
         
-        var okButton = new TaskDialogButton(settings.OkText, true)
+        var okButton = new FATaskDialogButton(settings.OkText, true)
         {
             IsDefault = true
         };
@@ -308,7 +308,7 @@ public static class SaiRegistry
             Text = settings.DefaultText
         };
         
-        var dialog = new TaskDialog
+        var dialog = new FATaskDialog
         {
             Title = settings.Header,
             Header = settings.Header,

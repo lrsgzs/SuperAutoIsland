@@ -6,12 +6,15 @@ using Avalonia.VisualTree;
 using ClassIsland.Core.Abstractions.Controls;
 using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Models.Rules;
+using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations;
 
 namespace SuperAutoIsland.Controls.RuleSettingsControls;
 
 public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<YesNoDialogRuleSettings>
 {
+    private bool _dialogInitialized = false;
+    
     public YesNoDialogRuleSettingsControl()
     {
         InitializeComponent();
@@ -32,8 +35,7 @@ public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<Ye
     private async Task ShowDrawer(Control control, bool isOpenInDialog = false)
     {
         if (!isOpenInDialog &&
-            this.GetVisualRoot() is Window window &&
-            window.GetType().FullName == "ClassIsland.Views.SettingsWindowNew")
+            this.FindAncestorOfType<ViewBase>()?.GetType().FullName == "ClassIsland.Views.SettingsWindowNew")
         {
             control.Classes.Remove("in-dialog");
             control.Classes.Add("in-drawer");
@@ -54,17 +56,17 @@ public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<Ye
             control.Classes.Remove("in-drawer");
             control.Classes.Add("in-dialog");
 
-            if (control.Parent is ContentDialog contentDialog)
+            if (control.Parent is FAContentDialog contentDialog)
             {
                 contentDialog.Content = null;
             }
 
-            var dialog = new ContentDialog
+            var dialog = new FAContentDialog
             {
                 Content = control,
                 TitleTemplate = new DataTemplate(),
                 PrimaryButtonText = "确定",
-                DefaultButton = ContentDialogButton.Primary,
+                DefaultButton = FAContentDialogButton.Primary,
                 DataContext = this
             };
 
