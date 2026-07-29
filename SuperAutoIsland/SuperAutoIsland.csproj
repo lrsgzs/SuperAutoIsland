@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDynamicLoading>True</EnableDynamicLoading>
         <RootNamespace>SuperAutoIsland</RootNamespace>
-        <Version>0.1.4.0</Version>
+        <Version>0.1.4.1</Version>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
