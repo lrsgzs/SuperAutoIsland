@@ -1,4 +1,4 @@
-<ci:ViewBase x:Class="SuperAutoIsland.Views.SaiLogsView"
+<ci:MyWindow x:Class="SuperAutoIsland.Views.SaiLogsView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,9 +6,9 @@
              xmlns:ci="http://classisland.tech/schemas/xaml/core"
              xmlns:views="clr-namespace:SuperAutoIsland.Views"
              mc:Ignorable="d"
-             Header="SuperAutoIsland 日志"
-             HostHeight="600"
-             HostWidth="1200">
+             Title="SuperAutoIsland 日志"
+             Height="600"
+             Width="1200">
     <Grid RowDefinitions="Auto,*,Auto" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:SaiLogsView}}">
         <Grid Grid.Row="0">
             <ListBox HorizontalAlignment="Left"
@@ -32,7 +32,7 @@
                 </ListBoxItem>
             </ListBox>
             
-            <TextBox PlaceholderText="筛选日志…"
+            <TextBox Watermark="筛选日志…"
                      HorizontalAlignment="Right"
                      VerticalAlignment="Center"
                      MinWidth="200"
@@ -142,4 +142,4 @@
             </Button>
         </WrapPanel>
     </Grid>
-</ci:ViewBase>
+</ci:MyWindow>

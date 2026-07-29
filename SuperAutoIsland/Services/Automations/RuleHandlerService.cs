@@ -81,17 +81,17 @@ public class RuleHandlerService
 
     public static async Task<bool> ShowDialogAsync(YesNoDialogRuleSettings settings)
     {
-        var noButton = new FATaskDialogButton(settings.NoText, false)
+        var noButton = new TaskDialogButton(settings.NoText, false)
         {
             IsDefault = !settings.PreferYes,
         };
         
-        var yesButton = new FATaskDialogButton(settings.YesText, true)
+        var yesButton = new TaskDialogButton(settings.YesText, true)
         {
             IsDefault = settings.PreferYes
         };
         
-        var dialog = new FATaskDialog
+        var dialog = new TaskDialog
         {
             Title = settings.Header,
             Header = settings.Header,

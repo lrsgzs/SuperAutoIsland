@@ -29,64 +29,60 @@
                            HorizontalAlignment="Center" />
 
                 <Separator />
+                <ci:IconText Glyph="{ci:FI DocumentHeaderRegular}" Text="内容" />
+                
+                <ci:Field Label="标题">
+                    <TextBox Text="{Binding Settings.Header}" />
+                </ci:Field>
 
-                <GroupBox Header="内容">
-                    <StackPanel Orientation="Vertical" Spacing="4">
-                        <ci:Field Label="标题">
-                            <TextBox Text="{Binding Settings.Header}" />
-                        </ci:Field>
+                <ci:Field Label="消息">
+                    <TextBox Text="{Binding Settings.Message}" />
+                </ci:Field>
+                
+                <Separator />
+                <ci:IconText Glyph="{ci:FI CursorClickRegular}" Text="交互" />
+                
+                <ci:Field Label="「Yes」按钮文本">
+                    <TextBox Text="{Binding Settings.YesText}" />
+                </ci:Field>
 
-                        <ci:Field Label="消息">
-                            <TextBox Text="{Binding Settings.Message}" />
-                        </ci:Field>
-                    </StackPanel>
-                </GroupBox>
+                <ci:Field Label="「No」按钮文本">
+                    <TextBox Text="{Binding Settings.NoText}" />
+                </ci:Field>
 
-                <GroupBox Header="交互">
-                    <StackPanel Orientation="Vertical" Spacing="4">
-                        <ci:Field Label="「Yes」按钮文本">
-                            <TextBox Text="{Binding Settings.YesText}" />
-                        </ci:Field>
-
-                        <ci:Field Label="「No」按钮文本">
-                            <TextBox Text="{Binding Settings.NoText}" />
-                        </ci:Field>
-
-                        <CheckBox Content="默认按钮为「Yes」？" IsChecked="{Binding Settings.PreferYes}" />
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox Header="行为">
-                    <StackPanel Orientation="Vertical" Spacing="4">
-                        <CheckBox Content="置顶？" IsChecked="{Binding Settings.Topmost}" />
+                <CheckBox Content="默认按钮为「Yes」？" IsChecked="{Binding Settings.PreferYes}" />
+                
+                <Separator />
+                <ci:IconText Glyph="{ci:FI SettingsRegular}" Text="行为" />
+                
+                <CheckBox Content="置顶？" IsChecked="{Binding Settings.Topmost}" />
                         
-                        <CheckBox Content="启用倒计时？" IsChecked="{Binding Settings.CountdownEnabled}" />
+                <CheckBox Content="启用倒计时？" IsChecked="{Binding Settings.CountdownEnabled}" />
 
-                        <TextBlock Text="启用倒计时后，该对话框将会在倒计时期间，拦截包括关闭在内的交互，倒计时结束后即恢复。请谨慎启用。"
-                                   TextWrapping="Wrap"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                <TextBlock Text="启用倒计时后，该对话框将会在倒计时期间，拦截包括关闭在内的交互，倒计时结束后即恢复。请谨慎启用。"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
 
-                        <ci:Field Label="倒计时时长" Suffix="s">
-                            <fa:FANumberBox Minimum="0" Maximum="60"
-                                            SmallChange="1" LargeChange="5"
-                                            Value="{Binding Settings.CountdownTime}" />
-                        </ci:Field>
-                    </StackPanel>
-                </GroupBox>
+                <ci:Field Label="倒计时时长" Suffix="s">
+                    <fa:NumberBox Minimum="0" Maximum="60"
+                                  SmallChange="1" LargeChange="5"
+                                  Value="{Binding Settings.CountdownTime}" />
+                </ci:Field>
+                
+                <Separator />
+                <ci:IconText Glyph="{ci:FI GuardianRegular}" Text="安全" />
+                
+                <CheckBox Content="仅显示一次？" IsChecked="{Binding Settings.ShowOnce}" />
 
-                <GroupBox Header="安全">
-                    <StackPanel Orientation="Vertical" Spacing="4">
-                        <CheckBox Content="仅显示一次？" IsChecked="{Binding Settings.ShowOnce}" />
+                <TextBlock IsVisible="{Binding Settings.Showed}"
+                           Text="本次会话中，该对话框已显示过至少一次。" />
 
-                        <TextBlock IsVisible="{Binding Settings.Showed}"
-                                   Text="本次会话中，该对话框已显示过至少一次。" />
+                <TextBlock Text="「仅显示一次」是指在一次 ClassIsland 会话/启动中，该对话框仅会显示一次。如果您需要更具体的策略决定是否显示，请通过规则集短路等方式实现。"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
 
-                        <TextBlock Text="「仅显示一次」是指在一次 ClassIsland 会话/启动中，该对话框仅会显示一次。如果您需要更具体的策略决定是否显示，请通过规则集短路等方式实现。"
-                                   TextWrapping="Wrap"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
-                </GroupBox>
-
+                <Separator />
+                
                 <Button Content="预览" Classes="accent"
                         Click="PreviewButton_OnClick" />
 
