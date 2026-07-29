@@ -93,6 +93,7 @@ public class RuleHandlerService
         
         var dialog = new FATaskDialog
         {
+            Title = settings.Header,
             Header = settings.Header,
             Content = settings.Message,
             Buttons = settings.PreferYes ? [noButton, yesButton] : [yesButton, noButton],

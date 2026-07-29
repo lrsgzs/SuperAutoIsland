@@ -1,13 +1,20 @@
+using System.Diagnostics;
 using System.Text.Json;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Threading;
+using ClassIsland.Core;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
+using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface;
 using SuperAutoIsland.Interface.MetaData;
 using SuperAutoIsland.Interface.MetaData.ArgsType;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Actions;
+using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations;
@@ -128,7 +135,7 @@ public static class SaiRegistry
                             },
                             ["CountdownTime"] = new CommonMetaArgs
                             {
-                                Name = "倒计时时长",
+                                Name = "倒计时时长(s)",
                                 Type = MetaType.number
                             },
                         },
@@ -157,7 +164,64 @@ public static class SaiRegistry
                     //             Type = MetaType.text
                     //         },
                     //     }
-                    // }
+                    // },
+                    new BlockMetadata
+                    {
+                        Id = "sai.rules.dialogs.text",
+                        Name = "文本输入对话框",
+                        Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["dummy1"] = new CommonMetaArgs
+                            {
+                                Name = "",
+                                Type = MetaType.dummy
+                            },
+                            ["Header"] = new CommonMetaArgs
+                            {
+                                Name = "标题",
+                                Type = MetaType.text
+                            },
+                            ["Message"] = new CommonMetaArgs
+                            {
+                                Name = "消息",
+                                Type = MetaType.text
+                            },
+                            ["DefaultText"] = new CommonMetaArgs
+                            {
+                                Name = "默认文本",
+                                Type = MetaType.text
+                            },
+                            ["OkText"] = new CommonMetaArgs
+                            {
+                                Name = "「Ok」按钮文本",
+                                Type = MetaType.text
+                            },
+                            ["CancelText"] = new CommonMetaArgs
+                            {
+                                Name = "「Cancel」按钮文本",
+                                Type = MetaType.text
+                            },
+                            ["Topmost"] = new CommonMetaArgs
+                            {
+                                Name = "置顶？",
+                                Type = MetaType.boolean
+                            },
+                            ["CountdownEnabled"] = new CommonMetaArgs
+                            {
+                                Name = "启用倒计时？",
+                                Type = MetaType.boolean
+                            },
+                            ["CountdownTime"] = new CommonMetaArgs
+                            {
+                                Name = "倒计时时长(s)",
+                                Type = MetaType.number
+                            },
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false
+                    },
                 ]
             });
 
@@ -190,11 +254,25 @@ public static class SaiRegistry
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
         
-        // SaiServer.RegisterDataGetter<TestData>("sai.data.test", async (data) =>
+        // SaiServer.RegisterDataGetter<TestData>("sai.data.test", (data) =>
         // {
-        //     if (data is not TestData testData) return "???";
-        //     return testData.Text + testData.Text;
+        //     try
+        //     {
+        //         if (data is not TestData testData) return Task.FromResult("???");
+        //         
+        //         return Task.FromResult(testData.Text + testData.Text);
+        //     }
+        //     catch (Exception exception)
+        //     {
+        //         return Task.FromException<string>(exception);
+        //     }
         // });
+        
+        SaiServer.RegisterDataGetter<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
+        {
+            if (data is not TextDialogDataModel model) return "???";
+            return await ShowDialog(model);
+        });
     }
     
     /// <summary>
@@ -214,6 +292,116 @@ public static class SaiRegistry
             Id = "classisland.os.run",
             Settings = JsonSerializer.Deserialize<object>(settingsJson)
         };
+    }
+
+    public static async Task<string> ShowDialog(TextDialogDataModel settings)
+    {
+        var cancelButton = new FATaskDialogButton(settings.CancelText, false);
+        
+        var okButton = new FATaskDialogButton(settings.OkText, true)
+        {
+            IsDefault = true
+        };
+
+        var textBox = new TextBox
+        {
+            Text = settings.DefaultText
+        };
+        
+        var dialog = new FATaskDialog
+        {
+            Title = settings.Header,
+            Header = settings.Header,
+            Content = new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = settings.Message,
+                        TextWrapping = TextWrapping.Wrap
+                    },
+                    textBox
+                }
+            },
+            Buttons = [cancelButton, okButton],
+            XamlRoot = AppBase.Current.GetRootWindow()
+        };
+
+        okButton.IsEnabled = !settings.CountdownEnabled && !string.IsNullOrEmpty(textBox.Text.Trim());
+        
+        if (settings.CountdownEnabled)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var completed = false;
+            dialog.Closing += (sender, args) =>
+            {
+                args.Cancel = !completed;
+            };
+            
+            cancelButton.IsEnabled = false;
+            okButton.IsEnabled = false;
+            
+            textBox.TextChanged += (sender, args) =>
+            {
+                okButton.IsEnabled = completed && !string.IsNullOrEmpty(textBox.Text.Trim());
+            };
+            
+            _ = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var targetMs = settings.CountdownTime * 1000;
+                    var elapsedMs = stopwatch.ElapsedMilliseconds;
+
+                    if (elapsedMs >= targetMs)
+                    {
+                        break;
+                    }
+
+                    var remainingMs = (int)(targetMs - elapsedMs);
+                    var remainingTime = Math.Ceiling((double)remainingMs / 1000);
+
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        okButton.Text = $"{settings.OkText} ({remainingTime:0}s)";
+                    });
+
+                    var checkInterval = Math.Min(remainingMs, 1000);
+                    await Task.Delay(checkInterval);
+                }
+                
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    completed = true;
+                    cancelButton.IsEnabled = true;
+                    okButton.IsEnabled = !string.IsNullOrEmpty(textBox.Text.Trim());
+                    okButton.Text = settings.OkText;
+                });
+            });
+        }
+        else
+        {
+            textBox.TextChanged += (sender, args) =>
+            {
+                okButton.IsEnabled = !string.IsNullOrEmpty(textBox.Text.Trim());
+            };
+        }
+        
+        var task = dialog.ShowAsync();
+        if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
+        {
+            await Task.Delay(100);
+            var topLevel = TopLevel.GetTopLevel(dialog);
+            if (topLevel is Window window)
+            {
+                window.Topmost = true;
+            }
+        }
+        var result = await task;
+
+        return Equals(result, true) ? textBox.Text : "canceled";
     }
 
     private static List<T> EnsureListHasItemOrDefaultListItem<T>(List<T> data, T defaultItem)
