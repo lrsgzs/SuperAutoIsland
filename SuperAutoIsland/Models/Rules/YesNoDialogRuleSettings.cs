@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SuperAutoIsland.Enums;
 
 namespace SuperAutoIsland.Models.Rules;
 
@@ -15,6 +16,7 @@ public partial class YesNoDialogRuleSettings : ObservableRecipient
     [ObservableProperty] private bool _topmost = false;
     [ObservableProperty] private bool _countdownEnabled = false;
     [ObservableProperty] private double _countdownTime = 5;
+    [ObservableProperty] private CountdownMode _countdownMode = CountdownMode.Enable;
 
     // 教学安全叠甲
     [ObservableProperty] private bool _showOnce = false;

@@ -5,6 +5,7 @@ using ClassIsland.Core;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using FluentAvalonia.UI.Controls;
+using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Shared;
 
@@ -103,17 +104,32 @@ public class RuleHandlerService
         if (settings.CountdownEnabled)
         {
             var stopwatch = Stopwatch.StartNew();
-            var defaultButton = settings.PreferYes ? yesButton : noButton;
-            var defaultText = settings.PreferYes ? settings.YesText : settings.NoText;
             
-            var completed = false;
-            dialog.Closing += (sender, args) =>
+            var countdownButton = settings.CountdownMode switch
             {
-                args.Cancel = !completed;
+                CountdownMode.Enable => settings.PreferYes ? yesButton : noButton,
+                CountdownMode.Resolve => yesButton,
+                _ => noButton
+            };
+            var countdownOriginText = settings.CountdownMode switch
+            {
+                CountdownMode.Enable => settings.PreferYes ? settings.YesText : settings.NoText,
+                CountdownMode.Resolve => settings.YesText,
+                _ => settings.NoText
             };
             
-            noButton.IsEnabled = false;
-            yesButton.IsEnabled = false;
+            var completed = false;
+            
+            if (settings.CountdownMode == CountdownMode.Enable)
+            {
+                dialog.Closing += (sender, args) =>
+                {
+                    args.Cancel = !completed;
+                };
+                
+                noButton.IsEnabled = false;
+                yesButton.IsEnabled = false;
+            }
 
             _ = Task.Run(async () =>
             {
@@ -132,7 +148,7 @@ public class RuleHandlerService
 
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        defaultButton.Text = $"{defaultText} ({remainingTime:0}s)";
+                        countdownButton.Text = $"{countdownOriginText} ({remainingTime:0}s)";
                     });
 
                     var checkInterval = Math.Min(remainingMs, 1000);
@@ -142,9 +158,25 @@ public class RuleHandlerService
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     completed = true;
-                    noButton.IsEnabled = true;
-                    yesButton.IsEnabled = true;
-                    defaultButton.Text = defaultText;
+
+                    countdownButton.Text = countdownOriginText;
+                    
+                    switch (settings.CountdownMode)
+                    {
+                        case CountdownMode.Enable:
+                            noButton.IsEnabled = true;
+                            yesButton.IsEnabled = true;
+                            break;
+                        case CountdownMode.Resolve:
+                            dialog.Hide(true);
+                            break;
+                        case CountdownMode.Reject:
+                            dialog.Hide(false);
+                            break;
+                        default:
+                            dialog.Hide();
+                            break;
+                    }
                 });
             });
         }

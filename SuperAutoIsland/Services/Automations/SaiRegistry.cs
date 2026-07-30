@@ -271,7 +271,7 @@ public static class SaiRegistry
         SaiServer.RegisterDataGetter<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
         {
             if (data is not TextDialogDataModel model) return "???";
-            return await ShowDialog(model);
+            return await ShowDialogAsync(model);
         });
     }
     
@@ -294,7 +294,7 @@ public static class SaiRegistry
         };
     }
 
-    public static async Task<string> ShowDialog(TextDialogDataModel settings)
+    public static async Task<string> ShowDialogAsync(TextDialogDataModel settings)
     {
         var cancelButton = new FATaskDialogButton(settings.CancelText, false);
         

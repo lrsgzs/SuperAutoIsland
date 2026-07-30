@@ -75,6 +75,7 @@ public class Plugin : PluginBase
 
         _logger.Info("注册自动化元素...");
         // 行动
+        services.AddAction<ConfirmExecuteAction, ConfirmExecuteActionSettingsControl>();
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
 
@@ -82,7 +83,8 @@ public class Plugin : PluginBase
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", FluentIcons.VehicleCarRegular));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
             new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
-            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular)
+            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular),
+            new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认", FluentIcons.AirplaneLandingRegular),
         ]);
 
         // 规则
