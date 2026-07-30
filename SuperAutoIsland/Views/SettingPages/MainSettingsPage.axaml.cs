@@ -23,6 +23,8 @@ public partial class MainSettingsPage : SettingsPageBase {
         InitializeComponent();
         
         Settings.RestartPropertyChanged += SettingsOnPropertyChanged;
+        
+        DebugComboBox.ItemsSource = ActionSerializer.GetActionsId();
     }
     
     private void SettingsOnPropertyChanged()
@@ -39,5 +41,13 @@ public partial class MainSettingsPage : SettingsPageBase {
     private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         IAppHost.GetService<SaiLogsView>().Open();
+    }
+
+    private void DebugGetInfo_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var selectedItem = DebugComboBox.SelectedItem;
+        if (selectedItem is not string actionId) return;
+        
+        DebugTextBox.Text = ActionSerializer.GetActionInfo(actionId);
     }
 }

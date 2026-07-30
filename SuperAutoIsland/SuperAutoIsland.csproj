@@ -46,27 +46,4 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    
-    
-    <ItemGroup>
-      <Compile Update="Views\SaiLogsView.axaml.cs">
-        <DependentUpon>SaiLogsWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
-    
-    
-    <ItemGroup>
-      <AdditionalFiles Include="Views\SaiLogsWindow.axaml" />
-      <AdditionalFiles Include="Views\SettingPages\AboutSettingsPage.axaml" />
-      <AdditionalFiles Include="Views\SettingPages\AutomationSettingsPage.axaml" />
-      <AdditionalFiles Include="Views\SettingPages\MainSettingsPage.axaml" />
-    </ItemGroup>
-    
-    
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Controls\SettingPages\AboutSettingsPage.axaml" />
-      <UpToDateCheckInput Remove="Controls\SettingPages\AutomationSettingsPage.axaml" />
-      <UpToDateCheckInput Remove="Controls\SettingPages\MainSettingsPage.axaml" />
-    </ItemGroup>
 </Project>
