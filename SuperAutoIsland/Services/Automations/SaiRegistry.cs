@@ -31,6 +31,28 @@ public static class SaiRegistry
                 [
                     new BlockMetadata
                     {
+                        Id = "sai.actions.setDynamicText",
+                        Name = "设置动态文本",
+                        Icon = ("文本编辑", FluentIcons.TextEditStyleRegular),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["Key"] = new CommonMetaArgs
+                            {
+                                Name = "将",
+                                Type = MetaType.text,
+                            },
+                            ["Value"] = new CommonMetaArgs
+                            {
+                                Name = "修改为",
+                                Type = MetaType.text,
+                            }
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false
+                    },
+                    new BlockMetadata
+                    {
                         Id = "sai.actions.runBlockly",
                         Name = "运行 Blockly 项目",
                         Icon = ("Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
@@ -167,6 +189,23 @@ public static class SaiRegistry
                     // },
                     new BlockMetadata
                     {
+                        Id = "sai.data.getDynamicText",
+                        Name = "获取动态文本",
+                        Icon = ("文本", FluentIcons.TextboxRegular),
+                        Args = new Dictionary<string, MetaArgsBase>
+                        {
+                            ["Key"] = new CommonMetaArgs
+                            {
+                                Name = "ID",
+                                Type = MetaType.text
+                            },
+                        },
+                        DropdownUseNumbers = false,
+                        InlineField = false,
+                        InlineBlock = false
+                    },
+                    new BlockMetadata
+                    {
                         Id = "sai.rules.dialogs.text",
                         Name = "文本输入对话框",
                         Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
@@ -267,6 +306,14 @@ public static class SaiRegistry
         //         return Task.FromException<string>(exception);
         //     }
         // });
+        
+        SaiServer.RegisterDataGetter<GetDynamicTextSettings>("sai.data.getDynamicText", data =>
+        {
+            if (data is not GetDynamicTextSettings settings) return Task.FromResult("???");
+            
+            var provider = IAppHost.GetService<DynamicTextProvider>();
+            return Task.FromResult(provider.GetText(settings.Key) ?? "[未设置值]");
+        });
         
         SaiServer.RegisterDataGetter<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
         {

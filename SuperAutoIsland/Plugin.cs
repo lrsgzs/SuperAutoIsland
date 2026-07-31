@@ -10,6 +10,8 @@ using DynamicData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
+using SuperAutoIsland.Controls.Components;
+using SuperAutoIsland.Controls.ComponentSettings;
 using SuperAutoIsland.Controls.RuleSettingsControls;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Rules;
@@ -66,15 +68,20 @@ public class Plugin : PluginBase
         services.AddSingleton<BlocklyRunner>();
         services.AddSingleton<CiRunner>();
 
-        _logger.Info("注册服务器...");
+        _logger.Info("注册服务...");
         services.AddSingleton<ISaiServer, SaiServerBridger>();
+        services.AddSingleton<DynamicTextProvider>();
 
         _logger.Info("注册视图模型...");
         services.AddTransient<SaiLogsViewModel>();
         services.AddTransient<AutomationViewModel>();
 
         _logger.Info("注册自动化元素...");
+        // 组件
+        services.AddComponent<DynamicTextComponent, DynamicTextComponentSettingsControl>();
+        
         // 行动
+        services.AddAction<SetDynamicTextAction, SetDynamicTextActionSettingsControl>();
         services.AddAction<ConfirmExecuteAction, ConfirmExecuteActionSettingsControl>();
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
@@ -82,6 +89,7 @@ public class Plugin : PluginBase
         // 行动树
         IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", FluentIcons.VehicleCarRegular));
         IActionService.ActionMenuTree["SAI 自动化"].AddRange([
+            new ActionMenuTreeItem("sai.actions.setDynamicText", "设置动态文本", FluentIcons.TextEditStyleRegular),
             new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
             new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular),
             new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认", FluentIcons.AirplaneLandingRegular),
@@ -112,6 +120,7 @@ public class Plugin : PluginBase
             _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
             IAppHost.GetService<BlocklyRunner>();
+            IAppHost.GetService<DynamicTextProvider>();
 
             _logger.Debug("注册 SuperAutoIsland 元素...");
             SaiRegistry.Register();
