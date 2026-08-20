@@ -46,7 +46,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "master",
     "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "/home/lrs2187/Projects/SuperAutoIsland/SuperAutoIsland.Frontend/public",
+    "last_opened_file_path": "/home/lrs2187/Projects/ClassIsland/SuperAutoIsland",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
@@ -56,7 +56,7 @@
     "nodejs_package_manager_path": "npm",
     "npm.build:dev.executor": "Run",
     "npm.dev.executor": "Run",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "ts.external.directory.path": "/home/lrs2187/.cache/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-linux-x64/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -117,7 +117,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.25134.101" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.8665.341" />
       </set>
     </attachedChunks>
   </component>
@@ -133,6 +133,7 @@
       <workItem from="1782721202604" duration="3010000" />
       <workItem from="1782726507340" duration="480000" />
       <workItem from="1782726999652" duration="15000" />
+      <workItem from="1786354370850" duration="97000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />

@@ -13,8 +13,6 @@ namespace SuperAutoIsland.Controls.RuleSettingsControls;
 
 public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<YesNoDialogRuleSettings>
 {
-    private bool _dialogInitialized = false;
-    
     public YesNoDialogRuleSettingsControl()
     {
         InitializeComponent();
