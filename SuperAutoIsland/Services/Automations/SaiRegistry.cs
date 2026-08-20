@@ -318,7 +318,7 @@ public static class SaiRegistry
         SaiServer.RegisterDataGetter<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
         {
             if (data is not TextDialogDataModel model) return "???";
-            return await ShowDialogAsync(model);
+            return await Dispatcher.UIThread.InvokeAsync(async Task<string> () => await ShowDialogAsync(model));
         });
     }
     
