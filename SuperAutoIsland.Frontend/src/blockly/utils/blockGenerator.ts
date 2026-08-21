@@ -151,6 +151,13 @@ interface _IconArgDef extends _UnkArgDef {
     };
 }
 
+interface _DateArgDef extends _UnkArgDef {
+    type: 'field_date';
+    data: {
+        date: string;
+    };
+}
+
 /**
  * 参数定义类型
  */
@@ -168,7 +175,8 @@ export type ArgDefinition =
     | _NumberArgDef
     | _InputArgDef
     | _VariableArgDef
-    | _IconArgDef;
+    | _IconArgDef
+    | _DateArgDef;
 
 /**
  * 积木定义接口

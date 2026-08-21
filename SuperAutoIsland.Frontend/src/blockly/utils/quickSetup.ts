@@ -21,14 +21,15 @@ export const settingUpCategory: CategoryData = {
 /**
  * 初始化当前设置的类别
  * @param name 类别名称
+ * @param style 类别样式
  */
-export function preSetupCategory(name: string) {
+export function preSetupCategory(name: string, style: string = 'my_category') {
     settingUpCategory.blocks = [];
     settingUpCategory.forBlocks = {};
     settingUpCategory.category = {
         kind: 'category',
         name: name,
-        categorystyle: 'my_category',
+        categorystyle: style,
         contents: [],
     };
     settingUpCategory.initialized = true;

@@ -31,3 +31,7 @@ dialog.blocklyDialog {
 .blocklyDialogButtonRow button:hover {
     background: var(--color-neutral-400);
 }
+
+input {
+    background: var(--color-neutral-100);
+}

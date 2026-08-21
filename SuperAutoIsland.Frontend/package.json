@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@blockly/continuous-toolbox": "^13.1.0",
+        "@blockly/field-date": "^13.2.0",
         "@blockly/field-multilineinput": "^13.1.0",
         "@blockly/shadow-block-converter": "^13.2.0",
         "@blockly/theme-modern": "^13.1.0",

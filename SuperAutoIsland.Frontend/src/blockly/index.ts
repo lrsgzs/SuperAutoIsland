@@ -14,6 +14,9 @@ import {
 import { textMultiline } from '@blockly/field-multilineinput';
 import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
+import '@blockly/field-date';
+import { FieldIcon } from './fields/FieldIcon';
+Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
 import { addLabel, addMetaBlock, Metadata } from './utils/superGenerator';
@@ -24,9 +27,6 @@ import './types/extraData.d.ts';
 import * as prettier from 'prettier';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
-
-import { FieldIcon } from './fields/FieldIcon';
-Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
 const ws = new WebSocket('/');
 ws.addEventListener('message', ev => console.log(ev));
@@ -117,6 +117,16 @@ javascriptGenerator.forBlock['procedures_callreturn'] = function (
     return [code, Order.FUNCTION_CALL];
 };
 
+preSetupCategory('日期', 'date_category');
+// @ts-ignore
+await import('./blocks/date');
+postSetupCategory();
+
+preSetupCategory('调试', 'debug_category');
+// @ts-ignore
+await import('./blocks/debug');
+postSetupCategory();
+
 preSetupCategory('ClassIsland');
 
 addLabel('规则');
@@ -163,11 +173,6 @@ for (let pluginName in window.extraBlocks) {
     postSetupCategory();
 }
 
-preSetupCategory('调试');
-// @ts-ignore
-await import('./blocks/debug');
-postSetupCategory();
-
 // Continuous Toolbox
 Blockly.registry.register(Blockly.registry.Type.METRICS_MANAGER, 'ContinuousMetrics', ContinuousMetrics, true);
 Blockly.registry.register(Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX, 'ContinuousFlyout', ContinuousFlyout, true);
@@ -189,10 +194,26 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
             colourSecondary: '#00C2FF',
             colourTertiary: '#007cb8',
         },
+        date_blocks: {
+            colourPrimary: '#A6A65B',
+            colourSecondary: '#C8C87D',
+            colourTertiary: '#848448',
+        },
+        debug_blocks: {
+            colourPrimary: '#666666',
+            colourSecondary: '#888888',
+            colourTertiary: '#444444',
+        },
     },
     categoryStyles: {
         my_category: {
             colour: '#00AAFF',
+        },
+        date_category: {
+            colour: '#A6A65B',
+        },
+        debug_category: {
+            colour: '#666666',
         },
     },
 });

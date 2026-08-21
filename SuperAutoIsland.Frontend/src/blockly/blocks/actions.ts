@@ -201,7 +201,7 @@ addBlock(
         style: 'my_blocks',
     },
     (block, generator) => {
-        const value = generator.valueToCode(block, 'SECONDS', Order.NONE) || "''";
+        const value = generator.valueToCode(block, 'SECONDS', Order.NONE) || "0";
         const wrapper = generator.provideFunction_(
             'classisland_action_sleep',
             `async function ${generator.FUNCTION_NAME_PLACEHOLDER_}(value) {

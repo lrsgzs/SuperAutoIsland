@@ -11,7 +11,7 @@ addBlock(
             },
         },
         inline: false,
-        style: 'my_blocks',
+        style: 'debug_blocks',
     },
     (block, generator) => {
         const value = generator.valueToCode(block, 'VALUE', Order.NONE) || "''";
@@ -36,7 +36,7 @@ addBlock(
             },
         },
         inline: false,
-        style: 'my_blocks',
+        style: 'debug_blocks',
     },
     (block, generator) => {
         const value = generator.valueToCode(block, 'VALUE', Order.NONE) || "''";
@@ -61,7 +61,7 @@ addBlock(
             },
         },
         inline: false,
-        style: 'my_blocks',
+        style: 'debug_blocks',
     },
     (block, generator) => {
         const value = generator.valueToCode(block, 'VALUE', Order.NONE) || "''";
@@ -86,7 +86,7 @@ addBlock(
             },
         },
         inline: false,
-        style: 'my_blocks',
+        style: 'debug_blocks',
     },
     (block, generator) => {
         const value = generator.valueToCode(block, 'VALUE', Order.NONE) || "''";
@@ -111,7 +111,7 @@ addBlock(
             },
         },
         inline: false,
-        style: 'my_blocks',
+        style: 'debug_blocks',
     },
     (block, generator) => {
         const value = generator.valueToCode(block, 'VALUE', Order.NONE) || "''";
