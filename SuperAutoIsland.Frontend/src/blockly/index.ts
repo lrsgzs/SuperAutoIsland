@@ -12,6 +12,7 @@ import {
     RecyclableBlockFlyoutInflater,
 } from '@blockly/continuous-toolbox';
 import { textMultiline } from '@blockly/field-multilineinput';
+import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
 
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
@@ -302,6 +303,7 @@ export const injectBlockly = async (dom: HTMLElement) => {
 
     const backpack = new Backpack(workspace as any);
     backpack.init();
+    workspace.addChangeListener(shadowBlockConversionChangeListener);
 
     window.workspace = workspace;
     Reflect.set(window, 'javascriptGenerator', javascriptGenerator);
