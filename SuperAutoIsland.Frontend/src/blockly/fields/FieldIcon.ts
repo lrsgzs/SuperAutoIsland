@@ -9,8 +9,6 @@ type IconData = {
  * icon 字段
  */
 export class FieldIcon extends Blockly.Field<IconData> {
-    private displayValue_: IconData | undefined;
-    private isValueValid_: boolean | undefined;
 
     constructor(value: IconData, validator?: Blockly.FieldValidator<IconData>) {
         super(value, validator);
@@ -19,9 +17,9 @@ export class FieldIcon extends Blockly.Field<IconData> {
         this.EDITABLE = false;
     }
 
-    static fromJson(_options: Blockly.FieldConfig & IconData) {
-        const icon = Blockly.utils.parsing.replaceMessageReferences(_options.icon);
-        const text = Blockly.utils.parsing.replaceMessageReferences(_options.text);
+    static fromJson(options: Blockly.FieldConfig & IconData) {
+        const icon = Blockly.utils.parsing.replaceMessageReferences(options.icon);
+        const text = Blockly.utils.parsing.replaceMessageReferences(options.text);
         return new FieldIcon({ icon, text });
     }
 
@@ -34,18 +32,11 @@ export class FieldIcon extends Blockly.Field<IconData> {
 
     doValueUpdate_(newValue: IconData) {
         super.doValueUpdate_(newValue);
-        this.displayValue_ = newValue;
-        this.isValueValid_ = true;
-    }
-
-    doValueInvalid_(newValue: IconData) {
-        this.displayValue_ = newValue;
-        this.isDirty_ = true;
-        this.isValueValid_ = false;
+        this.value_ = newValue;
     }
 
     getText() {
-        return `(${this.displayValue_?.text})`;
+        return `(${this.value_?.text})`;
     }
 
     render_() {

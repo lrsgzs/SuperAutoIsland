@@ -4,21 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: extra debug blocks">
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/date.ts" afterDir="false" />
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 日期积木">
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Data/StringValueData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/ProfileSaiRegistry.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/plan-profile.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/debug.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/debug.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/blockGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/blockGenerator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/quickSetup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/quickSetup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/styles/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/styles/base.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/ActionAndRuleRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/ActionAndRuleRunner.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,32 +46,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "/home/lrs2187/Projects/ClassIsland/SuperAutoIsland",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.build:dev.executor": "Run",
-    "npm.dev.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "/home/lrs2187/Projects/ClassIsland/SuperAutoIsland/SuperAutoIsland.Frontend/node_modules/prettier",
-    "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "/home/lrs2187/.cache/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-linux-x64/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lrs2187/Projects/ClassIsland/SuperAutoIsland&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build:dev.executor&quot;: &quot;Run&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/lrs2187/Projects/ClassIsland/SuperAutoIsland/SuperAutoIsland.Frontend/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/lrs2187/.cache/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-linux-x64/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/SuperAutoIsland.Frontend/public" />
@@ -149,7 +146,8 @@
       <workItem from="1782726999652" duration="15000" />
       <workItem from="1786354370850" duration="97000" />
       <workItem from="1787235550471" duration="2118000" />
-      <workItem from="1787285302748" duration="12946000" />
+      <workItem from="1787285302748" duration="14377000" />
+      <workItem from="1787374490272" duration="4930000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
@@ -279,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787286061701</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="feat: 日期积木">
+      <option name="closed" value="true" />
+      <created>1787321584490</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1787321584490</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,6 +310,7 @@
     <MESSAGE value="feat: 把变量换回来" />
     <MESSAGE value="feat: shadow-block-converter" />
     <MESSAGE value="feat: extra debug blocks" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: extra debug blocks" />
+    <MESSAGE value="feat: 日期积木" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 日期积木" />
   </component>
 </project>
