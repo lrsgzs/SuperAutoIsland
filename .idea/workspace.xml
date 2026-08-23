@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 日期积木">
+    <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 优化 FieldIcon">
       <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Data/StringValueData.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/ProfileSaiRegistry.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/plan-profile.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/fields/FieldIcon.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
@@ -147,7 +146,7 @@
       <workItem from="1786354370850" duration="97000" />
       <workItem from="1787235550471" duration="2118000" />
       <workItem from="1787285302748" duration="14377000" />
-      <workItem from="1787374490272" duration="4930000" />
+      <workItem from="1787374490272" duration="7248000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
@@ -285,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787321584490</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat: 优化 FieldIcon">
+      <option name="closed" value="true" />
+      <created>1787386385941</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1787386385941</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,6 +318,7 @@
     <MESSAGE value="feat: shadow-block-converter" />
     <MESSAGE value="feat: extra debug blocks" />
     <MESSAGE value="feat: 日期积木" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 日期积木" />
+    <MESSAGE value="feat: 优化 FieldIcon" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 优化 FieldIcon" />
   </component>
 </project>

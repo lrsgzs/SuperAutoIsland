@@ -146,6 +146,14 @@ for (let pluginName in window.extraBlocks) {
     let actions = window.extraBlocks[pluginName].actions;
     let data = window.extraBlocks[pluginName].data;
 
+    if (data != undefined && data.length != 0) {
+        addLabel('数据');
+
+        for (let block of data) {
+            await addMetaBlock('data', block);
+        }
+    }
+
     if (rules != undefined && rules.length != 0) {
         addLabel('规则');
 
@@ -159,14 +167,6 @@ for (let pluginName in window.extraBlocks) {
 
         for (let block of actions) {
             await addMetaBlock('action', block);
-        }
-    }
-
-    if (data != undefined && data.length != 0) {
-        addLabel('数据');
-
-        for (let block of data) {
-            await addMetaBlock('data', block);
         }
     }
 
