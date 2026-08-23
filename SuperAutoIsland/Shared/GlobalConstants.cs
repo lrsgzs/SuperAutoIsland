@@ -17,6 +17,8 @@ public static class GlobalConstants
     /// </summary>
     public static string? PluginConfigFolder { get; set; }
 
+    public static string Codename => "Sandrone";
+    
     /// <summary>
     /// 配置集
     /// </summary>
