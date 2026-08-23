@@ -36,7 +36,7 @@ await new Promise(resolve => {
 });
 
 const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getExtraBlocks' });
-window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions' | 'data', BlockMetadata[]>>;
+window.extraBlocks = JSON.parse(data.blocksString) as Record<string, BlockMetadata[]>;
 window.saiWS = ws;
 window.saiWaitMessage = wsWaitMessage;
 
@@ -143,32 +143,15 @@ postSetupCategory();
 for (let pluginName in window.extraBlocks) {
     preSetupCategory(pluginName);
 
-    let rules = window.extraBlocks[pluginName].rules;
-    let actions = window.extraBlocks[pluginName].actions;
-    let data = window.extraBlocks[pluginName].data;
+    let blocks = window.extraBlocks[pluginName];
 
-    if (data != undefined && data.length != 0) {
-        addLabel('数据');
-
-        for (let block of data) {
-            await addV2Block(block);
-        }
+    for (let block of blocks) {
+        await addV2Block(block);
     }
 
-    if (rules != undefined && rules.length != 0) {
-        addLabel('规则');
-
-        for (let block of rules) {
-            await addV2Block(block);
-        }
-    }
-
-    if (actions != undefined && actions.length != 0) {
-        addLabel('行动');
-
-        for (let block of actions) {
-            await addV2Block(block);
-        }
+    if (blocks.length == 0)
+    {
+        addLabel("滚木分类？");
     }
 
     postSetupCategory();

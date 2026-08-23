@@ -1,4 +1,5 @@
 ﻿using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared;
@@ -33,10 +34,51 @@ public class SaiServerBridger : ISaiServer
     /// <inheritdoc />
     public void RegisterBlocks(string pluginName, RegisterData data)
     {
-        _instance.ExtraBlocks[pluginName] = data;
+        List<BlockMetadata> blocks = [];
+        
+        if (data.Data.Count > 0)
+        {
+            blocks.Add(new BlockMetadata(Guid.NewGuid().ToString()[..8])
+            {
+                Kind = BlockKind.Label,
+                Name = "数据"
+            });
+            blocks.AddRange(data.Data);
+        }
+        
+        if (data.Rules.Count > 0)
+        {
+            blocks.Add(new BlockMetadata(Guid.NewGuid().ToString()[..8])
+            {
+                Kind = BlockKind.Label,
+                Name = "规则"
+            });
+            blocks.AddRange(data.Rules);
+        }
+        
+        if (data.Actions.Count > 0)
+        {
+            blocks.Add(new BlockMetadata(Guid.NewGuid().ToString()[..8])
+            {
+                Kind = BlockKind.Label,
+                Name = "行动"
+            });
+            blocks.AddRange(data.Actions);
+        }
+        
+        _instance.ExtraBlocks[pluginName] = blocks;
         _logger.Info($"{pluginName} 已注册 blocks");
     }
-    
+
+    /// <inheritdoc />
+    public void RegisterBlocks(string categoryName, RegisterHandler handler)
+    {
+        var register = new BlocksRegister();
+        handler(register);
+        _instance.ExtraBlocks[categoryName] = register.Blocks;
+        _logger.Info($"{categoryName} 已注册 blocks");
+    }
+
     /// <inheritdoc />
     public void RegisterWrapper(string id, ActionWrapper wrapper)
     {
@@ -51,9 +93,9 @@ public class SaiServerBridger : ISaiServer
         _logger.Info($"已注册 id 为 {id} 的 RuleWrapper");
     }
 
-    public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter)
+    public void RegisterDynamicDropdown(string id, DynamicDropdownHandler handler)
     {
-        _instance.DynamicDropdowns[id] = getter;
+        _instance.DynamicDropdowns[id] = handler;
         _logger.Info($"已注册 id 为 {id} 的 DynamicDropdownGetter");
     }
 

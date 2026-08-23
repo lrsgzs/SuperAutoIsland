@@ -4,7 +4,7 @@ import { BlockMetadata } from '../utils/v2Generator';
 
 declare global {
     interface Window {
-        extraBlocks: Record<string, Record<'rules' | 'actions' | 'data', BlockMetadata[]>>;
+        extraBlocks: Record<string, BlockMetadata[]>;
         saiWS: WebSocket;
         saiWaitMessage: typeof wsWaitMessage;
         workspace: Blockly.Workspace;

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
-using SuperAutoIsland.Interface;
+using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
@@ -21,8 +21,8 @@ public class SaiServer
     /// <summary>
     /// 额外积木批发
     /// </summary>
-    public readonly Dictionary<string, RegisterData> ExtraBlocks = new();
-    public readonly Dictionary<string, DynamicDropdownGetter> DynamicDropdowns = new();
+    public readonly Dictionary<string, List<BlockMetadata>> ExtraBlocks = new();
+    public readonly Dictionary<string, DynamicDropdownHandler> DynamicDropdowns = new();
     private readonly ActionAndRuleRunner _runner = new();
     private bool _isRunning;
     

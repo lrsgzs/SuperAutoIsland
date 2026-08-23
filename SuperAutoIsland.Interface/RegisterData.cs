@@ -6,6 +6,7 @@ namespace SuperAutoIsland.Interface;
 /// <summary>
 /// 注册数据
 /// </summary>
+[Obsolete("已过时。请使用 v2 注册方法。")]
 public class RegisterData
 {
     /// <summary>

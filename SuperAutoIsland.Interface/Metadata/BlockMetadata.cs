@@ -5,14 +5,15 @@ namespace SuperAutoIsland.Interface.Metadata;
 
 public class BlockMetadata(string id)
 {
-    public string Id { get; set; } = id;
     public required BlockKind Kind { get; set; }
+    
+    public string Id { get; set; } = id;
     public required string Name { get; set; }
     public (string, string) Icon { get; set; } = ("操作", FluentIcons.SettingsRegular);
     public string Tooltip { get; set; } = string.Empty;
-    
+
     [JsonConverter(typeof(PolymerDictionaryConverter<string, Field>))]
-    public required Dictionary<string, Field> Fields { get; set; }
+    public Dictionary<string, Field> Fields { get; set; } = [];
 
     public bool InlineBlock { get; set; } = false;
     public bool InlineField { get; set; } = false;
