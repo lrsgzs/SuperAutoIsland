@@ -403,12 +403,10 @@ public class SaiServer
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             Converters = 
             {
-                new MetaArgsConverter(),  // 处理多态参数
-                new TupleConverter(),     // 处理元组
-                new JsonStringEnumConverter() // 处理枚举
+                new StringTupleConverter(),
+                new JsonStringEnumConverter()
             }
         };
         

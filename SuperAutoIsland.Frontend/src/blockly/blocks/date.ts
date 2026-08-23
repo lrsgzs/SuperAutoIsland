@@ -15,7 +15,7 @@ addBlock(
         inputs: {},
         inline: false,
         style: 'date_blocks',
-        output: 'String',
+        output: 'SAI_Date',
         isReporter: true,
     },
     (block, generator) => {
@@ -48,7 +48,7 @@ addBlock(
         },
         inline: false,
         style: 'date_blocks',
-        output: 'String',
+        output: 'SAI_Date',
         isReporter: true,
     },
     (block, generator) => {
@@ -90,7 +90,7 @@ addBlock(
         },
         inline: true,
         style: 'date_blocks',
-        output: 'String',
+        output: 'SAI_Date',
         isReporter: true,
     },
     (block, generator) => {
@@ -119,7 +119,7 @@ addBlock(
             DATE: {
                 type: 'input_value' as const,
                 blockType: 'date_block',
-                check: 'String',
+                check: 'SAI_Date',
                 fields: {},
             },
         },
@@ -148,7 +148,7 @@ addBlock(
             DATE: {
                 type: 'input_value' as const,
                 blockType: 'date_block',
-                check: 'String',
+                check: 'SAI_Date',
                 fields: {},
             },
         },
@@ -177,7 +177,7 @@ addBlock(
             DATE: {
                 type: 'input_value' as const,
                 blockType: 'date_block',
-                check: 'String',
+                check: 'SAI_Date',
                 fields: {},
             },
         },
@@ -206,7 +206,7 @@ addBlock(
             DATE: {
                 type: 'input_value' as const,
                 blockType: 'date_block',
-                check: 'String',
+                check: 'SAI_Date',
                 fields: {},
             },
             DAYS: {
@@ -218,7 +218,7 @@ addBlock(
         },
         inline: true,
         style: 'date_blocks',
-        output: 'String',
+        output: 'SAI_Date',
         isReporter: true,
     },
     (block, generator) => {

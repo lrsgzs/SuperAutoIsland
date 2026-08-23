@@ -23,7 +23,7 @@ public static class SaiDataRegistry
  
         if (dataGetter != null)
         {
-            dataString = await dataGetter.Getter(parameters);
+            dataString = await dataGetter.Handler(parameters);
         }
         else
         {

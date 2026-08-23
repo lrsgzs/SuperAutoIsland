@@ -21,7 +21,17 @@ public delegate Task<List<(string, string)>> DynamicDropdownGetter();
 /// <summary>
 /// 数据 getter
 /// </summary>
-public delegate Task<string> DataGetter(object? parameters);
+public delegate Task<string> DataHandler(object? parameters);
+
+/// <summary>
+/// 专有行动处理器，在 Blockly行动 中会覆盖应用原行动的处理器
+/// </summary>
+public delegate Task ActionHandler(object? parameters);
+
+/// <summary>
+/// 专有规则处理器，在 Blockly行动 中会覆盖应用原规则的处理器
+/// </summary>
+public delegate bool RuleHandler(object? parameters);
 
 /// <summary>
 /// 服务器接口
@@ -57,11 +67,27 @@ public interface ISaiServer
     public void RegisterDynamicDropdown(string id, DynamicDropdownGetter getter);
     
     /// <summary>
-    /// 注册数据 getter
+    /// 专有行动处理器，在 Blockly行动 中会覆盖应用原行动的处理器。
+    /// 无特殊需求（如 blockly 独占/处理逻辑需要特调）无需设置
+    /// </summary>
+    /// <param name="id">行动 id</param>
+    /// <param name="handler">处理器</param>
+    public void RegisterActionHandler(string id, ActionHandler handler);
+    
+    /// <summary>
+    /// 专有规则处理器，在 Blockly行动 中会覆盖应用原规则的处理器。
+    /// 无特殊需求（如 blockly 独占/处理逻辑需要特调）无需设置
+    /// </summary>
+    /// <param name="id">规则 id</param>
+    /// <param name="handler">处理器</param>
+    public void RegisterRuleHandler(string id, RuleHandler handler);
+    
+    /// <summary>
+    /// 注册数据处理器
     /// </summary>
     /// <param name="id">数据积木 id</param>
-    /// <param name="getter">获取函数</param>
-    public void RegisterDataGetter<T>(string id, DataGetter getter);
+    /// <param name="handler">获取函数</param>
+    public void RegisterDataHandler<T>(string id, DataHandler handler);
 
     /// <summary>
     /// 结束服务器（好像不能用）

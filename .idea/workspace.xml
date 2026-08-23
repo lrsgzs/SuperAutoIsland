@@ -5,16 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 优化 FieldIcon">
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Data/StringValueData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/ProfileSaiRegistry.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plan-profile.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/v2Generator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BasicFields.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockKind.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockMetadata.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/Field.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/InputField.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/PolymerDictionaryConverter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Shared/StringTupleConverter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/date.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/date.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/superGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/CheckboxMetaArgs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/CommonMetaArgs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/DropDownMetaArgs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/DynamicDropdownMetaArgs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/ArgsType/MetaArgsBase.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/BlockMetadata.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/MetaData/MetaType.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/Settings/MainConfigModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/Data/TestData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/DataGetterItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Models/DataGetterItem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/ActionAndRuleRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/ActionAndRuleRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiDataRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiDataRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/MainSettingsPage.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Shared/MetadataToJson.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +167,7 @@
       <workItem from="1787235550471" duration="2118000" />
       <workItem from="1787285302748" duration="14377000" />
       <workItem from="1787374490272" duration="7248000" />
+      <workItem from="1787478187569" duration="12331000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />

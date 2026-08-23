@@ -92,6 +92,12 @@ public class ActionAndRuleRunner
         // 显示提醒需要在 UIThread 完成。
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
+            if (SaiServerBridger.ActionHandlers.TryGetValue(actionItem.Id, out var handler))
+            {
+                await handler(actionItem.Settings);
+                return;
+            }
+            
             await actionService.InvokeActionSetAsync(new ActionSet
             {
                 Name = "SAI 临时行动组",
@@ -115,6 +121,11 @@ public class ActionAndRuleRunner
         var rule = RuleGetter(id, settings);
         if (rule == null) return false;
 
+        if (SaiServerBridger.RuleHandlers.TryGetValue(rule.Id, out var handler))
+        {
+            return handler(rule.Settings);
+        }
+        
         var rulesetAction = IAppHost.GetService<IRulesetService>();
         var result = rulesetAction.IsRulesetSatisfied(new Ruleset
         {

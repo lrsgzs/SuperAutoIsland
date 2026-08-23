@@ -14,6 +14,9 @@ public class SaiServerBridger : ISaiServer
     private readonly SaiServer _instance;
     private readonly Logger<SaiServerBridger> _logger = new();
 
+    internal static readonly Dictionary<string, ActionHandler> ActionHandlers = [];
+    internal static readonly Dictionary<string, RuleHandler> RuleHandlers = [];
+    
     /// <summary>
     /// 构造函数
     /// <see cref="SaiServerBridger"/>
@@ -54,14 +57,26 @@ public class SaiServerBridger : ISaiServer
         _logger.Info($"已注册 id 为 {id} 的 DynamicDropdownGetter");
     }
 
-    public void RegisterDataGetter<T>(string id, DataGetter getter)
+    public void RegisterDataHandler<T>(string id, DataHandler handler)
     {
         SaiDataRegistry.DataGetters[id] = new DataGetterItem
         {
             Type = typeof(T),
-            Getter = getter
+            Handler = handler
         };
         _logger.Info($"已注册 id 为 {id} 的 DataGetter");
+    }
+
+    public void RegisterActionHandler(string id, ActionHandler handler)
+    {
+        ActionHandlers[id] = handler;
+        _logger.Info($"已注册 id 为 {id} 的 ActionHandler");
+    }
+
+    public void RegisterRuleHandler(string id, RuleHandler handler)
+    {
+        RuleHandlers[id] = handler;
+        _logger.Info($"已注册 id 为 {id} 的 RuleHandler");
     }
 
     /// <inheritdoc />

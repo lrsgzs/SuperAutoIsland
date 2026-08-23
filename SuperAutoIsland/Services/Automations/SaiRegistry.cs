@@ -10,8 +10,7 @@ using ClassIsland.Shared.Models.Automation;
 using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface;
-using SuperAutoIsland.Interface.MetaData;
-using SuperAutoIsland.Interface.MetaData.ArgsType;
+using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Actions;
 using SuperAutoIsland.Models.Data;
@@ -26,243 +25,104 @@ public static class SaiRegistry
     public static void Register()
     {
         SaiServer.RegisterBlocks("SuperAutoIsland", new RegisterData
-            {
-                Actions =
-                [
-                    new BlockMetadata
+        {
+            Actions =
+            [
+                new BlockMetadata("sai.actions.setDynamicText")
+                {
+                    Kind = BlockKind.Action,
+                    Name = "设置动态文本",
+                    Icon = ("文本编辑", FluentIcons.TextEditStyleRegular),
+                    Fields = new Dictionary<string, Field>
                     {
-                        Id = "sai.actions.setDynamicText",
-                        Name = "设置动态文本",
-                        Icon = ("文本编辑", FluentIcons.TextEditStyleRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["Key"] = new CommonMetaArgs
-                            {
-                                Name = "将",
-                                Type = MetaType.text,
-                            },
-                            ["Value"] = new CommonMetaArgs
-                            {
-                                Name = "修改为",
-                                Type = MetaType.text,
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                    new BlockMetadata
-                    {
-                        Id = "sai.actions.runBlockly",
-                        Name = "运行 Blockly 项目",
-                        Icon = ("Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.actions.runBlockly.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                    new BlockMetadata
-                    {
-                        Id = "sai.actions.runActionSet",
-                        Name = "运行可复用的行动组",
-                        Icon = ("行动组", FluentIcons.AirplaneTakeOffRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.actions.runActionSet.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
+                        ["Key"] = BasicFields.Text("将"),
+                        ["Value"] = BasicFields.Text("修改为")
                     }
-                ],
-                Rules =
-                [
-                    new BlockMetadata
+                },
+                new BlockMetadata("sai.actions.runBlockly")
+                {
+                    Kind = BlockKind.Action,
+                    Name = "运行 Blockly 项目",
+                    Icon = ("Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
+                    Fields = new Dictionary<string, Field>
                     {
-                        Id = "sai.rules.runCiRuleset",
-                        Name = "运行可复用的规则集",
-                        Icon = ("规则集", FluentIcons.TagMultipleRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["ProjectGuid"] = new DynamicDropdownMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dynamic_dropdown,
-                                Id = "sai.rules.runCiRuleset.options"
-                            }
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                    new BlockMetadata
-                    {
-                        Id = "sai.rules.dialogs.yesNo",
-                        Name = "YesNo 对话框",
-                        Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["dummy1"] = new CommonMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dummy
-                            },
-                            ["Header"] = new CommonMetaArgs
-                            {
-                                Name = "标题",
-                                Type = MetaType.text
-                            },
-                            ["Message"] = new CommonMetaArgs
-                            {
-                                Name = "消息",
-                                Type = MetaType.text
-                            },
-                            ["YesText"] = new CommonMetaArgs
-                            {
-                                Name = "「Yes」按钮文本",
-                                Type = MetaType.text
-                            },
-                            ["NoText"] = new CommonMetaArgs
-                            {
-                                Name = "「No」按钮文本",
-                                Type = MetaType.text
-                            },
-                            ["PreferYes"] = new CommonMetaArgs
-                            {
-                                Name = "默认按钮为「Yes」？",
-                                Type = MetaType.boolean
-                            },
-                            ["Topmost"] = new CommonMetaArgs
-                            {
-                                Name = "置顶？",
-                                Type = MetaType.boolean
-                            },
-                            ["CountdownEnabled"] = new CommonMetaArgs
-                            {
-                                Name = "启用倒计时？",
-                                Type = MetaType.boolean
-                            },
-                            ["CountdownTime"] = new CommonMetaArgs
-                            {
-                                Name = "倒计时时长(s)",
-                                Type = MetaType.number
-                            },
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
+                        ["ProjectGuid"] = BasicFields.DynamicDropdown("", "sai.actions.runBlockly.options")
                     }
-                ],
-                Data = 
-                [
-                    // new BlockMetadata
-                    // {
-                    //     Id = "sai.data.test",
-                    //     Name = "测试数据",
-                    //     Icon = ("测试", FluentIcons.AirplaneTakeOffRegular),
-                    //     Args = new Dictionary<string, MetaArgsBase>
-                    //     {
-                    //         ["_dummy1"] = new CommonMetaArgs
-                    //         {
-                    //             Name = "repeat 2x and echo",
-                    //             Type = MetaType.dummy
-                    //         },
-                    //         ["Text"] = new CommonMetaArgs
-                    //         {
-                    //             Name = "",
-                    //             Type = MetaType.text
-                    //         },
-                    //     }
-                    // },
-                    new BlockMetadata
+                },
+                new BlockMetadata("sai.actions.runActionSet")
+                {
+                    Kind = BlockKind.Action,
+                    Name = "运行可复用的行动组",
+                    Icon = ("行动组", FluentIcons.AirplaneTakeOffRegular),
+                    Fields = new Dictionary<string, Field>
                     {
-                        Id = "sai.data.getDynamicText",
-                        Name = "获取动态文本",
-                        Icon = ("文本", FluentIcons.TextboxRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["Key"] = new CommonMetaArgs
-                            {
-                                Name = "ID",
-                                Type = MetaType.text
-                            },
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                    new BlockMetadata
+                        ["ProjectGuid"] = BasicFields.DynamicDropdown("", "sai.actions.runActionSet.options")
+                    }
+                }
+            ],
+            Rules =
+            [
+                new BlockMetadata("sai.rules.runCiRuleset")
+                {
+                    Kind = BlockKind.Rule,
+                    Name = "运行可复用的规则集",
+                    Icon = ("规则集", FluentIcons.TagMultipleRegular),
+                    Fields = new Dictionary<string, Field>
                     {
-                        Id = "sai.rules.dialogs.text",
-                        Name = "文本输入对话框",
-                        Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
-                        Args = new Dictionary<string, MetaArgsBase>
-                        {
-                            ["dummy1"] = new CommonMetaArgs
-                            {
-                                Name = "",
-                                Type = MetaType.dummy
-                            },
-                            ["Header"] = new CommonMetaArgs
-                            {
-                                Name = "标题",
-                                Type = MetaType.text
-                            },
-                            ["Message"] = new CommonMetaArgs
-                            {
-                                Name = "消息",
-                                Type = MetaType.text
-                            },
-                            ["DefaultText"] = new CommonMetaArgs
-                            {
-                                Name = "默认文本",
-                                Type = MetaType.text
-                            },
-                            ["OkText"] = new CommonMetaArgs
-                            {
-                                Name = "「Ok」按钮文本",
-                                Type = MetaType.text
-                            },
-                            ["CancelText"] = new CommonMetaArgs
-                            {
-                                Name = "「Cancel」按钮文本",
-                                Type = MetaType.text
-                            },
-                            ["Topmost"] = new CommonMetaArgs
-                            {
-                                Name = "置顶？",
-                                Type = MetaType.boolean
-                            },
-                            ["CountdownEnabled"] = new CommonMetaArgs
-                            {
-                                Name = "启用倒计时？",
-                                Type = MetaType.boolean
-                            },
-                            ["CountdownTime"] = new CommonMetaArgs
-                            {
-                                Name = "倒计时时长(s)",
-                                Type = MetaType.number
-                            },
-                        },
-                        DropdownUseNumbers = false,
-                        InlineField = false,
-                        InlineBlock = false
-                    },
-                ]
-            });
+                        ["ProjectGuid"] = BasicFields.DynamicDropdown("", "sai.rules.runCiRuleset.options")
+                    }
+                },
+                new BlockMetadata("sai.rules.dialogs.yesNo")
+                {
+                    Kind = BlockKind.Rule,
+                    Name = "YesNo 对话框",
+                    Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
+                    Fields = new Dictionary<string, Field>
+                    {
+                        ["dummy1"] = BasicFields.Dummy(""),
+                        ["Header"] = BasicFields.Text("标题"),
+                        ["Message"] = BasicFields.Text("消息"),
+                        ["YesText"] = BasicFields.Text("「Yes」按钮文本"),
+                        ["NoText"] = BasicFields.Text("「No」按钮文本"),
+                        ["PreferYes"] = BasicFields.Boolean("默认按钮为「Yes」？"),
+                        ["Topmost"] = BasicFields.Boolean("置顶？"),
+                        ["CountdownEnabled"] = BasicFields.Boolean("启用倒计时？"),
+                        ["CountdownTime"] = BasicFields.Number("倒计时时长(s)"),
+                    }
+                }
+            ],
+            Data =
+            [
+                new BlockMetadata("sai.data.getDynamicText")
+                {
+                    Kind = BlockKind.Data,
+                    Name = "获取动态文本",
+                    Icon = ("文本", FluentIcons.TextboxRegular),
+                    Fields = new Dictionary<string, Field>
+                    {
+                        ["Key"] = BasicFields.Text("ID"),
+                    }
+                },
+                new BlockMetadata("sai.rules.dialogs.text")
+                {
+                    Kind = BlockKind.Data,
+                    Name = "文本输入对话框",
+                    Icon = ("对话框", FluentIcons.WindowHeaderHorizontalRegular),
+                    Fields = new Dictionary<string, Field>
+                    {
+                        ["dummy1"] = BasicFields.Dummy(""),
+                        ["Header"] = BasicFields.Text("标题"),
+                        ["Message"] = BasicFields.Text("消息"),
+                        ["DefaultText"] = BasicFields.Text("默认文本"),
+                        ["OkText"] = BasicFields.Text("「Ok」按钮文本"),
+                        ["CancelText"] = BasicFields.Text("「Cancel」按钮文本"),
+                        ["Topmost"] = BasicFields.Boolean("置顶？"),
+                        ["CountdownEnabled"] = BasicFields.Boolean("启用倒计时？"),
+                        ["CountdownTime"] = BasicFields.Number("倒计时时长(s)"),
+                    }
+                }
+            ]
+        });
 
         SaiServer.RegisterWrapper("classisland.os.run.program", RunActionProgramWrapper);
 
@@ -292,36 +152,22 @@ public static class SaiRegistry
                     .ToList(),
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
-        
-        // SaiServer.RegisterDataGetter<TestData>("sai.data.test", (data) =>
-        // {
-        //     try
-        //     {
-        //         if (data is not TestData testData) return Task.FromResult("???");
-        //         
-        //         return Task.FromResult(testData.Text + testData.Text);
-        //     }
-        //     catch (Exception exception)
-        //     {
-        //         return Task.FromException<string>(exception);
-        //     }
-        // });
-        
-        SaiServer.RegisterDataGetter<GetDynamicTextSettings>("sai.data.getDynamicText", data =>
+
+        SaiServer.RegisterDataHandler<GetDynamicTextSettings>("sai.data.getDynamicText", data =>
         {
             if (data is not GetDynamicTextSettings settings) return Task.FromResult("???");
-            
+
             var provider = IAppHost.GetService<DynamicTextProvider>();
             return Task.FromResult(provider.GetText(settings.Key) ?? "[未设置值]");
         });
-        
-        SaiServer.RegisterDataGetter<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
+
+        SaiServer.RegisterDataHandler<TextDialogDataModel>("sai.rules.dialogs.text", async data =>
         {
             if (data is not TextDialogDataModel model) return "???";
             return await Dispatcher.UIThread.InvokeAsync(async Task<string> () => await ShowDialogAsync(model));
         });
     }
-    
+
     /// <summary>
     /// 「运行应用程序」包装器
     /// </summary>
@@ -333,7 +179,7 @@ public static class SaiRegistry
         var settings = JsonSerializer.Deserialize<RunActionSettings>(settingsJson)!;
         settings.RunType = RunActionSettings.RunActionRunType.Application;
         settingsJson = JsonSerializer.Serialize(settings);
-        
+
         return new ActionItem
         {
             Id = "classisland.os.run",
@@ -344,7 +190,7 @@ public static class SaiRegistry
     public static async Task<string> ShowDialogAsync(TextDialogDataModel settings)
     {
         var cancelButton = new FATaskDialogButton(settings.CancelText, false);
-        
+
         var okButton = new FATaskDialogButton(settings.OkText, true)
         {
             IsDefault = true
@@ -354,7 +200,7 @@ public static class SaiRegistry
         {
             Text = settings.DefaultText
         };
-        
+
         var dialog = new FATaskDialog
         {
             Title = settings.Header,
@@ -377,24 +223,21 @@ public static class SaiRegistry
         };
 
         okButton.IsEnabled = !settings.CountdownEnabled && !string.IsNullOrEmpty(textBox.Text.Trim());
-        
+
         if (settings.CountdownEnabled)
         {
             var stopwatch = Stopwatch.StartNew();
             var completed = false;
-            dialog.Closing += (sender, args) =>
-            {
-                args.Cancel = !completed;
-            };
-            
+            dialog.Closing += (sender, args) => { args.Cancel = !completed; };
+
             cancelButton.IsEnabled = false;
             okButton.IsEnabled = false;
-            
+
             textBox.TextChanged += (sender, args) =>
             {
                 okButton.IsEnabled = completed && !string.IsNullOrEmpty(textBox.Text.Trim());
             };
-            
+
             _ = Task.Run(async () =>
             {
                 while (true)
@@ -418,7 +261,7 @@ public static class SaiRegistry
                     var checkInterval = Math.Min(remainingMs, 1000);
                     await Task.Delay(checkInterval);
                 }
-                
+
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     completed = true;
@@ -435,7 +278,7 @@ public static class SaiRegistry
                 okButton.IsEnabled = !string.IsNullOrEmpty(textBox.Text.Trim());
             };
         }
-        
+
         var task = dialog.ShowAsync();
         if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
         {
@@ -446,6 +289,7 @@ public static class SaiRegistry
                 window.Topmost = true;
             }
         }
+
         var result = await task;
 
         return Equals(result, true) ? textBox.Text : "canceled";

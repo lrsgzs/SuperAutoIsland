@@ -27,6 +27,7 @@ import './types/extraData.d.ts';
 import * as prettier from 'prettier';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
+import { addV2Block, BlockMetadata } from './utils/v2Generator';
 
 const ws = new WebSocket('/');
 ws.addEventListener('message', ev => console.log(ev));
@@ -35,7 +36,7 @@ await new Promise(resolve => {
 });
 
 const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getExtraBlocks' });
-window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions' | 'data', Metadata[]>>;
+window.extraBlocks = JSON.parse(data.blocksString) as Record<string, Record<'rules' | 'actions' | 'data', BlockMetadata[]>>;
 window.saiWS = ws;
 window.saiWaitMessage = wsWaitMessage;
 
@@ -150,7 +151,7 @@ for (let pluginName in window.extraBlocks) {
         addLabel('数据');
 
         for (let block of data) {
-            await addMetaBlock('data', block);
+            await addV2Block(block);
         }
     }
 
@@ -158,7 +159,7 @@ for (let pluginName in window.extraBlocks) {
         addLabel('规则');
 
         for (let block of rules) {
-            await addMetaBlock('rule', block);
+            await addV2Block(block);
         }
     }
 
@@ -166,7 +167,7 @@ for (let pluginName in window.extraBlocks) {
         addLabel('行动');
 
         for (let block of actions) {
-            await addMetaBlock('action', block);
+            await addV2Block(block);
         }
     }
 

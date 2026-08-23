@@ -1,10 +1,10 @@
-﻿import type { Metadata } from '../utils/superGenerator';
-import { wsWaitMessage } from '../utils/wsUtils';
+﻿import { wsWaitMessage } from '../utils/wsUtils';
 import * as Blockly from 'blockly';
+import { BlockMetadata } from '../utils/v2Generator';
 
 declare global {
     interface Window {
-        extraBlocks: Record<string, Record<'rules' | 'actions' | 'data', Metadata[]>>;
+        extraBlocks: Record<string, Record<'rules' | 'actions' | 'data', BlockMetadata[]>>;
         saiWS: WebSocket;
         saiWaitMessage: typeof wsWaitMessage;
         workspace: Blockly.Workspace;

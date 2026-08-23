@@ -72,7 +72,6 @@ export interface Metadata {
  * @param metadata 积木元数据
  */
 export async function addMetaBlock(blockType: BlockType, metadata: Metadata) {
-    // @ts-ignore
     const id = metadata.id.replaceAll('.', '_');
     let message = `[%1 ${metadata.name}]`;
     const inputs: Record<string, ArgDefinition> = {};
