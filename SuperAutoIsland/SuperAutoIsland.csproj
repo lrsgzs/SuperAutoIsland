@@ -18,7 +18,7 @@
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1.1">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
-        <PackageReference Include="Jint" Version="4.15.2" />
+        <PackageReference Include="Jint" Version="4.16.1" />
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
     </ItemGroup>
 
