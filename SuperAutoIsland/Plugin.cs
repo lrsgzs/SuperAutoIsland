@@ -125,6 +125,11 @@ public class Plugin : PluginBase
             _logger.Debug("注册 SuperAutoIsland 元素...");
             SaiClassIslandRegistry.Register();
             SaiRegistry.Register();
+
+            if (GlobalConstants.Configs.MainConfig.Data.EnableProfileFeatures)
+            {
+                ProfileSaiRegistry.Register();
+            }
         };
 
         // 应用退出

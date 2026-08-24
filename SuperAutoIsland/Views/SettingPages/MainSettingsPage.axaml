@@ -37,11 +37,17 @@
             
             <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
                 <fa:FASettingsExpander.Footer>
-                    <TextBox MinWidth="20"
-                             Margin="3,0,6,0"
-                             HorizontalContentAlignment="Center"
+                    <TextBox MinWidth="64"
                              InputMethod.IsInputMethodEnabled="False"
                              Text="{Binding Settings.ServerPort, Mode=TwoWay}"/>
+                </fa:FASettingsExpander.Footer>
+            </fa:FASettingsExpander>
+            
+            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI DocumentRegular}}"
+                                   Header="启用档案功能"
+                                   Description="指定是否启用档案功能。当前为 Blockly 独占功能">
+                <fa:FASettingsExpander.Footer>
+                    <ToggleSwitch IsChecked="{Binding Settings.EnableProfileFeatures}" />
                 </fa:FASettingsExpander.Footer>
             </fa:FASettingsExpander>
             
