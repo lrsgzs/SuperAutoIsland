@@ -27,10 +27,7 @@ public class BlocklyRunner
             {
                 options.Constraints.PromiseTimeout = TimeSpan.Zero;
             });
-            _jsNamespace = new JavaScriptNamespace
-            {
-                Engine = _engine
-            };
+            _jsNamespace = new JavaScriptNamespace();
             
             _engine.SetValue("logger", _logger);
             _engine.SetValue("console", _jsNamespace.Console);
@@ -53,13 +50,10 @@ public class BlocklyRunner
     /// <exception cref="NotSupportedException">遇到不支持的项目会报这个错误</exception>
     public async Task RunActionProject(Project project, CancellationToken cancellationToken = default)
     {
-        if (project.Type == ProjectsType.BlocklyAction)
-        {
-            var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
-            await RunJavaScript(script, cancellationToken);
-            return;
-        }
-
-        throw new NotSupportedException();
+        if (project.Type != ProjectsType.BlocklyAction)
+            throw new NotSupportedException();
+        
+        var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
+        await RunJavaScript(script, cancellationToken);
     }
 }

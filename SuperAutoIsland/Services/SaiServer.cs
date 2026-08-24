@@ -7,7 +7,6 @@ using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface.Metadata;
-using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -18,23 +17,24 @@ namespace SuperAutoIsland.Services;
 /// </summary>
 public class SaiServer
 {
-    /// <summary>
-    /// 额外积木批发
-    /// </summary>
-    public readonly Dictionary<string, List<BlockMetadata>> ExtraBlocks = new();
-    public readonly Dictionary<string, DynamicDropdownHandler> DynamicDropdowns = new();
-    private readonly ActionAndRuleRunner _runner = new();
-    private bool _isRunning;
-    
     public readonly string Url;
+    private readonly SaiBlockRunner _runner = IAppHost.GetService<SaiBlockRunner>();
+    private bool _isRunning;
     private readonly string _wwwRoot;
     private readonly HttpListener _listener;
     private readonly Logger<SaiServer> _logger = new();
+
+    private static readonly JsonSerializerOptions ExtraBlocksOptions = new()
+    {
+        WriteIndented = false,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters =
+        {
+            new StringTupleConverter(),
+            new JsonStringEnumConverter<BlockKind>(JsonNamingPolicy.CamelCase)
+        }
+    };
     
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="port"></param>
     public SaiServer(string port)
     {
         Url = $"http://localhost:{port}/";
@@ -71,7 +71,7 @@ public class SaiServer
             }
             catch (HttpListenerException ex) when (ex.ErrorCode == 995)
             {
-                _logger.Info("呃呃呃啊哦呃，服务器已经关了呢喵...");
+                _logger.Info("哦齁齁齁齁，服务器已经关了呢喵...");
             }
             catch (Exception e)
             {
@@ -153,7 +153,8 @@ public class SaiServer
                         {
                             // 获取额外积木
                             case "getExtraBlocks":
-                                var extraBlocks = GenerateExtraBlocksJson();
+                                var extraBlocks =
+                                    JsonSerializer.Serialize(SaiBlocksRegistry.Categories, ExtraBlocksOptions);
                                 jsonReturnData = new
                                 {
                                     type = "result",
@@ -182,12 +183,11 @@ public class SaiServer
                             // 运行数据
                             case "runData":
                                 var dataId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
-                                var dataParams = messageJson.RootElement.GetProperty("settings")
-                                    .Deserialize(SaiDataRegistry.GetGetterType(dataId));
+                                var dataParams = messageJson.RootElement.GetProperty("settings");
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    data = await SaiDataRegistry.RunData(dataId, dataParams),
+                                    data = await _runner.RunData(dataId, dataParams)
                                 };
                                 break;
                             // 保存项目
@@ -280,7 +280,8 @@ public class SaiServer
                             case "getDynamicDropdownContent":
                                 var dynamicDropdownId =
                                     messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
-                                var getter = DynamicDropdowns.GetValueOrDefault(dynamicDropdownId);
+                                var getter =
+                                    SaiBlocksRegistry.DynamicDropdowns.GetValueOrDefault(dynamicDropdownId);
                                 List<(string, string)> options;
 
                                 if (getter != null)
@@ -358,7 +359,7 @@ public class SaiServer
             {
                 context.Response.StatusCode = 404;
                 var notFound = "File Not Found"u8.ToArray();
-                await context.Response.OutputStream.WriteAsync(notFound, 0, notFound.Length);
+                await context.Response.OutputStream.WriteAsync(notFound);
                 _logger.Warn($"文件未找到: {path}");
             }
         }
@@ -392,24 +393,4 @@ public class SaiServer
         ".svg" => "image/svg+xml",
         _ => "application/octet-stream"
     };
-    
-    /// <summary>
-    /// 生成额外积木 json
-    /// </summary>
-    /// <returns>额外积木 json</returns>
-    private string GenerateExtraBlocksJson()
-    {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = 
-            {
-                new StringTupleConverter(),
-                new JsonStringEnumConverter()
-            }
-        };
-        
-        return JsonSerializer.Serialize(ExtraBlocks, options);
-    }
 }

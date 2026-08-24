@@ -64,7 +64,7 @@ public class Plugin : PluginBase
         ProjectsConfigManager.Initialization();
 
         _logger.Info("注册运行器...");
-        services.AddSingleton<ActionAndRuleRunner>();
+        services.AddSingleton<SaiBlockRunner>();
         services.AddSingleton<BlocklyRunner>();
         services.AddSingleton<CiRunner>();
 

@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using ClassIsland.Shared;
-using Jint;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Services.BlocklyRunner;
@@ -14,8 +13,6 @@ public class JavaScriptNamespace
     /// 假的 console object
     /// </summary>
     public readonly DummyConsole Console = new();
-
-    public required Engine Engine { get; set; }
     private readonly Logger<JavaScriptNamespace> _logger = new();
     
     /// <summary>
@@ -27,33 +24,35 @@ public class JavaScriptNamespace
         var jsonDocument = JsonDocument.Parse(dataJson);
         _logger.BaseLog("TRACE", $"Calling Action: {id} {dataJson}");
         
-        var runnerService = IAppHost.GetService<ActionAndRuleRunner>();
+        var runnerService = IAppHost.GetService<SaiBlockRunner>();
         await runnerService.RunAction(id, jsonDocument.RootElement);
     }
     
     /// <summary>
     /// 内部的 GetRuleState 实现
     /// </summary>
-    private async Task<bool> _getRuleState(string id, object data)
+    private Task<bool> _getRuleState(string id, object data)
     {
         var dataJson = JsonSerializer.Serialize(data);
         var jsonDocument = JsonDocument.Parse(dataJson);
         _logger.BaseLog("TRACE", $"Getting Rule State: {id} {dataJson}");
 
-        var runnerService = IAppHost.GetService<ActionAndRuleRunner>();
-        return runnerService.RunRule(id, jsonDocument.RootElement);
+        var runnerService = IAppHost.GetService<SaiBlockRunner>();
+        var result = runnerService.RunRule(id, jsonDocument.RootElement);
+        return Task.FromResult(result);
     }
     
     /// <summary>
     /// 内部的 GetData 实现
     /// </summary>
-    private async Task<string> _getData(string id, object data)
+    private async Task<object> _getData(string id, object data)
     {
         var dataJson = JsonSerializer.Serialize(data);
-        var dataParams = JsonSerializer.Deserialize(dataJson, SaiDataRegistry.GetGetterType(id));
+        var jsonDocument = JsonDocument.Parse(dataJson);
         _logger.BaseLog("TRACE", $"Getting Data: {id} {dataJson}");
 
-        return await SaiDataRegistry.RunData(id, dataParams);
+        var runnerService = IAppHost.GetService<SaiBlockRunner>();
+        return await runnerService.RunData(id, jsonDocument.RootElement);
     }
 
     /// <summary>
@@ -85,8 +84,8 @@ public class JavaScriptNamespace
     /// </summary>
     /// <param name="id">规则 id</param>
     /// <param name="data">规则 settings</param>
-    /// <returns>Promise&lt;string&gt;</returns>
-    public Task<string> GetData(string id, object data)
+    /// <returns>Promise&lt;object&gt;</returns>
+    public Task<object> GetData(string id, object data)
     {
         _logger.BaseLog("TRACE", "收到 GetData");
         return _getData(id, data);

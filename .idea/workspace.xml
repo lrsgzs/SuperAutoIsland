@@ -11,14 +11,24 @@
       <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/Automations/RuleBlockBase.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/BlocksRegister.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/FieldsRegister.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/GetDynamicTextBlock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/TextDialogBlock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiBlockRunner.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiBlocksRegistry.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/types/extraData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockMetadata.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockMetadata.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/RegisterData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BlockKind.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Services/ISaiServer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Controls/RuleSettingsControls/YesNoDialogRuleSettingsControl.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Controls/RuleSettingsControls/YesNoDialogRuleSettingsControl.axaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Models/DataGetterItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Plugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/ActionAndRuleRunner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/BlocklyRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/BlocklyRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/JavaScriptNamespace.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/BlocklyRunner/JavaScriptNamespace.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiDataRegistry.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/SaiServerBridger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/AutomationSettingsPage.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Views/SettingPages/AutomationSettingsPage.axaml.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,6 +162,7 @@
       <workItem from="1787285302748" duration="14377000" />
       <workItem from="1787374490272" duration="7248000" />
       <workItem from="1787478187569" duration="14320000" />
+      <workItem from="1787557799682" duration="1380000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />
