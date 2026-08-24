@@ -1,19 +1,9 @@
-using System.Diagnostics;
-using System.Text.Json;
-using Avalonia.Controls;
-using Avalonia.Media;
-using Avalonia.Threading;
-using ClassIsland.Core;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
-using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Enums;
-using SuperAutoIsland.Interface;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
-using SuperAutoIsland.Models.Actions;
-using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Services.Automations.Blocks;
 using SuperAutoIsland.Shared;
 
@@ -79,19 +69,20 @@ public static class SaiRegistry
                 Fields = new Dictionary<string, Field>
                 {
                     ["dummy1"] = BasicFields.Dummy(""),
-                    ["Header"] = BasicFields.Text("标题"),
-                    ["Message"] = BasicFields.Text("消息"),
-                    ["YesText"] = BasicFields.Text("「Yes」按钮文本"),
-                    ["NoText"] = BasicFields.Text("「No」按钮文本"),
-                    ["PreferYes"] = BasicFields.Boolean("默认按钮为「Yes」？"),
-                    ["Topmost"] = BasicFields.Boolean("置顶？"),
-                    ["CountdownEnabled"] = BasicFields.Boolean("启用倒计时？"),
-                    ["CountdownTime"] = BasicFields.Number("倒计时时长(s)"),
+                    ["Header"] = BasicFields.Text("标题", "选择您的答案..."),
+                    ["Message"] = BasicFields.Text("消息", "NO ONE YES MAN!"),
+                    ["YesText"] = BasicFields.Text("「Yes」按钮文本", "是"),
+                    ["NoText"] = BasicFields.Text("「No」按钮文本", "否"),
+                    ["PreferYes"] = BasicFields.Boolean("默认按钮为「Yes」？", true),
+                    ["Topmost"] = BasicFields.Boolean("置顶？", false),
+                    ["CountdownEnabled"] = BasicFields.Boolean("启用倒计时？", false),
+                    ["CountdownMode"] = BasicFields.Dropdown("倒计时模式", [
+                        ("可交互前倒计时", "0"), ("自动 Yes 倒计时", "1"), ("自动 No 倒计时", "2")
+                    ], true),
+                    ["CountdownTime"] = BasicFields.Number("倒计时时长(s)", 5),
                 }
             })
             .AddBlock<TextDialogBlock>());
-
-        // SaiServer.RegisterWrapper("classisland.os.run.program", RunActionProgramWrapper);
 
         SaiServer.RegisterDynamicDropdown("sai.actions.runBlockly.options", async () =>
             EnsureListHasItemOrDefaultListItem(
@@ -119,25 +110,6 @@ public static class SaiRegistry
                     .ToList(),
                 new ValueTuple<string, string>("???",
                     GlobalConstants.Assets.ProjectNullGuid.ToString())));
-    }
-
-    /// <summary>
-    /// 「运行应用程序」包装器
-    /// </summary>
-    /// <param name="actionItem">行动项目</param>
-    /// <returns>修改后的行动项目</returns>
-    private static ActionItem RunActionProgramWrapper(ActionItem actionItem)
-    {
-        var settingsJson = JsonSerializer.Serialize(actionItem.Settings);
-        var settings = JsonSerializer.Deserialize<RunActionSettings>(settingsJson)!;
-        settings.RunType = RunActionSettings.RunActionRunType.Application;
-        settingsJson = JsonSerializer.Serialize(settings);
-
-        return new ActionItem
-        {
-            Id = "classisland.os.run",
-            Settings = JsonSerializer.Deserialize<object>(settingsJson)
-        };
     }
 
     private static List<T> EnsureListHasItemOrDefaultListItem<T>(List<T> data, T defaultItem)

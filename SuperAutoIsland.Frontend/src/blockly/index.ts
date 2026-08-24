@@ -19,7 +19,7 @@ import { FieldIcon } from './fields/FieldIcon';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
-import { addLabel, addMetaBlock, Metadata } from './utils/superGenerator';
+import { addLabel } from './utils/blockGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
 import './types/extraData.d.ts';
@@ -126,18 +126,6 @@ postSetupCategory();
 preSetupCategory('调试', 'debug_category');
 // @ts-ignore
 await import('./blocks/debug');
-postSetupCategory();
-
-preSetupCategory('ClassIsland');
-
-addLabel('规则');
-// @ts-ignore
-await import('./blocks/rules');
-
-addLabel('行动');
-// @ts-ignore
-await import('./blocks/actions');
-
 postSetupCategory();
 
 for (let pluginName in window.extraBlocks) {

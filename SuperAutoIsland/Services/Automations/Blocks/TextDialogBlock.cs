@@ -4,7 +4,6 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using ClassIsland.Core;
 using ClassIsland.Core.Icons;
-using ClassIsland.Shared;
 using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
@@ -23,14 +22,14 @@ public class TextDialogBlock : DataBlockBase
 
     public override void GetFields(FieldsRegister it) => it
         .AddDummy()
-        .AddField("Header", BasicFields.Text("标题"))
-        .AddField("Message", BasicFields.Text("消息"))
+        .AddField("Header", BasicFields.Text("标题", "输入您的答案..."))
+        .AddField("Message", BasicFields.Text("消息", "请输入文本。"))
         .AddField("DefaultText", BasicFields.Text("默认文本"))
-        .AddField("OkText", BasicFields.Text("「Ok」按钮文本"))
-        .AddField("CancelText", BasicFields.Text("「Cancel」按钮文本"))
-        .AddField("Topmost", BasicFields.Boolean("置顶？"))
-        .AddField("CountdownEnabled", BasicFields.Boolean("启用倒计时？"))
-        .AddField("CountdownTime", BasicFields.Number("倒计时时长(s)"));
+        .AddField("OkText", BasicFields.Text("「Ok」按钮文本", "确定"))
+        .AddField("CancelText", BasicFields.Text("「Cancel」按钮文本", "取消"))
+        .AddField("Topmost", BasicFields.Boolean("置顶？", false))
+        .AddField("CountdownEnabled", BasicFields.Boolean("启用倒计时？", false))
+        .AddField("CountdownTime", BasicFields.Number("倒计时时长(s)", 5));
 
     public override async Task<object> Handler(object? data)
     {

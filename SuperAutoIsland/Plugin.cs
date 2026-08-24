@@ -123,6 +123,7 @@ public class Plugin : PluginBase
             IAppHost.GetService<DynamicTextProvider>();
 
             _logger.Debug("注册 SuperAutoIsland 元素...");
+            SaiClassIslandRegistry.Register();
             SaiRegistry.Register();
         };
 

@@ -253,29 +253,6 @@ public class SaiServer
                                     guid = project2.Id,
                                 };
                                 break;
-                            // 数据 - 获取学科
-                            case "getSubjects":
-                                var profileService = IAppHost.GetService<IProfileService>();
-                                var subjects = profileService.Profile.Subjects
-                                    .Select(kvp => new { Id = kvp.Key, kvp.Value.Name })
-                                    .ToList();
-
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    subjects,
-                                };
-                                break;
-                            // 数据 - 获取组件配置
-                            case "getComponentConfigs":
-                                var componentService = IAppHost.GetService<IComponentsService>();
-
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    configs = componentService.ComponentConfigs,
-                                };
-                                break;
                             // 动态下拉框
                             case "getDynamicDropdownContent":
                                 var dynamicDropdownId =

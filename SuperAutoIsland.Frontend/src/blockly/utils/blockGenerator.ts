@@ -307,3 +307,10 @@ export function addBlock(block: BlockDefinition, generator: GeneratorFunction) {
     data.blocks?.push(blockDefinition.definition);
     data.forBlock![block.type] = generator;
 }
+
+export function addLabel(label: string) {
+    data.category?.contents.push({
+        kind: 'label',
+        text: label,
+    });
+}
