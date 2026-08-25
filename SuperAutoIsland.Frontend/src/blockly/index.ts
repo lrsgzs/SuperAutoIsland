@@ -15,6 +15,7 @@ import { textMultiline } from '@blockly/field-multilineinput';
 import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
 import '@blockly/field-date';
+import './fields/FieldTime';
 import { FieldIcon } from './fields/FieldIcon';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 
@@ -118,7 +119,7 @@ javascriptGenerator.forBlock['procedures_callreturn'] = function (
     return [code, Order.FUNCTION_CALL];
 };
 
-preSetupCategory('日期', 'date_category');
+preSetupCategory('日期与时间', 'date_category');
 // @ts-ignore
 await import('./blocks/date');
 postSetupCategory();

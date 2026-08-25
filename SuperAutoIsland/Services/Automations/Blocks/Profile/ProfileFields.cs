@@ -22,4 +22,15 @@ public static class ProfileFields
     
     public static InputField ClassPlanGroup(string name) =>
         Create(name, "SAI_Profile_ClassPlanGroup", "sai_profile_data_classPlanGroupByGuid");
+
+    /// <summary>
+    /// 时间点类型下拉框。后台值为数字：0-上课，1-课间，2-分割线，3-行动。
+    /// </summary>
+    public static Field TimePointType(string name) =>
+        BasicFields.Dropdown(name, [
+            ("上课", "0"),
+            ("课间", "1"),
+            ("分割线", "2"),
+            ("行动", "3")
+        ], true);
 }

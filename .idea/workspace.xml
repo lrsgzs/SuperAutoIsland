@@ -6,10 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="6278fdd2-c79e-4a64-ae91-96cdb7529cbe" name="更改" comment="feat: 优化 FieldIcon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/date.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/blocks/date.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/toolbox.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/blockGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Frontend/src/blockly/utils/blockGenerator.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BasicFields.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland.Interface/Metadata/BasicFields.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/Profile/Common/ProfileBlockHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/Profile/Common/ProfileBlockHelpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/Profile/ProfileFields.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/Blocks/Profile/ProfileFields.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiProfileRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SuperAutoIsland/Services/Automations/SaiProfileRegistry.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/插件基本接入方法.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/插件基本接入方法.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plan-profile.md" beforeDir="false" afterPath="$PROJECT_DIR$/plan-profile.md" afterDir="false" />
     </list>
@@ -27,12 +30,12 @@
     &quot;assignee&quot;: &quot;lrsgzs&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:lrsgzs/SuperAutoIsland",
-    "accountId": "b8887e54-9165-49dc-91d4-79a7b6116f4e"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:lrsgzs/SuperAutoIsland&quot;,
+    &quot;accountId&quot;: &quot;b8887e54-9165-49dc-91d4-79a7b6116f4e&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3,
   &quot;fromUser&quot;: false
@@ -147,6 +150,7 @@
       <workItem from="1787478187569" duration="14320000" />
       <workItem from="1787557799682" duration="4339000" />
       <workItem from="1787667064255" duration="3377000" />
+      <workItem from="1787671896793" duration="630000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 保存有提示（">
       <option name="closed" value="true" />

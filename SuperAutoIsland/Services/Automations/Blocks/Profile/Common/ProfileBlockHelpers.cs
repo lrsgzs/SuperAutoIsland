@@ -2,6 +2,8 @@ using System.Text.Json;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using ProfileClassPlan = ClassIsland.Shared.Models.Profile.ClassPlan;
+using ProfileTimeLayout = ClassIsland.Shared.Models.Profile.TimeLayout;
+using ProfileTimeLayoutItem = ClassIsland.Shared.Models.Profile.TimeLayoutItem;
 
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
@@ -33,6 +35,19 @@ public static class ProfileBlockHelpers
     {
         var id = Guid(settings, name);
         return IAppHost.GetService<IProfileService>().Profile.ClassPlans.GetValueOrDefault(id);
+    }
+
+    public static ProfileTimeLayout? TimeLayout(JsonElement settings, string name = "TimeLayout")
+    {
+        var id = Guid(settings, name);
+        return IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(id);
+    }
+
+    public static ProfileTimeLayoutItem? TimePoint(JsonElement settings, string name = "TimeLayout")
+    {
+        var layout = TimeLayout(settings, name);
+        var index = Number(settings, "Index") - 1;
+        return layout?.Layouts.ElementAtOrDefault(index);
     }
 
     public static string GuidOutput(Guid id) => id.ToString();

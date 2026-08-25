@@ -69,13 +69,12 @@ public static class BasicFields
             setter?.Invoke(x);
         });
     
-    /// <summary>
-    /// 字典输入。暂不提供默认值（shadow block），需要用户在前端插入字典积木。
-    /// </summary>
-    public static InputField Dictionary(string name, InputFieldSetter? setter = null) =>
+    public static InputField Time(string name, TimeSpan defaultValue = default, InputFieldSetter? setter = null) =>
         CreateInputField(name, x =>
         {
-            x.Check = "Dictionary";
+            x.Check = "SAI_Time";
+            x.ShadowBlockType = "time_block";
+            x.Options["TIME"] = defaultValue;
             setter?.Invoke(x);
         });
     
@@ -115,6 +114,13 @@ public static class BasicFields
             x.Type = "internal_dynamic_dropdown";
             x.Options["id"] = id;
             x.Options["useNumbers"] = useNumbers;
+            setter?.Invoke(x);
+        });
+    
+    public static InputField Dictionary(string name, InputFieldSetter? setter = null) =>
+        CreateInputField(name, x =>
+        {
+            x.Check = "Dictionary";
             setter?.Invoke(x);
         });
 }

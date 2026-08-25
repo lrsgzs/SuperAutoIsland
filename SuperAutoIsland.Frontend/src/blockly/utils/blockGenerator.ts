@@ -162,6 +162,13 @@ interface _DateArgDef extends _UnkArgDef {
     };
 }
 
+interface _TimeArgDef extends _UnkArgDef {
+    type: 'field_time';
+    data: {
+        time: string;
+    };
+}
+
 /**
  * 参数定义类型
  */
@@ -180,7 +187,8 @@ export type ArgDefinition =
     | _InputArgDef
     | _VariableArgDef
     | _IconArgDef
-    | _DateArgDef;
+    | _DateArgDef
+    | _TimeArgDef;
 
 /**
  * 积木定义接口
