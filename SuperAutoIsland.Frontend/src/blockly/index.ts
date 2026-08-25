@@ -123,6 +123,11 @@ preSetupCategory('日期', 'date_category');
 await import('./blocks/date');
 postSetupCategory();
 
+preSetupCategory('字典', 'dict_category');
+// @ts-ignore
+await import('./blocks/dict');
+postSetupCategory();
+
 preSetupCategory('调试', 'debug_category');
 // @ts-ignore
 await import('./blocks/debug');
@@ -186,6 +191,9 @@ const defaultTheme = Blockly.Theme.defineTheme('default', {
         },
         debug_category: {
             colour: '#666666',
+        },
+        dict_category: {
+            colour: '#5B6EA6',
         },
     },
 });

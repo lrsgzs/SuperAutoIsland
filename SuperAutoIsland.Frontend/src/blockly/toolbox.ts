@@ -496,10 +496,6 @@ export const toolbox: ToolboxInfo = {
                 },
                 {
                     kind: 'block',
-                    type: 'lists_create_with',
-                },
-                {
-                    kind: 'block',
                     type: 'lists_repeat',
                     inputs: {
                         NUM: {

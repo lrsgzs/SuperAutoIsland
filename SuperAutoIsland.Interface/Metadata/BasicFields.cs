@@ -69,6 +69,16 @@ public static class BasicFields
             setter?.Invoke(x);
         });
     
+    /// <summary>
+    /// 字典输入。暂不提供默认值（shadow block），需要用户在前端插入字典积木。
+    /// </summary>
+    public static InputField Dictionary(string name, InputFieldSetter? setter = null) =>
+        CreateInputField(name, x =>
+        {
+            x.Check = "Dictionary";
+            setter?.Invoke(x);
+        });
+    
     public static Field CheckBox(string name, bool defaultValue = false, FieldSetter? setter = null) =>
         CreateField(name, x =>
         {

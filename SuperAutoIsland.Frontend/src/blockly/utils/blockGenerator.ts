@@ -1,4 +1,4 @@
-﻿import type { BlockInfo, StaticCategoryInfo } from '../types/toolbox';
+import type { BlockInfo, StaticCategoryInfo } from '../types/toolbox';
 import * as Blockly from 'blockly/core';
 // @ts-ignore
 import type { ConnectionState } from 'blockly/core/serialization/blocks';
@@ -30,6 +30,10 @@ export interface BlocklyBlockDefinition {
     style?: string;
     previousStatement?: ConnectionState;
     nextStatement?: ConnectionState;
+    /* 输入是否同行排列 */
+    inputsInline?: boolean;
+    /* 注册过的突变器（mutator）名称 */
+    mutator?: string;
 }
 
 interface _ImageDef {
@@ -193,6 +197,8 @@ export interface BlockDefinition {
     style?: string;
     inline?: boolean;
     isReporter?: boolean;
+    /* 注册过的突变器（mutator）名称 */
+    mutator?: string;
 }
 
 /**
@@ -284,6 +290,8 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
             helpUrl: block.helpUrl,
             colour: block.colour,
             style: block.style,
+            inputsInline: block.inline,
+            mutator: block.mutator,
             ...(block.isReporter
                 ? {}
                 : {
