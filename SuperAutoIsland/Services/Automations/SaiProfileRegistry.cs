@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 
 namespace SuperAutoIsland.Services.Automations;
 
-public static class ProfileSaiRegistry
+public static class SaiProfileRegistry
 {
     private static ISaiServer SaiServer { get; } = IAppHost.GetService<ISaiServer>();
     private static IProfileService ProfileService { get; } = IAppHost.GetService<IProfileService>();
