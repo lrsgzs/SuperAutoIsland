@@ -41,4 +41,6 @@ public partial class MainConfigModel : ObservableObject
             OnPropertyChanged();
         }
     } = false;
+
+    [ObservableProperty] private bool _enableEasterEggs;
 }

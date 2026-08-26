@@ -18,6 +18,8 @@ public static class GlobalConstants
     public static string? PluginConfigFolder { get; set; }
 
     public static string Codename => "Sandrone";
+    public static string Version => Plugin.Current!.Info.Manifest.Version;
+    public static string DisplayVersion => $"{Version} (Codename {Codename})";
     
     /// <summary>
     /// 配置集

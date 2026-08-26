@@ -13,8 +13,7 @@
         <Grid Grid.Row="0">
             <ListBox HorizontalAlignment="Left"
                      SelectionMode="Multiple,Toggle"
-                     Theme="{StaticResource ChipListBoxTheme}"
-            >
+                     Theme="{StaticResource ChipListBoxTheme}">
                 <ListBoxItem IsSelected="{Binding ViewModel.IsFilteredError}">
                     <ci:IconText Glyph="&#xE808;" Text="错误"/>
                 </ListBoxItem>

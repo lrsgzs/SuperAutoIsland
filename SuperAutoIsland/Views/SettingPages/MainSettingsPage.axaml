@@ -6,63 +6,145 @@
                      xmlns:ci="http://classisland.tech/schemas/xaml/core"
                      xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:settingPages="clr-namespace:SuperAutoIsland.Views.SettingPages"
+                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                     xmlns:shared="clr-namespace:SuperAutoIsland.Shared"
                      mc:Ignorable="d">
-    <ScrollViewer DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
-        <StackPanel Classes="settings-container animated-intro">
-            <fa:FAInfoBar IsOpen="True" IsClosable="False" Severity="Informational">
-                <fa:FAInfoBar.Message>
-                    欢迎使用 SuperAutoIsland！本插件使用了 Blockly，在此致谢。
-                </fa:FAInfoBar.Message>
-            </fa:FAInfoBar>
-            
-            <fa:FAInfoBar IsOpen="True"
-                          IsClosable="False"
-                          Severity="Informational"
-                          Message="插件社区Q群 ClassIsPlugin 现已建立！点击按钮，即刻加入！">
-                <fa:FAInfoBar.ActionButton>
-                    <Button Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
-                            CommandParameter="https://qm.qq.com/q/PeyliibxE4"
-                            Content="加入群组" />
-                </fa:FAInfoBar.ActionButton>
-            </fa:FAInfoBar>
+    <Grid RowDefinitions="Auto *"
+          DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
+        <Image Grid.Row="0" Grid.RowSpan="2"
+               Source="/Assets/sandrone.png" Opacity="0.1"
+               IsVisible="{Binding #ImageVisibility.IsChecked}" />
         
-            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
-                <fa:FASettingsExpander.Footer>
-                    <Button Margin="3,0,6,0"
-                            HorizontalContentAlignment="Center"
-                            Click="ViewLogsButton_OnClick"
-                            Content="查看日志"/>
-                </fa:FASettingsExpander.Footer>
-            </fa:FASettingsExpander>
+        <Grid Grid.Row="0" ColumnDefinitions="* Auto Auto"
+              Margin="12 16 18 0"
+              MaxWidth="{StaticResource SettingsContainerWidth}">
+            <TextBlock Grid.Column="0"
+                       Text="SuperAutoIsland 主设置" FontWeight="Normal"
+                       Theme="{StaticResource TitleTextBlockStyle}" />
             
-            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
-                <fa:FASettingsExpander.Footer>
-                    <TextBox MinWidth="64"
-                             InputMethod.IsInputMethodEnabled="False"
-                             Text="{Binding Settings.ServerPort, Mode=TwoWay}"/>
-                </fa:FASettingsExpander.Footer>
-            </fa:FASettingsExpander>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                       IsVisible="{Binding #ImageVisibility.IsChecked}">
+                背景图: Sandrone<LineBreak/>
+                <ci:NavHyperlink NavTarget="https://www.pixiv.net/users/69776150">pixiv@鳗鱼茶泡飯</ci:NavHyperlink>
+            </TextBlock>
             
-            <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI DocumentRegular}}"
-                                   Header="启用档案功能"
-                                   Description="指定是否启用档案功能。当前为 Blockly 独占功能">
-                <fa:FASettingsExpander.Footer>
-                    <ToggleSwitch IsChecked="{Binding Settings.EnableProfileFeatures}" />
-                </fa:FASettingsExpander.Footer>
-            </fa:FASettingsExpander>
-            
-            <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI BugRegular}}" Header="调试" Description="查看行动元数据" IsVisible="False">
-                <fa:FASettingsExpander.Footer>
-                    <StackPanel Orientation="Horizontal" Spacing="4">
-                        <ComboBox x:Name="DebugComboBox" />
-                        <Button Click="DebugGetInfo_OnClick">debug!</Button>
-                    </StackPanel>
-                </fa:FASettingsExpander.Footer>
-                
-                <fa:FASettingsExpanderItem>
-                    <TextBox x:Name="DebugTextBox" AcceptsReturn="True" AcceptsTab="True" />
-                </fa:FASettingsExpanderItem>
-            </fa:FASettingsExpander>
-        </StackPanel>
-    </ScrollViewer>
+            <CheckBox Grid.Column="2" VerticalAlignment="Center"
+                      x:Name="ImageVisibility" IsVisible="False"
+                      IsCheckedChanged="ImageVisibility_OnIsCheckedChanged" />
+        </Grid>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Classes="settings-container animated-intro">
+                <ci:IconText Glyph="{ci:FI SettingsRegular}" Text="设置" Margin="0 0 0 4" />
+
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志"
+                                       Description="记录了 SAI 运行过程中的事件。控制台输出也在这里">
+                    <fa:FASettingsExpander.Footer>
+                        <Button HorizontalContentAlignment="Center"
+                                Click="ViewLogsButton_OnClick"
+                                Content="查看日志" />
+                    </fa:FASettingsExpander.Footer>
+                </fa:FASettingsExpander>
+
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号"
+                                       Description="服务器端口号">
+                    <fa:FASettingsExpander.Footer>
+                        <TextBox MinWidth="64"
+                                 InputMethod.IsInputMethodEnabled="False"
+                                 Text="{Binding Settings.ServerPort, Mode=TwoWay}" />
+                    </fa:FASettingsExpander.Footer>
+                </fa:FASettingsExpander>
+
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI GroupRegular}}"
+                                       Header="启用档案功能"
+                                       Description="指定是否启用档案功能。目前为 Blockly 独占功能">
+                    <fa:FASettingsExpander.Footer>
+                        <ToggleSwitch IsChecked="{Binding Settings.EnableProfileFeatures}" />
+                    </fa:FASettingsExpander.Footer>
+                </fa:FASettingsExpander>
+
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI BugRegular}}" Header="调试"
+                                       Description="查看行动元数据" IsVisible="False">
+                    <fa:FASettingsExpander.Footer>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <ComboBox x:Name="DebugComboBox" />
+                            <Button Click="DebugGetInfo_OnClick">debug!</Button>
+                        </StackPanel>
+                    </fa:FASettingsExpander.Footer>
+
+                    <fa:FASettingsExpanderItem>
+                        <TextBox x:Name="DebugTextBox" AcceptsReturn="True" AcceptsTab="True" />
+                    </fa:FASettingsExpanderItem>
+                </fa:FASettingsExpander>
+
+                <Separator Margin="0 12 0 4" />
+                <ci:IconText Glyph="{ci:FI InfoRegular}" Text="关于" Margin="0 0 0 4" />
+
+                <fa:FASettingsExpander Header="SuperAutoIsland" IsExpanded="True">
+                    <fa:FASettingsExpander.Footer>
+                        <TextBlock Text="{x:Static shared:GlobalConstants.DisplayVersion}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </fa:FASettingsExpander.Footer>
+
+                    <fa:FASettingsExpander.IconSource>
+                        <fa:FAImageIconSource Source="/Assets/icon.png" />
+                    </fa:FASettingsExpander.IconSource>
+
+                    <fa:FASettingsExpanderItem Description="本项目基于 GNU General Public License v3.0 获得许可">
+                        <fa:FASettingsExpanderItem.Footer>
+                            <WrapPanel Classes="animated-resize">
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://github.com/lrsgzs/SuperAutoIsland"
+                                                 ToolTip.Tip="GitHub: lrsgzs/SuperAutoIsland">
+                                    <TextBlock Text="项目主页" />
+                                </HyperlinkButton>
+
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://qm.qq.com/q/PeyliibxE4"
+                                                 ToolTip.Tip="群号：1074244092">
+                                    <TextBlock Text="加入插件交流 QQ 群" />
+                                </HyperlinkButton>
+                            </WrapPanel>
+                        </fa:FASettingsExpanderItem.Footer>
+
+                        <TextBlock Background="Transparent">
+                            <Run Text="Copyright (c) 2025-" />
+                            <Run Text="{Binding Year, Source={x:Static system:DateTime.Now}, Mode=OneWay}" />
+                            lrs2187
+                        </TextBlock>
+                    </fa:FASettingsExpanderItem>
+
+                    <fa:FASettingsExpanderItem Content="鸣谢"
+                                               Description="这些库组成了 SAI Blockly 行动的核心"
+                                               IconSource="{ci:FluentIconSource {ci:FI HeartRegular}}">
+                        <fa:FASettingsExpanderItem.Footer>
+                            <WrapPanel Classes="animated-resize">
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://blockly.com"
+                                                 ToolTip.Tip="前端积木库">
+                                    <TextBlock Text="Blockly" />
+                                </HyperlinkButton>
+
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://github.com/sebastienros/jint"
+                                                 ToolTip.Tip="C# JavaScript 解释器">
+                                    <TextBlock Text="Jint" />
+                                </HyperlinkButton>
+                            </WrapPanel>
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+
+                    <fa:FASettingsExpanderItem IconSource="{ci:FluentIconSource Glyph={ci:FI FoodEggRegular}}"
+                                               Content="启用彩蛋"
+                                               Description="指定是否启用 SAI 私藏彩蛋。修改后需要重启以完全生效"
+                                               PointerPressed="EasterEggsItem_OnClick">
+                        <fa:FASettingsExpanderItem.Footer>
+                            <ToggleSwitch IsChecked="{Binding Settings.EnableEasterEggs}" />
+                        </fa:FASettingsExpanderItem.Footer>
+                    </fa:FASettingsExpanderItem>
+                </fa:FASettingsExpander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </ci:SettingsPageBase>

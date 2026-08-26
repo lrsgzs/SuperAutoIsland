@@ -19,22 +19,27 @@ namespace SuperAutoIsland.Views.SettingPages;
 /// <summary>
 /// 项目类型节点
 /// </summary>
-public struct ProjectTypeNode
+public class ProjectTypeNode
 {
     /// <summary>
     /// 类型
     /// </summary>
-    public ProjectsType Type { get; set; }
-    
+    public ProjectsType Type { get; set; } = ProjectsType.BlocklyAction;
+
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     
     /// <summary>
     /// 图标
     /// </summary>
-    public string IconGlyph { get; set; }
+    public string IconGlyph { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// 工具提示
+    /// </summary>
+    public string ToolTip { get; set; } = string.Empty;
 }
 
 /// <summary>
@@ -52,24 +57,27 @@ public partial class AutomationSettingsPage : SettingsPageBase
     private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
     private readonly CiRunner _ciRunner = IAppHost.GetService<CiRunner>();
 
-    public static readonly ProjectTypeNode[] ProjectTypeNodes = [
+    public ProjectTypeNode[] ProjectTypeNodes { get; } = [
         new()
         {
             Type = ProjectsType.BlocklyAction,
             Name = "Blockly 行动",
-            IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular
+            IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular,
+            ToolTip = "更自由的自动化行动",
         },
         new()
         {
             Type = ProjectsType.CiRuleset,
             Name = "可复用的规则集",
-            IconGlyph = FluentIcons.TagMultipleRegular
+            IconGlyph = FluentIcons.TagMultipleRegular,
+            ToolTip = "快速复用同套规则集",
         },
         new()
         {
             Type = ProjectsType.CiActionSet,
             Name = "可复用的行动组",
-            IconGlyph = FluentIcons.AirplaneTakeOffRegular
+            IconGlyph = FluentIcons.AirplaneTakeOffRegular,
+            ToolTip = "快速复用同套行动组",
         }
     ];
 
@@ -86,6 +94,11 @@ public partial class AutomationSettingsPage : SettingsPageBase
     
     public AutomationSettingsPage()
     {
+        if (GlobalConstants.Configs.MainConfig!.Data.EnableEasterEggs)
+        {
+            ProjectTypeNodes[0].ToolTip = "析构万理的 Blockly 先生";
+        }
+        
         DataContext = this;
         InitializeComponent();
     }

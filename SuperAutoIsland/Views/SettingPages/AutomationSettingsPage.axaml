@@ -45,12 +45,13 @@
                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
                         
                         <Button.Flyout>
-                            <fa:FAMenuFlyout ItemsSource="{x:Static local:AutomationSettingsPage.ProjectTypeNodes}">
+                            <fa:FAMenuFlyout ItemsSource="{Binding ProjectTypeNodes}">
                                 <fa:FAMenuFlyout.ItemTemplate>
                                     <DataTemplate DataType="{x:Type local:ProjectTypeNode}">
                                         <fa:FAMenuFlyoutItem Text="{Binding Name}"
                                                              Command="{Binding #Page.CreateProjectCommand}"
-                                                             CommandParameter="{Binding Type} ">
+                                                             CommandParameter="{Binding Type}"
+                                                             ToolTip.Tip="{Binding ToolTip}">
                                             <fa:FAMenuFlyoutItem.IconSource>
                                                 <ci:FluentIconSource Glyph="{Binding IconGlyph}" />
                                             </fa:FAMenuFlyoutItem.IconSource>
