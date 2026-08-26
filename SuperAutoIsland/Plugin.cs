@@ -112,7 +112,7 @@ public class Plugin : PluginBase
         // services.AddSettingsPage<AboutSettingsPage>();
 
         // 应用启动完毕
-        AppBase.Current.AppStarted += async (_, _) =>
+        AppBase.Current.AppStarted += (_, _) =>
         {
             _logger.BaseLog("TRACE", "创建 SaiServer 实例...");
             IAppHost.GetService<ISaiServer>();
@@ -141,14 +141,6 @@ public class Plugin : PluginBase
 
             var server = IAppHost.GetService<ISaiServer>();
             server.Shutdown();
-            _logger.Info("已尝试关闭，3 秒后将会强行关闭 SuperAutoIsland.Server...");
-
-            new Thread(() =>
-            {
-                Thread.Sleep(3000);
-                _logger.Info("正在关闭...");
-                Environment.Exit(0);
-            }).Start();
         };
     }
 }
