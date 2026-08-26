@@ -7,7 +7,7 @@ name: SuperAutoIsland
 description: 自动化进化
 entranceAssembly: "SuperAutoIsland.dll"
 url: https://github.com/lrsgzs/SuperAutoIsland
-version: 0.3.9.0
+version: 0.3.9.1
 apiVersion: 2.2.0.0
 author: lrsgzs
 readme: README.md
