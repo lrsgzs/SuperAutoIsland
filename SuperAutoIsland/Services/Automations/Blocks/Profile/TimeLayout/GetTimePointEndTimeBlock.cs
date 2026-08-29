@@ -8,7 +8,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 
 /// <summary>
-/// 获取时间表第 N 个时间点的结束时间，格式 HH:mm:ss。
+/// 获取时间点（「时间表 GUID[序号]」）的结束时间，格式 HH:mm:ss。
 /// </summary>
 public class GetTimePointEndTimeBlock : DataBlockBase
 {
@@ -19,9 +19,8 @@ public class GetTimePointEndTimeBlock : DataBlockBase
     public override bool InlineField => true;
 
     public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayout", ProfileFields.TimeLayout(""))
-        .AddField("Index", BasicFields.Number("中第", 1))
-        .AddDummy("个时间点的结束时间");
+        .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
+        .AddDummy("的结束时间");
 
     public override Task<object> Handler(object? data)
     {

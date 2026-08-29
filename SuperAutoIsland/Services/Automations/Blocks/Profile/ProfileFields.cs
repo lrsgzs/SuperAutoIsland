@@ -24,6 +24,12 @@ public static class ProfileFields
         Create(name, "SAI_Profile_ClassPlanGroup", "sai_profile_data_classPlanGroupByGuid");
 
     /// <summary>
+    /// 时间表时间点输入。后台值为「时间表 GUID[序号]」格式的字符串。
+    /// </summary>
+    public static InputField TimeLayoutItem(string name) =>
+        Create(name, "SAI_Profile_TimeLayoutItem", "sai_profile_data_timeLayoutItem");
+
+    /// <summary>
     /// 时间点类型下拉框。后台值为数字：0-上课，1-课间，2-分割线，3-行动。
     /// </summary>
     public static Field TimePointType(string name) =>

@@ -43,11 +43,54 @@ public static class ProfileBlockHelpers
         return IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(id);
     }
 
-    public static ProfileTimeLayoutItem? TimePoint(JsonElement settings, string name = "TimeLayout")
+    /// <summary>
+    /// 从设置中读取「时间表 GUID[序号]」格式的时间点标识。
+    /// </summary>
+    public static (Guid Guid, int Index) TimeLayoutItem(JsonElement settings, string name = "TimeLayoutItem") =>
+        ParseTimeLayoutItem(settings.GetProperty(name).GetString());
+
+    /// <summary>
+    /// 解析「时间表 GUID[序号]」格式的时间点标识。解析失败时返回 (Guid.Empty, 0)。
+    /// </summary>
+    public static (Guid Guid, int Index) ParseTimeLayoutItem(string? raw)
+    {
+        if (string.IsNullOrEmpty(raw))
+            return (System.Guid.Empty, 0);
+        var open = raw.LastIndexOf('[');
+        if (open < 0 || !raw.EndsWith(']'))
+            return (System.Guid.Empty, 0);
+        var guidPart = raw[..open];
+        var indexPart = raw[(open + 1)..^1];
+        return (System.Guid.TryParse(guidPart, out var guid) ? guid : System.Guid.Empty,
+            int.TryParse(indexPart, out var index) ? index : 0);
+    }
+
+    /// <summary>
+    /// 获取「时间表 GUID[序号]」所指向的时间点。序号越界或标识无效时返回 null。
+    /// </summary>
+    public static ProfileTimeLayoutItem? TimePoint(JsonElement settings, string name = "TimeLayoutItem")
+    {
+        var (guid, index) = TimeLayoutItem(settings, name);
+        if (index < 1)
+            return null;
+        var layout = IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(guid);
+        return layout?.Layouts.ElementAtOrDefault(index - 1);
+    }
+
+    /// <summary>
+    /// 获取时间表中第 N 节课（类型为「上课」的时间点）在时间表中的实际位置（从 1 开始计数）。
+    /// 不存在时返回 0。
+    /// </summary>
+    public static int ClassPeriodPosition(JsonElement settings, string name = "TimeLayout")
     {
         var layout = TimeLayout(settings, name);
+        if (layout is null)
+            return 0;
         var index = Number(settings, "Index") - 1;
-        return layout?.Layouts.ElementAtOrDefault(index);
+        if (index < 0)
+            return 0;
+        var classItems = layout.Layouts.Where(x => x.TimeType == 0).ToList();
+        return index < classItems.Count ? layout.Layouts.IndexOf(classItems[index]) + 1 : 0;
     }
 
     public static string GuidOutput(Guid id) => id.ToString();
