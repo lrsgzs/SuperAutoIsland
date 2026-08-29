@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets/icon.png" />
+        <AvaloniaResource Include="Assets/sandrone.png" />
     </ItemGroup>
     
     <ItemGroup>
