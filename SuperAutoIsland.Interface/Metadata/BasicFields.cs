@@ -94,6 +94,14 @@ public static class BasicFields
             setter?.Invoke(x);
         });
     
+    public static Field TimePicker(string name, TimeSpan defaultValue = default, FieldSetter? setter = null) =>
+        CreateField(name, x =>
+        {
+            x.Type = "field_time";
+            x.Options["time"] = defaultValue;
+            setter?.Invoke(x);
+        });
+    
     /// <summary>
     /// options 的 ValueTuple 第一项为显示内容，第二项为后台内容
     /// </summary>
