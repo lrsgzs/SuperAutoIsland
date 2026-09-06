@@ -82,7 +82,8 @@ public static class SaiRegistry
                     ["CountdownTime"] = BasicFields.Number("倒计时时长(s)", 5),
                 }
             })
-            .AddBlock<TextDialogBlock>());
+            .AddBlock<TextDialogBlock>()
+            .AddBlock<SelectingDialogBlock>());
 
         SaiServer.RegisterDynamicDropdown("sai.actions.runBlockly.options", async () =>
             EnsureListHasItemOrDefaultListItem(
