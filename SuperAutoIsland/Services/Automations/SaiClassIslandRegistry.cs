@@ -120,11 +120,27 @@ public static class SaiClassIslandRegistry
                 Kind = BlockKind.Rule,
                 Name = "当前天气是",
                 Icon = ("多云", "\uE4DC"),
+                Tooltip = "勾选包含相似天气后，选择如“雨”、“雪”等大类天气时，将自动匹配其包含的所有具体天气（如“小雨”、“中雪”等）。",
                 InlineBlock = true,
                 InlineField = true,
                 Fields = new Dictionary<string, Field>
                 {
-                    ["WeatherId"] = BasicFields.Dropdown("", WeatherOptions, true)
+                    ["WeatherId"] = BasicFields.Dropdown("", WeatherOptions, true),
+                    ["IsFuzzyMatch"] = BasicFields.CheckBox("包含相似天气")
+                }
+            })
+            .AddBlock(new BlockMetadata("classisland.weather.tomorrowWeather")
+            {
+                Kind = BlockKind.Rule,
+                Name = "明天天气是",
+                Icon = ("多云", "\uE4DC"),
+                Tooltip = "勾选包含相似天气后，选择如“雨”、“雪”等大类天气时，将自动匹配其包含的所有具体天气（如“小雨”、“中雪”等）。",
+                InlineBlock = true,
+                InlineField = true,
+                Fields = new Dictionary<string, Field>
+                {
+                    ["WeatherId"] = BasicFields.Dropdown("", WeatherOptions, true),
+                    ["IsFuzzyMatch"] = BasicFields.CheckBox("包含相似天气")
                 }
             })
             .AddBlock(new BlockMetadata("classisland.weather.hasWeatherAlert")
@@ -147,8 +163,23 @@ public static class SaiClassIslandRegistry
                 Fields = new Dictionary<string, Field>
                 {
                     ["label1"] = BasicFields.Dummy("\n"),
-                    ["IsRemainingTime"] = BasicFields.CheckBox("是否为距离结束:"),
+                    ["IsRemainingTime"] = BasicFields.CheckBox("是否为距离结束?"),
                     ["RainTimeMinutes"] = BasicFields.Number("距离开始/结束剩余时间（分钟）")
+                }
+            })
+            .AddBlock(new BlockMetadata("classisland.weather.sunRiseSet")
+            {
+                Kind = BlockKind.Rule,
+                Name = "是否日出/日落",
+                Icon = ("日出", "\uE150"),
+                InlineBlock = true,
+                InlineField = true,
+                Tooltip = "判断当前是否处于所选时段：「已经日出（白天）」表示现在处于日出之后、日落之前；「已经日落（夜晚）」表示现在处于日落之后或日出之前。",
+                Fields = new Dictionary<string, Field>
+                {
+                    ["IsSunset"] = BasicFields.Dropdown("", [
+                        ("已经日出（白天）", "false"), ("已经日落（夜晚）", "true")
+                    ], true)
                 }
             })
             .AddLabel("行动")
@@ -162,6 +193,8 @@ public static class SaiClassIslandRegistry
                     ["SignalName"] = BasicFields.Text("")
                 }
             })
+            .AddBlock<ClassIslandSleepBlock>()
+            .AddLabel("行动 - 应用设置")
             .AddBlock(new BlockMetadata("classisland.settings.currentComponentConfig")
             {
                 Kind = BlockKind.Action,
@@ -233,6 +266,7 @@ public static class SaiClassIslandRegistry
                     ["Value"] = BasicFields.Number("修改为")
                 }
             })
+            .AddLabel("行动 - 运行")
             .AddBlock(new BlockMetadata("classisland.os.run")
             {
                 Kind = BlockKind.Action,
@@ -247,7 +281,8 @@ public static class SaiClassIslandRegistry
                 }
             })
             .AddBlock<ClassIslandRunProgramBlock>()
-            .AddBlock<ClassIslandSleepBlock>()
+            .AddLabel("行动 - 提醒")
+            .AddBlock<ClassIslandShowNotificationMiniBlock>()
             .AddBlock(new BlockMetadata("classisland.showNotification")
             {
                 Kind = BlockKind.Action,
@@ -282,6 +317,7 @@ public static class SaiClassIslandRegistry
                         BasicFields.Dropdown("", [("三天天气预报", "0"), ("气象预警", "1"), ("逐小时天气预报", "2")], true)
                 }
             })
+            .AddLabel("行动 - ClassIsland")
             .AddBlock(new BlockMetadata("classisland.app.quit")
             {
                 Kind = BlockKind.Action,
