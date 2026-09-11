@@ -28,7 +28,7 @@ public class SaiServerBridger : ISaiServer
     /// <inheritdoc />
     public void RegisterBlocks(string categoryName, RegisterHandler handler)
     {
-        var register = new BlocksRegister();
+        var register = new BlocksRegister(categoryName);
         handler(register);
         SaiBlocksRegistry.Categories[categoryName] = register.Items;
         foreach (var (id, block) in register.Blocks)
