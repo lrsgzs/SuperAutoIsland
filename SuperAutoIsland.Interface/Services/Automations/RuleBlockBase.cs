@@ -16,7 +16,7 @@ public abstract class RuleBlockBase : BlockBase
     }
     
     /// <summary>
-    /// 不一定会在 ui 线程运行
+    /// 会在 ui 线程运行，无需 Dispatcher
     /// </summary>
     /// <param name="rule">规则项</param>
     public virtual bool Handler(Rule rule)

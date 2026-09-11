@@ -49,7 +49,7 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
         _logger.Debug($"行动 {id} 运行完毕");
     }
 
-    public bool RunRule(string id, JsonElement settings)
+    public async Task<bool> RunRule(string id, JsonElement settings)
     {
         _logger.Debug($"运行规则 {id}");
 
@@ -68,14 +68,14 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
         
         _logger.BaseLog("TRACE", $"Id: {rule.Id} Settings: {JsonSerializer.Serialize(rule.Settings)}");
 
-        bool result;
-        if (block != null)
+        var result = await Dispatcher.UIThread.InvokeAsync(() =>
         {
-            result = block.Handler(rule);
-        }
-        else
-        {
-            result = rulesetService.IsRulesetSatisfied(new Ruleset
+            if (block != null)
+            {
+                return block.Handler(rule);
+            }
+            
+            return rulesetService.IsRulesetSatisfied(new Ruleset
             {
                 Mode = RulesetLogicalMode.And,
                 IsReversed = false,
@@ -87,7 +87,7 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
                     }
                 ]
             });
-        }
+        });
         
         _logger.Debug($"规则 {id} 运行完毕，结果：{result}");
         return result;
@@ -97,14 +97,16 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
     {
         _logger.Debug($"运行数据 {id}");
 
-        var block = SaiBlocksRegistry.Blocks.GetValueOrDefault(id) as DataBlockBase;
-
-        if (block == null)
+        if (SaiBlocksRegistry.Blocks.GetValueOrDefault(id) is not DataBlockBase block)
         {
             return "???";
         }
 
         var data = settings.Deserialize(block.SettingsType);
-        return await block.Handler(data);
+        var result = await Dispatcher.UIThread.InvokeAsync(async () =>
+            await block.Handler(data));
+        
+        _logger.Debug($"数据 {id} 运行完毕，结果：{result}");
+        return result;
     }
 }

@@ -163,7 +163,8 @@ public class SaiServer
                             // 运行行动
                             case "runAction":
                                 var actionId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                await _runner.RunAction(actionId, messageJson.RootElement.GetProperty("settings"));
+                                var actionSettings = messageJson.RootElement.GetProperty("settings");
+                                await _runner.RunAction(actionId, actionSettings);
                                 jsonReturnData = new
                                 {
                                     type = "result"
@@ -172,21 +173,21 @@ public class SaiServer
                             // 运行规则
                             case "runRule":
                                 var ruleId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                var resultBoolean = _runner.RunRule(ruleId, messageJson.RootElement.GetProperty("settings"));
+                                var ruleSettings = messageJson.RootElement.GetProperty("settings");
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    result = resultBoolean
+                                    result = await _runner.RunRule(ruleId, ruleSettings)
                                 };
                                 break;
                             // 运行数据
                             case "runData":
                                 var dataId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
-                                var dataParams = messageJson.RootElement.GetProperty("settings");
+                                var dataSettings = messageJson.RootElement.GetProperty("settings");
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    data = await _runner.RunData(dataId, dataParams)
+                                    data = await _runner.RunData(dataId, dataSettings)
                                 };
                                 break;
                             // 保存项目

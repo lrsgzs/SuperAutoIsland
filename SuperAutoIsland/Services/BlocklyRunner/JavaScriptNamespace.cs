@@ -31,15 +31,15 @@ public class JavaScriptNamespace
     /// <summary>
     /// 内部的 GetRuleState 实现
     /// </summary>
-    private Task<bool> _getRuleState(string id, object data)
+    private async Task<bool> _getRuleState(string id, object data)
     {
         var dataJson = JsonSerializer.Serialize(data);
         var jsonDocument = JsonDocument.Parse(dataJson);
         _logger.BaseLog("TRACE", $"Getting Rule State: {id} {dataJson}");
 
         var runnerService = IAppHost.GetService<SaiBlockRunner>();
-        var result = runnerService.RunRule(id, jsonDocument.RootElement);
-        return Task.FromResult(result);
+        var result = await runnerService.RunRule(id, jsonDocument.RootElement);
+        return result;
     }
     
     /// <summary>
