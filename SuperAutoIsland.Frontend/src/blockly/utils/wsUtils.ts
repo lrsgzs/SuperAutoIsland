@@ -13,6 +13,7 @@ export function wsWaitMessage<T>(ws: WebSocket, sendMessage: any) {
 
     const resolver = (event: MessageEvent) => {
         const message: { type: string } & T = JSON.parse(event.data as string);
+        console.debug("Receiving message", message);
         if (message.type === 'result') {
             promiseResolve(message);
         } else {

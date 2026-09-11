@@ -31,7 +31,6 @@ import * as prettierBabelPlugin from 'prettier/plugins/babel';
 import { addV2Block, BlockMetadata } from './utils/v2Generator';
 
 const ws = new WebSocket('/');
-ws.addEventListener('message', ev => console.log(ev));
 await new Promise(resolve => {
     setTimeout(resolve, 500);
 });

@@ -3,7 +3,6 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface.Metadata;
@@ -218,7 +217,7 @@ public class SaiServer
                                     default:
                                         jsonReturnData = new
                                         {
-                                            type = "not-recognized-project-type"
+                                            type = "bad-project-type"
                                         };
                                         break;
                                 }
@@ -281,7 +280,7 @@ public class SaiServer
                             default:
                                 jsonReturnData = new
                                 {
-                                    type = "not-recognized-command-type"
+                                    type = "bad-command-type"
                                 };
                                 break;
                         }

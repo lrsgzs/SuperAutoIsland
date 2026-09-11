@@ -45,7 +45,7 @@ export function postSetupCategory() {
     toolbox.contents.push(settingUpCategory.category!);
     Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray(settingUpCategory.blocks!));
     Object.assign(javascriptGenerator.forBlock, settingUpCategory.forBlocks);
-    console.log(`${settingUpCategory.category!.name} 初始化完成！settingUpCategory:`, { ...settingUpCategory });
+    console.log(`${settingUpCategory.category!.name} 初始化完成！当前分类:`, { ...settingUpCategory });
     delete settingUpCategory.category;
     delete settingUpCategory.blocks;
     delete settingUpCategory.forBlocks;
