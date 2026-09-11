@@ -13,6 +13,7 @@ public class TimeLayoutByNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.timeLayoutByName";
     public override string Name => "时间表";
     public override (string, string) Icon => ("表格", FluentIcons.TableRegular);
+    public override string Tooltip => "按时间表名称获取时间表";
 
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_TimeLayout";

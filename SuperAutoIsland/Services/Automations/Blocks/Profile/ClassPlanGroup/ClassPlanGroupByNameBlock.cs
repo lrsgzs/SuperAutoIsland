@@ -13,6 +13,7 @@ public class ClassPlanGroupByNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.classPlanGroupByName";
     public override string Name => "课表群";
     public override (string, string) Icon => ("群", FluentIcons.GroupRegular);
+    public override string Tooltip => "按课表群名称获取课表群";
 
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_ClassPlanGroup";

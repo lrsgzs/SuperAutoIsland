@@ -13,6 +13,7 @@ public class ClassPlanByNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.classPlanByName";
     public override string Name => "课表";
     public override (string, string) Icon => ("文档", FluentIcons.DocumentDataRegular);
+    public override string Tooltip => "按课表名称获取课表";
 
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_ClassPlan";

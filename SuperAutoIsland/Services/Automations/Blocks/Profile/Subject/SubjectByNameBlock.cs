@@ -13,6 +13,7 @@ public class SubjectByNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.subjectByName";
     public override string Name => "科目";
     public override (string, string) Icon => ("书", FluentIcons.BookRegular);
+    public override string Tooltip => "按科目名称获取科目";
 
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_Subject";

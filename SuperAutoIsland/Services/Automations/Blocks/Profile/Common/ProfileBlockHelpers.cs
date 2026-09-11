@@ -18,6 +18,18 @@ public static class ProfileBlockHelpers
     public static int Number(JsonElement settings, string name) =>
         (int)settings.GetProperty(name).GetDouble();
 
+    public static bool Bool(JsonElement settings, string name)
+    {
+        var value = settings.GetProperty(name);
+        return value.ValueKind switch
+        {
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.String => value.GetString() == "TRUE",
+            _ => false
+        };
+    }
+
     public static JsonElement Settings(object? value) => JsonSerializer.SerializeToElement(value);
 
     public static ProfileClassPlan? GetClassPlan(JsonElement settings, string name = "ClassPlan") => ClassPlan(settings, name);
