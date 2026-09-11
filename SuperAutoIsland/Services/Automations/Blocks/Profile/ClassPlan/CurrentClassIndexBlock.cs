@@ -17,7 +17,6 @@ public class CurrentClassIndexBlock : DataBlockBase
         var classIndex = plan?.TimeLayout?.Layouts
             .Take(layoutIndex + 1)
             .Count(x => x.TimeType == 0) ?? 0;
-        var currentItem = plan?.TimeLayout?.Layouts.ElementAtOrDefault(layoutIndex);
-        return Task.FromResult<object>(currentItem?.TimeType == 0 ? classIndex : 0);
+        return Task.FromResult<object>(classIndex);
     }
 }
