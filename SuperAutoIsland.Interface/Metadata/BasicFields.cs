@@ -78,6 +78,15 @@ public static class BasicFields
             setter?.Invoke(x);
         });
     
+    public static InputField Color(string name, string defaultValue = "#FF0000", InputFieldSetter? setter = null) =>
+        CreateInputField(name, x =>
+        {
+            x.Check = "SAI_Color";
+            x.ShadowBlockType = "colour_slider";
+            x.Options["COLOUR"] = defaultValue;
+            setter?.Invoke(x);
+        });
+    
     public static Field CheckBox(string name, bool defaultValue = false, FieldSetter? setter = null) =>
         CreateField(name, x =>
         {

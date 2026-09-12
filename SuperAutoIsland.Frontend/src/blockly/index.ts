@@ -15,9 +15,12 @@ import { textMultiline } from '@blockly/field-multilineinput';
 import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
 import '@blockly/field-date';
+import { registerFieldColour } from '@blockly/field-colour';
+import '@blockly/field-colour-hsv-sliders';
 import './fields/FieldTime';
 import { FieldIcon } from './fields/FieldIcon';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
+registerFieldColour();
 
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
 import { addLabel } from './utils/blockGenerator';
@@ -126,6 +129,11 @@ postSetupCategory();
 preSetupCategory('字典', 'dict_category');
 // @ts-ignore
 await import('./blocks/dict');
+postSetupCategory();
+
+preSetupCategory('杂项');
+// @ts-ignore
+await import('./blocks/colour');
 postSetupCategory();
 
 preSetupCategory('调试', 'debug_category');

@@ -169,6 +169,13 @@ interface _TimeArgDef extends _UnkArgDef {
     };
 }
 
+interface _ColourArgDef extends _UnkArgDef {
+    type: 'field_colour' | 'field_colour_hsv_sliders';
+    data: {
+        colour: string;
+    };
+}
+
 /**
  * 参数定义类型
  */
@@ -188,7 +195,8 @@ export type ArgDefinition =
     | _VariableArgDef
     | _IconArgDef
     | _DateArgDef
-    | _TimeArgDef;
+    | _TimeArgDef
+    | _ColourArgDef;
 
 /**
  * 积木定义接口
