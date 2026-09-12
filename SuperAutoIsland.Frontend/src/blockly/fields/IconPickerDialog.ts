@@ -6,6 +6,7 @@ import {
     type IconExpressionType,
 } from '../utils/iconExpression';
 import { searchIcons, type IconCatalogEntry, type IconCatalogType } from '../utils/iconCatalog';
+import { pickLocalFiles } from '../utils/filePicker';
 
 const FALLBACK_FLUENT_GLYPH = '\ue9b0';
 const FALLBACK_LUCIDE_GLYPH = '\ue0ff';
@@ -114,7 +115,12 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         imageInput.type = 'text';
         imageInput.placeholder = '图片路径或 URI';
         imageInput.autocomplete = 'off';
-        imageRow.appendChild(imageInput);
+        const browseButton = document.createElement('button');
+        browseButton.type = 'button';
+        browseButton.className = 'sai-ip-browse';
+        browseButton.textContent = '\ue88d';
+        browseButton.title = '浏览图片…';
+        imageRow.append(imageInput, browseButton);
         panel.appendChild(imageRow);
 
         const footer = document.createElement('div');
@@ -144,25 +150,11 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
 
         const updatePreview = () => {
             preview.textContent = '';
-            preview.style.fontFamily = '';
-            preview.style.fontSize = '';
             if (state.type === 'img') {
-                if (state.imagePath) {
-                    const img = document.createElement('img');
-                    img.src = state.imagePath;
-                    img.alt = '';
-                    img.addEventListener('error', () => {
-                        img.remove();
-                        preview.style.fontFamily = FLUENT_FONT_FAMILY;
-                        preview.style.fontSize = '32px';
-                        preview.textContent = '\ue9b2';
-                    });
-                    preview.appendChild(img);
-                } else {
-                    preview.style.fontFamily = FLUENT_FONT_FAMILY;
-                    preview.style.fontSize = '32px';
-                    preview.textContent = '\ue9b2';
-                }
+                // 不预览本地图片，避免浏览器通过 http 服务请求本地路径。
+                preview.style.fontFamily = FLUENT_FONT_FAMILY;
+                preview.style.fontSize = '32px';
+                preview.textContent = '\ue9b2';
                 return;
             }
             preview.style.fontFamily = state.type === 'lucide' ? LUCIDE_FONT_FAMILY : FLUENT_FONT_FAMILY;
@@ -325,6 +317,27 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
             state.imagePath = imageInput.value.trim();
             updatePreview();
             emit();
+        });
+        browseButton.addEventListener('click', async () => {
+            if (browseButton.disabled) return;
+            browseButton.disabled = true;
+            message.textContent = '';
+            try {
+                const result = await pickLocalFiles({ kind: 'image', title: '选择图片' });
+                if (result.paths.length > 0) {
+                    state.imagePath = result.paths[0];
+                    imageInput.value = state.imagePath;
+                    updatePreview();
+                    emit();
+                }
+                if (result.message) {
+                    message.textContent = result.message;
+                }
+            } catch {
+                message.textContent = '无法打开文件选择器，请直接输入图片路径。';
+            } finally {
+                browseButton.disabled = false;
+            }
         });
         grid.addEventListener('scroll', () => {
             if (renderedCount < currentResults.length && grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 40) {

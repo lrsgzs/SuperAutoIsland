@@ -3,6 +3,10 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using ClassIsland.Core;
+using ClassIsland.Platforms.Abstraction;
 using ClassIsland.Shared;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface.Metadata;
@@ -277,6 +281,19 @@ public class SaiServer
                                     options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList(),
                                 };
                                 break;
+                            // 选取本地文件
+                            case "pickFile":
+                                var pickKind = messageJson.RootElement.TryGetProperty("kind", out var kindElement)
+                                    ? kindElement.GetString()
+                                    : null;
+                                var allowMultiple = messageJson.RootElement.TryGetProperty(
+                                    "allowMultiple", out var multipleElement) &&
+                                    multipleElement.ValueKind == JsonValueKind.True;
+                                var pickTitle = messageJson.RootElement.TryGetProperty("title", out var titleElement)
+                                    ? titleElement.GetString()
+                                    : null;
+                                jsonReturnData = await PickFilesAsync(pickKind, allowMultiple, pickTitle);
+                                break;
                             // 默认行为
                             default:
                                 jsonReturnData = new
@@ -311,6 +328,72 @@ public class SaiServer
             _logger.FormatException(e);
         }
     }
+
+    /// <summary>
+    /// 打开本地文件选择器并返回可用的本地路径。
+    /// </summary>
+    /// <param name="kind">文件类型，如 image、json、text</param>
+    /// <param name="allowMultiple">是否允许选择多个文件</param>
+    /// <param name="title">选择器标题</param>
+    private async Task<object> PickFilesAsync(string? kind, bool allowMultiple, string? title)
+    {
+        return await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            try
+            {
+                var root = AppBase.Current.GetRootWindow();
+                var files = await PlatformServices.FilePickerService.OpenFilesPickerAsync(
+                    new FilePickerOpenOptions
+                    {
+                        Title = title ?? "选择文件",
+                        AllowMultiple = allowMultiple,
+                        FileTypeFilter = GetFileTypeFilter(kind),
+                    }, root);
+
+                var paths = new List<string>();
+                var invalid = 0;
+                foreach (var path in files)
+                {
+                    if (PlatformServices.FilePickerService.IsBookmark(path) ||
+                        !Path.IsPathFullyQualified(path))
+                    {
+                        invalid++;
+                        continue;
+                    }
+
+                    paths.Add(path);
+                }
+
+                return (object)new
+                {
+                    type = "result",
+                    paths,
+                    message = invalid > 0 ? "无法直接引用所选文件。请先将它保存到本地，再输入文件路径。" : "",
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.FormatException(e);
+                return (object)new
+                {
+                    type = "result",
+                    paths = Array.Empty<string>(),
+                    message = "打开文件选择器失败，请直接输入文件路径。",
+                };
+            }
+        });
+    }
+
+    /// <summary>
+    /// 获取文件类型过滤器
+    /// </summary>
+    private static FilePickerFileType[]? GetFileTypeFilter(string? kind) => kind?.ToLowerInvariant() switch
+    {
+        "image" => [FilePickerFileTypes.ImageAll],
+        "json" => [FilePickerFileTypes.Json],
+        "text" => [FilePickerFileTypes.TextPlain],
+        _ => null,
+    };
 
     /// <summary>
     /// 处理静态文件请求

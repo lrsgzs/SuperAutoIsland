@@ -62,12 +62,6 @@ body,
     line-height: 1;
 }
 
-.sai-ip-preview img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-}
-
 .sai-ip-tabs {
     display: grid;
     grid-auto-flow: column;
@@ -169,6 +163,12 @@ body,
     pointer-events: none;
 }
 
+.sai-ip-image {
+    display: grid;
+    grid-template-columns: 1fr 32px;
+    gap: 8px;
+}
+
 .sai-ip-image input {
     box-sizing: border-box;
     width: 100%;
@@ -177,6 +177,32 @@ body,
     background: #fafafa;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 6px;
+}
+
+.sai-ip-browse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-family: 'Fluent System Icons';
+    font-size: 20px;
+    line-height: 1;
+    color: #1a1a1a;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sai-ip-browse:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.sai-ip-browse:disabled {
+    cursor: default;
+    opacity: 0.5;
 }
 
 .sai-ip-footer {
