@@ -1,3 +1,5 @@
+using ClassIsland.Core.Icons;
+
 namespace SuperAutoIsland.Interface.Metadata;
 
 public delegate void FieldSetter(Field field);
@@ -84,6 +86,15 @@ public static class BasicFields
             x.Check = "SAI_Color";
             x.ShadowBlockType = "colour_slider";
             x.Options["COLOUR"] = defaultValue;
+            setter?.Invoke(x);
+        });
+
+    public static InputField Icon(string name, string? defaultValue = null, InputFieldSetter? setter = null) =>
+        CreateInputField(name, x =>
+        {
+            x.Check = "SAI_Icon";
+            x.ShadowBlockType = "icon";
+            x.Options["ICON"] = defaultValue ?? $"lucide({LucideIcons.Info})";
             setter?.Invoke(x);
         });
     

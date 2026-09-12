@@ -155,6 +155,14 @@ interface _IconArgDef extends _UnkArgDef {
     };
 }
 
+interface _IconPickerArgDef extends _UnkArgDef {
+    type: 'field_icon_picker';
+    data: {
+        iconType: 'fluent' | 'lucide' | 'img';
+        value?: string;
+    };
+}
+
 interface _DateArgDef extends _UnkArgDef {
     type: 'field_date';
     data: {
@@ -194,6 +202,7 @@ export type ArgDefinition =
     | _InputArgDef
     | _VariableArgDef
     | _IconArgDef
+    | _IconPickerArgDef
     | _DateArgDef
     | _TimeArgDef
     | _ColourArgDef;

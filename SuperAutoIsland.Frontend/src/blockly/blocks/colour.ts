@@ -1,7 +1,5 @@
-import { addBlock, addLabel } from '../utils/blockGenerator';
+import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
-
-addLabel('颜色');
 
 addBlock(
     {

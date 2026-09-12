@@ -19,7 +19,9 @@ import { registerFieldColour } from '@blockly/field-colour';
 import '@blockly/field-colour-hsv-sliders';
 import './fields/FieldTime';
 import { FieldIcon } from './fields/FieldIcon';
+import { FieldIconPicker } from './fields/FieldIconPicker';
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
+Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
 registerFieldColour();
 
 import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
@@ -134,6 +136,8 @@ postSetupCategory();
 preSetupCategory('杂项');
 // @ts-ignore
 await import('./blocks/colour');
+// @ts-ignore
+await import('./blocks/icon');
 postSetupCategory();
 
 preSetupCategory('调试', 'debug_category');
