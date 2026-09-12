@@ -28,7 +28,7 @@ import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
 import './types/extraData.d.ts';
 
-import * as prettier from 'prettier';
+import * as prettier from 'prettier/standalone';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
 import { addV2Block, BlockMetadata } from './utils/v2Generator';

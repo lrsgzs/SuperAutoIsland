@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.SDK/1.0.6578810">
+  <PropertyGroup>
+    <!-- 统一使用正斜杠，避免在 Linux/macOS 上生成名为 "obj\Debug" 的目录 -->
+    <BaseIntermediateOutputPath>obj/</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj/$(Configuration)/</IntermediateOutputPath>
+    <StartupCommand>npm run dev</StartupCommand>
+    <BuildCommand>npm run build</BuildCommand>
+    <!--
+      前端产物已由 SuperAutoIsland.csproj 作为 Content 随发布复制。
+      构建阶段（BuildCommand）已完成 npm 构建，故 publish 阶段无需重复执行。
+    -->
+    <PublishCommand>echo skip frontend publish build</PublishCommand>
+  </PropertyGroup>
+</Project>

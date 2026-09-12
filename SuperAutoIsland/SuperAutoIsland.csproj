@@ -20,6 +20,7 @@
         </PackageReference>
         <PackageReference Include="Jint" Version="4.16.1" />
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
+        <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -37,11 +38,7 @@
         <None Update="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        
-        <Content Include="Assets/wwwroot/**/*.*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        
+
         <None Update="Assets\icon.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -50,4 +47,13 @@
     <ItemGroup>
       <Folder Include="Services\Automations\Blocks\Profile\" />
     </ItemGroup>
+
+    <Target Name="IncludeFrontendAssets" BeforeTargets="AssignTargetPaths" Condition="Exists('$(MSBuildProjectDirectory)/Assets/wwwroot')">
+        <ItemGroup>
+            <Content Include="Assets/wwwroot/**/*.*">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            </Content>
+        </ItemGroup>
+    </Target>
 </Project>
