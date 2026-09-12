@@ -26,22 +26,43 @@ body,
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.3);
     font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 .sai-icon-picker {
+    /* 取自 FluentAvalonia / ClassIsland 的浅色主题资源 */
+    --sai-radius: 4px;
+    --sai-radius-lg: 8px;
+    --sai-accent: #0078d4;
+    --sai-accent-hover: #006cbe;
+    --sai-accent-pressed: #005fb8;
+    --sai-text-primary: rgba(0, 0, 0, 0.89);
+    --sai-text-secondary: rgba(0, 0, 0, 0.62);
+    --sai-text-tertiary: rgba(0, 0, 0, 0.45);
+    --sai-control-fill-default: rgba(255, 255, 255, 0.7);
+    --sai-control-fill-secondary: rgba(249, 249, 249, 0.5);
+    --sai-control-fill-input-active: #ffffff;
+    --sai-control-alt-fill-secondary: rgba(0, 0, 0, 0.024);
+    --sai-control-stroke-default: rgba(0, 0, 0, 0.059);
+    --sai-control-stroke-secondary: rgba(0, 0, 0, 0.161);
+    --sai-control-strong-stroke: rgba(0, 0, 0, 0.447);
+    --sai-subtle-fill-hover: rgba(0, 0, 0, 0.035);
+    --sai-subtle-fill-pressed: rgba(0, 0, 0, 0.023);
+
     display: flex;
     flex-direction: column;
     gap: 12px;
-    width: 380px;
+    width: 350px;
     max-width: calc(100vw - 32px);
     padding: 12px;
-    color: #1a1a1a;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    color: var(--sai-text-primary);
+    background: #f9f9f9;
+    border: 1px solid var(--sai-control-stroke-default);
+    border-radius: var(--sai-radius-lg);
+    box-shadow:
+        rgba(0, 0, 0, 0.14) 0 8px 16px 0,
+        rgba(0, 0, 0, 0.12) 0 0 2px 0;
 }
 
 .sai-ip-header {
@@ -62,26 +83,99 @@ body,
     line-height: 1;
 }
 
+/* 段落式 TabStrip，样式对齐 ClassIsland / FluentAvalonia 的 TabStripStyle */
 .sai-ip-tabs {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
+    min-height: 32px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 6px;
+    background: var(--sai-control-alt-fill-secondary);
+    border: 1px solid var(--sai-control-stroke-default);
+    border-radius: var(--sai-radius);
 }
 
 .sai-ip-tab {
-    padding: 6px 0;
-    font-size: 13px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    margin-left: -1px;
+    padding: 5px 11px 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--sai-text-primary);
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
+    border-radius: var(--sai-radius);
     cursor: pointer;
 }
 
+.sai-ip-tab:first-child {
+    margin-left: 0;
+}
+
+.sai-ip-tab::before {
+    position: absolute;
+    inset: 3px;
+    content: '';
+    background: transparent;
+    border-radius: 3px;
+    transition:
+        background 83ms ease,
+        transform 83ms ease;
+}
+
+.sai-ip-tab:hover::before {
+    background: var(--sai-subtle-fill-hover);
+}
+
+.sai-ip-tab:active::before {
+    background: var(--sai-subtle-fill-pressed);
+    transform: scale(0.96);
+}
+
+.sai-ip-tab-label {
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.sai-ip-pill {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    height: 3px;
+    margin-left: -2px;
+    pointer-events: none;
+    background: var(--sai-accent);
+    border-radius: 1px;
+    opacity: 0;
+    transform: scaleX(4);
+    transition:
+        opacity 167ms ease,
+        transform 167ms ease;
+}
+
 .sai-ip-tab.active {
-    font-weight: 600;
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--sai-control-fill-default);
+    border-color: var(--sai-control-stroke-secondary);
+}
+
+.sai-ip-tab.active::before {
+    background: transparent;
+}
+
+.sai-ip-tab.active .sai-ip-pill {
+    opacity: 1;
+}
+
+.sai-ip-tab.active:active .sai-ip-pill {
+    transform: scaleX(1);
 }
 
 .sai-ip-search {
@@ -92,21 +186,52 @@ body,
     position: absolute;
     top: 50%;
     left: 10px;
+    z-index: 1;
     font-family: 'Fluent System Icons';
     font-size: 16px;
+    color: var(--sai-text-secondary);
     pointer-events: none;
-    opacity: 0.5;
     transform: translateY(-50%);
 }
 
-.sai-ip-search input {
+/* 输入框样式对齐 FluentAvalonia 的 TextBox */
+.sai-ip-search input,
+.sai-ip-image input {
     box-sizing: border-box;
     width: 100%;
     height: 32px;
-    padding: 0 8px 0 32px;
-    background: #fafafa;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
+    padding: 5px 10px 6px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--sai-text-primary);
+    background: var(--sai-control-fill-default);
+    border: 1px solid var(--sai-control-stroke-secondary);
+    border-bottom-color: var(--sai-control-strong-stroke);
+    border-radius: var(--sai-radius);
+    outline: none;
+}
+
+.sai-ip-search input {
+    padding-left: 32px;
+}
+
+.sai-ip-search input::placeholder,
+.sai-ip-image input::placeholder {
+    color: var(--sai-text-secondary);
+}
+
+.sai-ip-search input:hover,
+.sai-ip-image input:hover {
+    background: var(--sai-control-fill-secondary);
+}
+
+.sai-ip-search input:focus,
+.sai-ip-image input:focus {
+    padding-bottom: 5px;
+    background: var(--sai-control-fill-input-active);
+    border-color: var(--sai-control-stroke-default);
+    border-bottom: 2px solid var(--sai-accent);
 }
 
 .sai-ip-grid-panel {
@@ -135,18 +260,41 @@ body,
     line-height: 1;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: var(--sai-radius);
     cursor: pointer;
 }
 
 .sai-ip-icon:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--sai-subtle-fill-hover);
 }
 
 .sai-ip-icon.selected {
-    color: #0078d4;
+    color: var(--sai-accent);
     background: rgba(0, 120, 212, 0.12);
-    border-color: #0078d4;
+    border-color: var(--sai-accent);
+}
+
+.sai-ip-tooltip {
+    position: fixed;
+    z-index: 1001;
+    max-width: 320px;
+    padding: 6px 9px 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.89);
+    white-space: nowrap;
+    pointer-events: none;
+    background: #f9f9f9;
+    border: 1px solid rgba(0, 0, 0, 0.059);
+    border-radius: 8px;
+    box-shadow:
+        rgba(0, 0, 0, 0.14) 0 8px 16px 0,
+        rgba(0, 0, 0, 0.12) 0 0 2px 0;
+    opacity: 0;
+}
+
+.sai-ip-tooltip.visible {
+    opacity: 1;
 }
 
 .sai-ip-empty {
@@ -158,7 +306,7 @@ body,
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    color: #666;
+    color: var(--sai-text-secondary);
     text-align: center;
     pointer-events: none;
 }
@@ -167,16 +315,6 @@ body,
     display: grid;
     grid-template-columns: 1fr 32px;
     gap: 8px;
-}
-
-.sai-ip-image input {
-    box-sizing: border-box;
-    width: 100%;
-    height: 32px;
-    padding: 0 8px;
-    background: #fafafa;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
 }
 
 .sai-ip-browse {
@@ -189,20 +327,25 @@ body,
     font-family: 'Fluent System Icons';
     font-size: 20px;
     line-height: 1;
-    color: #1a1a1a;
+    color: var(--sai-text-secondary);
     background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
+    border: 1px solid transparent;
+    border-radius: var(--sai-radius);
     cursor: pointer;
 }
 
 .sai-ip-browse:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--sai-subtle-fill-hover);
+}
+
+.sai-ip-browse:active {
+    background: var(--sai-subtle-fill-pressed);
 }
 
 .sai-ip-browse:disabled {
+    color: var(--sai-text-tertiary);
     cursor: default;
-    opacity: 0.5;
+    background: transparent;
 }
 
 .sai-ip-footer {
@@ -214,25 +357,38 @@ body,
 .sai-ip-message {
     flex: 1;
     font-size: 12px;
-    color: #666;
+    color: var(--sai-text-secondary);
 }
 
 .sai-ip-button {
-    padding: 5px 14px;
-    background: #f3f3f3;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
+    min-width: 64px;
+    height: 32px;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--sai-text-primary);
+    background: var(--sai-control-fill-default);
+    border: 1px solid var(--sai-control-stroke-secondary);
+    border-radius: var(--sai-radius);
     cursor: pointer;
+}
+
+.sai-ip-button:hover {
+    background: var(--sai-control-fill-secondary);
 }
 
 .sai-ip-button.primary {
     color: #fff;
-    background: #0078d4;
-    border-color: #0078d4;
+    background: var(--sai-accent);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
-.sai-ip-button:hover {
-    filter: brightness(0.96);
+.sai-ip-button.primary:hover {
+    background: var(--sai-accent-hover);
+}
+
+.sai-ip-button.primary:active {
+    background: var(--sai-accent-pressed);
 }
 
 dialog.blocklyDialog {

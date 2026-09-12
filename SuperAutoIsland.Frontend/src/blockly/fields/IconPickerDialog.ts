@@ -59,6 +59,37 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         panel.className = 'sai-icon-picker';
         overlay.appendChild(panel);
 
+        const tooltip = document.createElement('div');
+        tooltip.className = 'sai-ip-tooltip transition';
+        overlay.appendChild(tooltip);
+
+        let tooltipTimer: number | undefined;
+
+        const hideTooltip = () => {
+            if (tooltipTimer !== undefined) {
+                clearTimeout(tooltipTimer);
+                tooltipTimer = undefined;
+            }
+            tooltip.classList.remove('visible');
+        };
+
+        const showTooltip = (target: HTMLElement, text: string) => {
+            if (tooltipTimer !== undefined) clearTimeout(tooltipTimer);
+            tooltipTimer = window.setTimeout(() => {
+                tooltipTimer = undefined;
+                tooltip.textContent = text;
+                tooltip.classList.add('visible');
+                const rect = target.getBoundingClientRect();
+                const size = tooltip.getBoundingClientRect();
+                let top = rect.top - size.height - 6;
+                if (top < 8) top = rect.bottom + 6;
+                let left = rect.left + rect.width / 2 - size.width / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - size.width - 8));
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
+            }, 200);
+        };
+
         const header = document.createElement('div');
         header.className = 'sai-ip-header';
         const preview = document.createElement('div');
@@ -77,8 +108,13 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         (Object.keys(tabButtons) as IconExpressionType[]).forEach(type => {
             const button = tabButtons[type];
             button.type = 'button';
-            button.className = 'sai-ip-tab';
-            button.textContent = tabLabels[type];
+            button.className = 'sai-ip-tab transition';
+            const label = document.createElement('span');
+            label.className = 'sai-ip-tab-label';
+            label.textContent = tabLabels[type];
+            const pill = document.createElement('span');
+            pill.className = 'sai-ip-pill';
+            button.append(label, pill);
             button.addEventListener('click', () => switchType(type));
             tabs.appendChild(button);
         });
@@ -90,6 +126,7 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         searchIcon.textContent = '\uef33';
         const searchInput = document.createElement('input');
         searchInput.type = 'text';
+        searchInput.className = 'transition';
         searchInput.placeholder = '名称或 Unicode 码';
         searchInput.autocomplete = 'off';
         search.append(searchIcon, searchInput);
@@ -113,11 +150,12 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         imageRow.className = 'sai-ip-image';
         const imageInput = document.createElement('input');
         imageInput.type = 'text';
+        imageInput.className = 'transition';
         imageInput.placeholder = '图片路径或 URI';
         imageInput.autocomplete = 'off';
         const browseButton = document.createElement('button');
         browseButton.type = 'button';
-        browseButton.className = 'sai-ip-browse';
+        browseButton.className = 'sai-ip-browse transition';
         browseButton.textContent = '\ue88d';
         browseButton.title = '浏览图片…';
         imageRow.append(imageInput, browseButton);
@@ -129,7 +167,7 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         message.className = 'sai-ip-message';
         const doneButton = document.createElement('button');
         doneButton.type = 'button';
-        doneButton.className = 'sai-ip-button primary';
+        doneButton.className = 'sai-ip-button primary transition';
         doneButton.textContent = '完成';
         footer.append(message, doneButton);
         panel.appendChild(footer);
@@ -151,7 +189,6 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         const updatePreview = () => {
             preview.textContent = '';
             if (state.type === 'img') {
-                // 不预览本地图片，避免浏览器通过 http 服务请求本地路径。
                 preview.style.fontFamily = FLUENT_FONT_FAMILY;
                 preview.style.fontSize = '32px';
                 preview.textContent = '\ue9b2';
@@ -174,13 +211,17 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
                 const entry = currentResults[i];
                 const button = document.createElement('button');
                 button.type = 'button';
-                button.className = 'sai-ip-icon';
+                button.className = 'sai-ip-icon transition';
                 button.style.fontFamily = state.type === 'lucide' ? LUCIDE_FONT_FAMILY : FLUENT_FONT_FAMILY;
                 button.textContent = entry.glyph;
-                button.title = `${entry.name} · U+${entry.codePoint.toString(16).toUpperCase().padStart(4, '0')}`;
+                const description = `${entry.name} · U+${entry.codePoint.toString(16).toUpperCase().padStart(4, '0')}`;
                 button.dataset.glyph = entry.glyph;
                 button.classList.toggle('selected', entry.glyph === state.glyph);
                 button.addEventListener('click', () => selectGlyph(entry.glyph));
+                button.addEventListener('mouseenter', () => showTooltip(button, description));
+                button.addEventListener('mouseleave', hideTooltip);
+                button.addEventListener('focus', () => showTooltip(button, description));
+                button.addEventListener('blur', hideTooltip);
                 grid.appendChild(button);
             }
             renderedCount = end;
@@ -188,6 +229,7 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
         };
 
         const renderResults = (results: IconCatalogEntry[]) => {
+            hideTooltip();
             currentResults = results;
             renderedCount = 0;
             grid.textContent = '';
@@ -340,6 +382,7 @@ export function openIconPicker(options: IconPickerOptions = {}): Promise<void> {
             }
         });
         grid.addEventListener('scroll', () => {
+            hideTooltip();
             if (renderedCount < currentResults.length && grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 40) {
                 renderMore();
             }

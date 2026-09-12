@@ -125,13 +125,10 @@ export class FieldIconPicker extends Blockly.Field<string> {
 
     private _applyBackground(): void {
         const rect = this.borderRect_;
-        if (!rect || !this.sourceBlock_) return;
-        // @ts-ignore blockly 的 BlockSvg 才带有 style
-        const style = this.sourceBlock_.style;
-        rect.style.fill = style.colourSecondary;
-        rect.style.fillOpacity = '1';
-        rect.style.stroke = style.colourTertiary;
-        rect.style.strokeWidth = '1';
+        if (!rect) return;
+        rect.style.fill = '#fff';
+        rect.style.fillOpacity = '0.6';
+        rect.style.stroke = 'none';
     }
 }
 
