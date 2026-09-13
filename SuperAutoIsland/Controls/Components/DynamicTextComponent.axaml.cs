@@ -1,8 +1,12 @@
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
+using SuperAutoIsland.Models;
 using SuperAutoIsland.Models.Components;
 using SuperAutoIsland.Services;
 
@@ -14,6 +18,7 @@ namespace SuperAutoIsland.Controls.Components;
     FluentIcons.SlideTextRegular,
     "实时显示来自 SAI 的文本信息。"
 )]
+[PseudoClasses(":custom-text-color")]
 public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
 {
     private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
@@ -26,18 +31,42 @@ public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
 
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
-        Settings.LastText = _provider.GetText(Settings.Id) ?? "[未设置值]";
+        UpdateText();
         
         _provider.Changed += (o, args) =>
         {
             if (args.Key != Settings.Id) return;
-            Settings.LastText = args.Value;
+            ApplyItem(args.Value);
         };
         
         Settings.PropertyChanged += (o, args) =>
         {
             if (args.PropertyName != nameof(Settings.Id)) return;
-            Settings.LastText = _provider.GetText(Settings.Id) ?? "[未设置值]";
+            UpdateText();
         };
+    }
+
+    private void UpdateText()
+    {
+        ApplyItem(_provider.GetText(Settings.Id));
+    }
+
+    private void ApplyItem(DynamicTextItem? item)
+    {
+        if (item == null)
+        {
+            Settings.LastText = "[未设置值]";
+            SetCustomColor(false, default);
+            return;
+        }
+
+        Settings.LastText = item.Text;
+        SetCustomColor(item.HasCustomColor, item.Color);
+    }
+
+    private void SetCustomColor(bool hasCustomColor, Color color)
+    {
+        Settings.LastColor = color;
+        PseudoClasses.Set(":custom-text-color", hasCustomColor);
     }
 }

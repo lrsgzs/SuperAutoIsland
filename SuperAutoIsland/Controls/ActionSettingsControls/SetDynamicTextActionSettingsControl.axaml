@@ -8,7 +8,7 @@
     <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:SetDynamicTextActionSettingsControl}}">
         <Grid RowDefinitions="*, *" ColumnDefinitions="Auto, *" RowSpacing="4" ColumnSpacing="4">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="将" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                       Text="将编号" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <TextBox Grid.Row="0" Grid.Column="1"
                      Text="{ReflectionBinding Settings.Key}" />
             

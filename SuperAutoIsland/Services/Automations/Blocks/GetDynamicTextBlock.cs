@@ -23,6 +23,6 @@ public class GetDynamicTextBlock : DataBlockBase
             return Task.FromResult("???");
         
         var provider = IAppHost.GetService<DynamicTextProvider>();
-        return Task.FromResult(provider.GetText(settings.Key) ?? "[未设置值]");
+        return Task.FromResult(provider.GetText(settings.Key)?.Text ?? "[未设置值]");
     }
 }

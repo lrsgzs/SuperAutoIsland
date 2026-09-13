@@ -5,11 +5,22 @@
                   xmlns:ci="http://classisland.tech/schemas/xaml/core"
                   xmlns:models="clr-namespace:SuperAutoIsland.Models.Components"
                   xmlns:components="clr-namespace:SuperAutoIsland.Controls.Components"
+                  xmlns:converters="clr-namespace:ClassIsland.Core.Converters;assembly=ClassIsland.Core"
                   mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                   x:Class="SuperAutoIsland.Controls.Components.DynamicTextComponent"
                   x:TypeArguments="models:DynamicTextSettings">
-    <Grid VerticalAlignment="Center" 
+    <ci:ComponentBase.Resources>
+        <converters:ColorToColorPickerBrushConverter x:Key="ColorToColorPickerBrushConverter" />
+    </ci:ComponentBase.Resources>
+    
+    <Grid VerticalAlignment="Center"
           DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=components:DynamicTextComponent}}">
-        <TextBlock Text="{Binding Settings.LastText}" />
+        <Grid.Styles>
+            <Style Selector=":custom-text-color TextBlock#MainTextBlock">
+                <Setter Property="Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+            </Style>
+        </Grid.Styles>
+        
+        <TextBlock x:Name="MainTextBlock" Text="{Binding Settings.LastText}" />
     </Grid>
 </ci:ComponentBase>

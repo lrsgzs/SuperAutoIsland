@@ -24,8 +24,20 @@ public static class SaiRegistry
                 Icon = ("文本编辑", FluentIcons.TextEditStyleRegular),
                 Fields = new Dictionary<string, Field>
                 {
-                    ["Key"] = BasicFields.Text("将"),
-                    ["Value"] = BasicFields.Text("修改为")
+                    ["Key"] = BasicFields.Text("编号"),
+                    ["Value"] = BasicFields.Text("文本")
+                }
+            })
+            .AddBlock(new BlockMetadata("sai.actions.setDynamicTextColor")
+            {
+                Kind = BlockKind.Action,
+                Name = "设置动态文本颜色",
+                Icon = ("文本颜色", FluentIcons.TextColorRegular),
+                Fields = new Dictionary<string, Field>
+                {
+                    ["Key"] = BasicFields.Text("编号"),
+                    ["UseDefaultColor"] = BasicFields.Boolean("使用默认颜色?", true),
+                    ["Color"] = BasicFields.Color("颜色")
                 }
             })
             .AddBlock<GetDynamicTextBlock>()

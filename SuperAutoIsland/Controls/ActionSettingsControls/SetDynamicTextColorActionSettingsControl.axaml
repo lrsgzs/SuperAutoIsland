@@ -1,0 +1,28 @@
+<ci:ActionSettingsControlBase x:Class="SuperAutoIsland.Controls.ActionSettingsControls.SetDynamicTextColorActionSettingsControl"
+                              x:TypeArguments="actionSettings:SetDynamicTextColorActionSettings"
+                              xmlns="https://github.com/avaloniaui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                              xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                              xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
+                              xmlns:cp="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
+                              xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">
+    <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:SetDynamicTextColorActionSettingsControl}}">
+        <Grid RowDefinitions="*, *" ColumnDefinitions="Auto, *" RowSpacing="4" ColumnSpacing="4">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="将编号" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <TextBox Grid.Row="0" Grid.Column="1"
+                     Text="{ReflectionBinding Settings.Key}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="修改为" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <StackPanel Grid.Row="1" Grid.Column="1"
+                        Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <CheckBox Content="默认颜色"
+                          IsChecked="{ReflectionBinding Settings.UseDefaultColor, Mode=TwoWay}" />
+                <cp:ColorPicker
+                    Color="{ReflectionBinding Settings.Color, Mode=TwoWay}"
+                    IsVisible="{ReflectionBinding Settings.ShowColorPicker}" />
+            </StackPanel>
+        </Grid>
+    </Panel>
+</ci:ActionSettingsControlBase>
