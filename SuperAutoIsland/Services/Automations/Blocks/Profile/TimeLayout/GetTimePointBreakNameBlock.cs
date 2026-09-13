@@ -26,6 +26,6 @@ public class GetTimePointBreakNameBlock : DataBlockBase
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var item = ProfileBlockHelpers.TimePoint(settings);
-        return Task.FromResult<object>(item is { TimeType: 1 } ? item.BreakNameText : "上课时间");
+        return Task.FromResult<object>(item is { TimeType: 1 } ? item.BreakNameText : string.Empty);
     }
 }

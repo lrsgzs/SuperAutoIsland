@@ -1,4 +1,6 @@
 using System.Text.Json;
+using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
@@ -24,8 +26,11 @@ public class SetClassPlanSubjectBlock : ActionBlockBase
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
         var plan = ProfileBlockHelpers.ClassPlan(s);
         var index = ProfileBlockHelpers.Number(s, "Index") - 1;
-        if (plan != null && index >= 0 && index < plan.Classes.Count)
-            plan.Classes[index].SubjectId = ProfileBlockHelpers.Guid(s, "Subject");
+        var subjectId = ProfileBlockHelpers.Guid(s, "Subject");
+        var profile = IAppHost.GetService<IProfileService>().Profile;
+        if (plan != null && index >= 0 && index < plan.Classes.Count
+                         && (subjectId == Guid.Empty || profile.Subjects.ContainsKey(subjectId)))
+            plan.Classes[index].SubjectId = subjectId;
         return Task.CompletedTask;
     }
 }

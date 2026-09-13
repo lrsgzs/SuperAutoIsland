@@ -1,4 +1,6 @@
 using System.Text.Json;
+using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -17,7 +19,10 @@ public class SetClassPlanGroupBlock : ActionBlockBase
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
         var plan = ProfileBlockHelpers.ClassPlan(s);
-        if (plan != null) plan.AssociatedGroup = ProfileBlockHelpers.Guid(s, "Group");
+        var groupId = ProfileBlockHelpers.Guid(s, "Group");
+        var profile = IAppHost.GetService<IProfileService>().Profile;
+        if (plan != null && profile.ClassPlanGroups.ContainsKey(groupId))
+            plan.AssociatedGroup = groupId;
         return Task.CompletedTask;
     }
 }

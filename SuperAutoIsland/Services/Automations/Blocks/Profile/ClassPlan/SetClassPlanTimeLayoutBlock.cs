@@ -1,4 +1,6 @@
 using System.Text.Json;
+using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Shared;
 using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -19,7 +21,10 @@ public class SetClassPlanTimeLayoutBlock : ActionBlockBase
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
         var plan = ProfileBlockHelpers.ClassPlan(s);
-        if (plan != null) plan.TimeLayoutId = ProfileBlockHelpers.Guid(s, "TimeLayout");
+        var timeLayoutId = ProfileBlockHelpers.Guid(s, "TimeLayout");
+        var profile = IAppHost.GetService<IProfileService>().Profile;
+        if (plan != null && (timeLayoutId == Guid.Empty || profile.TimeLayouts.ContainsKey(timeLayoutId)))
+            plan.TimeLayoutId = timeLayoutId;
         return Task.CompletedTask;
     }
 }

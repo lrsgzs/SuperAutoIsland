@@ -21,9 +21,14 @@ public class ScheduleClassPlanBlock : ActionBlockBase
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);
         var date = ProfileBlockHelpers.Date(settings, "Date").ToDateTime(TimeOnly.MinValue);
-        IAppHost.GetService<IProfileService>().Profile.OrderedSchedules[date] = new OrderedSchedule
+        var profile = IAppHost.GetService<IProfileService>().Profile;
+        var classPlanId = ProfileBlockHelpers.Guid(settings, "ClassPlan");
+        if (!profile.ClassPlans.ContainsKey(classPlanId))
+            return Task.CompletedTask;
+
+        profile.OrderedSchedules[date] = new OrderedSchedule
         {
-            ClassPlanId = ProfileBlockHelpers.Guid(settings, "ClassPlan")
+            ClassPlanId = classPlanId
         };
         return Task.CompletedTask;
     }

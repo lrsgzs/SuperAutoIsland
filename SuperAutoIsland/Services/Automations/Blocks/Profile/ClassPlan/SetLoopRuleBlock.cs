@@ -26,8 +26,10 @@ public class SetLoopRuleBlock : ActionBlockBase
         if (plan != null)
         {
             plan.TimeRule.Type = TimeRule.TimeRuleType.Loop;
-            plan.TimeRule.LoopCycleDays = Math.Max(1, ProfileBlockHelpers.Number(settings, "CycleDays"));
-            plan.TimeRule.LoopOffsetDays = ProfileBlockHelpers.Number(settings, "OffsetDays");
+            var cycleDays = Math.Max(1, ProfileBlockHelpers.Number(settings, "CycleDays"));
+            var offsetDays = ProfileBlockHelpers.Number(settings, "OffsetDays");
+            plan.TimeRule.LoopCycleDays = cycleDays;
+            plan.TimeRule.LoopOffsetDays = ((offsetDays % cycleDays) + cycleDays) % cycleDays;
         }
 
         return Task.CompletedTask;

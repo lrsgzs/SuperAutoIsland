@@ -28,15 +28,6 @@ public class DeleteClassPlanBlock : ActionBlockBase
             profile.OrderedSchedules.Remove(date);
         }
 
-        if (profile.TempClassPlanId == id)
-            profile.TempClassPlanId = null;
-
-        if (profile.OverlayClassPlanId == id)
-        {
-            profile.OverlayClassPlanId = null;
-            profile.IsOverlayClassPlanEnabled = false;
-        }
-
         return Task.CompletedTask;
     }
 }
