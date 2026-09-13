@@ -28,8 +28,8 @@ public class TimeLayoutItemBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
-        var guid = ProfileBlockHelpers.Guid(settings, "TimeLayout");
+        var reference = ProfileBlockHelpers.TimeLayoutRef(settings, "TimeLayout");
         var index = Math.Max(1, (int)settings.GetProperty("Index").GetDouble());
-        return Task.FromResult<object>($"{guid}[{index}]");
+        return Task.FromResult<object>($"{reference}[{index}]");
     }
 }

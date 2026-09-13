@@ -20,7 +20,7 @@ public class SetClassPlanTimeLayoutBlock : ActionBlockBase
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
-        var plan = ProfileBlockHelpers.ClassPlan(s);
+        var plan = ProfileBlockHelpers.ClassicClassPlan(s);
         var timeLayoutId = ProfileBlockHelpers.Guid(s, "TimeLayout");
         var profile = IAppHost.GetService<IProfileService>().Profile;
         if (plan != null && (timeLayoutId == Guid.Empty || profile.TimeLayouts.ContainsKey(timeLayoutId)))

@@ -1,6 +1,4 @@
 using System.Text.Json;
-using ClassIsland.Core.Abstractions.Services;
-using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -15,6 +13,6 @@ public class ClassPlanExistsBlock : RuleBlockBase
     public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
-        return IAppHost.GetService<IProfileService>().Profile.ClassPlans.ContainsKey(ProfileBlockHelpers.Guid(settings, "ClassPlan"));
+        return ProfileBlockHelpers.ClassPlan(settings) is not null;
     }
 }

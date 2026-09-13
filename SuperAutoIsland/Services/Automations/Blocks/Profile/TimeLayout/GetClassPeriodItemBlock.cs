@@ -29,8 +29,8 @@ public class GetClassPeriodItemBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
-        var guid = ProfileBlockHelpers.Guid(settings, "TimeLayout");
+        var reference = ProfileBlockHelpers.TimeLayoutRef(settings, "TimeLayout");
         var position = ProfileBlockHelpers.ClassPeriodPosition(settings);
-        return Task.FromResult<object>($"{guid}[{position}]");
+        return Task.FromResult<object>($"{reference}[{position}]");
     }
 }

@@ -22,7 +22,7 @@ public class SetLoopRuleBlock : ActionBlockBase
     public override Task Handler(ActionItem actionItem)
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);
-        var plan = ProfileBlockHelpers.ClassPlan(settings);
+        var plan = ProfileBlockHelpers.ClassicClassPlan(settings);
         if (plan != null)
         {
             plan.TimeRule.Type = TimeRule.TimeRuleType.Loop;

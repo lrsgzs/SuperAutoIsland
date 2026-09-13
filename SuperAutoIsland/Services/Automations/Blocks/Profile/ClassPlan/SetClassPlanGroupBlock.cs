@@ -18,7 +18,7 @@ public class SetClassPlanGroupBlock : ActionBlockBase
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
-        var plan = ProfileBlockHelpers.ClassPlan(s);
+        var plan = ProfileBlockHelpers.ClassicClassPlan(s);
         var groupId = ProfileBlockHelpers.Guid(s, "Group");
         var profile = IAppHost.GetService<IProfileService>().Profile;
         if (plan != null && profile.ClassPlanGroups.ContainsKey(groupId))

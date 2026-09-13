@@ -1,6 +1,4 @@
 using System.Text.Json;
-using ClassIsland.Core.Abstractions.Services;
-using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -25,10 +23,10 @@ public class TimeLayoutItemExistsRuleBlock : RuleBlockBase
     public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
-        var (guid, index) = ProfileBlockHelpers.TimeLayoutItem(settings);
+        var (reference, index) = ProfileBlockHelpers.TimeLayoutItem(settings);
         if (index < 1)
             return false;
-        var layout = IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(guid);
+        var layout = ProfileBlockHelpers.ResolveTimeLayout(reference);
         return layout is not null && index <= layout.Layouts.Count;
     }
 }

@@ -1,6 +1,4 @@
 using System.Text.Json;
-using ClassIsland.Core.Abstractions.Services;
-using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -18,8 +16,7 @@ public class GetClassPlanNameBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
-        var name = IAppHost.GetService<IProfileService>().Profile.ClassPlans
-            .GetValueOrDefault(ProfileBlockHelpers.Guid(settings, "ClassPlan"))?.Name ?? string.Empty;
+        var name = ProfileBlockHelpers.ClassPlan(settings)?.Name ?? string.Empty;
         return Task.FromResult<object>(name);
     }
 }

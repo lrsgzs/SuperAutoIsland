@@ -24,7 +24,7 @@ public class SetClassPlanSubjectBlock : ActionBlockBase
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
-        var plan = ProfileBlockHelpers.ClassPlan(s);
+        var plan = ProfileBlockHelpers.ClassicClassPlan(s);
         var index = ProfileBlockHelpers.Number(s, "Index") - 1;
         var subjectId = ProfileBlockHelpers.Guid(s, "Subject");
         var profile = IAppHost.GetService<IProfileService>().Profile;

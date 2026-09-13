@@ -1,6 +1,7 @@
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services.Automations;
+using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlan;
 
@@ -13,7 +14,14 @@ public class CurrentClassPlanBlock : DataBlockBase
     {
         var lessons = IAppHost.GetService<ILessonsService>();
         var now = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime();
-        lessons.GetClassPlanByDate(now, out var id);
-        return Task.FromResult<object>((id ?? Guid.Empty).ToString());
+        var plan = lessons.GetClassPlanByDate(now, out var id);
+        if (id is null)
+        {
+            return Task.FromResult<object>(plan is null
+                ? Guid.Empty.ToString()
+                : ProfileBlockHelpers.CreateScheduleRef(DateOnly.FromDateTime(now)));
+        }
+
+        return Task.FromResult<object>(id.Value.ToString());
     }
 }

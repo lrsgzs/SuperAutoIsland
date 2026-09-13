@@ -23,7 +23,7 @@ public class SwapClassPlanSubjectBlock : ActionBlockBase
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
-        var plan = ProfileBlockHelpers.ClassPlan(s);
+        var plan = ProfileBlockHelpers.ClassicClassPlan(s);
         var first = ProfileBlockHelpers.Number(s, "FirstIndex") - 1;
         var second = ProfileBlockHelpers.Number(s, "SecondIndex") - 1;
         if (plan != null && first >= 0 && second >= 0 && first < plan.Classes.Count && second < plan.Classes.Count)

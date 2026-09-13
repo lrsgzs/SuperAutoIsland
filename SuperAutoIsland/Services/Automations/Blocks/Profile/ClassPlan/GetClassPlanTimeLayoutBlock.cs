@@ -14,6 +14,11 @@ public class GetClassPlanTimeLayoutBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
-        return Task.FromResult<object>((ProfileBlockHelpers.ClassPlan(settings)?.TimeLayoutId ?? Guid.Empty).ToString());
+        var reference = ProfileBlockHelpers.ClassPlanRef(settings, "ClassPlan");
+        if (ProfileBlockHelpers.IsScheduleRef(reference))
+            return Task.FromResult<object>(reference);
+
+        return Task.FromResult<object>(
+            (ProfileBlockHelpers.ResolveClassPlan(reference)?.TimeLayoutId ?? Guid.Empty).ToString());
     }
 }

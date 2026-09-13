@@ -21,8 +21,22 @@ public class UsingClassPlanRuleBlock : RuleBlockBase
     public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
+        var configured = ProfileBlockHelpers.ClassPlanRef(settings, "ClassPlan");
+        return string.Equals(GetCurrentClassPlanRef(), configured, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string GetCurrentClassPlanRef()
+    {
+        var lessons = IAppHost.GetService<ILessonsService>();
         var now = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime();
-        IAppHost.GetService<ILessonsService>().GetClassPlanByDate(now, out var id);
-        return id == ProfileBlockHelpers.Guid(settings, "ClassPlan");
+        var plan = lessons.GetClassPlanByDate(now, out var id);
+        if (id is null)
+        {
+            return plan is null
+                ? Guid.Empty.ToString()
+                : ProfileBlockHelpers.CreateScheduleRef(DateOnly.FromDateTime(now));
+        }
+
+        return id.Value.ToString();
     }
 }

@@ -17,6 +17,7 @@ public static class SaiProfileRegistry
     public static void Register()
     {
         SaiServer.RegisterBlocks("SAI 档案操作", it => it
+            .AddLabel("日程模式下，仅支持读取信息，暂不支持修改。")
             .AddLabel("通用")
             .AddBlock<EmptyGuidBlock>()
             .AddBlock<SaveProfileBlock>()
