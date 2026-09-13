@@ -13,8 +13,8 @@ public class SetDateRangeRuleBlock : ActionBlockBase
     public override string Name => "设置课表启用日期范围";
     public override void GetFields(FieldsRegister it) => it
         .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("StartDate", BasicFields.Date("开始日期"))
-        .AddField("EndDate", BasicFields.Date("结束日期"));
+        .AddField("StartDate", BasicFields.Date("开始日期", DateOnly.FromDateTime(DateTime.Today)))
+        .AddField("EndDate", BasicFields.Date("结束日期", DateOnly.FromDateTime(DateTime.Today)));
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);

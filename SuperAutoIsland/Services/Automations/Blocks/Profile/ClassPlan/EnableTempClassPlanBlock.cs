@@ -15,7 +15,7 @@ public class EnableTempClassPlanBlock : ActionBlockBase
     public override string Name => "启用临时课表";
     public override void GetFields(FieldsRegister it) => it
         .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Date", BasicFields.Date("有效期至"));
+        .AddField("Date", BasicFields.Date("有效期至", DateOnly.FromDateTime(DateTime.Today)));
     public override Task Handler(ActionItem actionItem)
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);

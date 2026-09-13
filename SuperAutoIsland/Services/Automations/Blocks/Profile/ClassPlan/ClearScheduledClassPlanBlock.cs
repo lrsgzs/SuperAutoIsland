@@ -13,7 +13,8 @@ public class ClearScheduledClassPlanBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.clearScheduledClassPlan";
     public override string Name => "清除预定课表";
-    public override void GetFields(FieldsRegister it) => it.AddField("Date", BasicFields.Date("日期"));
+    public override void GetFields(FieldsRegister it) => it.AddField("Date",
+        BasicFields.Date("日期", DateOnly.FromDateTime(DateTime.Today)));
     public override Task Handler(ActionItem actionItem)
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);

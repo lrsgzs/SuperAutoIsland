@@ -15,7 +15,7 @@ public class CreateTempClassPlanWithDateBlock : DataBlockBase
     public override string DataOutput => "SAI_Profile_ClassPlan";
     public override void GetFields(FieldsRegister it) => it
         .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Date", BasicFields.Date("启用日期"));
+        .AddField("Date", BasicFields.Date("启用日期", DateOnly.FromDateTime(DateTime.Today)));
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
