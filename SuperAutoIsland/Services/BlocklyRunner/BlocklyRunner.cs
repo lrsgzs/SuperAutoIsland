@@ -1,4 +1,6 @@
-﻿using Jint;
+﻿using System.Reflection;
+using Acornima.Ast;
+using Jint;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Shared.Logger;
@@ -14,6 +16,8 @@ public class BlocklyRunner
     private Engine? _engine;
     private JavaScriptNamespace? _jsNamespace;
 
+    private HashSet<Script>? _evaluatedScripts;
+
     /// <summary>
     /// 运行 js 脚本
     /// </summary>
@@ -28,6 +32,7 @@ public class BlocklyRunner
                 options.Constraints.PromiseTimeout = TimeSpan.Zero;
             });
             _jsNamespace = new JavaScriptNamespace();
+            _evaluatedScripts = TryGetEngineEvaluatedScriptsHashSet(_engine);
             
             _engine.SetValue("logger", _logger);
             _engine.SetValue("console", _jsNamespace.Console);
@@ -40,6 +45,11 @@ public class BlocklyRunner
         _logger.Debug(script);
         
         await _engine.EvaluateAsync(script, "main.js", cancellationToken);
+
+        if (_evaluatedScripts?.Count >= 256)
+        {
+            _evaluatedScripts.Clear();
+        }
     }
 
     /// <summary>
@@ -55,5 +65,13 @@ public class BlocklyRunner
         
         var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
         await RunJavaScript(script, cancellationToken);
+    }
+
+    private static HashSet<Script>? TryGetEngineEvaluatedScriptsHashSet(Engine engine)
+    {
+        var engineType = typeof(Engine);
+        var evaluatedScriptsField = engineType.GetField("_evaluatedScripts",
+            BindingFlags.Default | BindingFlags.Instance | BindingFlags.NonPublic);
+        return evaluatedScriptsField?.GetValue(engine) as HashSet<Script>;
     }
 }
