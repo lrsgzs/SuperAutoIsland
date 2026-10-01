@@ -79,23 +79,41 @@ public class Plugin : PluginBase
         _logger.Info("注册自动化元素...");
         // 组件
         services.AddComponent<DynamicTextComponent, DynamicTextComponentSettingsControl>();
-        
+
         // 行动
         services.AddAction<SetDynamicTextAction, SetDynamicTextActionSettingsControl>();
         services.AddAction<SetDynamicTextColorAction, SetDynamicTextColorActionSettingsControl>();
+        services.AddAction<SetDynamicTextIconAction, SetDynamicTextIconActionSettingsControl>();
         services.AddAction<ConfirmExecuteAction, ConfirmExecuteActionSettingsControl>();
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
 
         // 行动树
-        IActionService.ActionMenuTree.Add(new ActionMenuTreeGroup("SAI 自动化", FluentIcons.VehicleCarRegular));
-        IActionService.ActionMenuTree["SAI 自动化"].AddRange([
-            new ActionMenuTreeItem("sai.actions.setDynamicText", "设置动态文本", FluentIcons.TextEditStyleRegular),
-            new ActionMenuTreeItem("sai.actions.setDynamicTextColor", "设置动态文本颜色", FluentIcons.TextColorRegular),
-            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular),
-            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组", FluentIcons.AirplaneTakeOffRegular),
-            new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认", FluentIcons.AirplaneLandingRegular),
-        ]);
+        IActionService.ActionMenuTree.Add(
+            new ActionMenuTreeGroup("SAI 自动化", FluentIcons.VehicleCarRegular)
+            {
+                Children =
+                {
+                    new ActionMenuTreeGroup("动态文本", FluentIcons.TextAddRegular)
+                    {
+                        Children =
+                        {
+                            new ActionMenuTreeItem("sai.actions.setDynamicText", "设置动态文本",
+                                FluentIcons.TextEditStyleRegular),
+                            new ActionMenuTreeItem("sai.actions.setDynamicTextColor", "设置动态文本颜色",
+                                FluentIcons.TextColorRegular),
+                            new ActionMenuTreeItem("sai.actions.setDynamicTextIcon", "设置动态文本图标",
+                                FluentIcons.IconsRegular)
+                        }
+                    },
+                    new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目",
+                        FluentIcons.AlignSpaceEvenlyVerticalRegular),
+                    new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组",
+                        FluentIcons.AirplaneTakeOffRegular),
+                    new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认",
+                        FluentIcons.AirplaneLandingRegular),
+                }
+            });
 
         // 规则
         services.AddRule<RunCiRulesetSettings, RunCiRulesetSettingsControl>(
@@ -111,7 +129,6 @@ public class Plugin : PluginBase
         services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<AutomationSettingsPage>();
-        // services.AddSettingsPage<AboutSettingsPage>();
 
         // 应用启动完毕
         AppBase.Current.AppStarted += (_, _) =>

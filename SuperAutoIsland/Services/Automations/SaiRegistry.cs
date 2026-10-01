@@ -4,6 +4,7 @@ using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
+using SuperAutoIsland.Models.Actions;
 using SuperAutoIsland.Services.Automations.Blocks;
 using SuperAutoIsland.Shared;
 
@@ -25,6 +26,7 @@ public static class SaiRegistry
                 Fields = new Dictionary<string, Field>
                 {
                     ["Key"] = BasicFields.Text("编号"),
+                    ["IncludeText"] = BasicFields.Boolean("包含文本?", true),
                     ["Value"] = BasicFields.Text("文本")
                 }
             })
@@ -38,6 +40,18 @@ public static class SaiRegistry
                     ["Key"] = BasicFields.Text("编号"),
                     ["UseDefaultColor"] = BasicFields.Boolean("使用默认颜色?", true),
                     ["Color"] = BasicFields.Color("颜色")
+                }
+            })
+            .AddBlock(new BlockMetadata("sai.actions.setDynamicTextIcon")
+            {
+                Kind = BlockKind.Action,
+                Name = "设置动态文本图标",
+                Icon = ("图标", FluentIcons.IconsRegular),
+                Fields = new Dictionary<string, Field>
+                {
+                    ["Key"] = BasicFields.Text("编号"),
+                    ["IncludeIcon"] = BasicFields.Boolean("包含图标?", true),
+                    ["Icon"] = BasicFields.Icon("图标", SetDynamicTextIconActionSettings.DefaultIcon)
                 }
             })
             .AddBlock<GetDynamicTextBlock>()

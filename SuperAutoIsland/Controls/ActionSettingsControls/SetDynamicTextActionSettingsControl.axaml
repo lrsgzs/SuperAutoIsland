@@ -6,16 +6,22 @@
                               xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
                               xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">
     <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:SetDynamicTextActionSettingsControl}}">
-        <Grid RowDefinitions="*, *" ColumnDefinitions="Auto, *" RowSpacing="4" ColumnSpacing="4">
+        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, Auto, *" RowSpacing="4" ColumnSpacing="4">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="将编号" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <TextBox Grid.Row="0" Grid.Column="1"
+            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
                      Text="{ReflectionBinding Settings.Key}" />
-            
+
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="修改为" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Text="{ReflectionBinding Settings.Value}" />
+
+            <CheckBox Grid.Row="1" Grid.Column="1"
+                      Content="包含文本"
+                      IsChecked="{ReflectionBinding Settings.IncludeText, Mode=TwoWay}" />
+            
+            <TextBox Grid.Row="1" Grid.Column="2"
+                     Text="{ReflectionBinding Settings.Value}"
+                     IsEnabled="{ReflectionBinding Settings.IncludeText}" />
         </Grid>
     </Panel>
 </ci:ActionSettingsControlBase>

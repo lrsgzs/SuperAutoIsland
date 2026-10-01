@@ -6,20 +6,20 @@ using SuperAutoIsland.Models.Actions;
 
 namespace SuperAutoIsland.Services.Automations.Actions;
 
-[ActionInfo("sai.actions.setDynamicTextColor", "设置动态文本颜色", FluentIcons.TextColorRegular, false)]
-public class SetDynamicTextColorAction : ActionBase<SetDynamicTextColorActionSettings>
+[ActionInfo("sai.actions.setDynamicTextIcon", "设置动态文本图标", FluentIcons.IconsRegular, false)]
+public class SetDynamicTextIconAction : ActionBase<SetDynamicTextIconActionSettings>
 {
     private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
 
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();
-        _provider.SetColor(Settings.Key, Settings.UseDefaultColor ? null : Settings.Color);
+        _provider.SetIcon(Settings.Key, Settings.IncludeIcon ? Settings.Icon : null);
     }
 
     protected override async Task OnRevert()
     {
         await base.OnRevert();
-        _provider.RevertColor(Settings.Key);
+        _provider.RevertIcon(Settings.Key);
     }
 }

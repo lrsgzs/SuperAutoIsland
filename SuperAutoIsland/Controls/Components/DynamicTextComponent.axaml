@@ -3,6 +3,7 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:ci="http://classisland.tech/schemas/xaml/core"
+                  xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                   xmlns:models="clr-namespace:SuperAutoIsland.Models.Components"
                   xmlns:components="clr-namespace:SuperAutoIsland.Controls.Components"
                   xmlns:converters="clr-namespace:ClassIsland.Core.Converters;assembly=ClassIsland.Core"
@@ -21,6 +22,22 @@
             </Style>
         </Grid.Styles>
         
-        <TextBlock x:Name="MainTextBlock" Text="{Binding Settings.LastText}" />
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Spacing="4">
+            <fa:FAIconSourceElement x:Name="MainIconElement"
+                                    Classes="repair-fontsize"
+                                    IconSource="{Binding Settings.LastIconSource}"
+                                    Width="{Binding Settings.IconSize}"
+                                    Height="{Binding Settings.IconSize}"
+                                    TextElement.FontSize="{Binding Settings.IconSize}"
+                                    VerticalAlignment="Center"
+                                    IsVisible="{Binding Settings.LastIconSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            
+            <TextBlock x:Name="MainTextBlock"
+                       Text="{Binding Settings.LastText}"
+                       VerticalAlignment="Center"
+                       IsVisible="{Binding Settings.LastText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+        </StackPanel>
     </Grid>
 </ci:ComponentBase>

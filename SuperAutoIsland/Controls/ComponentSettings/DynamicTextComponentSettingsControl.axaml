@@ -19,6 +19,17 @@
                     <TextBox MinWidth="200" Text="{Binding Settings.Id}" />
                 </fa:FASettingsExpander.Footer>
             </fa:FASettingsExpander>
+
+            <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI ResizeImageRegular}}"
+                                   Header="图标大小"
+                                   Description="设置图标显示的大小。">
+                <fa:FASettingsExpander.Footer>
+                    <Slider Width="200" Classes="auto-tooltip"
+                            TickFrequency="1" TickPlacement="None"
+                            Minimum="8" Maximum="40" IsSnapToTickEnabled="True"
+                            Value="{Binding Settings.IconSize}" />
+                </fa:FASettingsExpander.Footer>
+            </fa:FASettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </ci:ComponentBase>

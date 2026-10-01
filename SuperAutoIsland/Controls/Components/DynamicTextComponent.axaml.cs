@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Helpers.UI;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using SuperAutoIsland.Models;
@@ -16,7 +17,7 @@ namespace SuperAutoIsland.Controls.Components;
     "3176D88A-18DC-4273-8ECE-AF84B2A2F9DB",
     "动态文本",
     FluentIcons.SlideTextRegular,
-    "实时显示来自 SAI 的文本信息。"
+    "实时显示来自 SAI 的文本与图标信息。"
 )]
 [PseudoClasses(":custom-text-color")]
 public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
@@ -53,20 +54,19 @@ public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
 
     private void ApplyItem(DynamicTextItem? item)
     {
-        if (item == null)
-        {
-            Settings.LastText = "[未设置值]";
-            SetCustomColor(false, default);
-            return;
-        }
+        var iconExpression = item?.Icon;
+        var text = item?.Text;
+        var hasIcon = !string.IsNullOrWhiteSpace(iconExpression);
+        var hasText = !string.IsNullOrWhiteSpace(text);
 
-        Settings.LastText = item.Text;
-        SetCustomColor(item.HasCustomColor, item.Color);
+        Settings.LastIconSource = hasIcon ? IconExpressionHelper.TryParseOrNull(iconExpression!) : null;
+        Settings.LastText = hasText ? text! : hasIcon ? string.Empty : "[未设置值]";
+        SetCustomColor(item?.Color);
     }
 
-    private void SetCustomColor(bool hasCustomColor, Color color)
+    private void SetCustomColor(Color? color)
     {
-        Settings.LastColor = color;
-        PseudoClasses.Set(":custom-text-color", hasCustomColor);
+        Settings.LastColor = color ?? default;
+        PseudoClasses.Set(":custom-text-color", color != null);
     }
 }

@@ -11,11 +11,4 @@ public partial class SetDynamicTextColorActionSettings : ObservableRecipient
     [ObservableProperty] private bool _useDefaultColor = true;
     [property: JsonConverter(typeof(ColorHexJsonConverter))]
     [ObservableProperty] private Color _color = Colors.White;
-
-    [JsonIgnore] public bool ShowColorPicker => !UseDefaultColor;
-
-    partial void OnUseDefaultColorChanged(bool value)
-    {
-        OnPropertyChanged(nameof(ShowColorPicker));
-    }
 }

@@ -14,13 +14,12 @@ public class SetDynamicTextAction : ActionBase<SetDynamicTextActionSettings>
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();
-        _provider.SetText(Settings.Key, Settings.Value);
+        _provider.SetText(Settings.Key, Settings.IncludeText ? Settings.Value : null);
     }
 
     protected override async Task OnRevert()
     {
         await base.OnRevert();
-
-        _provider.SetItem(Settings.Key, _provider.GetTextOldValue(Settings.Key));
+        _provider.RevertText(Settings.Key);
     }
 }

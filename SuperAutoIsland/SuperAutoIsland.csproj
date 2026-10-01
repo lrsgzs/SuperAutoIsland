@@ -19,7 +19,6 @@
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1.1-misha-dev3225">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
-        <PackageReference Include="ClassIsland.Core" Version="2.1.1.1-misha-dev3225" NoWarn="NU1605" />
         <PackageReference Include="Jint" Version="4.16.4" />
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
         <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj" />
