@@ -11,6 +11,7 @@ namespace SuperAutoIsland.Views.SettingPages;
 /// <summary>
 /// 「SuperAutoIsland 主设置」视图
 /// </summary>
+[HidePageTitle]
 [Group("sai.settings")]
 [SettingsPageInfo("sai.settings.main","主设置",FluentIcons.HomeRegular,FluentIcons.HomeFilled)]
 public partial class MainSettingsPage : SettingsPageBase {

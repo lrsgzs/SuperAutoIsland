@@ -6,44 +6,100 @@
                      xmlns:ci="http://classisland.tech/schemas/xaml/core"
                      xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:settingPages="clr-namespace:SuperAutoIsland.Views.SettingPages"
+                     xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                     xmlns:shared="clr-namespace:SuperAutoIsland.Shared"
                      mc:Ignorable="d">
-    <ScrollViewer DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
-        <StackPanel Classes="settings-container animated-intro">
-            <fa:InfoBar IsOpen="True" IsClosable="False" Severity="Informational">
-                <fa:InfoBar.Message>
-                    欢迎使用 SuperAutoIsland！本插件使用了 Blockly，在此致谢。
-                </fa:InfoBar.Message>
-            </fa:InfoBar>
-            
-            <fa:InfoBar IsOpen="True"
-                          IsClosable="False"
-                          Severity="Informational"
-                          Message="插件社区Q群 ClassIsPlugin 现已建立！点击按钮，即刻加入！">
-                <fa:InfoBar.ActionButton>
-                    <Button Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
-                            CommandParameter="https://qm.qq.com/q/PeyliibxE4"
-                            Content="加入群组" />
-                </fa:InfoBar.ActionButton>
-            </fa:InfoBar>
-        
-            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志" Description="查看日志呗">
-                <fa:SettingsExpander.Footer>
-                    <Button Margin="3,0,6,0"
-                            HorizontalContentAlignment="Center"
-                            Click="ViewLogsButton_OnClick"
-                            Content="查看日志"/>
-                </fa:SettingsExpander.Footer>
-            </fa:SettingsExpander>
-            
-            <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号" Description="服务器端口号">
-                <fa:SettingsExpander.Footer>
-                    <TextBox MinWidth="20"
-                             Margin="3,0,6,0"
-                             HorizontalContentAlignment="Center"
-                             InputMethod.IsInputMethodEnabled="False"
-                             Text="{Binding Settings.ServerPort, Mode=TwoWay}"/>
-                </fa:SettingsExpander.Footer>
-            </fa:SettingsExpander>
-        </StackPanel>
-    </ScrollViewer>
+    <Grid RowDefinitions="Auto *"
+          DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settingPages:MainSettingsPage}}">
+        <Grid Grid.Row="0" ColumnDefinitions="*"
+              Margin="12 16 18 0"
+              MaxWidth="{StaticResource SettingsContainerWidth}">
+            <TextBlock Grid.Column="0"
+                       Text="SuperAutoIsland 主设置" FontWeight="Normal"
+                       Theme="{StaticResource TitleTextBlockStyle}" />
+        </Grid>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Classes="settings-container animated-intro">
+                <ci:IconText Glyph="{ci:FI SettingsRegular}" Text="设置" Margin="0 0 0 4" />
+
+                <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEEF5;}" Header="日志"
+                                       Description="记录了 SAI 运行过程中的事件。控制台输出也在这里">
+                    <fa:SettingsExpander.Footer>
+                        <Button HorizontalContentAlignment="Center"
+                                Click="ViewLogsButton_OnClick"
+                                Content="查看日志" />
+                    </fa:SettingsExpander.Footer>
+                </fa:SettingsExpander>
+
+                <fa:SettingsExpander IconSource="{ci:FluentIconSource Glyph=&#xEF1F;}" Header="端口号"
+                                       Description="服务器端口号">
+                    <fa:SettingsExpander.Footer>
+                        <TextBox MinWidth="64"
+                                 InputMethod.IsInputMethodEnabled="False"
+                                 Text="{Binding Settings.ServerPort, Mode=TwoWay}" />
+                    </fa:SettingsExpander.Footer>
+                </fa:SettingsExpander>
+
+                <Separator Margin="0 12 0 4" />
+                <ci:IconText Glyph="{ci:FI InfoRegular}" Text="关于" Margin="0 0 0 4" />
+
+                <fa:SettingsExpander Header="SuperAutoIsland" IsExpanded="True">
+                    <fa:SettingsExpander.Footer>
+                        <TextBlock Text="{x:Static shared:GlobalConstants.DisplayVersion}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                    </fa:SettingsExpander.Footer>
+
+                    <fa:SettingsExpander.IconSource>
+                        <fa:ImageIconSource Source="/Assets/icon.png" />
+                    </fa:SettingsExpander.IconSource>
+
+                    <fa:SettingsExpanderItem Description="本项目基于 GNU General Public License v3.0 获得许可">
+                        <fa:SettingsExpanderItem.Footer>
+                            <WrapPanel Classes="animated-resize">
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://github.com/lrsgzs/SuperAutoIsland"
+                                                 ToolTip.Tip="GitHub: lrsgzs/SuperAutoIsland">
+                                    <TextBlock Text="项目主页" />
+                                </HyperlinkButton>
+
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://qm.qq.com/q/PeyliibxE4"
+                                                 ToolTip.Tip="群号：1074244092">
+                                    <TextBlock Text="加入插件交流 QQ 群" />
+                                </HyperlinkButton>
+                            </WrapPanel>
+                        </fa:SettingsExpanderItem.Footer>
+
+                        <TextBlock Background="Transparent">
+                            <Run Text="Copyright (c) 2025-" />
+                            <Run Text="{Binding Year, Source={x:Static system:DateTime.Now}, Mode=OneWay}" />
+                            lrs2187
+                        </TextBlock>
+                    </fa:SettingsExpanderItem>
+
+                    <fa:SettingsExpanderItem Content="鸣谢"
+                                               Description="这些库组成了 SAI Blockly 行动的核心"
+                                               IconSource="{ci:FluentIconSource {ci:FI HeartRegular}}">
+                        <fa:SettingsExpanderItem.Footer>
+                            <WrapPanel Classes="animated-resize">
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://blockly.com"
+                                                 ToolTip.Tip="前端积木库">
+                                    <TextBlock Text="Blockly" />
+                                </HyperlinkButton>
+
+                                <HyperlinkButton Command="{x:Static ci:UriNavigationCommands.UriNavigationCommand}"
+                                                 CommandParameter="https://github.com/sebastienros/jint"
+                                                 ToolTip.Tip="C# JavaScript 解释器">
+                                    <TextBlock Text="Jint" />
+                                </HyperlinkButton>
+                            </WrapPanel>
+                        </fa:SettingsExpanderItem.Footer>
+                    </fa:SettingsExpanderItem>
+                </fa:SettingsExpander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </ci:SettingsPageBase>
