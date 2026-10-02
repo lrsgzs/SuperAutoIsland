@@ -20,6 +20,12 @@
             <Style Selector=":custom-text-color TextBlock#MainTextBlock">
                 <Setter Property="Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
             </Style>
+            <Style Selector=":custom-text-color fa|FAIconSourceElement#MainIconElement">
+                <Setter Property="Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+            </Style>
+            <Style Selector=":custom-text-color fa|FAIconSourceElement#MainIconElement :is(Control)">
+                <Setter Property="TextElement.Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+            </Style>
         </Grid.Styles>
         
         <StackPanel Orientation="Horizontal"
