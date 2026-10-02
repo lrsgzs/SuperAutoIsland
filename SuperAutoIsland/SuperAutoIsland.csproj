@@ -5,14 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDynamicLoading>True</EnableDynamicLoading>
         <RootNamespace>SuperAutoIsland</RootNamespace>
-        <Version>0.3.9.1</Version>
+        <Version>0.3.9.2</Version>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <PropertyGroup>
         <Authors>lrs2187</Authors>
-        <PackageVersion>0.3.9.1-dev.2</PackageVersion>
+        <PackageVersion>0.3.9.2-dev.3</PackageVersion>
     </PropertyGroup>
     
     <ItemGroup>
