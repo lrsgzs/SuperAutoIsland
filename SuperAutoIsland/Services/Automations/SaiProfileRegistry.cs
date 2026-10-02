@@ -30,6 +30,8 @@ public static class SaiProfileRegistry
             .AddBlock<GetSubjectNameBlock>()
             .AddBlock<GetSubjectInitialBlock>()
             .AddBlock<GetSubjectTeacherNameBlock>()
+            .AddBlock<GetSubjectIconBlock>()
+            .AddBlock<GetSubjectColorBlock>()
             .AddBlock<SubjectIsOutDoorRuleBlock>()
             .AddLabel("时间表")
             .AddBlock<EmptyTimeLayoutGuidBlock>()
@@ -104,19 +106,19 @@ public static class SaiProfileRegistry
             .AddBlock<ClearTempClassPlanGroupBlock>());
 
         SaiServer.RegisterDynamicDropdown("sai.profile.dd.subjects", () =>
-            Task.FromResult(ProfileService.Profile.Subjects
+            Task.FromResult(DynamicDropdownHelper.EnsureNotEmpty(ProfileService.Profile.Subjects
                 .Select(x => (x.Value.Name, x.Key.ToString()))
-                .ToList()));
+                .ToList())));
 
         SaiServer.RegisterDynamicDropdown("sai.profile.dd.timeLayouts", () =>
-            Task.FromResult(ProfileService.Profile.TimeLayouts
+            Task.FromResult(DynamicDropdownHelper.EnsureNotEmpty(ProfileService.Profile.TimeLayouts
                 .Select(x => (x.Value.Name, x.Key.ToString()))
-                .ToList()));
+                .ToList())));
 
         SaiServer.RegisterDynamicDropdown("sai.profile.dd.classPlans", () =>
-            Task.FromResult(ProfileService.Profile.ClassPlans
+            Task.FromResult(DynamicDropdownHelper.EnsureNotEmpty(ProfileService.Profile.ClassPlans
                 .Select(x => (x.Value.Name, x.Key.ToString()))
-                .ToList()));
+                .ToList())));
 
         SaiServer.RegisterDynamicDropdown("sai.profile.dd.classPlanGroups", () =>
             Task.FromResult(ProfileService.Profile.ClassPlanGroups

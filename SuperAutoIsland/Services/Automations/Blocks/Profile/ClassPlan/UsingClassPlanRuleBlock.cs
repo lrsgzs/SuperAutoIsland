@@ -27,16 +27,7 @@ public class UsingClassPlanRuleBlock : RuleBlockBase
 
     private static string GetCurrentClassPlanRef()
     {
-        var lessons = IAppHost.GetService<ILessonsService>();
         var now = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime();
-        var plan = lessons.GetClassPlanByDate(now, out var id);
-        if (id is null)
-        {
-            return plan is null
-                ? Guid.Empty.ToString()
-                : ProfileBlockHelpers.CreateScheduleRef(DateOnly.FromDateTime(now));
-        }
-
-        return id.Value.ToString();
+        return ProfileBlockHelpers.ClassPlanRefByDate(now);
     }
 }

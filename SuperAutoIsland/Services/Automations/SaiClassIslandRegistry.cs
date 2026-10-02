@@ -336,9 +336,9 @@ public static class SaiClassIslandRegistry
             }));
 
         SaiServer.RegisterDynamicDropdown("classisland.lessons.subjects", async () =>
-            IAppHost.GetService<IProfileService>().Profile.Subjects
+            DynamicDropdownHelper.EnsureNotEmpty(IAppHost.GetService<IProfileService>().Profile.Subjects
                 .Select(x => (x.Value.Name, x.Key.ToString()))
-                .ToList());
+                .ToList()));
 
         SaiServer.RegisterDynamicDropdown("classisland.settings.componentConfigs", async () =>
             IAppHost.GetService<IComponentsService>().ComponentConfigs

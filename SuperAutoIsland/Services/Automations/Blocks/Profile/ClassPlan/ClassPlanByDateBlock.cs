@@ -1,7 +1,5 @@
 using System.Text.Json;
-using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Core.Icons;
-using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -27,15 +25,7 @@ public class ClassPlanByDateBlock : DataBlockBase
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var date = ProfileBlockHelpers.Date(settings, "Date");
-        var plan = IAppHost.GetService<ILessonsService>()
-            .GetClassPlanByDate(date.ToDateTime(TimeOnly.MinValue), out var id);
-        if (id is null)
-        {
-            return Task.FromResult<object>(plan is null
-                ? Guid.Empty.ToString()
-                : ProfileBlockHelpers.CreateScheduleRef(date));
-        }
-
-        return Task.FromResult<object>(id.Value.ToString());
+        return Task.FromResult<object>(
+            ProfileBlockHelpers.ClassPlanRefByDate(date.ToDateTime(TimeOnly.MinValue)));
     }
 }

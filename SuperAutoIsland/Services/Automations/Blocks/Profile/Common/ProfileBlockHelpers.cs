@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
+using ClassIsland.Shared.Enums;
 using ProfileClassPlan = ClassIsland.Shared.Models.Profile.ClassPlan;
 using ProfileTimeLayout = ClassIsland.Shared.Models.Profile.TimeLayout;
 using ProfileTimeLayoutItem = ClassIsland.Shared.Models.Profile.TimeLayoutItem;
@@ -70,6 +71,30 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
+    /// 当前档案的课程模式。
+    /// </summary>
+    public static ScheduleType CurrentScheduleType =>
+        IAppHost.GetService<IProfileService>().Profile.ScheduleType;
+
+    /// <summary>
+    /// 当前档案是否处于日程模式。
+    /// </summary>
+    public static bool IsScheduleMode => CurrentScheduleType == ScheduleType.Schedule;
+
+    /// <summary>
+    /// 获取指定日期生效的课表引用。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。
+    /// 当日没有课表时返回空 GUID。
+    /// </summary>
+    public static string ClassPlanRefByDate(DateTime date)
+    {
+        var plan = IAppHost.GetService<ILessonsService>().GetClassPlanByDate(date, out var id);
+        if (IsScheduleMode)
+            return plan is null ? System.Guid.Empty.ToString() : CreateScheduleRef(DateOnly.FromDateTime(date));
+
+        return (id ?? System.Guid.Empty).ToString();
+    }
+
+    /// <summary>
     /// 解析课表引用。日程模式引用仅在档案处于日程模式时有效。
     /// </summary>
     public static ProfileClassPlan? ResolveClassPlan(string? reference)
@@ -79,13 +104,12 @@ public static class ProfileBlockHelpers
 
         if (IsScheduleRef(reference))
         {
-            if (!TryParseScheduleRef(reference, out var date))
+            if (!TryParseScheduleRef(reference, out var date) || !IsScheduleMode)
                 return null;
 
-            // 日程模式生成的课表没有 GUID（out id 为 null）；经典模式返回的课表一定有 id。
-            var plan = IAppHost.GetService<ILessonsService>()
-                .GetClassPlanByDate(date.ToDateTime(TimeOnly.MinValue), out var id);
-            return id is null ? plan : null;
+            // 日程模式生成的课表没有 GUID，直接按日期取合成的课表。
+            return IAppHost.GetService<ILessonsService>()
+                .GetClassPlanByDate(date.ToDateTime(TimeOnly.MinValue), out _);
         }
 
         if (!System.Guid.TryParse(reference, out var guid))

@@ -12,16 +12,7 @@ public class CurrentClassPlanBlock : DataBlockBase
     public override string DataOutput => "SAI_Profile_ClassPlan";
     public override Task<object> Handler(object? data)
     {
-        var lessons = IAppHost.GetService<ILessonsService>();
         var now = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime();
-        var plan = lessons.GetClassPlanByDate(now, out var id);
-        if (id is null)
-        {
-            return Task.FromResult<object>(plan is null
-                ? Guid.Empty.ToString()
-                : ProfileBlockHelpers.CreateScheduleRef(DateOnly.FromDateTime(now)));
-        }
-
-        return Task.FromResult<object>(id.Value.ToString());
+        return Task.FromResult<object>(ProfileBlockHelpers.ClassPlanRefByDate(now));
     }
 }
