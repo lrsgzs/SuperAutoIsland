@@ -5,7 +5,7 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Models.Data;
 
-namespace SuperAutoIsland.Services.Automations.Blocks;
+namespace SuperAutoIsland.Services.Automations.Blocks.DynamicText;
 
 public class GetDynamicTextBlock : DataBlockBase
 {

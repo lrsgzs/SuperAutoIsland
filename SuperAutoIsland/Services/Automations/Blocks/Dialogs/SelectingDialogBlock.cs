@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Threading;
 using ClassIsland.Core;
 using ClassIsland.Core.Icons;
@@ -11,7 +10,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Shared;
 
-namespace SuperAutoIsland.Services.Automations.Blocks;
+namespace SuperAutoIsland.Services.Automations.Blocks.Dialogs;
 
 public class SelectingDialogBlock : DataBlockBase
 {

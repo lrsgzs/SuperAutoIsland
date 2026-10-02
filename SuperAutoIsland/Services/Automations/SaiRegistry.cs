@@ -1,11 +1,11 @@
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
-using ClassIsland.Shared.Models.Automation;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Actions;
-using SuperAutoIsland.Services.Automations.Blocks;
+using SuperAutoIsland.Services.Automations.Blocks.Dialogs;
+using SuperAutoIsland.Services.Automations.Blocks.DynamicText;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations;
@@ -55,6 +55,8 @@ public static class SaiRegistry
                 }
             })
             .AddBlock<GetDynamicTextBlock>()
+            .AddBlock<GetDynamicTextIconBlock>()
+            .AddBlock<GetDynamicTextColorBlock>()
             .AddLabel("项目")
             .AddBlock(new BlockMetadata("sai.actions.runBlockly")
             {

@@ -11,7 +11,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Models.Data;
 using SuperAutoIsland.Shared;
 
-namespace SuperAutoIsland.Services.Automations.Blocks;
+namespace SuperAutoIsland.Services.Automations.Blocks.Dialogs;
 
 public class TextDialogBlock : DataBlockBase
 {
