@@ -16,7 +16,8 @@ public class ClassPlanSubjectRuleBlock : RuleBlockBase
     public override void GetFields(FieldsRegister it) => it
         .AddField("ClassPlan", ProfileFields.ClassPlan(""))
         .AddField("Index", BasicFields.Number("第", 1))
-        .AddField("Subject", ProfileFields.Subject("节课是"));
+        .AddField("Subject", ProfileFields.Subject("节课是"))
+        .AddDummy("?");
     
     public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
     {

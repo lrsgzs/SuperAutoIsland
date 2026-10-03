@@ -147,7 +147,7 @@ public class Plugin : PluginBase
 
             if (GlobalConstants.Configs.MainConfig.Data.EnableProfileFeatures)
             {
-                SaiProfileRegistry.Register();
+                ProfileCategoryProvider.Register();
             }
         };
 

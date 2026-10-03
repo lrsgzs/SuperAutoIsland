@@ -6,6 +6,7 @@
                      xmlns:ci="http://classisland.tech/schemas/xaml/core"
                      xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:settingPages="clr-namespace:SuperAutoIsland.Views.SettingPages"
+                     xmlns:controls="clr-namespace:SuperAutoIsland.Controls"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:shared="clr-namespace:SuperAutoIsland.Shared"
                      mc:Ignorable="d">
@@ -57,10 +58,26 @@
 
                 <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI GroupRegular}}"
                                        Header="启用档案功能"
-                                       Description="指定是否启用档案功能。目前为 Blockly 独占功能">
+                                       Description="指定是否启用档案功能。目前为 Blockly 独占功能。修改此开关需要重启应用。"
+                                       IsExpanded="{Binding Settings.EnableProfileFeatures, Mode=OneWay}">
                     <fa:FASettingsExpander.Footer>
                         <ToggleSwitch IsChecked="{Binding Settings.EnableProfileFeatures}" />
                     </fa:FASettingsExpander.Footer>
+                    
+                    <fa:FASettingsExpanderItem Content="要启用的档案功能部分"
+                                               Description="此处更改无需重启即可生效，重新打开 Blockly 编辑器后可见。" />
+                    
+                    <controls:ProfileFeatureToggle Label="科目"
+                                                   Settings="{Binding Settings.ProfileFeatures.Subject}" />
+                    
+                    <controls:ProfileFeatureToggle Label="时间表"
+                                                   Settings="{Binding Settings.ProfileFeatures.TimeLayout}" />
+                    
+                    <controls:ProfileFeatureToggle Label="课表"
+                                                   Settings="{Binding Settings.ProfileFeatures.ClassPlan}" />
+                    
+                    <controls:ProfileFeatureToggle Label="课表群"
+                                                   Settings="{Binding Settings.ProfileFeatures.ClassPlanGroup}" />
                 </fa:FASettingsExpander>
 
                 <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI BugRegular}}" Header="调试"

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SuperAutoIsland.Models.Settings;
 
@@ -41,6 +42,28 @@ public partial class MainConfigModel : ObservableObject
             OnPropertyChanged();
         }
     } = false;
+
+    /// <summary>
+    /// 档案功能设置（板块的读写开关）。子功能开关无需重启即可生效。
+    /// </summary>
+    public ProfileFeaturesModel ProfileFeatures
+    {
+        get;
+        set
+        {
+            if (value is null || ReferenceEquals(value, field)) return;
+            field.PropertyChanged -= OnProfileFeaturesChanged;
+            field = value;
+            field.PropertyChanged += OnProfileFeaturesChanged;
+            OnPropertyChanged();
+        }
+    } = new();
+
+    /// <summary>
+    /// 档案功能子开关变化时保存配置（不请求重启）。
+    /// </summary>
+    private void OnProfileFeaturesChanged(object? sender, PropertyChangedEventArgs e) =>
+        OnPropertyChanged(nameof(ProfileFeatures));
 
     [ObservableProperty] private bool _enableEasterEggs;
 }

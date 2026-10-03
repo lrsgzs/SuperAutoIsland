@@ -1,0 +1,20 @@
+<UserControl x:Class="SuperAutoIsland.Controls.ProfileFeatureToggle"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SuperAutoIsland.Controls"
+             mc:Ignorable="d"
+             d:DesignWidth="400" d:DesignHeight="32">
+    <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock MinWidth="72"
+                   VerticalAlignment="Center"
+                   Text="{Binding Label, RelativeSource={RelativeSource FindAncestor, AncestorType=local:ProfileFeatureToggle}}" />
+
+        <CheckBox Content="读取" VerticalAlignment="Center"
+                  IsChecked="{Binding Settings.Read, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType=local:ProfileFeatureToggle}}" />
+
+        <CheckBox Content="写入" VerticalAlignment="Center"
+                  IsChecked="{Binding Settings.Write, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType=local:ProfileFeatureToggle}}" />
+    </StackPanel>
+</UserControl>

@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -9,6 +9,7 @@ using ClassIsland.Core.Helpers.UI;
 using ClassIsland.Core.Icons;
 using ClassIsland.Core.Models.UI;
 using ClassIsland.Shared;
+using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Settings;
 using SuperAutoIsland.Shared;
 
@@ -32,6 +33,7 @@ public partial class MainSettingsPage : SettingsPageBase {
         InitializeComponent();
         
         Settings.RestartPropertyChanged += SettingsOnPropertyChanged;
+        Settings.ProfileFeatures.PropertyChanged += ProfileFeaturesOnPropertyChanged;
         
         DebugComboBox.ItemsSource = ActionSerializer.GetActionsId();
     }
@@ -42,6 +44,19 @@ public partial class MainSettingsPage : SettingsPageBase {
         
         RequestRestart();
         _isRequestedRestart = true;
+    }
+
+    /// <summary>
+    /// 档案功能子开关变化：重新构建档案分类的积木，无需重启
+    /// </summary>
+    private void ProfileFeaturesOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (!Settings.EnableProfileFeatures)
+        {
+            return;
+        }
+        
+        IAppHost.GetService<ISaiServer>().NotifyCategoryUpdated();
     }
 
     /// <summary>

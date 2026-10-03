@@ -14,7 +14,7 @@ namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 public class GetClassPeriodItemBlock : DataBlockBase
 {
     public override string Id => "sai.profile.data.timeLayoutClassPeriod";
-    public override string Name => "时间点";
+    public override string Name => "时间表";
     public override (string, string) Icon => ("钟表", FluentIcons.ClockRegular);
     public override string Tooltip => "获取时间表中的第 N 节课（类型为「上课」的时间点），输出「时间表 GUID[序号]」格式的时间点标识。";
     public override string DataOutput => "SAI_Profile_TimeLayoutItem";
