@@ -81,6 +81,9 @@
                     
                     <controls:ProfileFeatureToggle Label="课表群"
                                                    Settings="{Binding Settings.ProfileFeatures.ClassPlanGroup}" />
+                    
+                    <controls:ProfileFeatureToggle Label="日程"
+                                                   Settings="{Binding Settings.ProfileFeatures.Schedule}" />
                 </fa:FASettingsExpander>
 
                 <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI BugRegular}}" Header="调试"

@@ -7,7 +7,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Categories.Profile;
 
 /// <summary>
-/// 「档案 - 科目」分类提供方
+///     「档案 - 科目」分类提供方
 /// </summary>
 public class ProfileSubjectCategoryProvider : ICategoryProvider
 {
@@ -24,38 +24,36 @@ public class ProfileSubjectCategoryProvider : ICategoryProvider
 
         it
             .AddBlock<EmptySubjectGuidBlock>()
+            .AddBlock<GetSubjectListBlock>()
             .AddBlock<SubjectByGuidBlock>()
             .AddBlock<SubjectByNameBlock>()
-            .AddBlock<GetSubjectListBlock>()
             .AddBlock<SubjectExistsBlock>();
 
         if (features.Subject.Read)
-        {
             it.AddLabel("科目 - 信息")
-                .AddBlock<GetSubjectNameBlock>()
-                .AddBlock<GetSubjectInitialBlock>()
-                .AddBlock<GetSubjectTeacherNameBlock>()
-                .AddBlock<GetSubjectLocationBlock>()
-                .AddBlock<GetSubjectIconBlock>()
-                .AddBlock<GetSubjectColorBlock>()
-                .AddBlock<SubjectIsOutDoorRuleBlock>();
-        }
+              .AddBlock<GetSubjectNameBlock>()
+              .AddBlock<GetSubjectInitialBlock>()
+              .AddBlock<GetSubjectTeacherNameBlock>()
+              .AddBlock<GetSubjectLocationBlock>()
+              .AddBlock<GetSubjectIconBlock>()
+              .AddBlock<GetSubjectColorBlock>()
+              .AddBlock<SubjectIsOutDoorRuleBlock>();
 
         if (features.Subject.Write)
         {
             it.AddLabel("科目 - 操作")
-                .AddBlock<CreateSubjectBlock>()
-                .AddBlock<CopySubjectBlock>()
-                .AddBlock<DeleteSubjectBlock>();
+              .AddBlock<CreateSubjectBlock>()
+              .AddBlock<CopySubjectBlock>()
+              .AddBlock<DeleteSubjectBlock>();
 
             it.AddLabel("科目 - 信息编辑")
-                .AddBlock<SetSubjectNameBlock>()
-                .AddBlock<SetSubjectInitialBlock>()
-                .AddBlock<SetSubjectTeacherNameBlock>()
-                .AddBlock<SetSubjectLocationBlock>()
-                .AddBlock<SetSubjectIconBlock>()
-                .AddBlock<SetSubjectColorBlock>()
-                .AddBlock<SetSubjectIsOutDoorBlock>();
+              .AddBlock<SetSubjectNameBlock>()
+              .AddBlock<SetSubjectInitialBlock>()
+              .AddBlock<SetSubjectTeacherNameBlock>()
+              .AddBlock<SetSubjectLocationBlock>()
+              .AddBlock<SetSubjectIconBlock>()
+              .AddBlock<SetSubjectColorBlock>()
+              .AddBlock<SetSubjectIsOutDoorBlock>();
         }
     }
 }

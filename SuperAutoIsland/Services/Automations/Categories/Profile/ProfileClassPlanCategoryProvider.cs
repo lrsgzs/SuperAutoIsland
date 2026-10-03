@@ -7,7 +7,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Categories.Profile;
 
 /// <summary>
-/// 「档案 - 课表」分类提供方
+///     「档案 - 课表」分类提供方
 /// </summary>
 public class ProfileClassPlanCategoryProvider : ICategoryProvider
 {
@@ -24,55 +24,52 @@ public class ProfileClassPlanCategoryProvider : ICategoryProvider
 
         it
             .AddBlock<EmptyClassPlanGuidBlock>()
+            .AddBlock<GetClassPlanListBlock>()
             .AddBlock<ClassPlanByGuidBlock>()
             .AddBlock<ClassPlanByNameBlock>()
             .AddBlock<ClassPlanByDateBlock>()
-            .AddBlock<GetClassPlanListBlock>()
             .AddBlock<ClassPlanExistsBlock>();
 
         if (features.ClassPlan.Read)
-        {
             it.AddLabel("课表 - 信息")
-                .AddBlock<GetClassPlanNameBlock>()
-                .AddBlock<GetClassPlanTimeLayoutBlock>()
-                .AddBlock<GetClassPlanGroupBlock>()
-                .AddBlock<GetClassPlanEnabledBlock>()
-                .AddBlock<GetClassPlanSubjectBlock>()
-                .AddBlock<CurrentClassPlanBlock>()
-                .AddBlock<CurrentClassIndexBlock>()
-                .AddBlock<CurrentTimePointIndexBlock>()
-                .AddBlock<UsingClassPlanRuleBlock>()
-                .AddBlock<ClassPlanSubjectRuleBlock>()
-                .AddBlock<ClassPlanOverlayRuleBlock>();
-        }
+              .AddBlock<GetClassPlanNameBlock>()
+              .AddBlock<GetClassPlanTimeLayoutBlock>()
+              .AddBlock<GetClassPlanGroupBlock>()
+              .AddBlock<GetClassPlanEnabledBlock>()
+              .AddBlock<GetClassPlanSubjectBlock>()
+              .AddBlock<CurrentClassPlanBlock>()
+              .AddBlock<CurrentClassIndexBlock>()
+              .AddBlock<CurrentTimePointIndexBlock>()
+              .AddBlock<UsingClassPlanRuleBlock>()
+              .AddBlock<ClassPlanSubjectRuleBlock>()
+              .AddBlock<ClassPlanOverlayRuleBlock>();
 
         if (features.ClassPlan.Write)
-        {
             it.AddLabel("课表 - 操作")
-                .AddBlock<CreateEmptyClassPlanBlock>()
-                .AddBlock<CopyClassPlanBlock>()
-                .AddBlock<CreateTempClassPlanBlock>()
-                .AddBlock<CreateTempClassPlanWithDateBlock>()
-                .AddBlock<DeleteClassPlanBlock>()
-                .AddLabel("课表 - 信息编辑")
-                .AddBlock<SetClassPlanNameBlock>()
-                .AddBlock<SetClassPlanTimeLayoutBlock>()
-                .AddBlock<SetClassPlanGroupBlock>()
-                .AddBlock<SetClassPlanEnabledBlock>()
-                .AddBlock<SetWeeklyRuleBlock>()
-                .AddBlock<SetWeeklyCycleRuleBlock>()
-                .AddBlock<SetDateRuleBlock>()
-                .AddBlock<SetLoopRuleBlock>()
-                .AddBlock<SetDateRangeRuleBlock>()
-                .AddLabel("课表 - 课程编辑")
-                .AddBlock<SetClassPlanSubjectBlock>()
-                .AddBlock<SwapClassPlanSubjectBlock>()
-                .AddLabel("课表 - 临时")
-                .AddBlock<ScheduleClassPlanBlock>()
-                .AddBlock<ClearScheduledClassPlanBlock>()
-                .AddBlock<EnableTempClassPlanBlock>()
-                .AddBlock<ClearTempClassPlanBlock>()
-                .AddBlock<ClearTempOverlayBlock>();
-        }
+              .AddBlock<CreateEmptyClassPlanBlock>()
+              .AddBlock<CopyClassPlanBlock>()
+              .AddBlock<CreateTempClassPlanBlock>()
+              .AddBlock<CreateTempClassPlanWithDateBlock>()
+              .AddBlock<DeleteClassPlanBlock>()
+              .AddLabel("课表 - 信息编辑")
+              .AddBlock<SetClassPlanNameBlock>()
+              .AddBlock<SetClassPlanTimeLayoutBlock>()
+              .AddBlock<SetClassPlanGroupBlock>()
+              .AddBlock<SetClassPlanEnabledBlock>()
+              .AddLabel("课表 - 触发规则")
+              .AddBlock<SetWeeklyRuleBlock>()
+              .AddBlock<SetWeeklyCycleRuleBlock>()
+              .AddBlock<SetDateRuleBlock>()
+              .AddBlock<SetLoopRuleBlock>()
+              .AddBlock<SetDateRangeRuleBlock>()
+              .AddLabel("课表 - 课程编辑")
+              .AddBlock<SetClassPlanSubjectBlock>()
+              .AddBlock<SwapClassPlanSubjectBlock>()
+              .AddLabel("课表 - 临时")
+              .AddBlock<ScheduleClassPlanBlock>()
+              .AddBlock<ClearScheduledClassPlanBlock>()
+              .AddBlock<EnableTempClassPlanBlock>()
+              .AddBlock<ClearTempClassPlanBlock>()
+              .AddBlock<ClearTempOverlayBlock>();
     }
 }

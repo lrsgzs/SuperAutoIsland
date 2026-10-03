@@ -7,7 +7,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Categories.Profile;
 
 /// <summary>
-/// 「档案 - 时间表」分类提供方
+///     「档案 - 时间表」分类提供方
 /// </summary>
 public class ProfileTimeLayoutCategoryProvider : ICategoryProvider
 {
@@ -24,26 +24,24 @@ public class ProfileTimeLayoutCategoryProvider : ICategoryProvider
 
         it
             .AddBlock<EmptyTimeLayoutGuidBlock>()
+            .AddBlock<GetTimeLayoutListBlock>()
             .AddBlock<TimeLayoutByGuidBlock>()
             .AddBlock<TimeLayoutByNameBlock>()
-            .AddBlock<GetTimeLayoutListBlock>()
             .AddBlock<TimeLayoutExistsBlock>();
 
         if (features.TimeLayout.Read)
-        {
             it.AddLabel("时间表 - 信息")
-                .AddBlock<GetTimeLayoutNameBlock>();
-        }
+              .AddBlock<GetTimeLayoutNameBlock>();
 
         if (features.TimeLayout.Write)
         {
             it.AddLabel("时间表 - 操作")
-                .AddBlock<CreateTimeLayoutBlock>()
-                .AddBlock<CopyTimeLayoutBlock>()
-                .AddBlock<DeleteTimeLayoutBlock>();
+              .AddBlock<CreateTimeLayoutBlock>()
+              .AddBlock<CopyTimeLayoutBlock>()
+              .AddBlock<DeleteTimeLayoutBlock>();
 
             it.AddLabel("时间表 - 信息编辑")
-                .AddBlock<SetTimeLayoutNameBlock>();
+              .AddBlock<SetTimeLayoutNameBlock>();
         }
     }
 }

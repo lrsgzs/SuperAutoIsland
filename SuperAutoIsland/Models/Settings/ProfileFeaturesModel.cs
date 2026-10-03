@@ -69,11 +69,20 @@ public partial class ProfileFeaturesModel : ObservableObject
     } = new();
 
     /// <summary>
+    /// 日程（课程）
+    /// </summary>
+    public ProfileSectionSettings Schedule
+    {
+        get;
+        set => SetSection(ref field, value);
+    } = new();
+
+    /// <summary>
     /// 所有板块，顺序与分类中的积木分组一致
     /// </summary>
     [JsonIgnore]
     public IReadOnlyList<ProfileSectionSettings> Sections =>
-        [Subject, TimePoint, TimeLayout, ClassPlan, ClassPlanGroup];
+        [Subject, TimePoint, TimeLayout, ClassPlan, ClassPlanGroup, Schedule];
 
     /// <summary>
     /// 设置板块开关，并把属性变化监听迁移到新的对象上

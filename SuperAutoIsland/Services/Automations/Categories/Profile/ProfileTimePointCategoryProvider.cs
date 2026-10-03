@@ -7,7 +7,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Categories.Profile;
 
 /// <summary>
-/// 「档案 - 时间点」分类提供方
+///     「档案 - 时间点」分类提供方
 /// </summary>
 public class ProfileTimePointCategoryProvider : ICategoryProvider
 {
@@ -29,18 +29,18 @@ public class ProfileTimePointCategoryProvider : ICategoryProvider
         if (features.TimePoint.Read)
         {
             it.AddLabel("时间点 - 获取")
-                .AddBlock<TimeLayoutItemBlock>()
-                .AddBlock<GetClassPeriodItemBlock>()
-                .AddBlock<TimeLayoutItemExistsRuleBlock>()
-                .AddBlock<TimePointIndexBlock>()
-                .AddBlock<TimePointClassIndexBlock>();
+              .AddBlock<TimeLayoutItemBlock>()
+              .AddBlock<GetClassPeriodItemBlock>()
+              .AddBlock<TimeLayoutItemExistsRuleBlock>()
+              .AddBlock<TimePointIndexBlock>()
+              .AddBlock<TimePointClassIndexBlock>();
 
             it.AddLabel("时间点 - 信息")
-                .AddBlock<GetTimePointItemTypeBlock>()
-                .AddBlock<GetTimePointStartTimeBlock>()
-                .AddBlock<GetTimePointEndTimeBlock>()
-                .AddBlock<GetTimePointDurationBlock>()
-                .AddBlock<GetTimePointBreakNameBlock>();
+              .AddBlock<GetTimePointItemTypeBlock>()
+              .AddBlock<GetTimePointStartTimeBlock>()
+              .AddBlock<GetTimePointEndTimeBlock>()
+              .AddBlock<GetTimePointDurationBlock>()
+              .AddBlock<GetTimePointBreakNameBlock>();
         }
     }
 }

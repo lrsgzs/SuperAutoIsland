@@ -7,7 +7,7 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Categories.Profile;
 
 /// <summary>
-/// 「档案 - 课表群」分类提供方
+///     「档案 - 课表群」分类提供方
 /// </summary>
 public class ProfileClassPlanGroupCategoryProvider : ICategoryProvider
 {
@@ -24,32 +24,30 @@ public class ProfileClassPlanGroupCategoryProvider : ICategoryProvider
 
         it
             .AddBlock<EmptyClassPlanGroupGuidBlock>()
+            .AddBlock<GetClassPlanGroupListBlock>()
             .AddBlock<ClassPlanGroupByGuidBlock>()
             .AddBlock<ClassPlanGroupByNameBlock>()
-            .AddBlock<GetClassPlanGroupListBlock>()
             .AddBlock<ClassPlanGroupExistsBlock>();
 
         if (features.ClassPlanGroup.Read)
-        {
             it.AddLabel("课表群 - 信息")
-                .AddBlock<GetClassPlanGroupNameBlock>()
-                .AddBlock<CurrentClassPlanGroupBlock>();
-        }
+              .AddBlock<GetClassPlanGroupNameBlock>()
+              .AddBlock<CurrentClassPlanGroupBlock>();
 
         if (features.ClassPlanGroup.Write)
         {
             it.AddLabel("课表群 - 操作")
-                .AddBlock<CreateClassPlanGroupBlock>()
-                .AddBlock<DisbandClassPlanGroupBlock>()
-                .AddBlock<DeleteClassPlanGroupBlock>();
+              .AddBlock<CreateClassPlanGroupBlock>()
+              .AddBlock<DisbandClassPlanGroupBlock>()
+              .AddBlock<DeleteClassPlanGroupBlock>();
 
             it.AddLabel("课表群 - 信息编辑")
-                .AddBlock<SetClassPlanGroupNameBlock>();
+              .AddBlock<SetClassPlanGroupNameBlock>();
 
             it.AddLabel("课表群 - 临时")
-                .AddBlock<SetCurrentClassPlanGroupBlock>()
-                .AddBlock<SetupTempClassPlanGroupBlock>()
-                .AddBlock<ClearTempClassPlanGroupBlock>();
+              .AddBlock<SetCurrentClassPlanGroupBlock>()
+              .AddBlock<SetupTempClassPlanGroupBlock>()
+              .AddBlock<ClearTempClassPlanGroupBlock>();
         }
     }
 }

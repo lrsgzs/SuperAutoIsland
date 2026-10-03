@@ -4,6 +4,7 @@ using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using ClassIsland.Shared.Enums;
 using ProfileClassPlan = ClassIsland.Shared.Models.Profile.ClassPlan;
+using ProfileScheduleItem = ClassIsland.Shared.Models.Profile.ScheduleItem;
 using ProfileClassPlanGroup = ClassIsland.Shared.Models.Profile.ClassPlanGroup;
 using ProfileSubject = ClassIsland.Shared.Models.Profile.Subject;
 using ProfileTimeLayout = ClassIsland.Shared.Models.Profile.TimeLayout;
@@ -148,6 +149,49 @@ public static class ProfileBlockHelpers
     /// </summary>
     public static ProfileClassPlanGroup? ClassPlanGroup(JsonElement settings, string name = "ClassPlanGroup") =>
         IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups.GetValueOrDefault(Guid(settings, name));
+
+    /// <summary>
+    /// 读取时间设置（「HH:mm:ss」文本）。
+    /// </summary>
+    public static TimeSpan Time(JsonElement settings, string name)
+    {
+        var raw = settings.GetProperty(name).GetString();
+        return TimeSpan.TryParse(raw, CultureInfo.InvariantCulture, out var value) ? value : TimeSpan.Zero;
+    }
+
+    /// <summary>
+    /// 按 GUID 解析课程（日程项目）。用于写操作。
+    /// </summary>
+    public static ProfileScheduleItem? ScheduleItem(JsonElement settings, string name = "ScheduleItem") =>
+        IAppHost.GetService<IProfileService>().Profile.ScheduleItems.GetValueOrDefault(Guid(settings, name));
+
+    /// <summary>
+    /// 获取当天生效的课程（日程项目）。
+    /// </summary>
+    public static OrderedDictionary<Guid, ProfileScheduleItem> TodayScheduleItems() =>
+        IAppHost.GetService<ILessonsService>().GetScheduleItemsByDate(
+            DateOnly.FromDateTime(IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime()));
+
+    /// <summary>
+    /// 获取当前正在进行中的课程（日程项目）。没有正在进行中的课程时返回 null。
+    /// 有多个课程重叠时取开始时间最晚的一个。
+    /// </summary>
+    public static (Guid Id, ProfileScheduleItem Item)? CurrentScheduleItem()
+    {
+        var time = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime().TimeOfDay;
+        (Guid Id, ProfileScheduleItem Item)? current = null;
+
+        foreach (var (id, item) in TodayScheduleItems())
+        {
+            if (item.StartTime > time || item.EndTime < time)
+                continue;
+
+            if (current is null || item.StartTime > current.Value.Item.StartTime)
+                current = (id, item);
+        }
+
+        return current;
+    }
 
     /// <summary>
     /// 清理指向已被移除的课表群的引用（当前启用的课表群与临时课表群）。

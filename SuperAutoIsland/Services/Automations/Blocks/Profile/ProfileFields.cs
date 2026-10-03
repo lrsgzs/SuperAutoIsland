@@ -24,6 +24,12 @@ public static class ProfileFields
         Create(name, "SAI_Profile_ClassPlanGroup", "sai_profile_data_classPlanGroupByGuid");
 
     /// <summary>
+    /// 课程（日程项目）输入。
+    /// </summary>
+    public static InputField ScheduleItem(string name) =>
+        Create(name, "SAI_Profile_ScheduleItem", "sai_profile_data_scheduleItem");
+
+    /// <summary>
     /// 时间表时间点输入。后台值为「时间表 GUID[序号]」格式的字符串。
     /// </summary>
     public static InputField TimeLayoutItem(string name) =>
