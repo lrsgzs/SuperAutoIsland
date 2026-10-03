@@ -18,6 +18,8 @@ using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations;
 using SuperAutoIsland.Services.Automations.Actions;
+using SuperAutoIsland.Services.Automations.Categories;
+using SuperAutoIsland.Services.Automations.Categories.Profile;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
@@ -134,7 +136,7 @@ public class Plugin : PluginBase
         AppBase.Current.AppStarted += (_, _) =>
         {
             _logger.BaseLog("TRACE", "创建 SaiServer 实例...");
-            IAppHost.GetService<ISaiServer>();
+            var saiServer = IAppHost.GetService<ISaiServer>();
 
             _logger.Debug("初始化服务...");
             IAppHost.GetService<RuleHandlerService>();
@@ -147,7 +149,7 @@ public class Plugin : PluginBase
 
             if (GlobalConstants.Configs.MainConfig.Data.EnableProfileFeatures)
             {
-                ProfileCategoryProvider.Register();
+                SaiProfileRegistry.Register();
             }
         };
 
