@@ -8,16 +8,19 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 设置科目名称。
+///     设置科目名称。
 /// </summary>
 public class SetSubjectNameBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setSubjectName";
     public override string Name => "设置科目名称";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""))
-        .AddField("Name", BasicFields.Text("名称"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""))
+            .AddField("Name", BasicFields.Text("名称"));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

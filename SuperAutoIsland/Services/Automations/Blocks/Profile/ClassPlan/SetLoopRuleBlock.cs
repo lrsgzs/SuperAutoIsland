@@ -13,11 +13,14 @@ public class SetLoopRuleBlock : ActionBlockBase
     public override string Id => "sai.profile.actions.setLoopRule";
     public override string Name => "设置课表触发规则为";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("循环")
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("CycleDays", BasicFields.Number("每几天启用一次", 3))
-        .AddField("OffsetDays", BasicFields.Number("向后偏移几天", 0));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("循环")
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("CycleDays", BasicFields.Number("每几天启用一次", 3))
+            .AddField("OffsetDays", BasicFields.Number("向后偏移几天"));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {
@@ -29,7 +32,7 @@ public class SetLoopRuleBlock : ActionBlockBase
             var cycleDays = Math.Max(1, ProfileBlockHelpers.Number(settings, "CycleDays"));
             var offsetDays = ProfileBlockHelpers.Number(settings, "OffsetDays");
             plan.TimeRule.LoopCycleDays = cycleDays;
-            plan.TimeRule.LoopOffsetDays = ((offsetDays % cycleDays) + cycleDays) % cycleDays;
+            plan.TimeRule.LoopOffsetDays = (offsetDays % cycleDays + cycleDays) % cycleDays;
         }
 
         return Task.CompletedTask;

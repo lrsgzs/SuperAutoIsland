@@ -11,7 +11,7 @@ using ProfileScheduleItem = ClassIsland.Shared.Models.Profile.ScheduleItem;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 创建一个新课程（日程项目），并输出新课程的 GUID。
+///     创建一个新课程（日程项目），并输出新课程的 GUID。
 /// </summary>
 public class CreateScheduleItemBlock : DataBlockBase
 {
@@ -21,13 +21,16 @@ public class CreateScheduleItemBlock : DataBlockBase
     public override string Tooltip => "创建一个新课程（日程项目），并输出新课程的 GUID。课程按指定的星期每周启用。";
     public override string DataOutput => "SAI_Profile_ScheduleItem";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""))
-        .AddField("WeekDay", BasicFields.Dropdown("星期", [
-            ("周一", "1"), ("周二", "2"), ("周三", "3"), ("周四", "4"), ("周五", "5"), ("周六", "6"), ("周日", "0")
-        ], true))
-        .AddField("StartTime", BasicFields.Time("开始时间", TimeSpan.FromHours(8)))
-        .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(45)));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""))
+            .AddField("WeekDay", BasicFields.Dropdown("星期", [
+                ("周一", "1"), ("周二", "2"), ("周三", "3"), ("周四", "4"), ("周五", "5"), ("周六", "6"), ("周日", "0")
+            ], true))
+            .AddField("StartTime", BasicFields.Time("开始时间", TimeSpan.FromHours(8)))
+            .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(45)));
+    }
 
     public override Task<object> Handler(object? data)
     {

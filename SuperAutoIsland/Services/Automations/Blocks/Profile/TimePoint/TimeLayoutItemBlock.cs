@@ -8,7 +8,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间表中的第 N 个时间点，输出「时间表 GUID[序号]」格式的时间点标识。
+///     获取时间表中的第 N 个时间点，输出「时间表 GUID[序号]」格式的时间点标识。
 /// </summary>
 public class TimeLayoutItemBlock : DataBlockBase
 {
@@ -20,15 +20,18 @@ public class TimeLayoutItemBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayout", ProfileFields.TimeLayout(""))
-        .AddField("Index", BasicFields.Number("中的第", 1))
-        .AddDummy("个时间点");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayout", ProfileFields.TimeLayout(""))
+            .AddField("Index", BasicFields.Number("中的第", 1))
+            .AddDummy("个时间点");
+    }
 
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
-        var reference = ProfileBlockHelpers.TimeLayoutRef(settings, "TimeLayout");
+        var reference = ProfileBlockHelpers.TimeLayoutRef(settings);
         var index = Math.Max(1, (int)settings.GetProperty("Index").GetDouble());
         return Task.FromResult<object>($"{reference}[{index}]");
     }

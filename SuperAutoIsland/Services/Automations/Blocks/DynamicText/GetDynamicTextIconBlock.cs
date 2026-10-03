@@ -17,8 +17,11 @@ public class GetDynamicTextIconBlock : DataBlockBase
     public override string DataOutput => "SAI_Icon";
     public override Type SettingsType => typeof(GetDynamicTextSettings);
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Key", BasicFields.Text("ID"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Key", BasicFields.Text("ID"));
+    }
 
     public override Task<object> Handler(object? data)
     {

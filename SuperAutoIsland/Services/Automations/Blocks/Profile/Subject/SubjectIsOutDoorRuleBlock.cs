@@ -1,5 +1,6 @@
 using System.Text.Json;
 using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Core.Models.Ruleset;
 using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -15,14 +16,17 @@ public class SubjectIsOutDoorRuleBlock : RuleBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""))
-        .AddDummy("是户外课程?");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""))
+            .AddDummy("是户外课程?");
+    }
 
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
+    public override bool Handler(Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
         return IAppHost.GetService<IProfileService>().Profile.Subjects
-            .GetValueOrDefault(ProfileBlockHelpers.Guid(settings, "Subject"))?.IsOutDoor == true;
+                       .GetValueOrDefault(ProfileBlockHelpers.Guid(settings, "Subject"))?.IsOutDoor == true;
     }
 }

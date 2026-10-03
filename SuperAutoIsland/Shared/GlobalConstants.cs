@@ -3,35 +3,35 @@
 namespace SuperAutoIsland.Shared;
 
 /// <summary>
-/// 公开常量
+///     公开常量
 /// </summary>
 public static class GlobalConstants
 {
     /// <summary>
-    /// 插件路径
+    ///     插件路径
     /// </summary>
     public static string? PluginFolder { get; set; }
-    
+
     /// <summary>
-    /// 插件配置路径
+    ///     插件配置路径
     /// </summary>
     public static string? PluginConfigFolder { get; set; }
 
     public static string Codename => "Sandrone";
     public static string Version => Plugin.Current!.Info.Manifest.Version;
     public static string DisplayVersion => $"{Version} (Codename {Codename})";
-    
+
     /// <summary>
-    /// 配置集
+    ///     配置集
     /// </summary>
     public static class Configs
     {
         public static MainConfigHandler? MainConfig { get; set; }
         public static ProjectConfigHandler? ProjectConfig { get; set; }
     }
-    
+
     /// <summary>
-    /// 资源
+    ///     资源
     /// </summary>
     public static class Assets
     {

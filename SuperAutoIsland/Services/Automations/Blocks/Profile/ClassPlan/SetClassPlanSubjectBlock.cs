@@ -15,12 +15,15 @@ public class SetClassPlanSubjectBlock : ActionBlockBase
     public override string Name => "课表";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
-    
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan("设置"))
-        .AddField("Index", BasicFields.Number("第", 1))
-        .AddField("Subject", ProfileFields.Subject("节课的科目为"));
-    
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan("设置"))
+            .AddField("Index", BasicFields.Number("第", 1))
+            .AddField("Subject", ProfileFields.Subject("节课的科目为"));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
@@ -29,7 +32,7 @@ public class SetClassPlanSubjectBlock : ActionBlockBase
         var subjectId = ProfileBlockHelpers.Guid(s, "Subject");
         var profile = IAppHost.GetService<IProfileService>().Profile;
         if (plan != null && index >= 0 && index < plan.Classes.Count
-                         && (subjectId == Guid.Empty || profile.Subjects.ContainsKey(subjectId)))
+            && (subjectId == Guid.Empty || profile.Subjects.ContainsKey(subjectId)))
             plan.Classes[index].SubjectId = subjectId;
         return Task.CompletedTask;
     }

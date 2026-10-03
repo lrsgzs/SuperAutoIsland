@@ -13,7 +13,7 @@ namespace SuperAutoIsland.Services;
 public class SaiBlockRunner(IActionService actionService, IRulesetService rulesetService)
 {
     private readonly Logger<SaiBlockRunner> _logger = new();
-    
+
     public async Task RunAction(string id, JsonElement settings)
     {
         _logger.Debug($"运行行动 {id}");
@@ -30,14 +30,14 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
             Settings = settings.Deserialize<object>()
         };
         var block = SaiBlocksRegistry.Blocks.GetValueOrDefault(id) as ActionBlockBase;
-        
+
         if (block != null)
         {
             action = block.Wrapper(action);
         }
-        
+
         _logger.BaseLog("TRACE", $"Id: {action.Id} Settings: {JsonSerializer.Serialize(action.Settings)}");
-        
+
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             if (block != null)
@@ -45,14 +45,14 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
                 await block.Handler(action);
                 return;
             }
-            
+
             await actionService.InvokeActionSetAsync(new ActionSet
             {
                 Name = "SAI 临时行动组",
                 ActionItems = [action]
             });
         });
-        
+
         _logger.Debug($"行动 {id} 运行完毕");
     }
 
@@ -78,7 +78,7 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
         {
             IsReversed = false,
             Id = id,
-            Settings = settings.Deserialize<object>(),
+            Settings = settings.Deserialize<object>()
         };
         var block = SaiBlocksRegistry.Blocks.GetValueOrDefault(id) as RuleBlockBase;
 
@@ -86,7 +86,7 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
         {
             rule = block.Wrapper(rule);
         }
-        
+
         _logger.BaseLog("TRACE", $"Id: {rule.Id} Settings: {JsonSerializer.Serialize(rule.Settings)}");
 
         var result = await Dispatcher.UIThread.InvokeAsync(() =>
@@ -95,7 +95,7 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
             {
                 return block.Handler(rule);
             }
-            
+
             return rulesetService.IsRulesetSatisfied(new Ruleset
             {
                 Mode = RulesetLogicalMode.And,
@@ -104,12 +104,12 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
                 [
                     new RuleGroup
                     {
-                        Rules = [rule],
+                        Rules = [rule]
                     }
                 ]
             });
         });
-        
+
         _logger.Debug($"规则 {id} 运行完毕，结果：{result}");
         return result;
     }
@@ -133,14 +133,14 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
 
         var data = settings.Deserialize(block.SettingsType);
         var result = await Dispatcher.UIThread.InvokeAsync(async () =>
-            await block.Handler(data));
-        
+                                                               await block.Handler(data));
+
         _logger.Debug($"数据 {id} 运行完毕，结果：{result}");
         return result;
     }
 
     /// <summary>
-    /// 尝试由前缀处理器处理积木调用（在 ui 线程运行）
+    ///     尝试由前缀处理器处理积木调用（在 ui 线程运行）
     /// </summary>
     /// <param name="kind">积木类型</param>
     /// <param name="id">积木 id</param>

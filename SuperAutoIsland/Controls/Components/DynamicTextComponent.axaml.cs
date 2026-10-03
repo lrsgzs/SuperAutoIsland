@@ -22,8 +22,8 @@ namespace SuperAutoIsland.Controls.Components;
 [PseudoClasses(":custom-text-color")]
 public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
 {
-    private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
-    
+    private readonly DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
+
     public DynamicTextComponent()
     {
         InitializeComponent();
@@ -33,13 +33,13 @@ public partial class DynamicTextComponent : ComponentBase<DynamicTextSettings>
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
         UpdateText();
-        
+
         _provider.Changed += (o, args) =>
         {
             if (args.Key != Settings.Id) return;
             ApplyItem(args.Value);
         };
-        
+
         Settings.PropertyChanged += (o, args) =>
         {
             if (args.PropertyName != nameof(Settings.Id)) return;

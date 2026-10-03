@@ -1,6 +1,6 @@
-﻿import * as Blockly from 'blockly';
-import { type JavascriptGenerator, Order, javascriptGenerator } from 'blockly/javascript';
-import type { Block } from 'blockly';
+﻿import type { Block } from 'blockly';
+import * as Blockly from 'blockly';
+import { type JavascriptGenerator, javascriptGenerator, Order } from 'blockly/javascript';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 
@@ -20,11 +20,7 @@ import '@blockly/field-colour-hsv-sliders';
 import './fields/FieldTime';
 import { FieldIcon } from './fields/FieldIcon';
 import { FieldIconPicker } from './fields/FieldIconPicker';
-Blockly.fieldRegistry.register('field_icon', FieldIcon);
-Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
-registerFieldColour();
-
-import { preSetupCategory, postSetupCategory } from './utils/quickSetup';
+import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
 import { addLabel } from './utils/blockGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
@@ -34,6 +30,10 @@ import * as prettier from 'prettier/standalone';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
 import { addV2Block, BlockMetadata } from './utils/v2Generator';
+
+Blockly.fieldRegistry.register('field_icon', FieldIcon);
+Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
+registerFieldColour();
 
 const ws = new WebSocket('/');
 await new Promise(resolve => {
@@ -158,9 +158,8 @@ for (let pluginName in window.extraBlocks) {
         await addV2Block(block);
     }
 
-    if (blocks.length == 0)
-    {
-        addLabel("滚木分类？");
+    if (blocks.length == 0) {
+        addLabel('滚木分类？');
     }
 
     postSetupCategory();

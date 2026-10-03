@@ -13,8 +13,8 @@ namespace SuperAutoIsland.Services.Automations;
 
 public class RuleHandlerService
 {
-    private readonly IRulesetService _rulesetService = IAppHost.GetService<IRulesetService>();
     private readonly ILessonsService _lessonsService = IAppHost.GetService<ILessonsService>();
+    private readonly IRulesetService _rulesetService = IAppHost.GetService<IRulesetService>();
 
     public RuleHandlerService()
     {
@@ -23,29 +23,29 @@ public class RuleHandlerService
             if (settings is not RunCiRulesetSettings s) return false;
 
             var ciRunner = IAppHost.GetService<CiRunner>();
-            
+
             if (s.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
                 return false;
-            
+
             var project = ProjectsConfigManager.GetProject(s.ProjectGuid);
             if (project.RulesetState != null)
             {
                 return project.RulesetState.Value;
             }
-            
+
             var state = ciRunner.RunRulesetProject(project);
             project.RulesetState = state;
             _rulesetService.StatusUpdated += ClearState;
-            
+
             return state;
-            
+
             void ClearState(object? sender, EventArgs e)
             {
                 project.RulesetState = null;
                 _rulesetService.StatusUpdated -= ClearState;
             }
         });
-        
+
         _rulesetService.RegisterRuleHandler("sai.rules.dialogs.yesNo", obj =>
         {
             if (obj is not YesNoDialogRuleSettings settings) return false;
@@ -84,14 +84,14 @@ public class RuleHandlerService
     {
         var noButton = new FATaskDialogButton(settings.NoText, false)
         {
-            IsDefault = !settings.PreferYes,
+            IsDefault = !settings.PreferYes
         };
-        
+
         var yesButton = new FATaskDialogButton(settings.YesText, true)
         {
             IsDefault = settings.PreferYes
         };
-        
+
         var dialog = new FATaskDialog
         {
             Title = settings.Header,
@@ -104,29 +104,26 @@ public class RuleHandlerService
         if (settings.CountdownEnabled)
         {
             var stopwatch = Stopwatch.StartNew();
-            
+
             var countdownButton = settings.CountdownMode switch
             {
-                CountdownMode.Enable => settings.PreferYes ? yesButton : noButton,
+                CountdownMode.Enable  => settings.PreferYes ? yesButton : noButton,
                 CountdownMode.Resolve => yesButton,
-                _ => noButton
+                _                     => noButton
             };
             var countdownOriginText = settings.CountdownMode switch
             {
-                CountdownMode.Enable => settings.PreferYes ? settings.YesText : settings.NoText,
+                CountdownMode.Enable  => settings.PreferYes ? settings.YesText : settings.NoText,
                 CountdownMode.Resolve => settings.YesText,
-                _ => settings.NoText
+                _                     => settings.NoText
             };
-            
+
             var completed = false;
-            
+
             if (settings.CountdownMode == CountdownMode.Enable)
             {
-                dialog.Closing += (sender, args) =>
-                {
-                    args.Cancel = !completed;
-                };
-                
+                dialog.Closing += (sender, args) => { args.Cancel = !completed; };
+
                 noButton.IsEnabled = false;
                 yesButton.IsEnabled = false;
             }
@@ -148,19 +145,20 @@ public class RuleHandlerService
 
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        countdownButton.Text = $"{countdownOriginText} ({remainingTime:0}s)";
+                        countdownButton.Text =
+                            $"{countdownOriginText} ({remainingTime:0}s)";
                     });
 
                     var checkInterval = Math.Min(remainingMs, 1000);
                     await Task.Delay(checkInterval);
                 }
-                
+
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     completed = true;
 
                     countdownButton.Text = countdownOriginText;
-                    
+
                     switch (settings.CountdownMode)
                     {
                         case CountdownMode.Enable:
@@ -180,7 +178,7 @@ public class RuleHandlerService
                 });
             });
         }
-        
+
         var task = dialog.ShowAsync();
         if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
         {
@@ -191,6 +189,7 @@ public class RuleHandlerService
                 window.Topmost = true;
             }
         }
+
         var result = await task;
         return Equals(result, true);
     }

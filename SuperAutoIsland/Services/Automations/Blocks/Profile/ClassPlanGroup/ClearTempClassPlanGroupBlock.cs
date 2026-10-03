@@ -9,6 +9,7 @@ public class ClearTempClassPlanGroupBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.clearTempClassPlanGroup";
     public override string Name => "清除临时课表群";
+
     public override Task Handler(ActionItem actionItem)
     {
         IAppHost.GetService<IProfileService>().ClearTempClassPlanGroup();

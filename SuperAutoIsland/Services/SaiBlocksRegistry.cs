@@ -6,39 +6,39 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Services;
 
 /// <summary>
-/// SAI 积木注册表
+///     SAI 积木注册表
 /// </summary>
 public class SaiBlocksRegistry
 {
     private static readonly Logger<SaiBlocksRegistry> Logger = new();
 
     /// <summary>
-    /// 分类提供方列表（分类顺序与注册顺序一致）
+    ///     分类提供方列表（分类顺序与注册顺序一致）
     /// </summary>
     public static List<ICategoryProvider> CategoryProviders { get; } = [];
 
     /// <summary>
-    /// 分类名称 -> 分类下的积木元数据（由 <see cref="CategoryProviders"/> 构建，重建时整体替换）
+    ///     分类名称 -> 分类下的积木元数据（由 <see cref="CategoryProviders" /> 构建，重建时整体替换）
     /// </summary>
     public static OrderedDictionary<string, List<BlockMetadata>> Categories { get; private set; } = new();
 
     /// <summary>
-    /// 积木 id -> 积木实例（由 <see cref="CategoryProviders"/> 构建，重建时整体替换）
+    ///     积木 id -> 积木实例（由 <see cref="CategoryProviders" /> 构建，重建时整体替换）
     /// </summary>
     public static Dictionary<string, BlockBase> Blocks { get; private set; } = new();
 
     /// <summary>
-    /// 前缀 -> 前缀处理器
+    ///     前缀 -> 前缀处理器
     /// </summary>
     public static Dictionary<string, PrefixHandler> PrefixHandlers { get; } = new();
 
     /// <summary>
-    /// 动态下拉框 id -> getter
+    ///     动态下拉框 id -> getter
     /// </summary>
     public static Dictionary<string, DynamicDropdownHandler> DynamicDropdowns { get; } = new();
 
     /// <summary>
-    /// 重新构建所有分类的积木和 Block 列表
+    ///     重新构建所有分类的积木和 Block 列表
     /// </summary>
     public static void Rebuild()
     {
@@ -74,7 +74,7 @@ public class SaiBlocksRegistry
     }
 
     /// <summary>
-    /// 查找匹配积木 id 的前缀处理器（匹配到多个前缀时使用最长的一个）
+    ///     查找匹配积木 id 的前缀处理器（匹配到多个前缀时使用最长的一个）
     /// </summary>
     /// <param name="id">积木 id</param>
     /// <returns>前缀处理器，未找到时为 null</returns>

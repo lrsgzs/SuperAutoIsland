@@ -6,7 +6,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlanGroup;
 
 /// <summary>
-/// 获取档案中所有课表群的 GUID 列表。
+///     获取档案中所有课表群的 GUID 列表。
 /// </summary>
 public class GetClassPlanGroupListBlock : DataBlockBase
 {

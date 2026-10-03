@@ -18,8 +18,11 @@ public class GetDynamicTextColorBlock : DataBlockBase
     public override string DataOutput => "SAI_Color";
     public override Type SettingsType => typeof(GetDynamicTextSettings);
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Key", BasicFields.Text("ID"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Key", BasicFields.Text("ID"));
+    }
 
     public override Task<object> Handler(object? data)
     {
@@ -33,8 +36,11 @@ public class GetDynamicTextColorBlock : DataBlockBase
 
         return Task.FromResult<object>(FormatColor(color ?? SetDynamicTextColorActionSettings.DefaultColor));
     }
-    
-    private static string FormatColor(Color color) => color.A == byte.MaxValue
-        ? $"#{color.R:X2}{color.G:X2}{color.B:X2}"
-        : $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
+
+    private static string FormatColor(Color color)
+    {
+        return color.A == byte.MaxValue
+                   ? $"#{color.R:X2}{color.G:X2}{color.B:X2}"
+                   : $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
+    }
 }

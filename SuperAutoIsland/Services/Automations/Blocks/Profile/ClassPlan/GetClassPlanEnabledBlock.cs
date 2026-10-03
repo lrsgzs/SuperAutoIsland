@@ -10,7 +10,12 @@ public class GetClassPlanEnabledBlock : DataBlockBase
     public override string Id => "sai.profile.data.classPlanEnabled";
     public override string Name => "获取是否自动启用";
     public override string DataOutput => "Boolean";
-    public override void GetFields(FieldsRegister it) => it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    }
+
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);

@@ -7,19 +7,22 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.ViewModel.SettingPages;
 
 /// <summary>
-/// 「自动化」视图模型
+///     「自动化」视图模型
 /// </summary>
 public partial class AutomationViewModel : ObservableRecipient
 {
-    [ObservableProperty] private Project? _selectedProject;
-    [ObservableProperty] private bool _isPanelOpened;
-    
-    public ProjectConfigModel ProjectConfig { get; }
-    public ObservableCollection<Project> Projects { get; set; }
-    
+    [ObservableProperty]
+    private bool _isPanelOpened;
+
+    [ObservableProperty]
+    private Project? _selectedProject;
+
     public AutomationViewModel()
     {
         ProjectConfig = GlobalConstants.Configs.ProjectConfig!.Data;
         Projects = ProjectConfig.Projects;
     }
+
+    public ProjectConfigModel ProjectConfig { get; }
+    public ObservableCollection<Project> Projects { get; set; }
 }

@@ -14,9 +14,14 @@ public class ScheduleClassPlanBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.scheduleClassPlan";
     public override string Name => "预定临时课表";
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Date", BasicFields.Date("日期", DateOnly.FromDateTime(DateTime.Today)));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("Date", BasicFields.Date("日期", DateOnly.FromDateTime(DateTime.Today)));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);

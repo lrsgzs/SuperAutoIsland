@@ -1,11 +1,9 @@
 import * as Blockly from 'blockly/core';
 import {
-    FLUENT_FONT_FAMILY,
-    LUCIDE_FONT_FAMILY,
     formatIconExpression,
+    type IconExpressionType,
     iconFontFamily,
     parseIconExpression,
-    type IconExpressionType,
 } from '../utils/iconExpression';
 import { ensureIconCatalog, getIconName } from '../utils/iconCatalog';
 import { openIconPicker } from './IconPickerDialog';
@@ -49,16 +47,16 @@ export class FieldIconPicker extends Blockly.Field<string> {
         return new FieldIconPicker(value, undefined, { iconType: options.iconType });
     }
 
-    protected doClassValidation_(newValue?: unknown): string | null {
-        if (typeof newValue !== 'string') return null;
-        return newValue;
-    }
-
     getText(): string {
         const parsed = parseIconExpression(this.value_);
         if (!parsed) return '';
         if (parsed.type === 'img') return parsed.argument;
         return `${parsed.argument} ${iconLabel(parsed.type, parsed.argument)}`;
+    }
+
+    protected doClassValidation_(newValue?: unknown): string | null {
+        if (typeof newValue !== 'string') return null;
+        return newValue;
     }
 
     protected render_(): void {

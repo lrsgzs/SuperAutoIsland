@@ -9,8 +9,6 @@ namespace SuperAutoIsland.Controls.ActionSettingsControls;
 
 public partial class ConfirmExecuteActionSettingsControl : ActionSettingsControlBase<ConfirmExecuteActionSettings>
 {
-    public ConfirmExecuteActionSettings ActionSettings => Settings;
-    
     public ConfirmExecuteActionSettingsControl()
     {
         InitializeComponent();
@@ -18,14 +16,16 @@ public partial class ConfirmExecuteActionSettingsControl : ActionSettingsControl
         Loaded += (sender, args) =>
         {
             HeaderTextBlock.Bind(TextBlock.TextProperty,
-                CompiledBinding.Create<ConfirmExecuteActionSettings, string>(
-                    x => x.Header, Settings));
+                                 CompiledBinding.Create<ConfirmExecuteActionSettings, string>(
+                                     x => x.Header, Settings));
             MessageTextBlock.Bind(TextBlock.TextProperty,
-                CompiledBinding.Create<ConfirmExecuteActionSettings, string>(
-                    x => x.Message, Settings));
+                                  CompiledBinding.Create<ConfirmExecuteActionSettings, string>(
+                                      x => x.Message, Settings));
         };
     }
-    
+
+    public ConfirmExecuteActionSettings ActionSettings => Settings;
+
     private async void PreviewButton_OnClick(object? sender, RoutedEventArgs e)
     {
         var result = await ConfirmExecuteAction.ShowDialogAsync(Settings, "占位符");
@@ -34,7 +34,7 @@ public partial class ConfirmExecuteActionSettingsControl : ActionSettingsControl
             await ConfirmExecuteAction.ShowDelayDialogAsync(Settings, "占位符");
         }
     }
-    
+
     private void ShowSettingsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         if (this.FindResource("SettingsDrawer") is not ContentControl cc) return;

@@ -14,11 +14,16 @@ public class ClassPlanByGuidBlock : DataBlockBase
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_ClassPlan";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Value", BasicFields.DynamicDropdown("", "sai.profile.dd.classPlans"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Value", BasicFields.DynamicDropdown("", "sai.profile.dd.classPlans"));
+    }
 
-    public override Task<object> Handler(object? data) =>
-        Task.FromResult<object>(data is StringValueData settings
-            ? settings.Value
-            : Guid.Empty.ToString());
+    public override Task<object> Handler(object? data)
+    {
+        return Task.FromResult<object>(data is StringValueData settings
+                                           ? settings.Value
+                                           : Guid.Empty.ToString());
+    }
 }

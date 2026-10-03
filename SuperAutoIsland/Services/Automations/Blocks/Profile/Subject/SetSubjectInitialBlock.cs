@@ -8,16 +8,19 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 设置科目简称。
+///     设置科目简称。
 /// </summary>
 public class SetSubjectInitialBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setSubjectInitial";
     public override string Name => "设置科目简称";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""))
-        .AddField("Initial", BasicFields.Text("简称"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""))
+            .AddField("Initial", BasicFields.Text("简称"));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

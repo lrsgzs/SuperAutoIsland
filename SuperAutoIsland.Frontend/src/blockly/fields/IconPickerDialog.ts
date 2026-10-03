@@ -1,11 +1,11 @@
 import {
     FLUENT_FONT_FAMILY,
-    LUCIDE_FONT_FAMILY,
     formatIconExpression,
-    parseIconExpression,
     type IconExpressionType,
+    LUCIDE_FONT_FAMILY,
+    parseIconExpression,
 } from '../utils/iconExpression';
-import { searchIcons, type IconCatalogEntry, type IconCatalogType } from '../utils/iconCatalog';
+import { type IconCatalogEntry, type IconCatalogType, searchIcons } from '../utils/iconCatalog';
 import { pickLocalFiles } from '../utils/filePicker';
 
 const FALLBACK_FLUENT_GLYPH = '\ue9b0';

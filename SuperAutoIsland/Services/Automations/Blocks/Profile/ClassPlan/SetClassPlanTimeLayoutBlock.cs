@@ -12,11 +12,14 @@ public class SetClassPlanTimeLayoutBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setClassPlanTimeLayout";
     public override string Name => "设置时间表";
-    
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("TimeLayout", ProfileFields.TimeLayout("时间表"));
-    
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("TimeLayout", ProfileFields.TimeLayout("时间表"));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);

@@ -10,8 +10,11 @@ public class GetTimeLayoutNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.timeLayoutName";
     public override string Name => "时间表名称";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayout", ProfileFields.TimeLayout(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayout", ProfileFields.TimeLayout(""));
+    }
 
     public override Task<object> Handler(object? data)
     {

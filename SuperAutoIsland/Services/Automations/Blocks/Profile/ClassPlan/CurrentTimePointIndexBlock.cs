@@ -5,7 +5,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlan;
 
 /// <summary>
-/// 当前为第几个时间点（从 1 开始计数）。当前没有时间点时返回 0。
+///     当前为第几个时间点（从 1 开始计数）。当前没有时间点时返回 0。
 /// </summary>
 public class CurrentTimePointIndexBlock : DataBlockBase
 {

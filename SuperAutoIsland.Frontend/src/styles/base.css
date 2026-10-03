@@ -27,7 +27,11 @@ body,
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.3);
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family:
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        sans-serif;
 }
 
 .sai-icon-picker {

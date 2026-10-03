@@ -12,14 +12,18 @@ public class GetSubjectTeacherNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.subjectTeacherName";
     public override string Name => "科任老师";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""));
+    }
 
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var name = IAppHost.GetService<IProfileService>().Profile.Subjects
-            .GetValueOrDefault(ProfileBlockHelpers.Guid(settings, "Subject"))?.TeacherName ?? string.Empty;
+                           .GetValueOrDefault(ProfileBlockHelpers.Guid(settings, "Subject"))?.TeacherName ??
+                   string.Empty;
         return Task.FromResult<object>(name);
     }
 }

@@ -6,7 +6,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 获取档案中所有科目的 GUID 列表。
+///     获取档案中所有科目的 GUID 列表。
 /// </summary>
 public class GetSubjectListBlock : DataBlockBase
 {

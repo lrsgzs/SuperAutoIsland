@@ -16,77 +16,95 @@ public static class ProfileBlockHelpers
 {
     private const string ScheduleRefPrefix = "[sched]";
 
-    public static Guid Guid(JsonElement settings, string name) =>
-        System.Guid.TryParse(settings.GetProperty(name).GetString(), out var value) ? value : System.Guid.Empty;
+    /// <summary>
+    ///     当前档案的课程模式。
+    /// </summary>
+    public static ScheduleType CurrentScheduleType =>
+        IAppHost.GetService<IProfileService>().Profile.ScheduleType;
 
-    public static DateOnly Date(JsonElement settings, string name) =>
-        settings.GetProperty(name).Deserialize<DateOnly>();
+    /// <summary>
+    ///     当前档案是否处于日程模式。
+    /// </summary>
+    public static bool IsScheduleMode => CurrentScheduleType == ScheduleType.Schedule;
 
-    public static int Number(JsonElement settings, string name) =>
-        (int)settings.GetProperty(name).GetDouble();
+    public static Guid Guid(JsonElement settings, string name)
+    {
+        return System.Guid.TryParse(settings.GetProperty(name).GetString(), out var value) ? value : System.Guid.Empty;
+    }
+
+    public static DateOnly Date(JsonElement settings, string name)
+    {
+        return settings.GetProperty(name).Deserialize<DateOnly>();
+    }
+
+    public static int Number(JsonElement settings, string name)
+    {
+        return (int)settings.GetProperty(name).GetDouble();
+    }
 
     public static bool Bool(JsonElement settings, string name)
     {
         var value = settings.GetProperty(name);
         return value.ValueKind switch
         {
-            JsonValueKind.True => true,
-            JsonValueKind.False => false,
+            JsonValueKind.True   => true,
+            JsonValueKind.False  => false,
             JsonValueKind.String => value.GetString() == "TRUE",
-            _ => false
+            _                    => false
         };
     }
 
-    public static JsonElement Settings(object? value) => JsonSerializer.SerializeToElement(value);
+    public static JsonElement Settings(object? value)
+    {
+        return JsonSerializer.SerializeToElement(value);
+    }
 
-    public static ProfileClassPlan? GetClassPlan(JsonElement settings, string name = "ClassPlan") => ClassPlan(settings, name);
+    public static ProfileClassPlan? GetClassPlan(JsonElement settings, string name = "ClassPlan")
+    {
+        return ClassPlan(settings, name);
+    }
 
     /// <summary>
-    /// 读取课表引用原始字符串（GUID 或「[sched]yyyy-MM-dd」）。
+    ///     读取课表引用原始字符串（GUID 或「[sched]yyyy-MM-dd」）。
     /// </summary>
-    public static string ClassPlanRef(JsonElement settings, string name = "ClassPlan") =>
-        settings.GetProperty(name).GetString() ?? string.Empty;
+    public static string ClassPlanRef(JsonElement settings, string name = "ClassPlan")
+    {
+        return settings.GetProperty(name).GetString() ?? string.Empty;
+    }
 
     /// <summary>
-    /// 判断引用是否为日程模式引用。
+    ///     判断引用是否为日程模式引用。
     /// </summary>
-    public static bool IsScheduleRef(string? reference) =>
-        reference?.StartsWith(ScheduleRefPrefix, StringComparison.Ordinal) == true;
+    public static bool IsScheduleRef(string? reference)
+    {
+        return reference?.StartsWith(ScheduleRefPrefix, StringComparison.Ordinal) == true;
+    }
 
     /// <summary>
-    /// 构造某一日期的日程模式引用。
+    ///     构造某一日期的日程模式引用。
     /// </summary>
-    public static string CreateScheduleRef(DateOnly date) =>
-        $"{ScheduleRefPrefix}{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
+    public static string CreateScheduleRef(DateOnly date)
+    {
+        return $"{ScheduleRefPrefix}{date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}";
+    }
 
     /// <summary>
-    /// 解析日程模式引用中的日期。
+    ///     解析日程模式引用中的日期。
     /// </summary>
     public static bool TryParseScheduleRef(string? reference, out DateOnly date)
     {
         date = default;
         return IsScheduleRef(reference) && DateOnly.TryParseExact(
-            reference![ScheduleRefPrefix.Length..],
-            "yyyy-MM-dd",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out date);
+                   reference![ScheduleRefPrefix.Length..],
+                   "yyyy-MM-dd",
+                   CultureInfo.InvariantCulture,
+                   DateTimeStyles.None,
+                   out date);
     }
 
     /// <summary>
-    /// 当前档案的课程模式。
-    /// </summary>
-    public static ScheduleType CurrentScheduleType =>
-        IAppHost.GetService<IProfileService>().Profile.ScheduleType;
-
-    /// <summary>
-    /// 当前档案是否处于日程模式。
-    /// </summary>
-    public static bool IsScheduleMode => CurrentScheduleType == ScheduleType.Schedule;
-
-    /// <summary>
-    /// 获取指定日期生效的课表引用。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。
-    /// 当日没有课表时返回空 GUID。
+    ///     获取指定日期生效的课表引用。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。
+    ///     当日没有课表时返回空 GUID。
     /// </summary>
     public static string ClassPlanRefByDate(DateTime date)
     {
@@ -98,7 +116,7 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 解析课表引用。日程模式引用仅在档案处于日程模式时有效。
+    ///     解析课表引用。日程模式引用仅在档案处于日程模式时有效。
     /// </summary>
     public static ProfileClassPlan? ResolveClassPlan(string? reference)
     {
@@ -112,7 +130,7 @@ public static class ProfileBlockHelpers
 
             // 日程模式生成的课表没有 GUID，直接按日期取合成的课表。
             return IAppHost.GetService<ILessonsService>()
-                .GetClassPlanByDate(date.ToDateTime(TimeOnly.MinValue), out _);
+                           .GetClassPlanByDate(date.ToDateTime(TimeOnly.MinValue), out _);
         }
 
         if (!System.Guid.TryParse(reference, out var guid))
@@ -120,11 +138,13 @@ public static class ProfileBlockHelpers
         return IAppHost.GetService<IProfileService>().Profile.ClassPlans.GetValueOrDefault(guid);
     }
 
-    public static ProfileClassPlan? ClassPlan(JsonElement settings, string name = "ClassPlan") =>
-        ResolveClassPlan(ClassPlanRef(settings, name));
+    public static ProfileClassPlan? ClassPlan(JsonElement settings, string name = "ClassPlan")
+    {
+        return ResolveClassPlan(ClassPlanRef(settings, name));
+    }
 
     /// <summary>
-    /// 仅解析经典模式课表（GUID）。用于写操作，避免误改日程模式生成的临时课表。
+    ///     仅解析经典模式课表（GUID）。用于写操作，避免误改日程模式生成的临时课表。
     /// </summary>
     public static ProfileClassPlan? ClassicClassPlan(JsonElement settings, string name = "ClassPlan")
     {
@@ -133,25 +153,31 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 按 GUID 解析科目。用于写操作。
+    ///     按 GUID 解析科目。用于写操作。
     /// </summary>
-    public static ProfileSubject? Subject(JsonElement settings, string name = "Subject") =>
-        IAppHost.GetService<IProfileService>().Profile.Subjects.GetValueOrDefault(Guid(settings, name));
+    public static ProfileSubject? Subject(JsonElement settings, string name = "Subject")
+    {
+        return IAppHost.GetService<IProfileService>().Profile.Subjects.GetValueOrDefault(Guid(settings, name));
+    }
 
     /// <summary>
-    /// 按 GUID 解析时间表。用于写操作，日程模式引用不会被解析成日程模式生成的时间表。
+    ///     按 GUID 解析时间表。用于写操作，日程模式引用不会被解析成日程模式生成的时间表。
     /// </summary>
-    public static ProfileTimeLayout? ClassicTimeLayout(JsonElement settings, string name = "TimeLayout") =>
-        IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(Guid(settings, name));
+    public static ProfileTimeLayout? ClassicTimeLayout(JsonElement settings, string name = "TimeLayout")
+    {
+        return IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(Guid(settings, name));
+    }
 
     /// <summary>
-    /// 按 GUID 解析课表群。用于写操作。
+    ///     按 GUID 解析课表群。用于写操作。
     /// </summary>
-    public static ProfileClassPlanGroup? ClassPlanGroup(JsonElement settings, string name = "ClassPlanGroup") =>
-        IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups.GetValueOrDefault(Guid(settings, name));
+    public static ProfileClassPlanGroup? ClassPlanGroup(JsonElement settings, string name = "ClassPlanGroup")
+    {
+        return IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups.GetValueOrDefault(Guid(settings, name));
+    }
 
     /// <summary>
-    /// 读取时间设置（「HH:mm:ss」文本）。
+    ///     读取时间设置（「HH:mm:ss」文本）。
     /// </summary>
     public static TimeSpan Time(JsonElement settings, string name)
     {
@@ -160,21 +186,25 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 按 GUID 解析课程（日程项目）。用于写操作。
+    ///     按 GUID 解析课程（日程项目）。用于写操作。
     /// </summary>
-    public static ProfileScheduleItem? ScheduleItem(JsonElement settings, string name = "ScheduleItem") =>
-        IAppHost.GetService<IProfileService>().Profile.ScheduleItems.GetValueOrDefault(Guid(settings, name));
+    public static ProfileScheduleItem? ScheduleItem(JsonElement settings, string name = "ScheduleItem")
+    {
+        return IAppHost.GetService<IProfileService>().Profile.ScheduleItems.GetValueOrDefault(Guid(settings, name));
+    }
 
     /// <summary>
-    /// 获取当天生效的课程（日程项目）。
+    ///     获取当天生效的课程（日程项目）。
     /// </summary>
-    public static OrderedDictionary<Guid, ProfileScheduleItem> TodayScheduleItems() =>
-        IAppHost.GetService<ILessonsService>().GetScheduleItemsByDate(
+    public static OrderedDictionary<Guid, ProfileScheduleItem> TodayScheduleItems()
+    {
+        return IAppHost.GetService<ILessonsService>().GetScheduleItemsByDate(
             DateOnly.FromDateTime(IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime()));
+    }
 
     /// <summary>
-    /// 获取当前正在进行中的课程（日程项目）。没有正在进行中的课程时返回 null。
-    /// 有多个课程重叠时取开始时间最晚的一个。
+    ///     获取当前正在进行中的课程（日程项目）。没有正在进行中的课程时返回 null。
+    ///     有多个课程重叠时取开始时间最晚的一个。
     /// </summary>
     public static (Guid Id, ProfileScheduleItem Item)? CurrentScheduleItem()
     {
@@ -194,7 +224,7 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 清理指向已被移除的课表群的引用（当前启用的课表群与临时课表群）。
+    ///     清理指向已被移除的课表群的引用（当前启用的课表群与临时课表群）。
     /// </summary>
     /// <param name="id">已被移除的课表群 GUID</param>
     public static void ClearClassPlanGroupReferences(Guid id)
@@ -218,18 +248,20 @@ public static class ProfileBlockHelpers
         var classItems = plan.TimeLayout?.Layouts.Where(x => x.TimeType == 0).ToList() ?? [];
         var index = oneBasedIndex - 1;
         return index >= 0 && index < classItems.Count && index < plan.Classes.Count
-            ? plan.Classes[index].SubjectId
-            : System.Guid.Empty;
+                   ? plan.Classes[index].SubjectId
+                   : System.Guid.Empty;
     }
 
     /// <summary>
-    /// 读取时间表引用原始字符串（GUID 或「[sched]yyyy-MM-dd」）。
+    ///     读取时间表引用原始字符串（GUID 或「[sched]yyyy-MM-dd」）。
     /// </summary>
-    public static string TimeLayoutRef(JsonElement settings, string name = "TimeLayout") =>
-        settings.GetProperty(name).GetString() ?? string.Empty;
+    public static string TimeLayoutRef(JsonElement settings, string name = "TimeLayout")
+    {
+        return settings.GetProperty(name).GetString() ?? string.Empty;
+    }
 
     /// <summary>
-    /// 解析时间表引用。日程模式引用取该日合成课表的时间表。
+    ///     解析时间表引用。日程模式引用取该日合成课表的时间表。
     /// </summary>
     public static ProfileTimeLayout? ResolveTimeLayout(string? reference)
     {
@@ -244,17 +276,21 @@ public static class ProfileBlockHelpers
         return IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(id);
     }
 
-    public static ProfileTimeLayout? TimeLayout(JsonElement settings, string name = "TimeLayout") =>
-        ResolveTimeLayout(TimeLayoutRef(settings, name));
+    public static ProfileTimeLayout? TimeLayout(JsonElement settings, string name = "TimeLayout")
+    {
+        return ResolveTimeLayout(TimeLayoutRef(settings, name));
+    }
 
     /// <summary>
-    /// 从设置中读取「时间表引用[序号]」格式的时间点标识。
+    ///     从设置中读取「时间表引用[序号]」格式的时间点标识。
     /// </summary>
-    public static (string Reference, int Index) TimeLayoutItem(JsonElement settings, string name = "TimeLayoutItem") =>
-        ParseTimeLayoutItem(settings.GetProperty(name).GetString());
+    public static (string Reference, int Index) TimeLayoutItem(JsonElement settings, string name = "TimeLayoutItem")
+    {
+        return ParseTimeLayoutItem(settings.GetProperty(name).GetString());
+    }
 
     /// <summary>
-    /// 解析「时间表引用[序号]」格式的时间点标识。解析失败时返回 (空, 0)。
+    ///     解析「时间表引用[序号]」格式的时间点标识。解析失败时返回 (空, 0)。
     /// </summary>
     public static (string Reference, int Index) ParseTimeLayoutItem(string? raw)
     {
@@ -269,7 +305,7 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 获取「时间表引用[序号]」所指向的时间点。序号越界或标识无效时返回 null。
+    ///     获取「时间表引用[序号]」所指向的时间点。序号越界或标识无效时返回 null。
     /// </summary>
     public static ProfileTimeLayoutItem? TimePoint(JsonElement settings, string name = "TimeLayoutItem")
     {
@@ -281,8 +317,8 @@ public static class ProfileBlockHelpers
     }
 
     /// <summary>
-    /// 获取时间表中第 N 节课（类型为「上课」的时间点）在时间表中的实际位置（从 1 开始计数）。
-    /// 不存在时返回 0。
+    ///     获取时间表中第 N 节课（类型为「上课」的时间点）在时间表中的实际位置（从 1 开始计数）。
+    ///     不存在时返回 0。
     /// </summary>
     public static int ClassPeriodPosition(JsonElement settings, string name = "TimeLayout")
     {
@@ -296,5 +332,8 @@ public static class ProfileBlockHelpers
         return index < classItems.Count ? layout.Layouts.IndexOf(classItems[index]) + 1 : 0;
     }
 
-    public static string GuidOutput(Guid id) => id.ToString();
+    public static string GuidOutput(Guid id)
+    {
+        return id.ToString();
+    }
 }

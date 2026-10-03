@@ -10,6 +10,7 @@ public class CurrentClassPlanBlock : DataBlockBase
     public override string Id => "sai.profile.data.currentClassPlan";
     public override string Name => "当前启用的课表";
     public override string DataOutput => "SAI_Profile_ClassPlan";
+
     public override Task<object> Handler(object? data)
     {
         var now = IAppHost.GetService<IExactTimeService>().GetCurrentLocalDateTime();

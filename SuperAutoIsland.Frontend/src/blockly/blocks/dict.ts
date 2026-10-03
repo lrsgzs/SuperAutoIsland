@@ -1,6 +1,6 @@
 import * as Blockly from 'blockly';
 import { Order } from 'blockly/javascript';
-import { addBlock, data, type BlocklyArgDefinition, type BlocklyBlockDefinition } from '../utils/blockGenerator';
+import { addBlock, type BlocklyArgDefinition, type BlocklyBlockDefinition, data } from '../utils/blockGenerator';
 
 /**
  * 字典积木（突变器版）

@@ -13,9 +13,14 @@ public class SetClassPlanEnabledBlock : ActionBlockBase
     public override string Name => "设置自动启用";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Enabled", BasicFields.Boolean("自动启用", true));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("Enabled", BasicFields.Boolean("自动启用", true));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);

@@ -18,8 +18,11 @@ public class SubjectByNameBlock : DataBlockBase
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_Subject";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Value", BasicFields.Text("名称"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Value", BasicFields.Text("名称"));
+    }
 
     public override Task<object> Handler(object? data)
     {
@@ -27,9 +30,9 @@ public class SubjectByNameBlock : DataBlockBase
             return Task.FromResult<object>(Guid.Empty.ToString());
 
         return Task.FromResult<object>(IAppHost.GetService<IProfileService>().Profile.Subjects
-            .Where(x => x.Value.Name == settings.Value)
-            .Select(x => x.Key)
-            .FirstOrDefault(Guid.Empty)
-            .ToString());
+                                               .Where(x => x.Value.Name == settings.Value)
+                                               .Select(x => x.Key)
+                                               .FirstOrDefault(Guid.Empty)
+                                               .ToString());
     }
 }

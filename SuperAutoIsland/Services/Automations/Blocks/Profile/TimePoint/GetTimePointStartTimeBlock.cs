@@ -1,6 +1,4 @@
 using System.Text.Json;
-using ClassIsland.Core.Icons;
-using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -8,7 +6,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间点（「时间表 GUID[序号]」）的开始时间，格式 HH:mm:ss。
+///     获取时间点（「时间表 GUID[序号]」）的开始时间，格式 HH:mm:ss。
 /// </summary>
 public class GetTimePointStartTimeBlock : DataBlockBase
 {
@@ -18,9 +16,12 @@ public class GetTimePointStartTimeBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("的开始时间");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
+            .AddDummy("的开始时间");
+    }
 
     public override Task<object> Handler(object? data)
     {

@@ -9,8 +9,8 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 [ActionInfo("sai.actions.setDynamicText", "设置动态文本", FluentIcons.TextEditStyleRegular, false)]
 public class SetDynamicTextAction : ActionBase<SetDynamicTextActionSettings>
 {
-    private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
-    
+    private readonly DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
+
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();

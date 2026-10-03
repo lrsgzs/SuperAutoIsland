@@ -7,13 +7,13 @@ function IndexPage() {
     let saveCode = React.useCallback(async () => {
         try {
             await window.saveCode(window.workspace);
-            alert("保存成功");
+            alert('保存成功');
         } catch (e) {
             console.error('保存失败', e);
             alert(`保存失败 ${e}`);
         }
-    }, [])
-    
+    }, []);
+
     return (
         <div className="grid grid-rows-[auto_1fr] h-full">
             <div className="w-full p-2 flex gap-2 bg-neutral-100">

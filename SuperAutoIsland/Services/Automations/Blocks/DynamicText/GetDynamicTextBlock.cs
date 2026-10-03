@@ -14,14 +14,17 @@ public class GetDynamicTextBlock : DataBlockBase
     public override (string, string) Icon => ("文本", FluentIcons.TextboxRegular);
     public override Type SettingsType => typeof(GetDynamicTextSettings);
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Key", BasicFields.Text("ID"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Key", BasicFields.Text("ID"));
+    }
 
     public override async Task<object> Handler(object? data)
     {
         if (data is not GetDynamicTextSettings settings)
             return Task.FromResult("???");
-        
+
         var provider = IAppHost.GetService<DynamicTextProvider>();
         return Task.FromResult(provider.GetText(settings.Key)?.Text ?? "[未设置值]");
     }

@@ -1,6 +1,4 @@
 using System.Text.Json;
-using ClassIsland.Core.Icons;
-using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -8,7 +6,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间点（「时间表 GUID[序号]」）的类型（0-上课，1-课间，2-分割线，3-行动）。
+///     获取时间点（「时间表 GUID[序号]」）的类型（0-上课，1-课间，2-分割线，3-行动）。
 /// </summary>
 public class GetTimePointItemTypeBlock : DataBlockBase
 {
@@ -18,9 +16,12 @@ public class GetTimePointItemTypeBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("的类型");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
+            .AddDummy("的类型");
+    }
 
     public override Task<object> Handler(object? data)
     {

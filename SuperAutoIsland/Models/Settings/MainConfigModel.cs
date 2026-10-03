@@ -4,17 +4,15 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace SuperAutoIsland.Models.Settings;
 
 /// <summary>
-/// 主设置模型
+///     主设置模型
 /// </summary>
 public partial class MainConfigModel : ObservableObject
 {
-    /// <summary>
-    /// 需要重启的类型修改时触发的事件。
-    /// </summary>
-    public event Action? RestartPropertyChanged;
+    [ObservableProperty]
+    private bool _enableEasterEggs;
 
     /// <summary>
-    /// 服务器端口号
+    ///     服务器端口号
     /// </summary>
     public string ServerPort
     {
@@ -29,7 +27,7 @@ public partial class MainConfigModel : ObservableObject
     } = "21870";
 
     /// <summary>
-    /// 是否启用档案功能
+    ///     是否启用档案功能
     /// </summary>
     public bool EnableProfileFeatures
     {
@@ -44,7 +42,7 @@ public partial class MainConfigModel : ObservableObject
     } = false;
 
     /// <summary>
-    /// 档案功能设置（板块的读写开关）。子功能开关无需重启即可生效。
+    ///     档案功能设置（板块的读写开关）。子功能开关无需重启即可生效。
     /// </summary>
     public ProfileFeaturesModel ProfileFeatures
     {
@@ -60,10 +58,15 @@ public partial class MainConfigModel : ObservableObject
     } = new();
 
     /// <summary>
-    /// 档案功能子开关变化时保存配置（不请求重启）。
+    ///     需要重启的类型修改时触发的事件。
     /// </summary>
-    private void OnProfileFeaturesChanged(object? sender, PropertyChangedEventArgs e) =>
-        OnPropertyChanged(nameof(ProfileFeatures));
+    public event Action? RestartPropertyChanged;
 
-    [ObservableProperty] private bool _enableEasterEggs;
+    /// <summary>
+    ///     档案功能子开关变化时保存配置（不请求重启）。
+    /// </summary>
+    private void OnProfileFeaturesChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(ProfileFeatures));
+    }
 }

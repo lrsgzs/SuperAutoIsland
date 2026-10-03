@@ -17,99 +17,101 @@ using SuperAutoIsland.ViewModel.SettingPages;
 namespace SuperAutoIsland.Views.SettingPages;
 
 /// <summary>
-/// 项目类型节点
+///     项目类型节点
 /// </summary>
 public class ProjectTypeNode
 {
     /// <summary>
-    /// 类型
+    ///     类型
     /// </summary>
     public ProjectsType Type { get; set; } = ProjectsType.BlocklyAction;
 
     /// <summary>
-    /// 名称
+    ///     名称
     /// </summary>
     public string Name { get; set; } = string.Empty;
-    
+
     /// <summary>
-    /// 图标
+    ///     图标
     /// </summary>
     public string IconGlyph { get; set; } = string.Empty;
-    
+
     /// <summary>
-    /// 工具提示
+    ///     工具提示
     /// </summary>
     public string ToolTip { get; set; } = string.Empty;
 }
 
 /// <summary>
-/// 「SuperAutoIsland 自动化」视图
+///     「SuperAutoIsland 自动化」视图
 /// </summary>
 [HidePageTitle]
 [FullWidthPage]
 [Group("sai.settings")]
-[SettingsPageInfo("sai.settings.automation","自动化",FluentIcons.PlayCircleSparkleRegular,FluentIcons.PlayCircleSparkleFilled)]
+[SettingsPageInfo("sai.settings.automation", "自动化", FluentIcons.PlayCircleSparkleRegular,
+                  FluentIcons.PlayCircleSparkleFilled)]
 public partial class AutomationSettingsPage : SettingsPageBase
 {
-    public AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
-    private readonly Logger<AutomationSettingsPage> _logger = new();
-    
-    private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
-    private readonly CiRunner _ciRunner = IAppHost.GetService<CiRunner>();
-
-    public ProjectTypeNode[] ProjectTypeNodes { get; } = [
-        new()
-        {
-            Type = ProjectsType.BlocklyAction,
-            Name = "Blockly 行动",
-            IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular,
-            ToolTip = "更自由的自动化行动",
-        },
-        new()
-        {
-            Type = ProjectsType.CiRuleset,
-            Name = "可复用的规则集",
-            IconGlyph = FluentIcons.TagMultipleRegular,
-            ToolTip = "快速复用同套规则集",
-        },
-        new()
-        {
-            Type = ProjectsType.CiActionSet,
-            Name = "可复用的行动组",
-            IconGlyph = FluentIcons.AirplaneTakeOffRegular,
-            ToolTip = "快速复用同套行动组",
-        }
-    ];
-
     /// <summary>
-    /// 类型-字符串转换器
+    ///     类型-字符串转换器
     /// </summary>
     public static readonly FuncValueConverter<ProjectsType, string> ProjectsTypeNameConverter = new(x => x switch
     {
         ProjectsType.BlocklyAction => "Blockly 行动",
-        ProjectsType.CiRuleset => "可复用的规则集",
-        ProjectsType.CiActionSet => "可复用的行动组",
-        _ => "未知"
+        ProjectsType.CiRuleset     => "可复用的规则集",
+        ProjectsType.CiActionSet   => "可复用的行动组",
+        _                          => "未知"
     });
-    
+
+    private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
+    private readonly CiRunner _ciRunner = IAppHost.GetService<CiRunner>();
+    private readonly Logger<AutomationSettingsPage> _logger = new();
+
     public AutomationSettingsPage()
     {
         if (GlobalConstants.Configs.MainConfig!.Data.EnableEasterEggs)
         {
             ProjectTypeNodes[0].ToolTip = "析构万理的 Blockly 先生";
         }
-        
+
         DataContext = this;
         InitializeComponent();
     }
+
+    public AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
+
+    public ProjectTypeNode[] ProjectTypeNodes { get; } =
+    [
+        new()
+        {
+            Type = ProjectsType.BlocklyAction,
+            Name = "Blockly 行动",
+            IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular,
+            ToolTip = "更自由的自动化行动"
+        },
+        new()
+        {
+            Type = ProjectsType.CiRuleset,
+            Name = "可复用的规则集",
+            IconGlyph = FluentIcons.TagMultipleRegular,
+            ToolTip = "快速复用同套规则集"
+        },
+        new()
+        {
+            Type = ProjectsType.CiActionSet,
+            Name = "可复用的行动组",
+            IconGlyph = FluentIcons.AirplaneTakeOffRegular,
+            ToolTip = "快速复用同套行动组"
+        }
+    ];
 
     private void ProjectsListBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         ViewModel.IsPanelOpened = true;
     }
-    
+
     /// <summary>
-    /// 创建项目命令
+    ///     创建项目命令
     /// </summary>
     [RelayCommand]
     private void CreateProject(ProjectsType type)
@@ -117,7 +119,8 @@ public partial class AutomationSettingsPage : SettingsPageBase
         switch (type)
         {
             case ProjectsType.BlocklyAction:
-                ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新 Blockly 行动");
+                ViewModel.SelectedProject =
+                    ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新 Blockly 行动");
                 break;
             case ProjectsType.CiRuleset:
                 ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.CiRuleset, "新可复用的规则集");
@@ -131,7 +134,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    /// 打开项目编辑器点击事件
+    ///     打开项目编辑器点击事件
     /// </summary>
     private void OpenProjectEditorButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -141,7 +144,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    /// 运行项目点击事件
+    ///     运行项目点击事件
     /// </summary>
     private async void RunProjectButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -169,7 +172,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    /// 删除项目点击事件
+    ///     删除项目点击事件
     /// </summary>
     private void DeleteProjectButton_Click(object? sender, RoutedEventArgs e)
     {

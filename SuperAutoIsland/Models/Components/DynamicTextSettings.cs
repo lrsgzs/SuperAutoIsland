@@ -7,12 +7,23 @@ namespace SuperAutoIsland.Models.Components;
 
 public partial class DynamicTextSettings : ObservableObject
 {
-    [ObservableProperty] private string _id = GenerateRandomId();
-    [ObservableProperty] private double _iconSize = 24;
+    [ObservableProperty]
+    private double _iconSize = 24;
 
-    [property: JsonIgnore] [ObservableProperty] private string _lastText = string.Empty;
-    [property: JsonIgnore] [ObservableProperty] private Color _lastColor = Colors.White;
-    [property: JsonIgnore] [ObservableProperty] private FAIconSource? _lastIconSource;
+    [ObservableProperty]
+    private string _id = GenerateRandomId();
+
+    [property: JsonIgnore]
+    [ObservableProperty]
+    private Color _lastColor = Colors.White;
+
+    [property: JsonIgnore]
+    [ObservableProperty]
+    private FAIconSource? _lastIconSource;
+
+    [property: JsonIgnore]
+    [ObservableProperty]
+    private string _lastText = string.Empty;
 
     private static string GenerateRandomId()
     {

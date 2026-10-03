@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlanGroup;
 
 /// <summary>
-/// 解散指定课表群。群内的课表会被移动到默认课表群。
+///     解散指定课表群。群内的课表会被移动到默认课表群。
 /// </summary>
 public class DisbandClassPlanGroupBlock : ActionBlockBase
 {
@@ -17,8 +17,11 @@ public class DisbandClassPlanGroupBlock : ActionBlockBase
     public override string Name => "解散课表群";
     public override string Tooltip => "解散指定课表群，群内的课表会被移动到默认课表群。默认课表群和全局课表群无法解散。";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlanGroup", ProfileFields.ClassPlanGroup(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlanGroup", ProfileFields.ClassPlanGroup(""));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

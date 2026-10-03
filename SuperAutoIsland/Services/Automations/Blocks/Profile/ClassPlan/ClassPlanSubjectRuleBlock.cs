@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ClassIsland.Core.Models.Ruleset;
 using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -12,18 +13,22 @@ public class ClassPlanSubjectRuleBlock : RuleBlockBase
     public override string Name => "课表";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
-    
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Index", BasicFields.Number("第", 1))
-        .AddField("Subject", ProfileFields.Subject("节课是"))
-        .AddDummy("?");
-    
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("Index", BasicFields.Number("第", 1))
+            .AddField("Subject", ProfileFields.Subject("节课是"))
+            .AddDummy("?");
+    }
+
+    public override bool Handler(Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
         var plan = ProfileBlockHelpers.ClassPlan(settings);
         return plan is not null
-            && ProfileBlockHelpers.ClassSubjectId(plan, ProfileBlockHelpers.Number(settings, "Index")) == ProfileBlockHelpers.Guid(settings, "Subject");
+               && ProfileBlockHelpers.ClassSubjectId(plan, ProfileBlockHelpers.Number(settings, "Index")) ==
+               ProfileBlockHelpers.Guid(settings, "Subject");
     }
 }

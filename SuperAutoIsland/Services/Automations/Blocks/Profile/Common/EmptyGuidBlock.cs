@@ -9,6 +9,8 @@ public class EmptyGuidBlock : DataBlockBase
     public override string Name => "空GUID";
     public override (string, string) Icon => ("星星", FluentIcons.StarRegular);
 
-    public override Task<object> Handler(object? data) =>
-        Task.FromResult<object>(Guid.Empty.ToString());
+    public override Task<object> Handler(object? data)
+    {
+        return Task.FromResult<object>(Guid.Empty.ToString());
+    }
 }

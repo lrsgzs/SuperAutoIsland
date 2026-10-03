@@ -9,7 +9,7 @@ using ProfileTimeLayout = ClassIsland.Shared.Models.Profile.TimeLayout;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 
 /// <summary>
-/// 创建一个新时间表，并输出新时间表的 GUID。
+///     创建一个新时间表，并输出新时间表的 GUID。
 /// </summary>
 public class CreateTimeLayoutBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class CreateTimeLayoutBlock : DataBlockBase
     public override string Tooltip => "创建一个空白的新时间表，并输出新时间表的 GUID。";
     public override string DataOutput => "SAI_Profile_TimeLayout";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Name", BasicFields.Text("名称", "新时间表"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Name", BasicFields.Text("名称", "新时间表"));
+    }
 
     public override Task<object> Handler(object? data)
     {

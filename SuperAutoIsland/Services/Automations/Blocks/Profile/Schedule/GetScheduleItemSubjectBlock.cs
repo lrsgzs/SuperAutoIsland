@@ -7,7 +7,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 获取课程的科目，输出科目 GUID。
+///     获取课程的科目，输出科目 GUID。
 /// </summary>
 public class GetScheduleItemSubjectBlock : DataBlockBase
 {
@@ -19,9 +19,12 @@ public class GetScheduleItemSubjectBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem(""))
-        .AddDummy("的科目");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem(""))
+            .AddDummy("的科目");
+    }
 
     public override Task<object> Handler(object? data)
     {

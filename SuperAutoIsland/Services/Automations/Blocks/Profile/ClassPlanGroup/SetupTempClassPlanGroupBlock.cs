@@ -12,7 +12,12 @@ public class SetupTempClassPlanGroupBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setupTempClassPlanGroup";
     public override string Name => "设置临时课表群";
-    public override void GetFields(FieldsRegister it) => it.AddField("Group", ProfileFields.ClassPlanGroup(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("Group", ProfileFields.ClassPlanGroup(""));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);

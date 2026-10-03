@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ClassIsland.Core.Models.Ruleset;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -6,7 +7,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 验证「时间表 GUID[序号]」所指向的时间点是否存在。
+///     验证「时间表 GUID[序号]」所指向的时间点是否存在。
 /// </summary>
 public class TimeLayoutItemExistsRuleBlock : RuleBlockBase
 {
@@ -16,11 +17,14 @@ public class TimeLayoutItemExistsRuleBlock : RuleBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("存在?");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
+            .AddDummy("存在?");
+    }
 
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
+    public override bool Handler(Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
         var (reference, index) = ProfileBlockHelpers.TimeLayoutItem(settings);

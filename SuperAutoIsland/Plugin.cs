@@ -6,7 +6,6 @@ using ClassIsland.Core.Extensions.Registry;
 using ClassIsland.Core.Icons;
 using ClassIsland.Core.Models.Automation;
 using ClassIsland.Shared;
-using DynamicData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperAutoIsland.Controls.ActionSettingsControls;
@@ -18,8 +17,6 @@ using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations;
 using SuperAutoIsland.Services.Automations.Actions;
-using SuperAutoIsland.Services.Automations.Categories;
-using SuperAutoIsland.Services.Automations.Categories.Profile;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
@@ -32,22 +29,22 @@ using SuperAutoIsland.Views.SettingPages;
 namespace SuperAutoIsland;
 
 /// <summary>
-/// 插件本体
+///     插件本体
 /// </summary>
 [PluginEntrance]
 public class Plugin : PluginBase
 {
     private readonly Logger<Plugin> _logger = new();
 
-    public static Plugin? Current { get; private set; }
-
     public Plugin()
     {
         Current = this;
     }
 
+    public static Plugin? Current { get; private set; }
+
     /// <summary>
-    /// 初始化插件
+    ///     初始化插件
     /// </summary>
     /// <param name="context">上下文</param>
     /// <param name="services">服务</param>
@@ -101,19 +98,19 @@ public class Plugin : PluginBase
                         Children =
                         {
                             new ActionMenuTreeItem("sai.actions.setDynamicText", "设置动态文本",
-                                FluentIcons.TextEditStyleRegular),
+                                                   FluentIcons.TextEditStyleRegular),
                             new ActionMenuTreeItem("sai.actions.setDynamicTextColor", "设置动态文本颜色",
-                                FluentIcons.TextColorRegular),
+                                                   FluentIcons.TextColorRegular),
                             new ActionMenuTreeItem("sai.actions.setDynamicTextIcon", "设置动态文本图标",
-                                FluentIcons.IconsRegular)
+                                                   FluentIcons.IconsRegular)
                         }
                     },
                     new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目",
-                        FluentIcons.AlignSpaceEvenlyVerticalRegular),
+                                           FluentIcons.AlignSpaceEvenlyVerticalRegular),
                     new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组",
-                        FluentIcons.AirplaneTakeOffRegular),
+                                           FluentIcons.AirplaneTakeOffRegular),
                     new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认",
-                        FluentIcons.AirplaneLandingRegular),
+                                           FluentIcons.AirplaneLandingRegular)
                 }
             });
 

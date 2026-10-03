@@ -38,22 +38,21 @@ const generateField = (field: Field) => {
         type: field.type,
         data: field.options,
     };
-}
+};
 
-const generateInputField = (field: InputField)=> {
+const generateInputField = (field: InputField) => {
     let output = {
         type: field.type,
         check: field.check,
         fields: field.options,
-        blockType: undefined as string | undefined
+        blockType: undefined as string | undefined,
     };
 
-    if (field.shadowBlockType != null)
-    {
+    if (field.shadowBlockType != null) {
         output.blockType = field.shadowBlockType;
     }
     return output;
-}
+};
 
 export async function addV2Block(metadata: BlockMetadata) {
     if (metadata.kind == 'label') {
@@ -98,20 +97,16 @@ export async function addV2Block(metadata: BlockMetadata) {
             };
             fields.push([fieldId, field.options.useNumbers ? 'dropdown-number' : 'dropdown', field.type]);
             if (!metadata.inlineField) message += '\n';
-        }
-        else if (field.type === 'field_dropdown') {
+        } else if (field.type === 'field_dropdown') {
             inputDefinition = generateField(field) as ArgDefinition;
             fields.push([fieldId, field.options.useNumbers ? 'dropdown-number' : 'dropdown', field.type]);
             if (!metadata.inlineField) message += '\n';
-        }
-        else if (field.type === 'input_value') {
+        } else if (field.type === 'input_value') {
             inputDefinition = generateInputField(field as InputField) as ArgDefinition;
             fields.push([fieldId, 'block', field.type]);
-        }
-        else if (field.type === 'input_dummy') {
+        } else if (field.type === 'input_dummy') {
             inputDefinition = generateField(field) as ArgDefinition;
-        }
-        else {
+        } else {
             inputDefinition = generateField(field) as ArgDefinition;
             fields.push([fieldId, 'field', field.type]);
             if (!metadata.inlineField) message += '\n';
@@ -154,7 +149,8 @@ export async function addV2Block(metadata: BlockMetadata) {
                 }
 
                 if (
-                    fieldType == 'field' && [
+                    fieldType == 'field' &&
+                    [
                         'field_input',
                         'field_variable',
                         'field_date',

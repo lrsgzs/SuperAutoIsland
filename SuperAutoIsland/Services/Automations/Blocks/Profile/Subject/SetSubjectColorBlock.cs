@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 设置科目主题色。颜色无效时不做修改。
+///     设置科目主题色。颜色无效时不做修改。
 /// </summary>
 public class SetSubjectColorBlock : ActionBlockBase
 {
@@ -17,9 +17,12 @@ public class SetSubjectColorBlock : ActionBlockBase
     public override string Name => "设置科目主题色";
     public override string Tooltip => "设置科目的主题色。颜色无效时不做修改。";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""))
-        .AddField("Color", BasicFields.Color("颜色"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""))
+            .AddField("Color", BasicFields.Color("颜色"));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

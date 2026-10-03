@@ -8,10 +8,13 @@ public class DynamicTextItem
     public string? Icon { get; set; }
     public Color? Color { get; set; }
 
-    public DynamicTextItem Clone() => new()
+    public DynamicTextItem Clone()
     {
-        Text = Text,
-        Icon = Icon,
-        Color = Color
-    };
+        return new DynamicTextItem
+        {
+            Text = Text,
+            Icon = Icon,
+            Color = Color
+        };
+    }
 }

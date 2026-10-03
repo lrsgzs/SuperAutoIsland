@@ -43,9 +43,9 @@ public class SelectingDialogBlock : DataBlockBase
                 .AddDummy("↑ 值为显示文本")
                 .AddField("Default", BasicFields.Text("默认键(可空)", string.Empty));
         }
-        
+
         it
-            .AddField("Topmost", BasicFields.Boolean("置顶？", false))
+            .AddField("Topmost", BasicFields.Boolean("置顶？"))
             .AddField("CountdownEnabled", BasicFields.Boolean("启用倒计时？", true))
             .AddField("CountdownTime", BasicFields.Number("倒计时时长(s)", 5));
     }
@@ -61,22 +61,22 @@ public class SelectingDialogBlock : DataBlockBase
     {
         if (settings.Items.Count == 0)
             return "???";
-        
+
         var buttons = settings.Items
-            .Select(kvp =>
-            {
-                var button = new FATaskDialogButton(kvp.Value, kvp.Key);
-                if (settings.Default == kvp.Key)
-                    button.IsDefault = true;
-                return button;
-            })
-            .ToList();
+                              .Select(kvp =>
+                              {
+                                  var button = new FATaskDialogButton(kvp.Value, kvp.Key);
+                                  if (settings.Default == kvp.Key)
+                                      button.IsDefault = true;
+                                  return button;
+                              })
+                              .ToList();
 
         var defaultButton = buttons
-            .Where(x => x.IsDefault)
-            .FirstOrDefault(buttons.Last())!;
+                            .Where(x => x.IsDefault)
+                            .FirstOrDefault(buttons.Last())!;
         var defaultButtonText = defaultButton.Text;
-        
+
         var dialog = new FATaskDialog
         {
             Title = settings.Header,
@@ -91,7 +91,7 @@ public class SelectingDialogBlock : DataBlockBase
             var stopwatch = Stopwatch.StartNew();
             var completed = false;
             dialog.Closing += (sender, args) => { args.Cancel = !completed; };
-            
+
             buttons.ForEach(x => x.IsEnabled = false);
 
             _ = Task.Run(async () =>
@@ -111,7 +111,8 @@ public class SelectingDialogBlock : DataBlockBase
 
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        defaultButton.Text = $"{defaultButtonText} ({remainingTime:0}s)";
+                        defaultButton.Text =
+                            $"{defaultButtonText} ({remainingTime:0}s)";
                     });
 
                     var checkInterval = Math.Min(remainingMs, 1000);
@@ -139,7 +140,7 @@ public class SelectingDialogBlock : DataBlockBase
         }
 
         var result = await task;
-        
+
         return result as string ?? "???";
     }
 }

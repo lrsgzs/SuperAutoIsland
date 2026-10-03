@@ -7,7 +7,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 获取课程的开始时间，格式 HH:mm:ss。
+///     获取课程的开始时间，格式 HH:mm:ss。
 /// </summary>
 public class GetScheduleItemStartTimeBlock : DataBlockBase
 {
@@ -19,9 +19,12 @@ public class GetScheduleItemStartTimeBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem(""))
-        .AddDummy("的开始时间");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem(""))
+            .AddDummy("的开始时间");
+    }
 
     public override Task<object> Handler(object? data)
     {

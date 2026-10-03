@@ -9,14 +9,14 @@ namespace SuperAutoIsland.Interface.Services.Automations;
 public abstract class RuleBlockBase : BlockBase
 {
     public override BlockKind Kind => BlockKind.Rule;
-    
+
     public virtual Rule Wrapper(Rule rule)
     {
         return rule;
     }
-    
+
     /// <summary>
-    /// 会在 ui 线程运行，无需 Dispatcher
+    ///     会在 ui 线程运行，无需 Dispatcher
     /// </summary>
     /// <param name="rule">规则项</param>
     public virtual bool Handler(Rule rule)
@@ -30,11 +30,11 @@ public abstract class RuleBlockBase : BlockBase
             [
                 new RuleGroup
                 {
-                    Rules = [rule],
+                    Rules = [rule]
                 }
             ]
         });
-        
-        return result;  
+
+        return result;
     }
 }

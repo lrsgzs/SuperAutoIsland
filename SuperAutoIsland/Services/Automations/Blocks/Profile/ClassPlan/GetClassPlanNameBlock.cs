@@ -10,8 +10,11 @@ public class GetClassPlanNameBlock : DataBlockBase
     public override string Id => "sai.profile.data.classPlanName";
     public override string Name => "课表名称";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    }
 
     public override Task<object> Handler(object? data)
     {

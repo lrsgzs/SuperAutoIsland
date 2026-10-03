@@ -10,7 +10,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 复制指定课程（日程项目），并输出新课程的 GUID。
+///     复制指定课程（日程项目），并输出新课程的 GUID。
 /// </summary>
 public class CopyScheduleItemBlock : DataBlockBase
 {
@@ -20,8 +20,11 @@ public class CopyScheduleItemBlock : DataBlockBase
     public override string Tooltip => "复制指定课程（日程项目），并输出新课程的 GUID。复制出的课程信息与原课程相同。";
     public override string DataOutput => "SAI_Profile_ScheduleItem";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem(""));
+    }
 
     public override Task<object> Handler(object? data)
     {

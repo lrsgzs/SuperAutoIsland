@@ -6,7 +6,7 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Services;
 
 /// <summary>
-/// 提供项目配置管理的功能，包括初始化、创建、获取、保存和删除项目。
+///     提供项目配置管理的功能，包括初始化、创建、获取、保存和删除项目。
 /// </summary>
 public static class ProjectsConfigManager
 {
@@ -14,7 +14,7 @@ public static class ProjectsConfigManager
     private static string _configPath = string.Empty;
 
     /// <summary>
-    /// 初始化项目配置管理器，设置配置路径并创建项目文件夹（如果不存在）。
+    ///     初始化项目配置管理器，设置配置路径并创建项目文件夹（如果不存在）。
     /// </summary>
     public static void Initialization()
     {
@@ -27,24 +27,24 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    /// 创建一个新的项目并添加到项目配置中。
+    ///     创建一个新的项目并添加到项目配置中。
     /// </summary>
     /// <param name="type">项目的类型。</param>
     /// <param name="name">项目的名称。</param>
     /// <returns>新创建的项目实例。</returns>
     public static Project CreateProject(ProjectsType type, string name)
     {
-        var newProject = new Project()
+        var newProject = new Project
         {
             Type = type,
-            Name = name,
+            Name = name
         };
         GlobalConstants.Configs.ProjectConfig!.Data.Projects.Add(newProject);
         return newProject;
     }
 
     /// <summary>
-    /// 根据 Guid 获取项目实例。
+    ///     根据 Guid 获取项目实例。
     /// </summary>
     /// <param name="guid">项目的 Guid。</param>
     /// <returns>找到的项目实例。</returns>
@@ -64,9 +64,9 @@ public static class ProjectsConfigManager
         Logger.Debug($"获取项目 {guid} 失败！");
         throw new KeyNotFoundException();
     }
-    
+
     /// <summary>
-    /// 根据 Guid 获取项目实例，如果不存在则创建新项目。
+    ///     根据 Guid 获取项目实例，如果不存在则创建新项目。
     /// </summary>
     /// <param name="projectsType">项目的类型。</param>
     /// <param name="guid">项目的 Guid。</param>
@@ -87,9 +87,9 @@ public static class ProjectsConfigManager
         Logger.Debug($"获取项目 {guid} 失败！Falling back.");
         return CreateProject(projectsType, name ?? "新项目");
     }
-    
+
     /// <summary>
-    /// 检查指定 Guid 的项目是否存在。
+    ///     检查指定 Guid 的项目是否存在。
     /// </summary>
     /// <param name="id">项目的 Guid。</param>
     /// <returns>如果项目存在则返回true，否则返回false。</returns>
@@ -97,9 +97,9 @@ public static class ProjectsConfigManager
     {
         return GlobalConstants.Configs.ProjectConfig!.Data.Projects.Any(project => project.Id == id);
     }
-    
+
     /// <summary>
-    /// 保存 Blockly 类型项目的 workspace 和生成的 JavaScript 代码。
+    ///     保存 Blockly 类型项目的 workspace 和生成的 JavaScript 代码。
     /// </summary>
     /// <param name="project">要保存的项目实例。</param>
     /// <param name="workspace">Blockly 的工作区数据。</param>
@@ -109,13 +109,13 @@ public static class ProjectsConfigManager
     {
         Logger.Info($"正在保存 Blockly 项目 {project.Name}");
         if (project.Type is not ProjectsType.BlocklyAction) throw new ArgumentException();
-        
+
         WriteFile(Path.Combine(_configPath, $"{project.Id}.workspace.json"), workspace);
         WriteFile(Path.Combine(_configPath, $"{project.Id}.js"), code);
     }
 
     /// <summary>
-    /// 删除指定的项目。
+    ///     删除指定的项目。
     /// </summary>
     /// <param name="project">要删除的项目实例。</param>
     public static void DeleteProject(Project project)
@@ -127,7 +127,7 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    /// 加载 Blockly 类型项目的 workspace 数据。
+    ///     加载 Blockly 类型项目的 workspace 数据。
     /// </summary>
     /// <param name="project">要加载的项目实例。</param>
     /// <returns>项目的工作区数据。</returns>
@@ -145,7 +145,7 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    /// 加载 Blockly 类型项目的 JavaScript 代码。
+    ///     加载 Blockly 类型项目的 JavaScript 代码。
     /// </summary>
     /// <param name="project">要加载的项目实例。</param>
     /// <returns>项目的 JavaScript 代码。</returns>
@@ -163,7 +163,7 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    /// 将内容写入指定路径的文件。
+    ///     将内容写入指定路径的文件。
     /// </summary>
     /// <param name="path">文件路径。</param>
     /// <param name="content">要写入的内容。</param>
@@ -177,7 +177,7 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    /// 从指定路径的文件中读取内容。
+    ///     从指定路径的文件中读取内容。
     /// </summary>
     /// <param name="path">文件路径。</param>
     /// <returns>文件内容。</returns>

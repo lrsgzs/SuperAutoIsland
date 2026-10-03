@@ -14,7 +14,12 @@ public class CopyClassPlanBlock : DataBlockBase
     public override string Name => "复制课表";
     public override string DataOutput => "SAI_Profile_ClassPlan";
     public override Type SettingsType => typeof(object);
-    public override void GetFields(FieldsRegister it) => it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    }
+
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);

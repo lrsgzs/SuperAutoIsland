@@ -18,8 +18,15 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 [ActionInfo("sai.actions.dialogs.confirmExecute", "工作流执行确认", FluentIcons.AirplaneLandingRegular, false)]
 public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
 {
+    public enum ResultType
+    {
+        Yes,
+        No,
+        Delay
+    }
+
     private IActionService? _actionService;
-    
+
     protected override async Task OnInvoke()
     {
         await base.OnInvoke();
@@ -42,41 +49,45 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
             await Task.Delay(TimeSpan.FromSeconds(delayTime.Value));
         }
     }
-    
+
     public static async Task<ResultType> ShowDialogAsync(ConfirmExecuteActionSettings settings, string actionSetName)
     {
         var delayButton = new FATaskDialogButton(settings.DelayText.Replace("{name}", actionSetName), "delay");
-        
+
         var noButton = new FATaskDialogButton(settings.NoText.Replace("{name}", actionSetName), "no")
         {
-            IsDefault = !settings.PreferYes,
+            IsDefault = !settings.PreferYes
         };
-        
+
         var yesButton = new FATaskDialogButton(settings.YesText.Replace("{name}", actionSetName), "yes")
         {
             IsDefault = settings.PreferYes
         };
-        
+
         var dialog = new FATaskDialog
         {
             Title = settings.Header.Replace("{name}", actionSetName),
             Header = settings.Header.Replace("{name}", actionSetName),
             Content = settings.Message.Replace("{name}", actionSetName),
-            Buttons = settings.CanDelay ?
-                (settings.PreferYes ? [delayButton, noButton, yesButton] : [delayButton, yesButton, noButton]) :
-                (settings.PreferYes ? [noButton, yesButton] : [yesButton, noButton]),
+            Buttons = settings.CanDelay
+                          ?
+                          settings.PreferYes ? [delayButton, noButton, yesButton] : [delayButton, yesButton, noButton]
+                          :
+                          settings.PreferYes
+                              ? [noButton, yesButton]
+                              : [yesButton, noButton],
             XamlRoot = AppBase.Current.GetRootWindow()
         };
 
         if (settings.CountdownEnabled)
         {
             var stopwatch = Stopwatch.StartNew();
-            
+
             var countdownButton = settings.CountdownMode switch
             {
-                CountdownMode.Enable => settings.PreferYes ? yesButton : noButton,
+                CountdownMode.Enable  => settings.PreferYes ? yesButton : noButton,
                 CountdownMode.Resolve => yesButton,
-                _ => noButton
+                _                     => noButton
             };
             var countdownOriginText = settings.CountdownMode switch
             {
@@ -84,17 +95,14 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
                     (settings.PreferYes ? settings.YesText : settings.NoText)
                     .Replace("{name}", actionSetName),
                 CountdownMode.Resolve => settings.YesText.Replace("{name}", actionSetName),
-                _ => settings.NoText.Replace("{name}", actionSetName)
+                _                     => settings.NoText.Replace("{name}", actionSetName)
             };
-            
+
             var completed = false;
-            
+
             if (settings.CountdownMode == CountdownMode.Enable)
             {
-                dialog.Closing += (sender, args) =>
-                {
-                    args.Cancel = !completed;
-                };
+                dialog.Closing += (sender, args) => { args.Cancel = !completed; };
 
                 delayButton.IsEnabled = false;
                 noButton.IsEnabled = false;
@@ -118,19 +126,20 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
 
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        countdownButton.Text = $"{countdownOriginText} ({remainingTime:0}s)";
+                        countdownButton.Text =
+                            $"{countdownOriginText} ({remainingTime:0}s)";
                     });
 
                     var checkInterval = Math.Min(remainingMs, 1000);
                     await Task.Delay(checkInterval);
                 }
-                
+
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     completed = true;
 
                     countdownButton.Text = countdownOriginText;
-                    
+
                     switch (settings.CountdownMode)
                     {
                         case CountdownMode.Enable:
@@ -151,7 +160,7 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
                 });
             });
         }
-        
+
         var task = dialog.ShowAsync();
         if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
         {
@@ -162,22 +171,23 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
                 window.Topmost = true;
             }
         }
+
         var result = await task;
         var text = result as string ?? "???";
-        
+
         return text switch
         {
-            "yes" => ResultType.Yes,
-            "no" => ResultType.No,
+            "yes"   => ResultType.Yes,
+            "no"    => ResultType.No,
             "delay" => ResultType.Delay,
-            _ => ResultType.No
+            _       => ResultType.No
         };
     }
 
     public static async Task<double?> ShowDelayDialogAsync(ConfirmExecuteActionSettings settings, string actionSetName)
     {
         var cancelButton = new FATaskDialogButton("取消执行", false);
-        
+
         var okButton = new FATaskDialogButton("确定", true)
         {
             IsDefault = true
@@ -190,9 +200,9 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
             Maximum = 60,
             SmallChange = 1,
             LargeChange = 5,
-            SpinButtonPlacementMode = FANumberBoxSpinButtonPlacementMode.Inline,
+            SpinButtonPlacementMode = FANumberBoxSpinButtonPlacementMode.Inline
         };
-        
+
         var dialog = new FATaskDialog
         {
             Title = settings.Header,
@@ -217,7 +227,7 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
             Buttons = [cancelButton, okButton],
             XamlRoot = AppBase.Current.GetRootWindow()
         };
-        
+
         var task = dialog.ShowAsync();
         if (AppBase.Current.DesktopLifetime != null && settings.Topmost)
         {
@@ -228,15 +238,9 @@ public class ConfirmExecuteAction : ActionBase<ConfirmExecuteActionSettings>
                 window.Topmost = true;
             }
         }
-        var result = await task;
-        
-        return Equals(result, true) ? numberBox.Value : null;
-    }
 
-    public enum ResultType
-    {
-        Yes,
-        No,
-        Delay
+        var result = await task;
+
+        return Equals(result, true) ? numberBox.Value : null;
     }
 }

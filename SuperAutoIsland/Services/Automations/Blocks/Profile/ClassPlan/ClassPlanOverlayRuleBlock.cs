@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ClassIsland.Core.Models.Ruleset;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -12,11 +13,14 @@ public class ClassPlanOverlayRuleBlock : RuleBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddDummy("是临时层?");
-    
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddDummy("是临时层?");
+    }
+
+    public override bool Handler(Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
         return ProfileBlockHelpers.ClassPlan(settings)?.IsOverlay == true;

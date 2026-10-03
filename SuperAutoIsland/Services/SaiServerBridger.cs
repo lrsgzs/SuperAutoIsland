@@ -5,7 +5,7 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Services;
 
 /// <summary>
-/// 服务器桥接器
+///     服务器桥接器
 /// </summary>
 public class SaiServerBridger : ISaiServer
 {
@@ -13,8 +13,8 @@ public class SaiServerBridger : ISaiServer
     private readonly Logger<SaiServerBridger> _logger = new();
 
     /// <summary>
-    /// 构造函数
-    /// <see cref="SaiServerBridger"/>
+    ///     构造函数
+    ///     <see cref="SaiServerBridger" />
     /// </summary>
     public SaiServerBridger()
     {
@@ -33,7 +33,10 @@ public class SaiServerBridger : ISaiServer
     }
 
     /// <inheritdoc />
-    public void AddCategory<TProvider>() where TProvider : ICategoryProvider, new() => AddCategory(new TProvider());
+    public void AddCategory<TProvider>() where TProvider : ICategoryProvider, new()
+    {
+        AddCategory(new TProvider());
+    }
 
     /// <inheritdoc />
     public void AddCategory(ICategoryProvider provider)

@@ -6,7 +6,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 获取档案中所有课程（日程项目）的 GUID 列表。
+///     获取档案中所有课程（日程项目）的 GUID 列表。
 /// </summary>
 public class GetScheduleItemListBlock : DataBlockBase
 {

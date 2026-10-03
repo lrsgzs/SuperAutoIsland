@@ -39,11 +39,11 @@ public class TextDialogBlock : DataBlockBase
                 .AddField("Message", BasicFields.Text("消息", "请输入文本。"))
                 .AddField("DefaultText", BasicFields.Text("默认文本"));
         }
-        
+
         it
             .AddField("OkText", BasicFields.Text("「Ok」按钮文本", "确定"))
             .AddField("CancelText", BasicFields.Text("「Cancel」按钮文本", "取消"))
-            .AddField("Topmost", BasicFields.Boolean("置顶？", false))
+            .AddField("Topmost", BasicFields.Boolean("置顶？"))
             .AddField("CountdownEnabled", BasicFields.Boolean("启用倒计时？", true))
             .AddField("CountdownTime", BasicFields.Number("倒计时时长(s)", 5));
     }

@@ -21,7 +21,7 @@ public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<Ye
     {
         _ = RuleHandlerService.ShowDialogAsync(Settings);
     }
-    
+
     private void ShowSettingsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         if (this.FindResource("SettingsDrawer") is not ContentControl cc) return;
@@ -36,7 +36,7 @@ public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<Ye
         {
             control.Classes.Remove("in-dialog");
             control.Classes.Add("in-drawer");
-            
+
             if (control is ContentControl cc)
             {
                 cc.Padding = new Thickness(16);
@@ -45,7 +45,7 @@ public partial class YesNoDialogRuleSettingsControl : RuleSettingsControlBase<Ye
             {
                 control.Margin = new Thickness(16);
             }
-            
+
             SettingsPageBase.OpenDrawerCommand.Execute(control);
         }
         else

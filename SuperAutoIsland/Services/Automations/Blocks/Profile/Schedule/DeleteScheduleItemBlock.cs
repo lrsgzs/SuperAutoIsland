@@ -9,15 +9,18 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 删除指定课程（日程项目）。
+///     删除指定课程（日程项目）。
 /// </summary>
 public class DeleteScheduleItemBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.deleteScheduleItem";
     public override string Name => "删除课程";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem(""));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

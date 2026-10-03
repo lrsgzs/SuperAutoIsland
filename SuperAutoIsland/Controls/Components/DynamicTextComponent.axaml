@@ -13,21 +13,24 @@
     <ci:ComponentBase.Resources>
         <converters:ColorToColorPickerBrushConverter x:Key="ColorToColorPickerBrushConverter" />
     </ci:ComponentBase.Resources>
-    
+
     <Grid VerticalAlignment="Center"
           DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=components:DynamicTextComponent}}">
         <Grid.Styles>
             <Style Selector=":custom-text-color TextBlock#MainTextBlock">
-                <Setter Property="Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+                <Setter Property="Foreground"
+                        Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
             </Style>
             <Style Selector=":custom-text-color fa|FAIconSourceElement#MainIconElement">
-                <Setter Property="Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+                <Setter Property="Foreground"
+                        Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
             </Style>
             <Style Selector=":custom-text-color fa|FAIconSourceElement#MainIconElement :is(Control)">
-                <Setter Property="TextElement.Foreground" Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
+                <Setter Property="TextElement.Foreground"
+                        Value="{Binding Settings.LastColor, Converter={StaticResource ColorToColorPickerBrushConverter}}" />
             </Style>
         </Grid.Styles>
-        
+
         <StackPanel Orientation="Horizontal"
                     VerticalAlignment="Center"
                     Spacing="4">
@@ -39,7 +42,7 @@
                                     TextElement.FontSize="{Binding Settings.IconSize}"
                                     VerticalAlignment="Center"
                                     IsVisible="{Binding Settings.LastIconSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
-            
+
             <TextBlock x:Name="MainTextBlock"
                        Text="{Binding Settings.LastText}"
                        VerticalAlignment="Center"

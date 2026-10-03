@@ -9,7 +9,7 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 [ActionInfo("sai.actions.setDynamicTextIcon", "设置动态文本图标", FluentIcons.IconsRegular, false)]
 public class SetDynamicTextIconAction : ActionBase<SetDynamicTextIconActionSettings>
 {
-    private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
+    private readonly DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
 
     protected override async Task OnInvoke()
     {

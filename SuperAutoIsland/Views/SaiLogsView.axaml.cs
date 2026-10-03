@@ -11,44 +11,45 @@ using SuperAutoIsland.ViewModel;
 namespace SuperAutoIsland.Views;
 
 /// <summary>
-/// 日志窗口视图
+///     日志窗口视图
 /// </summary>
 public partial class SaiLogsView : ViewBase
 {
     /// <summary>
-    /// 等级-图标 转换器
+    ///     等级-图标 转换器
     /// </summary>
     public static readonly FuncValueConverter<string, string> LogLevelToIconGlyphConverter = new(x => x switch
     {
         "ERROR" => FluentIcons.ErrorCircleFilled,
-        "WARN" => FluentIcons.WarningFilled,
-        "INFO" => FluentIcons.InfoRegular,
+        "WARN"  => FluentIcons.WarningFilled,
+        "INFO"  => FluentIcons.InfoRegular,
         "DEBUG" => FluentIcons.BugFilled,
-        _ => FluentIcons.PresenceDndFilled
+        _       => FluentIcons.PresenceDndFilled
     });
-    
+
     /// <summary>
-    /// 等级-可读文字 转换器
+    ///     等级-可读文字 转换器
     /// </summary>
     public static readonly FuncValueConverter<string, string> LogLevelToNameConverter = new(x => x switch
     {
         "ERROR" => "错误",
-        "WARN" => "警告",
-        "INFO" => "信息",
+        "WARN"  => "警告",
+        "INFO"  => "信息",
         "DEBUG" => "调试",
-        _ => $"其他[{x}]"
+        _       => $"其他[{x}]"
     });
-    
-    public SaiLogsViewModel ViewModel { get; } = IAppHost.GetService<SaiLogsViewModel>();
-    private Logger<SaiLogsView> _logger = new();
-    
+
+    private readonly Logger<SaiLogsView> _logger = new();
+
     public SaiLogsView()
     {
         InitializeComponent();
     }
-    
+
+    public SaiLogsViewModel ViewModel { get; } = IAppHost.GetService<SaiLogsViewModel>();
+
     /// <summary>
-    /// 清理日志点击事件
+    ///     清理日志点击事件
     /// </summary>
     private void ButtonClearLogs_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -56,7 +57,7 @@ public partial class SaiLogsView : ViewBase
     }
 
     /// <summary>
-    /// 复制选中的日志点击事件
+    ///     复制选中的日志点击事件
     /// </summary>
     private void ButtonCopySelectedLogs_OnClick(object? sender, RoutedEventArgs e)
     {

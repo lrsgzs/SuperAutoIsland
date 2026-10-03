@@ -14,16 +14,19 @@ public class ClassIslandSleepBlock : ActionBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("SECONDS", BasicFields.Number("", 5))
-        .AddDummy("秒");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("SECONDS", BasicFields.Number("", 5))
+            .AddDummy("秒");
+    }
 
     public override ActionItem Wrapper(ActionItem actionItem)
     {
         var settings = JsonSerializer.SerializeToElement(actionItem.Settings);
         var seconds = settings.TryGetProperty("SECONDS", out var value)
-            ? value.GetDouble()
-            : 0;
+                          ? value.GetDouble()
+                          : 0;
 
         return new ActionItem
         {

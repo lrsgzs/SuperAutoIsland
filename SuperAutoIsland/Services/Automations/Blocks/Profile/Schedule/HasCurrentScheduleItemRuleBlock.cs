@@ -1,11 +1,12 @@
 using ClassIsland.Core.Icons;
+using ClassIsland.Core.Models.Ruleset;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 判断当前是否有正在进行中的课程（日程项目）。
+///     判断当前是否有正在进行中的课程（日程项目）。
 /// </summary>
 public class HasCurrentScheduleItemRuleBlock : RuleBlockBase
 {
@@ -14,6 +15,8 @@ public class HasCurrentScheduleItemRuleBlock : RuleBlockBase
     public override (string, string) Icon => ("日程", FluentIcons.CalendarRegular);
     public override string Tooltip => "判断当前是否有正在进行中的课程。";
 
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule) =>
-        ProfileBlockHelpers.CurrentScheduleItem() is not null;
+    public override bool Handler(Rule rule)
+    {
+        return ProfileBlockHelpers.CurrentScheduleItem() is not null;
+    }
 }

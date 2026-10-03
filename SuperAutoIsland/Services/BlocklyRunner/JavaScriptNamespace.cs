@@ -5,31 +5,32 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Services.BlocklyRunner;
 
 /// <summary>
-/// js 运行时命名空间
+///     js 运行时命名空间
 /// </summary>
 public class JavaScriptNamespace
 {
     /// <summary>
-    /// 假的 console object
+    ///     假的 console object
     /// </summary>
     public readonly DummyConsole Console = new();
+
     private readonly Logger<JavaScriptNamespace> _logger = new();
-    
+
     /// <summary>
-    /// 内部的 CallAction 实现
+    ///     内部的 CallAction 实现
     /// </summary>
     private async Task _callAction(string id, object data)
     {
         var dataJson = JsonSerializer.Serialize(data);
         var jsonDocument = JsonDocument.Parse(dataJson);
         _logger.BaseLog("TRACE", $"Calling Action: {id} {dataJson}");
-        
+
         var runnerService = IAppHost.GetService<SaiBlockRunner>();
         await runnerService.RunAction(id, jsonDocument.RootElement);
     }
-    
+
     /// <summary>
-    /// 内部的 GetRuleState 实现
+    ///     内部的 GetRuleState 实现
     /// </summary>
     private async Task<bool> _getRuleState(string id, object data)
     {
@@ -41,9 +42,9 @@ public class JavaScriptNamespace
         var result = await runnerService.RunRule(id, jsonDocument.RootElement);
         return result;
     }
-    
+
     /// <summary>
-    /// 内部的 GetData 实现
+    ///     内部的 GetData 实现
     /// </summary>
     private async Task<object> _getData(string id, object data)
     {
@@ -56,7 +57,7 @@ public class JavaScriptNamespace
     }
 
     /// <summary>
-    /// 运行行动
+    ///     运行行动
     /// </summary>
     /// <param name="id">行动 id</param>
     /// <param name="data">行动 settings</param>
@@ -66,9 +67,9 @@ public class JavaScriptNamespace
         _logger.BaseLog("TRACE", "收到 CallAction");
         return _callAction(id, data);
     }
-    
+
     /// <summary>
-    /// 获取规则状态
+    ///     获取规则状态
     /// </summary>
     /// <param name="id">规则 id</param>
     /// <param name="data">规则 settings</param>
@@ -78,9 +79,9 @@ public class JavaScriptNamespace
         _logger.BaseLog("TRACE", "收到 GetRuleState");
         return _getRuleState(id, data);
     }
-    
+
     /// <summary>
-    /// 获取规则状态
+    ///     获取规则状态
     /// </summary>
     /// <param name="id">规则 id</param>
     /// <param name="data">规则 settings</param>
@@ -92,34 +93,34 @@ public class JavaScriptNamespace
     }
 
     /// <summary>
-    /// 假的 console object
+    ///     假的 console object
     /// </summary>
     public class DummyConsole
     {
-        private Logger _logger = new("DummyConsole");
-        
+        private readonly Logger _logger = new("DummyConsole");
+
         // 忽略方法名。
-        
+
         public void log(params object[] message)
         {
             _logger.Log(message.Aggregate("", (current, obj) => current + obj + " "));
         }
-        
+
         public void info(params object[] message)
         {
             _logger.Info(message.Aggregate("", (current, obj) => current + obj + " "));
         }
-        
+
         public void warn(params object[] message)
         {
             _logger.Warn(message.Aggregate("", (current, obj) => current + obj + " "));
         }
-        
+
         public void error(params object[] message)
         {
             _logger.Error(message.Aggregate("", (current, obj) => current + obj + " "));
         }
-        
+
         public void debug(params object[] message)
         {
             _logger.Debug(message.Aggregate("", (current, obj) => current + obj + " "));

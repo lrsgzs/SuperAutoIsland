@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 复制指定科目，并输出新科目的 GUID。
+///     复制指定科目，并输出新科目的 GUID。
 /// </summary>
 public class CopySubjectBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class CopySubjectBlock : DataBlockBase
     public override string Tooltip => "复制指定科目，并输出新科目的 GUID。复制出的科目信息与原科目相同，名称不会自动修改。";
     public override string DataOutput => "SAI_Profile_Subject";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""));
+    }
 
     public override Task<object> Handler(object? data)
     {

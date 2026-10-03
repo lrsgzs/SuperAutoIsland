@@ -1,5 +1,5 @@
-using System.Text.Json;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using ClassIsland.Shared.Models.Automation;
 using ClassIsland.Shared.Models.Profile;
 using SuperAutoIsland.Interface.Metadata;
@@ -13,14 +13,19 @@ public class SetDateRuleBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setDateRule";
     public override string Name => "设置课表触发规则为";
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("某天")
-        .AddField("ClassPlan", ProfileFields.ClassPlan("课表"))
-        .AddField("Dates", BasicFields.CreateInputField("启用日期", field =>
-        {
-            field.Check = "Array";
-            field.ShadowBlockType = "lists_create_with";
-        }));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("某天")
+            .AddField("ClassPlan", ProfileFields.ClassPlan("课表"))
+            .AddField("Dates", BasicFields.CreateInputField("启用日期", field =>
+            {
+                field.Check = "Array";
+                field.ShadowBlockType = "lists_create_with";
+            }));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
@@ -39,8 +44,10 @@ public class SetDateRuleBlock : ActionBlockBase
                     }
                 }
             }
+
             plan.TimeRule.EnableDates = dates;
         }
+
         return Task.CompletedTask;
     }
 }

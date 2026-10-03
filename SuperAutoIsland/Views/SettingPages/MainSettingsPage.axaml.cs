@@ -16,38 +16,39 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Views.SettingPages;
 
 /// <summary>
-/// 「SuperAutoIsland 主页」视图
+///     「SuperAutoIsland 主页」视图
 /// </summary>
 [HidePageTitle]
 [Group("sai.settings")]
-[SettingsPageInfo("sai.settings.main","主设置",FluentIcons.HomeRegular,FluentIcons.HomeFilled)]
-public partial class MainSettingsPage : SettingsPageBase {
-    public MainConfigModel Settings { get; set; }
-    private bool _isRequestedRestart = false;
+[SettingsPageInfo("sai.settings.main", "主设置", FluentIcons.HomeRegular, FluentIcons.HomeFilled)]
+public partial class MainSettingsPage : SettingsPageBase
+{
+    private int _clickCounts;
+    private bool _isRequestedRestart;
 
-    private int _clickCounts = 0;
-    
     public MainSettingsPage()
     {
         Settings = GlobalConstants.Configs.MainConfig!.Data;
         InitializeComponent();
-        
+
         Settings.RestartPropertyChanged += SettingsOnPropertyChanged;
         Settings.ProfileFeatures.PropertyChanged += ProfileFeaturesOnPropertyChanged;
-        
+
         DebugComboBox.ItemsSource = ActionSerializer.GetActionsId();
     }
-    
+
+    public MainConfigModel Settings { get; set; }
+
     private void SettingsOnPropertyChanged()
     {
         if (_isRequestedRestart) return;
-        
+
         RequestRestart();
         _isRequestedRestart = true;
     }
 
     /// <summary>
-    /// 档案功能子开关变化：重新构建档案分类的积木，无需重启
+    ///     档案功能子开关变化：重新构建档案分类的积木，无需重启
     /// </summary>
     private void ProfileFeaturesOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -55,12 +56,12 @@ public partial class MainSettingsPage : SettingsPageBase {
         {
             return;
         }
-        
+
         IAppHost.GetService<ISaiServer>().NotifyCategoryUpdated();
     }
 
     /// <summary>
-    /// 查看日志点击事件
+    ///     查看日志点击事件
     /// </summary>
     private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -71,7 +72,7 @@ public partial class MainSettingsPage : SettingsPageBase {
     {
         var selectedItem = DebugComboBox.SelectedItem;
         if (selectedItem is not string actionId) return;
-        
+
         DebugTextBox.Text = ActionSerializer.GetActionInfo(actionId);
     }
 
@@ -97,7 +98,7 @@ public partial class MainSettingsPage : SettingsPageBase {
     {
         if (!(ImageVisibility.IsChecked ?? false))
             return;
-        
+
         this.ShowToast(new ToastMessage
         {
             Message = "SuperAutoIsland 1周年快乐。\n愿 SAI 能够继续前进，成就更好的自动化！",
@@ -121,7 +122,7 @@ public partial class MainSettingsPage : SettingsPageBase {
                 Duration = TimeSpan.FromSeconds(5)
             });
         };
-        
+
         this.ShowToast(new ToastMessage
         {
             Title = "我的...愿望是...",

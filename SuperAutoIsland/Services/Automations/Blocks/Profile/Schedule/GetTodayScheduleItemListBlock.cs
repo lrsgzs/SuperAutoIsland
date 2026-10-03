@@ -5,7 +5,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 获取当天生效的课程的 GUID 列表。
+///     获取当天生效的课程的 GUID 列表。
 /// </summary>
 public class GetTodayScheduleItemListBlock : DataBlockBase
 {
@@ -15,8 +15,10 @@ public class GetTodayScheduleItemListBlock : DataBlockBase
     public override string Tooltip => "获取当天会生效的课程的 GUID 列表（按档案中的顺序）。";
     public override string DataOutput => "Array";
 
-    public override Task<object> Handler(object? data) =>
-        Task.FromResult<object>(ProfileBlockHelpers.TodayScheduleItems().Keys
-            .Select(x => x.ToString())
-            .ToList());
+    public override Task<object> Handler(object? data)
+    {
+        return Task.FromResult<object>(ProfileBlockHelpers.TodayScheduleItems().Keys
+                                                          .Select(x => x.ToString())
+                                                          .ToList());
+    }
 }

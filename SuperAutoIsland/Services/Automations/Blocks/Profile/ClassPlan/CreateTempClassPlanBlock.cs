@@ -12,7 +12,12 @@ public class CreateTempClassPlanBlock : DataBlockBase
     public override string Id => "sai.profile.data.createTempClassPlan";
     public override string Name => "创建临时层";
     public override string DataOutput => "SAI_Profile_ClassPlan";
-    public override void GetFields(FieldsRegister it) => it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    }
+
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);

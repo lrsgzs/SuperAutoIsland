@@ -13,9 +13,12 @@ public class ClassIslandRunProgramBlock : ActionBlockBase
     public override string Name => "运行程序";
     public override (string, string) Icon => ("窗口集", "\uF4B1");
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Value", BasicFields.Text(""))
-        .AddField("Args", BasicFields.Text("应用程序启动参数"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Value", BasicFields.Text(""))
+            .AddField("Args", BasicFields.Text("应用程序启动参数"));
+    }
 
     public override ActionItem Wrapper(ActionItem actionItem)
     {

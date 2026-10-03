@@ -1,6 +1,5 @@
 using System.Text.Json;
 using ClassIsland.Core.Icons;
-using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
@@ -8,8 +7,8 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间点（「时间表引用[序号]」）是第几节课（从 1 开始计数）。
-/// 课间等非「上课」类型返回前一节课的序号；无效时返回 0。
+///     获取时间点（「时间表引用[序号]」）是第几节课（从 1 开始计数）。
+///     课间等非「上课」类型返回前一节课的序号；无效时返回 0。
 /// </summary>
 public class TimePointClassIndexBlock : DataBlockBase
 {
@@ -21,9 +20,12 @@ public class TimePointClassIndexBlock : DataBlockBase
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("是第几节课?");
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
+            .AddDummy("是第几节课?");
+    }
 
     public override Task<object> Handler(object? data)
     {

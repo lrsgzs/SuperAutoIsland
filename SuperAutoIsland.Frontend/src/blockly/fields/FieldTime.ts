@@ -30,11 +30,7 @@ export class FieldTime extends Blockly.FieldTextInput {
      *    change.
      * @param config A map of options used to configure the field.
      */
-    constructor(
-        value?: string,
-        validator?: FieldTimeValidator,
-        config?: FieldTimeConfig,
-    ) {
+    constructor(value?: string, validator?: FieldTimeValidator, config?: FieldTimeConfig) {
         super(value, validator, config);
     }
 
@@ -121,6 +117,21 @@ export class FieldTime extends Blockly.FieldTextInput {
     }
 
     /**
+     * Create the html input and set it to type time.
+     *
+     * @returns The newly created time input editor.
+     */
+    protected widgetCreate_(): HTMLInputElement {
+        // NOTE: field_input should return HTMLInputElement for this.
+        const htmlInput = super.widgetCreate_() as HTMLInputElement;
+        htmlInput.type = 'time';
+        // 允许秒，这样浏览器输入框的值格式为 'HH:mm:ss'。
+        htmlInput.step = '1';
+
+        return htmlInput;
+    }
+
+    /**
      * Shows the time picker.
      */
     private showDropdown(): void {
@@ -141,20 +152,6 @@ export class FieldTime extends Blockly.FieldTextInput {
         });
     }
 
-    /**
-     * Create the html input and set it to type time.
-     *
-     * @returns The newly created time input editor.
-     */
-    protected widgetCreate_(): HTMLInputElement {
-        // NOTE: field_input should return HTMLInputElement for this.
-        const htmlInput = super.widgetCreate_() as HTMLInputElement;
-        htmlInput.type = 'time';
-        // 允许秒，这样浏览器输入框的值格式为 'HH:mm:ss'。
-        htmlInput.step = '1';
-
-        return htmlInput;
-    }
     /* eslint-enable @typescript-eslint/naming-convention */
 }
 

@@ -9,5 +9,9 @@ public class EmptySubjectGuidBlock : DataBlockBase
     public override string Name => "空科目";
     public override (string, string) Icon => ("书", FluentIcons.BookRegular);
     public override string DataOutput => "SAI_Profile_Subject";
-    public override Task<object> Handler(object? data) => Task.FromResult<object>(Guid.Empty.ToString());
+
+    public override Task<object> Handler(object? data)
+    {
+        return Task.FromResult<object>(Guid.Empty.ToString());
+    }
 }

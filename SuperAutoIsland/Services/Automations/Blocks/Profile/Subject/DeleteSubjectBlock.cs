@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 删除指定科目。
+///     删除指定科目。
 /// </summary>
 public class DeleteSubjectBlock : ActionBlockBase
 {
@@ -17,8 +17,11 @@ public class DeleteSubjectBlock : ActionBlockBase
     public override string Name => "删除科目";
     public override string Tooltip => "删除指定科目。课表中仍引用该科目的课程会失去科目信息。";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Subject", ProfileFields.Subject(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Subject", ProfileFields.Subject(""));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

@@ -16,17 +16,10 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Services;
 
 /// <summary>
-/// SuperAutoIsland 服务器
+///     SuperAutoIsland 服务器
 /// </summary>
 public class SaiServer
 {
-    public readonly string Url;
-    private readonly SaiBlockRunner _runner = IAppHost.GetService<SaiBlockRunner>();
-    private bool _isRunning;
-    private readonly string _wwwRoot;
-    private readonly HttpListener _listener;
-    private readonly Logger<SaiServer> _logger = new();
-
     private static readonly JsonSerializerOptions ExtraBlocksOptions = new()
     {
         WriteIndented = false,
@@ -37,22 +30,29 @@ public class SaiServer
             new JsonStringEnumConverter<BlockKind>(JsonNamingPolicy.CamelCase)
         }
     };
-    
+
+    public readonly string Url;
+    private readonly HttpListener _listener;
+    private readonly Logger<SaiServer> _logger = new();
+    private readonly SaiBlockRunner _runner = IAppHost.GetService<SaiBlockRunner>();
+    private readonly string _wwwRoot;
+    private bool _isRunning;
+
     public SaiServer(string port)
     {
         Url = $"http://localhost:{port}/";
         _wwwRoot = Path.Combine(GlobalConstants.PluginFolder!, "Assets", "wwwroot");
         _isRunning = true;
-        
+
         _listener = new HttpListener();
         _listener.Prefixes.Add(Url);
         _listener.Start();
-        
+
         _logger.Info("已启动 SaiServer");
     }
 
     /// <summary>
-    /// 服务器 启动启动启动
+    ///     服务器 启动启动启动
     /// </summary>
     public async Task Serve()
     {
@@ -84,24 +84,26 @@ public class SaiServer
     }
 
     /// <summary>
-    /// 停止服务器，但是不工作
+    ///     停止服务器，但是不工作
     /// </summary>
     public void Shutdown()
     {
         _logger.Debug("开始关闭服务器...");
         _isRunning = false;
-        if (_listener.IsListening) {
+        if (_listener.IsListening)
+        {
             _listener.Stop();
             _listener.Close();
         }
+
         GC.SuppressFinalize(this);
     }
-    
+
     // Generated base server by DeepSeek（
     // features written by lrs2187（
-    
+
     /// <summary>
-    /// 处理WebSocket连接
+    ///     处理WebSocket连接
     /// </summary>
     /// <param name="context">listener 上下文</param>
     private async Task HandleWebSocketAsync(HttpListenerContext context)
@@ -114,12 +116,12 @@ public class SaiServer
         {
             var chunk = new byte[4096];
             var receiveBuffer = new ArraySegment<byte>(chunk);
-            
+
             while (websocket.State == WebSocketState.Open)
             {
                 using var ms = new MemoryStream();
                 WebSocketReceiveResult result;
-                
+
                 do
                 {
                     result = await websocket.ReceiveAsync(receiveBuffer, CancellationToken.None);
@@ -140,7 +142,7 @@ public class SaiServer
                     {
                         message = await reader.ReadToEndAsync();
                     }
-                        
+
                     _logger.Info($"收到消息: {message}");
                     object jsonReturnData;
 
@@ -205,7 +207,7 @@ public class SaiServer
                                         {
                                             guid1 = Guid.NewGuid();
                                         }
-                                        
+
                                         var project1 = ProjectsConfigManager.GetOrCreateProject(
                                             ProjectsType.BlocklyAction,
                                             guid1, null);
@@ -254,7 +256,7 @@ public class SaiServer
                                 {
                                     type = "result",
                                     workspace,
-                                    guid = project2.Id,
+                                    guid = project2.Id
                                 };
                                 break;
                             // 动态下拉框
@@ -278,20 +280,20 @@ public class SaiServer
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList(),
+                                    options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList()
                                 };
                                 break;
                             // 选取本地文件
                             case "pickFile":
                                 var pickKind = messageJson.RootElement.TryGetProperty("kind", out var kindElement)
-                                    ? kindElement.GetString()
-                                    : null;
+                                                   ? kindElement.GetString()
+                                                   : null;
                                 var allowMultiple = messageJson.RootElement.TryGetProperty(
-                                    "allowMultiple", out var multipleElement) &&
-                                    multipleElement.ValueKind == JsonValueKind.True;
+                                                        "allowMultiple", out var multipleElement) &&
+                                                    multipleElement.ValueKind == JsonValueKind.True;
                                 var pickTitle = messageJson.RootElement.TryGetProperty("title", out var titleElement)
-                                    ? titleElement.GetString()
-                                    : null;
+                                                    ? titleElement.GetString()
+                                                    : null;
                                 jsonReturnData = await PickFilesAsync(pickKind, allowMultiple, pickTitle);
                                 break;
                             // 默认行为
@@ -308,7 +310,7 @@ public class SaiServer
                         _logger.FormatException(e);
                         jsonReturnData = new
                         {
-                            type = "error",
+                            type = "error"
                         };
                     }
 
@@ -330,7 +332,7 @@ public class SaiServer
     }
 
     /// <summary>
-    /// 打开本地文件选择器并返回可用的本地路径。
+    ///     打开本地文件选择器并返回可用的本地路径。
     /// </summary>
     /// <param name="kind">文件类型，如 image、json、text</param>
     /// <param name="allowMultiple">是否允许选择多个文件</param>
@@ -343,12 +345,12 @@ public class SaiServer
             {
                 var root = AppBase.Current.GetRootWindow();
                 var files = await PlatformServices.FilePickerService.OpenFilesPickerAsync(
-                    new FilePickerOpenOptions
-                    {
-                        Title = title ?? "选择文件",
-                        AllowMultiple = allowMultiple,
-                        FileTypeFilter = GetFileTypeFilter(kind),
-                    }, root);
+                                new FilePickerOpenOptions
+                                {
+                                    Title = title ?? "选择文件",
+                                    AllowMultiple = allowMultiple,
+                                    FileTypeFilter = GetFileTypeFilter(kind)
+                                }, root);
 
                 var paths = new List<string>();
                 var invalid = 0;
@@ -364,11 +366,11 @@ public class SaiServer
                     paths.Add(path);
                 }
 
-                return (object)new
+                return new
                 {
                     type = "result",
                     paths,
-                    message = invalid > 0 ? "无法直接引用所选文件。请先将它保存到本地，再输入文件路径。" : "",
+                    message = invalid > 0 ? "无法直接引用所选文件。请先将它保存到本地，再输入文件路径。" : ""
                 };
             }
             catch (Exception e)
@@ -378,25 +380,28 @@ public class SaiServer
                 {
                     type = "result",
                     paths = Array.Empty<string>(),
-                    message = "打开文件选择器失败，请直接输入文件路径。",
+                    message = "打开文件选择器失败，请直接输入文件路径。"
                 };
             }
         });
     }
 
     /// <summary>
-    /// 获取文件类型过滤器
+    ///     获取文件类型过滤器
     /// </summary>
-    private static FilePickerFileType[]? GetFileTypeFilter(string? kind) => kind?.ToLowerInvariant() switch
+    private static FilePickerFileType[]? GetFileTypeFilter(string? kind)
     {
-        "image" => [FilePickerFileTypes.ImageAll],
-        "json" => [FilePickerFileTypes.Json],
-        "text" => [FilePickerFileTypes.TextPlain],
-        _ => null,
-    };
+        return kind?.ToLowerInvariant() switch
+        {
+            "image" => [FilePickerFileTypes.ImageAll],
+            "json"  => [FilePickerFileTypes.Json],
+            "text"  => [FilePickerFileTypes.TextPlain],
+            _       => null
+        };
+    }
 
     /// <summary>
-    /// 处理静态文件请求
+    ///     处理静态文件请求
     /// </summary>
     /// <param name="context">listener 上下文</param>
     private async Task ServeStaticFileAsync(HttpListenerContext context)
@@ -437,20 +442,23 @@ public class SaiServer
     }
 
     /// <summary>
-    /// 获取 MIME类型
+    ///     获取 MIME类型
     /// </summary>
     /// <param name="extension">类型扩展名字符串</param>
     /// <returns>MIME 类型字符串</returns>
-    private static string GetMimeType(string extension) => extension.ToLower() switch
+    private static string GetMimeType(string extension)
     {
-        ".html" => "text/html",
-        ".js" => "application/javascript",
-        ".css" => "text/css",
-        ".png" => "image/png",
-        ".jpg" or ".jpeg" => "image/jpeg",
-        ".gif" => "image/gif",
-        ".json" => "application/json",
-        ".svg" => "image/svg+xml",
-        _ => "application/octet-stream"
-    };
+        return extension.ToLower() switch
+        {
+            ".html"           => "text/html",
+            ".js"             => "application/javascript",
+            ".css"            => "text/css",
+            ".png"            => "image/png",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".gif"            => "image/gif",
+            ".json"           => "application/json",
+            ".svg"            => "image/svg+xml",
+            _                 => "application/octet-stream"
+        };
+    }
 }

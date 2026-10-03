@@ -10,13 +10,13 @@ public class StringTupleConverter : JsonConverter<ValueTuple<string, string>>
     {
         if (reader.TokenType != JsonTokenType.StartArray)
             throw new JsonException("Expected array start");
-        
+
         reader.Read();
         var item1 = reader.GetString()!;
         reader.Read();
         var item2 = reader.GetString()!;
         reader.Read(); // Consume end array
-        
+
         return (item1, item2);
     }
 

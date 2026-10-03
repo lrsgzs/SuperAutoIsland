@@ -9,7 +9,7 @@ using ProfileSubject = ClassIsland.Shared.Models.Profile.Subject;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 
 /// <summary>
-/// 创建一个新科目，并输出新科目的 GUID。
+///     创建一个新科目，并输出新科目的 GUID。
 /// </summary>
 public class CreateSubjectBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class CreateSubjectBlock : DataBlockBase
     public override string Tooltip => "创建一个新科目，并输出新科目的 GUID。";
     public override string DataOutput => "SAI_Profile_Subject";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Name", BasicFields.Text("名称", "新科目"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Name", BasicFields.Text("名称", "新科目"));
+    }
 
     public override Task<object> Handler(object? data)
     {

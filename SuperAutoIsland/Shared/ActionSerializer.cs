@@ -10,14 +10,17 @@ namespace SuperAutoIsland.Shared;
 
 public static class ActionSerializer
 {
-    private static JsonSerializerOptions DefaultJsonOptions = new()
+    private static readonly JsonSerializerOptions DefaultJsonOptions = new()
     {
         WriteIndented = true,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
-    
-    public static List<string> GetActionsId() => IActionService.ActionInfos.Keys.ToList();
-    
+
+    public static List<string> GetActionsId()
+    {
+        return IActionService.ActionInfos.Keys.ToList();
+    }
+
     public static string GetActionInfo(string actionId, JsonSerializerOptions? jsonSerializerOptions = null)
     {
         Dictionary<string, object> GetEnumValues(Type target)
@@ -29,15 +32,15 @@ public static class ActionSerializer
                 var name = target.GetEnumName(enumValue) ?? "???";
                 dict[name] = enumValue;
             }
-            
+
             return dict;
         }
-        
+
         Dictionary<string, object> GetTypeInfo(Type target)
         {
             var dict = new Dictionary<string, object>();
             var defaultInstance = Activator.CreateInstance(target);
-            
+
             foreach (var property in target.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var type = property.PropertyType;
@@ -73,21 +76,21 @@ public static class ActionSerializer
         }
 
         var action = IAppHost.Host?.Services.GetKeyedService<ActionBase>(actionId);
-        
+
         var settingsInfo = new object();
         var settingsType = action?.GetType().BaseType?.GetGenericArguments().FirstOrDefault();
         if (settingsType != null)
         {
             settingsInfo = GetTypeInfo(settingsType);
         }
-        
+
         var metadata = new
         {
             ActionInfo = new
             {
                 IActionService.ActionInfos[actionId].Id,
                 IActionService.ActionInfos[actionId].Name,
-                IActionService.ActionInfos[actionId].IsRevertable,
+                IActionService.ActionInfos[actionId].IsRevertable
             },
             Settings = settingsInfo
         };

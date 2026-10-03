@@ -8,7 +8,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlan;
 
 /// <summary>
-/// 按日期获取当天生效的课表。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。
+///     按日期获取当天生效的课表。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。
 /// </summary>
 public class ClassPlanByDateBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class ClassPlanByDateBlock : DataBlockBase
     public override string Tooltip => "按日期获取当天生效的课表。经典模式返回课表 GUID，日程模式返回「[sched]yyyy-MM-dd」引用。";
     public override string DataOutput => "SAI_Profile_ClassPlan";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Date", BasicFields.Date("日期", DateOnly.FromDateTime(DateTime.Today)));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Date", BasicFields.Date("日期", DateOnly.FromDateTime(DateTime.Today)));
+    }
 
     public override Task<object> Handler(object? data)
     {

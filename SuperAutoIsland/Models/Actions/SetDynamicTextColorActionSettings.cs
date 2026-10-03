@@ -7,10 +7,15 @@ namespace SuperAutoIsland.Models.Actions;
 
 public partial class SetDynamicTextColorActionSettings : ObservableRecipient
 {
-    [ObservableProperty] private string _key = string.Empty;
-    [ObservableProperty] private bool _useDefaultColor = true;
     [property: JsonConverter(typeof(ColorHexJsonConverter))]
-    [ObservableProperty] private Color _color = DefaultColor;
+    [ObservableProperty]
+    private Color _color = DefaultColor;
+
+    [ObservableProperty]
+    private string _key = string.Empty;
+
+    [ObservableProperty]
+    private bool _useDefaultColor = true;
 
     public static Color DefaultColor => Colors.White;
 }

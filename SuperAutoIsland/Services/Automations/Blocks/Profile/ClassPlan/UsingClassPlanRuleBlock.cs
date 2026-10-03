@@ -1,5 +1,6 @@
 using System.Text.Json;
 using ClassIsland.Core.Abstractions.Services;
+using ClassIsland.Core.Models.Ruleset;
 using ClassIsland.Shared;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
@@ -13,15 +14,19 @@ public class UsingClassPlanRuleBlock : RuleBlockBase
     public override string Name => "课表";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
-    
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("正在使用")
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddDummy("?");
-    public override bool Handler(global::ClassIsland.Core.Models.Ruleset.Rule rule)
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("正在使用")
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddDummy("?");
+    }
+
+    public override bool Handler(Rule rule)
     {
         var settings = JsonSerializer.SerializeToElement(rule.Settings);
-        var configured = ProfileBlockHelpers.ClassPlanRef(settings, "ClassPlan");
+        var configured = ProfileBlockHelpers.ClassPlanRef(settings);
         return string.Equals(GetCurrentClassPlanRef(), configured, StringComparison.OrdinalIgnoreCase);
     }
 

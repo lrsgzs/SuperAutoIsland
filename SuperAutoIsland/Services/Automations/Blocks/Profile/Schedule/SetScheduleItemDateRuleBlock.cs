@@ -10,20 +10,24 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 设置课程的触发规则为「某些日期」。
+///     设置课程的触发规则为「某些日期」。
 /// </summary>
 public class SetScheduleItemDateRuleBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setScheduleItemDateRule";
     public override string Name => "设置课程触发规则为";
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("某天")
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem("课程"))
-        .AddField("Dates", BasicFields.CreateInputField("启用日期", field =>
-        {
-            field.Check = "Array";
-            field.ShadowBlockType = "lists_create_with";
-        }));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("某天")
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem("课程"))
+            .AddField("Dates", BasicFields.CreateInputField("启用日期", field =>
+            {
+                field.Check = "Array";
+                field.ShadowBlockType = "lists_create_with";
+            }));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

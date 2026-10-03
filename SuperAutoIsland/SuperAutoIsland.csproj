@@ -14,21 +14,21 @@
         <Authors>lrs2187</Authors>
         <PackageVersion>0.3.9.2-dev.3</PackageVersion>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1.1-misha-dev3225">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
-        <PackageReference Include="Jint" Version="4.16.4" />
-        <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj" />
-        <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj" />
+        <PackageReference Include="Jint" Version="4.16.4"/>
+        <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj"/>
+        <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets/icon.png" />
-        <AvaloniaResource Include="Assets/sandrone.png" />
+        <AvaloniaResource Include="Assets/icon.png"/>
+        <AvaloniaResource Include="Assets/sandrone.png"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Update="manifest.yml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -41,12 +41,12 @@
         </None>
 
         <None Update="Assets\icon.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Folder Include="Services\Automations\Blocks\Profile\" />
+        <Folder Include="Services\Automations\Blocks\Profile\"/>
     </ItemGroup>
 
     <Target Name="IncludeFrontendAssets" BeforeTargets="AssignTargetPaths" Condition="Exists('$(MSBuildProjectDirectory)/Assets/wwwroot')">

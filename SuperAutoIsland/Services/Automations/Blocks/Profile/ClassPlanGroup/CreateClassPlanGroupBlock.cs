@@ -9,7 +9,7 @@ using ProfileClassPlanGroup = ClassIsland.Shared.Models.Profile.ClassPlanGroup;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlanGroup;
 
 /// <summary>
-/// 创建一个新课表群，并输出新课表群的 GUID。
+///     创建一个新课表群，并输出新课表群的 GUID。
 /// </summary>
 public class CreateClassPlanGroupBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class CreateClassPlanGroupBlock : DataBlockBase
     public override string Tooltip => "创建一个新课表群，并输出新课表群的 GUID。";
     public override string DataOutput => "SAI_Profile_ClassPlanGroup";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Name", BasicFields.Text("名称", "新课表群"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Name", BasicFields.Text("名称", "新课表群"));
+    }
 
     public override Task<object> Handler(object? data)
     {

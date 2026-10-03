@@ -9,18 +9,12 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.Schedule;
 
 /// <summary>
-/// 设置课程的触发规则为「每周」并按多周轮换。
+///     设置课程的触发规则为「每周」并按多周轮换。
 /// </summary>
 public class SetScheduleItemWeeklyCycleRuleBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setScheduleItemWeeklyCycleRule";
     public override string Name => "设置课程触发规则为";
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("每周")
-        .AddField("ScheduleItem", ProfileFields.ScheduleItem("课程"))
-        .AddField("WeekCountDivTotal", BasicFields.Number("每几周", 2))
-        .AddField("WeekCountDiv", BasicFields.Number("的第几周(0=每周)", 0))
-        .AddField("WeekDay", BasicFields.Dropdown("且今天是", WeekDays, useNumbers: true));
 
     private static List<(string, string)> WeekDays =>
     [
@@ -30,8 +24,18 @@ public class SetScheduleItemWeeklyCycleRuleBlock : ActionBlockBase
         ("星期三", "3"),
         ("星期四", "4"),
         ("星期五", "5"),
-        ("星期六", "6"),
+        ("星期六", "6")
     ];
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("每周")
+            .AddField("ScheduleItem", ProfileFields.ScheduleItem("课程"))
+            .AddField("WeekCountDivTotal", BasicFields.Number("每几周", 2))
+            .AddField("WeekCountDiv", BasicFields.Number("的第几周(0=每周)"))
+            .AddField("WeekDay", BasicFields.Dropdown("且今天是", WeekDays, true));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

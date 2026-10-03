@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlanGroup;
 
 /// <summary>
-/// 删除指定课表群。群内的课表会被一并删除。
+///     删除指定课表群。群内的课表会被一并删除。
 /// </summary>
 public class DeleteClassPlanGroupBlock : ActionBlockBase
 {
@@ -17,8 +17,11 @@ public class DeleteClassPlanGroupBlock : ActionBlockBase
     public override string Name => "删除课表群";
     public override string Tooltip => "删除指定课表群，群内的课表会被一并删除。默认课表群和全局课表群无法删除。";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlanGroup", ProfileFields.ClassPlanGroup(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlanGroup", ProfileFields.ClassPlanGroup(""));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {

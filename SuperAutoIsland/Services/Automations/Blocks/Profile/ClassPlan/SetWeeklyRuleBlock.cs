@@ -12,10 +12,6 @@ public class SetWeeklyRuleBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setWeeklyRule";
     public override string Name => "设置课表触发规则为";
-    public override void GetFields(FieldsRegister it) => it
-        .AddDummy("每周")
-        .AddField("ClassPlan", ProfileFields.ClassPlan("课表"))
-        .AddField("WeekDay", BasicFields.Dropdown("且今天是", WeekDays, useNumbers: true));
 
     private static List<(string, string)> WeekDays =>
     [
@@ -25,8 +21,16 @@ public class SetWeeklyRuleBlock : ActionBlockBase
         ("星期三", "3"),
         ("星期四", "4"),
         ("星期五", "5"),
-        ("星期六", "6"),
+        ("星期六", "6")
     ];
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddDummy("每周")
+            .AddField("ClassPlan", ProfileFields.ClassPlan("课表"))
+            .AddField("WeekDay", BasicFields.Dropdown("且今天是", WeekDays, true));
+    }
 
     public override Task Handler(ActionItem actionItem)
     {
@@ -38,6 +42,7 @@ public class SetWeeklyRuleBlock : ActionBlockBase
             plan.TimeRule.WeekDay = Math.Clamp(ProfileBlockHelpers.Number(s, "WeekDay"), 0, 6);
             plan.TimeRule.WeekCountDiv = 0;
         }
+
         return Task.CompletedTask;
     }
 }

@@ -12,7 +12,12 @@ public class SetCurrentClassPlanGroupBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.setCurrentClassPlanGroup";
     public override string Name => "切换课表群";
-    public override void GetFields(FieldsRegister it) => it.AddField("Group", ProfileFields.ClassPlanGroup(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("Group", ProfileFields.ClassPlanGroup(""));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);

@@ -9,7 +9,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 
 /// <summary>
-/// 复制指定时间表，并输出新时间表的 GUID。
+///     复制指定时间表，并输出新时间表的 GUID。
 /// </summary>
 public class CopyTimeLayoutBlock : DataBlockBase
 {
@@ -18,8 +18,11 @@ public class CopyTimeLayoutBlock : DataBlockBase
     public override string Tooltip => "复制指定时间表，并输出新时间表的 GUID。复制出的时间表是普通时间表，不会带有临时层标记。";
     public override string DataOutput => "SAI_Profile_TimeLayout";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("TimeLayout", ProfileFields.TimeLayout(""));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("TimeLayout", ProfileFields.TimeLayout(""));
+    }
 
     public override Task<object> Handler(object? data)
     {

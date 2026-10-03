@@ -9,7 +9,7 @@ namespace SuperAutoIsland.Services.Automations.Actions;
 [ActionInfo("sai.actions.setDynamicTextColor", "设置动态文本颜色", FluentIcons.TextColorRegular, false)]
 public class SetDynamicTextColorAction : ActionBase<SetDynamicTextColorActionSettings>
 {
-    private DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
+    private readonly DynamicTextProvider _provider = IAppHost.GetService<DynamicTextProvider>();
 
     protected override async Task OnInvoke()
     {

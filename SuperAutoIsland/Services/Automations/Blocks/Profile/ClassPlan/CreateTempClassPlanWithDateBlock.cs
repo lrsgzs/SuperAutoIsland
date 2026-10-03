@@ -13,9 +13,14 @@ public class CreateTempClassPlanWithDateBlock : DataBlockBase
     public override string Id => "sai.profile.data.createTempClassPlanWithDate";
     public override string Name => "创建临时层";
     public override string DataOutput => "SAI_Profile_ClassPlan";
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("ClassPlan", ProfileFields.ClassPlan(""))
-        .AddField("Date", BasicFields.Date("启用日期", DateOnly.FromDateTime(DateTime.Today)));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("ClassPlan", ProfileFields.ClassPlan(""))
+            .AddField("Date", BasicFields.Date("启用日期", DateOnly.FromDateTime(DateTime.Today)));
+    }
+
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);

@@ -10,45 +10,48 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace SuperAutoIsland.Models.Actions;
 
 /// <summary>
-/// "运行"行动设置。
+///     "运行"行动设置。
 /// </summary>
 public partial class RunActionSettings : ObservableRecipient
 {
-    [ObservableProperty] RunActionRunType _runType;
-
-    [ObservableProperty] string _value = "";
-
-    [ObservableProperty] string _args = "";
-
     /// <summary>
-    /// "运行"行动运行类型。
+    ///     "运行"行动运行类型。
     /// </summary>
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum RunActionRunType
     {
         /// <summary>
-        /// 应用程序
+        ///     应用程序
         /// </summary>
         Application,
 
         /// <summary>
-        /// 命令
+        ///     命令
         /// </summary>
         Command,
 
         /// <summary>
-        /// 文件
+        ///     文件
         /// </summary>
         File,
 
         /// <summary>
-        /// 文件夹
+        ///     文件夹
         /// </summary>
         Folder,
 
         /// <summary>
-        /// Url 链接
+        ///     Url 链接
         /// </summary>
         Url
     }
+
+    [ObservableProperty]
+    private string _args = "";
+
+    [ObservableProperty]
+    private RunActionRunType _runType;
+
+    [ObservableProperty]
+    private string _value = "";
 }

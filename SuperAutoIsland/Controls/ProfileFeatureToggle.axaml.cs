@@ -12,6 +12,11 @@ public partial class ProfileFeatureToggle : UserControl
     public static readonly StyledProperty<ProfileSectionSettings?> SettingsProperty =
         AvaloniaProperty.Register<ProfileFeatureToggle, ProfileSectionSettings?>(nameof(Settings));
 
+    public ProfileFeatureToggle()
+    {
+        InitializeComponent();
+    }
+
     public string Label
     {
         get => GetValue(LabelProperty);
@@ -22,10 +27,5 @@ public partial class ProfileFeatureToggle : UserControl
     {
         get => GetValue(SettingsProperty);
         set => SetValue(SettingsProperty, value);
-    }
-    
-    public ProfileFeatureToggle()
-    {
-        InitializeComponent();
     }
 }

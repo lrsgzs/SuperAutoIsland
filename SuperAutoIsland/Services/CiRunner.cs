@@ -20,13 +20,13 @@ public class CiRunner
 
         throw new NotSupportedException();
     }
-    
+
     public async Task RunActionSetProject(Project project)
     {
         if (project.Type == ProjectsType.CiActionSet)
         {
             var actionService = IAppHost.GetService<IActionService>();
-            
+
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
                 await actionService.InvokeActionSetAsync(new ActionSet
@@ -35,7 +35,7 @@ public class CiRunner
                     ActionItems = project.Actions
                 });
             });
-            
+
             return;
         }
 

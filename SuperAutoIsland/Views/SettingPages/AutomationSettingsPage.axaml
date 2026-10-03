@@ -17,7 +17,7 @@
     <ci:SettingsPageBase.Resources>
         <converters:ActionsToActionSetConverter x:Key="ActionsToActionSetConverter" />
     </ci:SettingsPageBase.Resources>
-    
+
     <controls:ListDetailView Margin="12 12 0 0"
                              ShowTitleWhenNotCompressed="True"
                              IsPanelOpened="{Binding ViewModel.IsPanelOpened}">
@@ -26,24 +26,26 @@
                 <TextBlock Grid.Row="0"
                            FontWeight="Normal"
                            Text="SuperAutoIsland 自动化"
-                           Theme="{StaticResource TitleTextBlockStyle}"/>
-                
+                           Theme="{StaticResource TitleTextBlockStyle}" />
+
                 <StackPanel Grid.Row="1" Margin="0 6 0 0" Orientation="Horizontal">
                     <Button Theme="{StaticResource TransparentButton}"
                             ToolTip.Tip="新建 SAI 自动化..."
-                            Classes.invert-foreground-accent="{Binding !!ViewModel.Projects.Count}" >
+                            Classes.invert-foreground-accent="{Binding !!ViewModel.Projects.Count}">
                         <Button.Styles>
                             <Style Selector="Button.invert-foreground-accent">
-                                <Setter Property="Theme" Value="{StaticResource TransparentButton}"/>
+                                <Setter Property="Theme" Value="{StaticResource TransparentButton}" />
                             </Style>
-                            <Style Selector="Button:not(.invert-foreground-accent) /template/ ContentPresenter#PART_ContentPresenter">
-                                <Setter Property="Background" Value="{DynamicResource CustomizedAccentBarBackground1Brush}" />
+                            <Style
+                                Selector="Button:not(.invert-foreground-accent) /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background"
+                                        Value="{DynamicResource CustomizedAccentBarBackground1Brush}" />
                             </Style>
                         </Button.Styles>
-                        
+
                         <ci:IconText Glyph="&#xE689;" Text="新建..."
                                      Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
-                        
+
                         <Button.Flyout>
                             <fa:FAMenuFlyout ItemsSource="{Binding ProjectTypeNodes}">
                                 <fa:FAMenuFlyout.ItemTemplate>
@@ -62,7 +64,7 @@
                         </Button.Flyout>
                     </Button>
                 </StackPanel>
-                
+
                 <ScrollViewer Grid.Row="2">
                     <ListBox ItemsSource="{Binding ViewModel.Projects}"
                              SelectedItem="{Binding ViewModel.SelectedProject, Mode=TwoWay}"
@@ -73,7 +75,7 @@
                                 <VirtualizingStackPanel Classes="animated-intro" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-                        
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent"
@@ -84,15 +86,15 @@
                                                VerticalAlignment="Center"
                                                Text="{Binding Name}"
                                                FontSize="13"
-                                               TextWrapping="Wrap"/>
-                                    
+                                               TextWrapping="Wrap" />
+
                                     <!--  Type  -->
                                     <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                FontSize="11"
-                                               TextWrapping="Wrap"/>
+                                               TextWrapping="Wrap" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -100,14 +102,14 @@
                 </ScrollViewer>
             </Grid>
         </controls:ListDetailView.LeftContent>
-        
+
         <controls:ListDetailView.TitleElement>
             <TextBlock FontWeight="Normal"
                        Text="项目设置"
                        IsVisible="{Binding ViewModel.IsPanelOpened}"
-                       Theme="{StaticResource TitleTextBlockStyle}"/>
+                       Theme="{StaticResource TitleTextBlockStyle}" />
         </controls:ListDetailView.TitleElement>
-        
+
         <controls:ListDetailView.RightContent>
             <ci:Emptiable x:Name="RightEmptiable" Content="{Binding ViewModel.SelectedProject}">
                 <ci:Emptiable.ContentTemplate>
@@ -116,14 +118,15 @@
                             <StackPanel Orientation="Vertical" Classes="animated-intro">
                                 <StackPanel.Styles>
                                     <Style Selector="StackPanel > Expander /template/ ToggleButton#ExpanderHeader">
-                                        <Setter Property="Background" Value="{DynamicResource CustomizedAccentBarBackground1Brush}" />
+                                        <Setter Property="Background"
+                                                Value="{DynamicResource CustomizedAccentBarBackground1Brush}" />
                                     </Style>
                                     <Style Selector="StackPanel > Expander">
                                         <Setter Property="IsExpanded" Value="True" />
                                         <Setter Property="Margin" Value="2 2 2 10" />
                                     </Style>
                                 </StackPanel.Styles>
-                                
+
                                 <Expander Classes="compact stretch-header">
                                     <Expander.Header>
                                         <ci:IconText Glyph="&#xE9E4;" Text="项目信息" />
@@ -136,15 +139,15 @@
                                             <TextBox Grid.Row="0" Grid.Column="1"
                                                      VerticalAlignment="Center" Margin="0 0 4 4"
                                                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                                            
+
                                             <TextBlock Grid.Row="1" Grid.Column="0"
                                                        VerticalAlignment="Center" Margin="0 0 4 4"
                                                        Text="项目类型：" />
                                             <TextBlock Grid.Row="1" Grid.Column="1"
                                                        VerticalAlignment="Center" Margin="0 0 4 4"
                                                        Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}" />
-                                            
-                                            
+
+
                                             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                                                         Orientation="Horizontal" Margin="0 0 0 4">
                                                 <Button Margin="0 0 4 0" HorizontalAlignment="Right"
@@ -152,22 +155,28 @@
                                                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.BlocklyAction}}">
                                                     <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
                                                 </Button>
-                                                
+
                                                 <Button Margin="0 0 4 0" HorizontalAlignment="Right"
                                                         Click="RunProjectButton_Click">
                                                     <Button.IsVisible>
                                                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.BlocklyAction}" />
-                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.CiRuleset}" />
-                                                            <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static enums:ProjectsType.CiActionSet}" />
+                                                            <Binding Path="Type"
+                                                                     Converter="{x:Static ObjectConverters.Equal}"
+                                                                     ConverterParameter="{x:Static enums:ProjectsType.BlocklyAction}" />
+                                                            <Binding Path="Type"
+                                                                     Converter="{x:Static ObjectConverters.Equal}"
+                                                                     ConverterParameter="{x:Static enums:ProjectsType.CiRuleset}" />
+                                                            <Binding Path="Type"
+                                                                     Converter="{x:Static ObjectConverters.Equal}"
+                                                                     ConverterParameter="{x:Static enums:ProjectsType.CiActionSet}" />
                                                         </MultiBinding>
                                                     </Button.IsVisible>
                                                     <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
                                                 </Button>
-                                                
+
                                                 <Button Margin="0 0 4 0" HorizontalAlignment="Right">
                                                     <ci:IconText Glyph="&#xE61D;" Text="删除" Foreground="IndianRed" />
-                                                    
+
                                                     <Button.Flyout>
                                                         <Flyout>
                                                             <StackPanel Spacing="8">
@@ -177,8 +186,9 @@
                                                                     <Run Text="」吗？" />
                                                                 </TextBlock>
                                                                 <TextBlock Text="此操作无法撤销。" />
-                                                                <Button Content="删除" Classes="accent" Click="DeleteProjectButton_Click"/>
-                                                            </StackPanel>   
+                                                                <Button Content="删除" Classes="accent"
+                                                                        Click="DeleteProjectButton_Click" />
+                                                            </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
                                                 </Button>
@@ -186,7 +196,7 @@
                                         </Grid>
                                     </StackPanel>
                                 </Expander>
-                                
+
                                 <Expander Classes="compact stretch-header"
                                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.CiRuleset}}">
                                     <Expander.Header>
@@ -194,29 +204,30 @@
                                     </Expander.Header>
                                     <ci:RulesetControl Ruleset="{Binding Ruleset}" ShowTitle="False" />
                                 </Expander>
-                                
+
                                 <Expander Classes="compact stretch-header"
                                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.CiActionSet}}">
                                     <Expander.Header>
                                         <ci:IconText Glyph="&#xE01F;" Text="行动组" />
                                     </Expander.Header>
-                                    <ciControlsAutomation:ActionControl ActionSet="{Binding Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
+                                    <ciControlsAutomation:ActionControl
+                                        ActionSet="{Binding Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>
                     </DataTemplate>
                 </ci:Emptiable.ContentTemplate>
-                
+
                 <ci:Emptiable.EmptyContent>
                     <StackPanel VerticalAlignment="Center">
                         <ci:StickerControl Width="75" Height="75"
                                            StickerSource="avares://ClassIsland/Assets/HoYoStickers/光辉矢愿_瞄准.png"
                                            StickerToolTip="光辉矢愿_瞄准"
-                                           FallbackIcon="{ci:FluentIconSource &#xEEF1;, FontSize=75}"/>
-                        
+                                           FallbackIcon="{ci:FluentIconSource &#xEEF1;, FontSize=75}" />
+
                         <TextBlock Text="在左侧选择或添加一个自动化，然后在此处进行设置。"
                                    Margin="0 8 0 0"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center" />
                     </StackPanel>
                 </ci:Emptiable.EmptyContent>
             </ci:Emptiable>

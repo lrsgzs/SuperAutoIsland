@@ -5,12 +5,12 @@ namespace SuperAutoIsland.Services;
 
 public class DynamicTextProvider
 {
-    private readonly Dictionary<string, DynamicTextItem> _textDictionary = new();
-    private readonly Dictionary<string, DynamicTextItem> _textOldDictionary = new();
+    private readonly Dictionary<string, Color?> _oldColorValues = new();
+    private readonly Dictionary<string, string?> _oldIconValues = new();
 
     private readonly Dictionary<string, string?> _oldTextValues = new();
-    private readonly Dictionary<string, string?> _oldIconValues = new();
-    private readonly Dictionary<string, Color?> _oldColorValues = new();
+    private readonly Dictionary<string, DynamicTextItem> _textDictionary = new();
+    private readonly Dictionary<string, DynamicTextItem> _textOldDictionary = new();
 
     public EventHandler<DynamicTextChangedEventArgs>? Changed;
 

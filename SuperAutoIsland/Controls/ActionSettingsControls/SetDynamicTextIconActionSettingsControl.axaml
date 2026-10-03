@@ -1,11 +1,13 @@
-<ci:ActionSettingsControlBase x:Class="SuperAutoIsland.Controls.ActionSettingsControls.SetDynamicTextIconActionSettingsControl"
-                              x:TypeArguments="actionSettings:SetDynamicTextIconActionSettings"
-                              xmlns="https://github.com/avaloniaui"
-                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                              xmlns:ci="http://classisland.tech/schemas/xaml/core"
-                              xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
-                              xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">
-    <Panel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:SetDynamicTextIconActionSettingsControl}}">
+<ci:ActionSettingsControlBase
+    x:Class="SuperAutoIsland.Controls.ActionSettingsControls.SetDynamicTextIconActionSettingsControl"
+    x:TypeArguments="actionSettings:SetDynamicTextIconActionSettings"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ci="http://classisland.tech/schemas/xaml/core"
+    xmlns:local="clr-namespace:SuperAutoIsland.Controls.ActionSettingsControls"
+    xmlns:actionSettings="clr-namespace:SuperAutoIsland.Models.Actions">
+    <Panel
+        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:SetDynamicTextIconActionSettingsControl}}">
         <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="4" ColumnSpacing="4">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="将编号" VerticalAlignment="Center" HorizontalAlignment="Right" />
@@ -14,12 +16,12 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="修改为" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            
+
             <StackPanel Grid.Row="1" Grid.Column="1"
                         Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
                 <CheckBox Content="包含图标" VerticalAlignment="Center"
                           IsChecked="{ReflectionBinding Settings.IncludeIcon, Mode=TwoWay}" />
-                
+
                 <ci:IconExpressionEditor HorizontalAlignment="Left"
                                          IconExpression="{ReflectionBinding Settings.Icon, Mode=TwoWay}"
                                          IsEnabled="{ReflectionBinding Settings.IncludeIcon}"

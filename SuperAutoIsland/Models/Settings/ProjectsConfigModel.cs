@@ -4,14 +4,23 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace SuperAutoIsland.Models.Settings;
 
 /// <summary>
-/// 项目设置模型
+///     项目设置模型
 /// </summary>
-public partial class ProjectConfigModel : ObservableObject
+public class ProjectConfigModel : ObservableObject
 {
     private ObservableCollection<Project> _projects = [];
 
     /// <summary>
-    /// 项目集合
+    ///     构造函数
+    ///     <see cref="ProjectConfigModel" />
+    /// </summary>
+    public ProjectConfigModel()
+    {
+        RegisterProjectsListeners(Projects);
+    }
+
+    /// <summary>
+    ///     项目集合
     /// </summary>
     public ObservableCollection<Project> Projects
     {
@@ -26,23 +35,11 @@ public partial class ProjectConfigModel : ObservableObject
     }
 
     /// <summary>
-    /// 构造函数
-    /// <see cref="ProjectConfigModel"/>
-    /// </summary>
-    public ProjectConfigModel()
-    {
-        RegisterProjectsListeners(Projects);
-    }
-
-    /// <summary>
-    /// 注册项目监听器
+    ///     注册项目监听器
     /// </summary>
     /// <param name="value">项目集合类型</param>
     private void RegisterProjectsListeners(ObservableCollection<Project> value)
     {
-        value.CollectionChanged += (sender, args) =>
-        {
-            OnPropertyChanged();
-        };
+        value.CollectionChanged += (sender, args) => { OnPropertyChanged(); };
     }
 }

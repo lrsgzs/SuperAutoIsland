@@ -12,7 +12,12 @@ public class DeleteClassPlanBlock : ActionBlockBase
 {
     public override string Id => "sai.profile.actions.deleteClassPlan";
     public override string Name => "删除课表";
-    public override void GetFields(FieldsRegister it) => it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+
+    public override void GetFields(FieldsRegister it)
+    {
+        it.AddField("ClassPlan", ProfileFields.ClassPlan(""));
+    }
+
     public override Task Handler(ActionItem actionItem)
     {
         var s = JsonSerializer.SerializeToElement(actionItem.Settings);
@@ -21,9 +26,9 @@ public class DeleteClassPlanBlock : ActionBlockBase
         profile.ClassPlans.Remove(id);
 
         foreach (var date in profile.OrderedSchedules
-                     .Where(x => x.Value.ClassPlanId == id)
-                     .Select(x => x.Key)
-                     .ToList())
+                                    .Where(x => x.Value.ClassPlanId == id)
+                                    .Select(x => x.Key)
+                                    .ToList())
         {
             profile.OrderedSchedules.Remove(date);
         }

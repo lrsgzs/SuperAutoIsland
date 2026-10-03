@@ -15,12 +15,41 @@ using Avalonia.Interactivity;
 namespace SuperAutoIsland.Controls;
 
 /// <summary>
-/// ListDetailView.axaml 的交互逻辑
+///     ListDetailView.axaml 的交互逻辑
 /// </summary>
 public partial class ListDetailView : UserControl
 {
-    public static readonly StyledProperty<object> LeftContentProperty = AvaloniaProperty.Register<ListDetailView, object>(
-        nameof(LeftContent));
+    public static readonly StyledProperty<object> LeftContentProperty =
+        AvaloniaProperty.Register<ListDetailView, object>(
+            nameof(LeftContent));
+
+    public static readonly StyledProperty<object> RightContentProperty =
+        AvaloniaProperty.Register<ListDetailView, object>(
+            nameof(RightContent));
+
+    public static readonly StyledProperty<object> TitleElementProperty =
+        AvaloniaProperty.Register<ListDetailView, object>(
+            nameof(TitleElement));
+
+    public static readonly StyledProperty<bool> IsPanelOpenedProperty = AvaloniaProperty.Register<ListDetailView, bool>(
+        nameof(IsPanelOpened));
+
+    public static readonly StyledProperty<double> MinCompressWidthProperty =
+        AvaloniaProperty.Register<ListDetailView, double>(
+            nameof(MinCompressWidth), 800.0);
+
+    public static readonly StyledProperty<bool> IsCompressedModeProperty =
+        AvaloniaProperty.Register<ListDetailView, bool>(
+            nameof(IsCompressedMode));
+
+    public static readonly StyledProperty<bool> ShowTitleWhenNotCompressedProperty =
+        AvaloniaProperty.Register<ListDetailView, bool>(
+            nameof(ShowTitleWhenNotCompressed));
+
+    public ListDetailView()
+    {
+        InitializeComponent();
+    }
 
     public object LeftContent
     {
@@ -28,17 +57,11 @@ public partial class ListDetailView : UserControl
         set => SetValue(LeftContentProperty, value);
     }
 
-    public static readonly StyledProperty<object> RightContentProperty = AvaloniaProperty.Register<ListDetailView, object>(
-        nameof(RightContent));
-
     public object RightContent
     {
         get => GetValue(RightContentProperty);
         set => SetValue(RightContentProperty, value);
     }
-
-    public static readonly StyledProperty<object> TitleElementProperty = AvaloniaProperty.Register<ListDetailView, object>(
-        nameof(TitleElement));
 
     public object TitleElement
     {
@@ -46,17 +69,11 @@ public partial class ListDetailView : UserControl
         set => SetValue(TitleElementProperty, value);
     }
 
-    public static readonly StyledProperty<bool> IsPanelOpenedProperty = AvaloniaProperty.Register<ListDetailView, bool>(
-        nameof(IsPanelOpened), false);
-
     public bool IsPanelOpened
     {
         get => GetValue(IsPanelOpenedProperty);
         set => SetValue(IsPanelOpenedProperty, value);
     }
-
-    public static readonly StyledProperty<double> MinCompressWidthProperty = AvaloniaProperty.Register<ListDetailView, double>(
-        nameof(MinCompressWidth), 800.0);
 
     public double MinCompressWidth
     {
@@ -64,27 +81,16 @@ public partial class ListDetailView : UserControl
         set => SetValue(MinCompressWidthProperty, value);
     }
 
-    public static readonly StyledProperty<bool> IsCompressedModeProperty = AvaloniaProperty.Register<ListDetailView, bool>(
-        nameof(IsCompressedMode), default(bool));
-
     public bool IsCompressedMode
     {
         get => GetValue(IsCompressedModeProperty);
         set => SetValue(IsCompressedModeProperty, value);
     }
 
-    public static readonly StyledProperty<bool> ShowTitleWhenNotCompressedProperty = AvaloniaProperty.Register<ListDetailView, bool>(
-        nameof(ShowTitleWhenNotCompressed), false);
-
     public bool ShowTitleWhenNotCompressed
     {
         get => GetValue(ShowTitleWhenNotCompressedProperty);
         set => SetValue(ShowTitleWhenNotCompressedProperty, value);
-    }
-
-    public ListDetailView()
-    {
-        InitializeComponent();
     }
 
     private void GridRoot_OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -97,4 +103,3 @@ public partial class ListDetailView : UserControl
         IsPanelOpened = false;
     }
 }
-

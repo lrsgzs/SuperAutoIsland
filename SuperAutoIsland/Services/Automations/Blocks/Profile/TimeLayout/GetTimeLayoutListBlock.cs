@@ -6,7 +6,7 @@ using SuperAutoIsland.Interface.Services.Automations;
 namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
 
 /// <summary>
-/// 获取档案中所有时间表的 GUID 列表。
+///     获取档案中所有时间表的 GUID 列表。
 /// </summary>
 public class GetTimeLayoutListBlock : DataBlockBase
 {

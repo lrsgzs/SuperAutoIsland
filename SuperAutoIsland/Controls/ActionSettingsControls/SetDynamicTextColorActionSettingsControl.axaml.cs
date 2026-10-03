@@ -3,7 +3,8 @@ using SuperAutoIsland.Models.Actions;
 
 namespace SuperAutoIsland.Controls.ActionSettingsControls;
 
-public partial class SetDynamicTextColorActionSettingsControl : ActionSettingsControlBase<SetDynamicTextColorActionSettings>
+public partial class
+    SetDynamicTextColorActionSettingsControl : ActionSettingsControlBase<SetDynamicTextColorActionSettings>
 {
     public SetDynamicTextColorActionSettingsControl()
     {

@@ -18,8 +18,11 @@ public class ClassPlanGroupByNameBlock : DataBlockBase
     public override Type SettingsType => typeof(StringValueData);
     public override string DataOutput => "SAI_Profile_ClassPlanGroup";
 
-    public override void GetFields(FieldsRegister it) => it
-        .AddField("Value", BasicFields.Text("名称"));
+    public override void GetFields(FieldsRegister it)
+    {
+        it
+            .AddField("Value", BasicFields.Text("名称"));
+    }
 
     public override Task<object> Handler(object? data)
     {
@@ -27,9 +30,9 @@ public class ClassPlanGroupByNameBlock : DataBlockBase
             return Task.FromResult<object>(Guid.Empty.ToString());
 
         return Task.FromResult<object>(IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups
-            .Where(x => x.Value.Name == settings.Value)
-            .Select(x => x.Key)
-            .FirstOrDefault(Guid.Empty)
-            .ToString());
+                                               .Where(x => x.Value.Name == settings.Value)
+                                               .Select(x => x.Key)
+                                               .FirstOrDefault(Guid.Empty)
+                                               .ToString());
     }
 }

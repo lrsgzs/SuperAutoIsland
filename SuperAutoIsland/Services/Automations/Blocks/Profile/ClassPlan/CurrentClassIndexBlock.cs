@@ -9,14 +9,15 @@ public class CurrentClassIndexBlock : DataBlockBase
     public override string Id => "sai.profile.data.currentClassIndex";
     public override string Name => "当前为第几节课";
     public override string DataOutput => "Number";
+
     public override Task<object> Handler(object? data)
     {
         var lessons = IAppHost.GetService<ILessonsService>();
         var plan = lessons.CurrentClassPlan;
         var layoutIndex = lessons.CurrentSelectedIndex;
         var classIndex = plan?.TimeLayout?.Layouts
-            .Take(layoutIndex + 1)
-            .Count(x => x.TimeType == 0) ?? 0;
+                             .Take(layoutIndex + 1)
+                             .Count(x => x.TimeType == 0) ?? 0;
         return Task.FromResult<object>(classIndex);
     }
 }

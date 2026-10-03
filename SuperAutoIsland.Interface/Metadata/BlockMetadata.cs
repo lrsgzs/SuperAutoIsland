@@ -6,7 +6,7 @@ namespace SuperAutoIsland.Interface.Metadata;
 public class BlockMetadata(string id)
 {
     public required BlockKind Kind { get; set; }
-    
+
     public string Id { get; set; } = id;
     public required string Name { get; set; }
     public (string, string) Icon { get; set; } = ("操作", FluentIcons.SettingsRegular);
