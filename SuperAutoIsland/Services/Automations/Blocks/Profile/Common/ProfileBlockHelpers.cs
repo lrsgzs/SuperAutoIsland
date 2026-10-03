@@ -4,6 +4,8 @@ using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Shared;
 using ClassIsland.Shared.Enums;
 using ProfileClassPlan = ClassIsland.Shared.Models.Profile.ClassPlan;
+using ProfileClassPlanGroup = ClassIsland.Shared.Models.Profile.ClassPlanGroup;
+using ProfileSubject = ClassIsland.Shared.Models.Profile.Subject;
 using ProfileTimeLayout = ClassIsland.Shared.Models.Profile.TimeLayout;
 using ProfileTimeLayoutItem = ClassIsland.Shared.Models.Profile.TimeLayoutItem;
 
@@ -127,6 +129,44 @@ public static class ProfileBlockHelpers
     {
         var id = Guid(settings, name);
         return IAppHost.GetService<IProfileService>().Profile.ClassPlans.GetValueOrDefault(id);
+    }
+
+    /// <summary>
+    /// 按 GUID 解析科目。用于写操作。
+    /// </summary>
+    public static ProfileSubject? Subject(JsonElement settings, string name = "Subject") =>
+        IAppHost.GetService<IProfileService>().Profile.Subjects.GetValueOrDefault(Guid(settings, name));
+
+    /// <summary>
+    /// 按 GUID 解析时间表。用于写操作，日程模式引用不会被解析成日程模式生成的时间表。
+    /// </summary>
+    public static ProfileTimeLayout? ClassicTimeLayout(JsonElement settings, string name = "TimeLayout") =>
+        IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(Guid(settings, name));
+
+    /// <summary>
+    /// 按 GUID 解析课表群。用于写操作。
+    /// </summary>
+    public static ProfileClassPlanGroup? ClassPlanGroup(JsonElement settings, string name = "ClassPlanGroup") =>
+        IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups.GetValueOrDefault(Guid(settings, name));
+
+    /// <summary>
+    /// 清理指向已被移除的课表群的引用（当前启用的课表群与临时课表群）。
+    /// </summary>
+    /// <param name="id">已被移除的课表群 GUID</param>
+    public static void ClearClassPlanGroupReferences(Guid id)
+    {
+        var profileService = IAppHost.GetService<IProfileService>();
+        var profile = profileService.Profile;
+
+        if (profile.SelectedClassPlanGroupId == id)
+        {
+            profile.SelectedClassPlanGroupId = ProfileClassPlanGroup.DefaultGroupGuid;
+        }
+
+        if (profile.TempClassPlanGroupId == id)
+        {
+            profileService.ClearTempClassPlanGroup();
+        }
     }
 
     public static Guid ClassSubjectId(ProfileClassPlan plan, int oneBasedIndex)

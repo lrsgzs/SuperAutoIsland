@@ -5,7 +5,7 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
 /// 获取时间点（「时间表引用[序号]」）是第几节课（从 1 开始计数）。

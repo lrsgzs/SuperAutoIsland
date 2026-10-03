@@ -3,7 +3,7 @@ using ClassIsland.Core.Icons;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
 /// 时间点类型。下拉框选择，输出类型编号（0-上课，1-课间，2-分割线，3-行动）。

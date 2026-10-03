@@ -24,7 +24,7 @@ public partial class ProfileFeaturesModel : ObservableObject
     }
 
     /// <summary>
-    /// 科目（目前没有写入类积木）
+    /// 科目
     /// </summary>
     public ProfileSectionSettings Subject
     {
@@ -33,7 +33,16 @@ public partial class ProfileFeaturesModel : ObservableObject
     } = new();
 
     /// <summary>
-    /// 时间表（目前没有写入类积木）
+    /// 时间点
+    /// </summary>
+    public ProfileSectionSettings TimePoint
+    {
+        get;
+        set => SetSection(ref field, value);
+    } = new(false, false);
+
+    /// <summary>
+    /// 时间表
     /// </summary>
     public ProfileSectionSettings TimeLayout
     {
@@ -48,7 +57,7 @@ public partial class ProfileFeaturesModel : ObservableObject
     {
         get;
         set => SetSection(ref field, value);
-    } = new() { Write = true };
+    } = new();
 
     /// <summary>
     /// 课表群
@@ -57,14 +66,14 @@ public partial class ProfileFeaturesModel : ObservableObject
     {
         get;
         set => SetSection(ref field, value);
-    } = new() { Write = true };
+    } = new();
 
     /// <summary>
     /// 所有板块，顺序与分类中的积木分组一致
     /// </summary>
     [JsonIgnore]
     public IReadOnlyList<ProfileSectionSettings> Sections =>
-        [Subject, TimeLayout, ClassPlan, ClassPlanGroup];
+        [Subject, TimePoint, TimeLayout, ClassPlan, ClassPlanGroup];
 
     /// <summary>
     /// 设置板块开关，并把属性变化监听迁移到新的对象上

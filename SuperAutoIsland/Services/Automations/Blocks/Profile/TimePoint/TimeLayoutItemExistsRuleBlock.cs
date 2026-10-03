@@ -3,7 +3,7 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
 /// 验证「时间表 GUID[序号]」所指向的时间点是否存在。

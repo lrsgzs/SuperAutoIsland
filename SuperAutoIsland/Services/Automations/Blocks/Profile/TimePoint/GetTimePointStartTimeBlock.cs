@@ -5,27 +5,27 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间点（「时间表 GUID[序号]」）的课间名称。仅课间类型的时间点返回名称（未自定义时返回「课间休息」），其余类型返回空字符串。
+/// 获取时间点（「时间表 GUID[序号]」）的开始时间，格式 HH:mm:ss。
 /// </summary>
-public class GetTimePointBreakNameBlock : DataBlockBase
+public class GetTimePointStartTimeBlock : DataBlockBase
 {
-    public override string Id => "sai.profile.data.timePointBreakName";
+    public override string Id => "sai.profile.data.timePointStartTime";
     public override string Name => "时间点";
-    public override string DataOutput => "String";
+    public override string DataOutput => "SAI_Time";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
 
     public override void GetFields(FieldsRegister it) => it
         .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("的课间名称");
+        .AddDummy("的开始时间");
 
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var item = ProfileBlockHelpers.TimePoint(settings);
-        return Task.FromResult<object>(item is { TimeType: 1 } ? item.BreakNameText : string.Empty);
+        return Task.FromResult<object>(item?.StartTime.ToString(@"hh\:mm\:ss") ?? "00:00:00");
     }
 }

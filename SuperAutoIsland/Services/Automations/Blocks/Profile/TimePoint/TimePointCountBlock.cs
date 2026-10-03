@@ -4,7 +4,7 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
 /// 获取时间表的时间点总数。

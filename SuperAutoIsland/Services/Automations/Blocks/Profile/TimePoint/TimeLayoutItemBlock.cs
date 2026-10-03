@@ -5,18 +5,17 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间表中的第 N 节课（类型为「上课」的时间点），输出「时间表 GUID[序号]」格式的时间点标识。
-/// 序号为该节课在时间表中的实际位置；不存在时序号为 0。
+/// 获取时间表中的第 N 个时间点，输出「时间表 GUID[序号]」格式的时间点标识。
 /// </summary>
-public class GetClassPeriodItemBlock : DataBlockBase
+public class TimeLayoutItemBlock : DataBlockBase
 {
-    public override string Id => "sai.profile.data.timeLayoutClassPeriod";
+    public override string Id => "sai.profile.data.timeLayoutItem";
     public override string Name => "时间表";
     public override (string, string) Icon => ("钟表", FluentIcons.ClockRegular);
-    public override string Tooltip => "获取时间表中的第 N 节课（类型为「上课」的时间点），输出「时间表 GUID[序号]」格式的时间点标识。";
+    public override string Tooltip => "获取时间表中的第 N 个时间点，输出「时间表 GUID[序号]」格式的时间点标识。";
     public override string DataOutput => "SAI_Profile_TimeLayoutItem";
     public override bool InlineBlock => true;
     public override bool InlineField => true;
@@ -24,13 +23,13 @@ public class GetClassPeriodItemBlock : DataBlockBase
     public override void GetFields(FieldsRegister it) => it
         .AddField("TimeLayout", ProfileFields.TimeLayout(""))
         .AddField("Index", BasicFields.Number("中的第", 1))
-        .AddDummy("节课");
+        .AddDummy("个时间点");
 
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var reference = ProfileBlockHelpers.TimeLayoutRef(settings, "TimeLayout");
-        var position = ProfileBlockHelpers.ClassPeriodPosition(settings);
-        return Task.FromResult<object>($"{reference}[{position}]");
+        var index = Math.Max(1, (int)settings.GetProperty("Index").GetDouble());
+        return Task.FromResult<object>($"{reference}[{index}]");
     }
 }

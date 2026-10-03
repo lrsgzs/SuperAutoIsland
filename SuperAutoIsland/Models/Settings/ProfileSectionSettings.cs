@@ -7,8 +7,11 @@ namespace SuperAutoIsland.Models.Settings;
 /// 写入类积木有破坏档案的风险，因此默认关闭；有写入类积木的板块在
 /// <see cref="ProfileFeaturesModel"/> 中显式打开。
 /// </summary>
-public partial class ProfileSectionSettings : ObservableObject
+public partial class ProfileSectionSettings(bool read, bool write) : ObservableObject
 {
-    [ObservableProperty] private bool _read = true;
-    [ObservableProperty] private bool _write;
+    [ObservableProperty] private bool _read = read;
+    [ObservableProperty] private bool _write = write;
+
+    public ProfileSectionSettings() : this(true, false)
+    { }
 }

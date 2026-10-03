@@ -5,14 +5,14 @@ using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Interface.Services.Automations;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 
-namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+namespace SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 
 /// <summary>
-/// 获取时间点（「时间表 GUID[序号]」）的时长（结束时间 - 开始时间），格式 HH:mm:ss。
+/// 获取时间点（「时间表 GUID[序号]」）的结束时间，格式 HH:mm:ss。
 /// </summary>
-public class GetTimePointDurationBlock : DataBlockBase
+public class GetTimePointEndTimeBlock : DataBlockBase
 {
-    public override string Id => "sai.profile.data.timePointDuration";
+    public override string Id => "sai.profile.data.timePointEndTime";
     public override string Name => "时间点";
     public override string DataOutput => "SAI_Time";
     public override bool InlineBlock => true;
@@ -20,12 +20,12 @@ public class GetTimePointDurationBlock : DataBlockBase
 
     public override void GetFields(FieldsRegister it) => it
         .AddField("TimeLayoutItem", ProfileFields.TimeLayoutItem(""))
-        .AddDummy("的时长");
+        .AddDummy("的结束时间");
 
     public override Task<object> Handler(object? data)
     {
         var settings = JsonSerializer.SerializeToElement(data);
         var item = ProfileBlockHelpers.TimePoint(settings);
-        return Task.FromResult<object>(item?.Last.ToString(@"hh\:mm\:ss") ?? "00:00:00");
+        return Task.FromResult<object>(item?.EndTime.ToString(@"hh\:mm\:ss") ?? "00:00:00");
     }
 }

@@ -70,6 +70,9 @@
                     <controls:ProfileFeatureToggle Label="科目"
                                                    Settings="{Binding Settings.ProfileFeatures.Subject}" />
                     
+                    <controls:ProfileFeatureToggle Label="时间点"
+                                                   Settings="{Binding Settings.ProfileFeatures.TimePoint}" />
+                    
                     <controls:ProfileFeatureToggle Label="时间表"
                                                    Settings="{Binding Settings.ProfileFeatures.TimeLayout}" />
                     

@@ -8,6 +8,7 @@ using SuperAutoIsland.Services.Automations.Blocks.Profile.ClassPlanGroup;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Common;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.Subject;
 using SuperAutoIsland.Services.Automations.Blocks.Profile.TimeLayout;
+using SuperAutoIsland.Services.Automations.Blocks.Profile.TimePoint;
 using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Services.Automations;
@@ -51,9 +52,48 @@ public class ProfileCategoryProvider : ICategoryProvider
                 .AddBlock<GetSubjectNameBlock>()
                 .AddBlock<GetSubjectInitialBlock>()
                 .AddBlock<GetSubjectTeacherNameBlock>()
+                .AddBlock<GetSubjectLocationBlock>()
                 .AddBlock<GetSubjectIconBlock>()
                 .AddBlock<GetSubjectColorBlock>()
                 .AddBlock<SubjectIsOutDoorRuleBlock>();
+        }
+
+        if (features.Subject.Write)
+        {
+            it.AddLabel("科目 - 操作")
+                .AddBlock<CreateSubjectBlock>()
+                .AddBlock<CopySubjectBlock>()
+                .AddBlock<DeleteSubjectBlock>();
+
+            it.AddLabel("科目 - 信息编辑")
+                .AddBlock<SetSubjectNameBlock>()
+                .AddBlock<SetSubjectInitialBlock>()
+                .AddBlock<SetSubjectTeacherNameBlock>()
+                .AddBlock<SetSubjectLocationBlock>()
+                .AddBlock<SetSubjectIconBlock>()
+                .AddBlock<SetSubjectColorBlock>()
+                .AddBlock<SetSubjectIsOutDoorBlock>();
+        }
+        
+        it.AddLabel("时间点")
+            .AddBlock<TimePointTypeBlock>()
+            .AddBlock<TimePointCountBlock>();
+
+        if (features.TimePoint.Read)
+        {
+            it.AddLabel("时间点 - 获取")
+                .AddBlock<TimeLayoutItemBlock>()
+                .AddBlock<GetClassPeriodItemBlock>()
+                .AddBlock<TimeLayoutItemExistsRuleBlock>()
+                .AddBlock<TimePointIndexBlock>()
+                .AddBlock<TimePointClassIndexBlock>();
+                
+            it.AddLabel("时间点 - 信息")
+                .AddBlock<GetTimePointItemTypeBlock>()
+                .AddBlock<GetTimePointStartTimeBlock>()
+                .AddBlock<GetTimePointEndTimeBlock>()
+                .AddBlock<GetTimePointDurationBlock>()
+                .AddBlock<GetTimePointBreakNameBlock>();
         }
 
         it.AddLabel("时间表")
@@ -66,19 +106,17 @@ public class ProfileCategoryProvider : ICategoryProvider
         {
             it.AddLabel("时间表 - 信息")
                 .AddBlock<GetTimeLayoutNameBlock>();
-            
-            it.AddLabel("时间表 - 时间点")
-                .AddBlock<TimePointTypeBlock>()
-                .AddBlock<TimePointCountBlock>()
-                .AddBlock<TimeLayoutItemBlock>()
-                .AddBlock<GetClassPeriodItemBlock>()
-                .AddBlock<TimeLayoutItemExistsRuleBlock>()
-                .AddBlock<GetTimePointItemTypeBlock>()
-                .AddBlock<GetTimePointStartTimeBlock>()
-                .AddBlock<TimePointClassIndexBlock>()
-                .AddBlock<GetTimePointEndTimeBlock>()
-                .AddBlock<GetTimePointDurationBlock>()
-                .AddBlock<GetTimePointBreakNameBlock>();
+        }
+
+        if (features.TimeLayout.Write)
+        {
+            it.AddLabel("时间表 - 操作")
+                .AddBlock<CreateTimeLayoutBlock>()
+                .AddBlock<CopyTimeLayoutBlock>()
+                .AddBlock<DeleteTimeLayoutBlock>();
+
+            it.AddLabel("时间表 - 信息编辑")
+                .AddBlock<SetTimeLayoutNameBlock>();
         }
 
         it.AddLabel("课表")
@@ -148,6 +186,14 @@ public class ProfileCategoryProvider : ICategoryProvider
 
         if (features.ClassPlanGroup.Write)
         {
+            it.AddLabel("课表群 - 操作")
+                .AddBlock<CreateClassPlanGroupBlock>()
+                .AddBlock<DisbandClassPlanGroupBlock>()
+                .AddBlock<DeleteClassPlanGroupBlock>();
+
+            it.AddLabel("课表群 - 信息编辑")
+                .AddBlock<SetClassPlanGroupNameBlock>();
+
             it.AddLabel("课表群 - 临时")
                 .AddBlock<SetCurrentClassPlanGroupBlock>()
                 .AddBlock<SetupTempClassPlanGroupBlock>()
