@@ -141,7 +141,14 @@ public class Plugin : PluginBase
             IAppHost.GetService<DynamicTextProvider>();
 
             _logger.Debug("注册 SuperAutoIsland 元素...");
+
             SaiClassIslandRegistry.Register();
+
+            if (GlobalConstants.Configs.MainConfig.Data.EnableAppSettingsBlocks)
+            {
+                SaiAppSettingsRegistry.Register();
+            }
+
             SaiRegistry.Register();
 
             if (GlobalConstants.Configs.MainConfig.Data.EnableProfileFeatures)

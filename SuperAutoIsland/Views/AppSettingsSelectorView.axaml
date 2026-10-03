@@ -1,0 +1,130 @@
+<ci:ViewBase x:Class="SuperAutoIsland.Views.AppSettingsSelectorView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ci="http://classisland.tech/schemas/xaml/core"
+             xmlns:views="clr-namespace:SuperAutoIsland.Views"
+             xmlns:vm="clr-namespace:SuperAutoIsland.ViewModel.SettingPages"
+             mc:Ignorable="d"
+             x:DataType="views:AppSettingsSelectorView"
+             d:DataContext="{d:DesignInstance views:AppSettingsSelectorView}"
+             Header="要展示的设置项"
+             HostWidth="720" HostHeight="800"
+             HostStartupLocation="CenterOwner"
+             ShowAsDialog="True">
+    <ci:ViewBase.Styles>
+        <Style Selector="TextBlock.warning">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+        </Style>
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+        </Style>
+    </ci:ViewBase.Styles>
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:AppSettingsSelectorView}}"
+          MaxWidth="{StaticResource SettingsContainerWidth}"
+          RowDefinitions="Auto Auto Auto * Auto"
+          RowSpacing="8"
+          Margin="24 12 24 16"
+          Classes="animated-intro">
+        <TextBlock Grid.Row="0"
+                   TextWrapping="Wrap"
+                   Classes="l-instructive"
+                   Text="勾选要出现在 Blockly「应用设置」分类中的设置项。更改会立即写入 SAI 配置并重建分类，重新打开 Blockly 编辑器后可见。" />
+
+        <TextBox Grid.Row="1"
+                 Text="{Binding ViewModel.SearchText, Mode=TwoWay}"
+                 PlaceholderText="搜索设置项…" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="4">
+            <Button Content="恢复默认" Command="{Binding ViewModel.RestoreDefaultsCommand}" />
+            <Button Content="全选" Command="{Binding ViewModel.SelectAllCommand}" />
+            <Button Content="全不选" Command="{Binding ViewModel.SelectNoneCommand}" />
+
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Text="{Binding ViewModel.CountText}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="3"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding ViewModel.Rows}" Margin="0 0 16 0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AppSettingRowViewModel">
+                        <Grid>
+                            <StackPanel Margin="0 12 0 4" IsVisible="{Binding IsHeader}">
+                                <TextBlock FontWeight="SemiBold" Text="{Binding HeaderText}" />
+
+                                <TextBlock FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding HeaderNote}"
+                                           Classes.warning="{Binding IsWarning}"
+                                           Classes.muted="{Binding IsMuted}" />
+                            </StackPanel>
+
+                            <Grid Margin="0 2"
+                                  ColumnDefinitions="* Auto Auto"
+                                  IsVisible="{Binding IsItem}">
+                                <CheckBox Grid.Column="0"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding IsSelected}"
+                                          IsEnabled="{Binding IsSelectable}"
+                                          HorizontalAlignment="Stretch" Padding="8 0 0 4">
+                                    <StackPanel Margin="4 0 0 0">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <ci:IconText Glyph="{Binding Glyph}" Text="{Binding DisplayName}" />
+
+                                            <TextBlock VerticalAlignment="Center"
+                                                       FontSize="12"
+                                                       Text="已废弃"
+                                                       IsVisible="{Binding IsObsolete}"
+                                                       Foreground="{DynamicResource SystemFillColorCautionBrush}" />
+                                        </StackPanel>
+
+                                        <TextBlock FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding Subtitle}"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <TextBlock Grid.Column="1" Margin="8 0 0 0"
+                                           MaxWidth="200"
+                                           VerticalAlignment="Center"
+                                           FontSize="12"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{Binding PreviewValue}"
+                                           ToolTip.Tip="{Binding PreviewValue}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+
+                                <Button Grid.Column="2" Margin="8 0 0 0"
+                                        VerticalAlignment="Center"
+                                        Theme="{StaticResource TransparentButton}"
+                                        Click="ButtonCopyValue_OnClick"
+                                        IsEnabled="{Binding CanCopy}"
+                                        ToolTip.Tip="复制当前值">
+                                    <ci:IconText Glyph="{ci:FI CopyRegular}" Text="复制值" />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="4"
+                   FontSize="12"
+                   TextWrapping="Wrap"
+                   Text="不支持的设置项（集合、字典等）不会生成积木；「仅可获取」的设置项只会生成获取积木。"
+                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+    </Grid>
+</ci:ViewBase>

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Helpers.UI;
@@ -33,6 +34,7 @@ public partial class MainSettingsPage : SettingsPageBase
 
         Settings.RestartPropertyChanged += SettingsOnPropertyChanged;
         Settings.ProfileFeatures.PropertyChanged += ProfileFeaturesOnPropertyChanged;
+        Settings.AppSettingsBlocks.PropertyChanged += AppSettingsBlocksOnPropertyChanged;
 
         DebugComboBox.ItemsSource = ActionSerializer.GetActionsId();
     }
@@ -66,6 +68,37 @@ public partial class MainSettingsPage : SettingsPageBase
     private void ViewLogsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         IAppHost.GetService<SaiLogsView>().Open();
+    }
+
+    /// <summary>
+    ///     应用设置积木的选择变化：重新构建「应用设置」分类，无需重启
+    /// </summary>
+    private void AppSettingsBlocksOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (!Settings.EnableAppSettingsBlocks)
+        {
+            return;
+        }
+
+        IAppHost.GetService<ISaiServer>().NotifyCategoryUpdated();
+    }
+
+    /// <summary>
+    ///     打开「选择要展示的设置项」视图
+    /// </summary>
+    private async void SelectAppSettingsButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var view = new AppSettingsSelectorView();
+        var owner = this.FindAncestorOfType<ViewBase>();
+
+        if (owner != null)
+        {
+            await view.ShowModal(owner);
+        }
+        else
+        {
+            await view.ShowModal();
+        }
     }
 
     private void DebugGetInfo_OnClick(object? sender, RoutedEventArgs e)
