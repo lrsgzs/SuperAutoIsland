@@ -27,6 +27,7 @@ public class ProfileClassPlanCategoryProvider : ICategoryProvider
             .AddBlock<ClassPlanByGuidBlock>()
             .AddBlock<ClassPlanByNameBlock>()
             .AddBlock<ClassPlanByDateBlock>()
+            .AddBlock<GetClassPlanListBlock>()
             .AddBlock<ClassPlanExistsBlock>();
 
         if (features.ClassPlan.Read)

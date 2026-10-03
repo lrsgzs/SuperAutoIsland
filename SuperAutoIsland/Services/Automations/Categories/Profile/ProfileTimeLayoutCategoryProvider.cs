@@ -26,6 +26,7 @@ public class ProfileTimeLayoutCategoryProvider : ICategoryProvider
             .AddBlock<EmptyTimeLayoutGuidBlock>()
             .AddBlock<TimeLayoutByGuidBlock>()
             .AddBlock<TimeLayoutByNameBlock>()
+            .AddBlock<GetTimeLayoutListBlock>()
             .AddBlock<TimeLayoutExistsBlock>();
 
         if (features.TimeLayout.Read)

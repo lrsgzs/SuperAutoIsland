@@ -26,6 +26,7 @@ public class ProfileSubjectCategoryProvider : ICategoryProvider
             .AddBlock<EmptySubjectGuidBlock>()
             .AddBlock<SubjectByGuidBlock>()
             .AddBlock<SubjectByNameBlock>()
+            .AddBlock<GetSubjectListBlock>()
             .AddBlock<SubjectExistsBlock>();
 
         if (features.Subject.Read)
