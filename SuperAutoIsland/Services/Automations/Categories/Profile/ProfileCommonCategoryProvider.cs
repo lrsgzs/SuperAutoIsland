@@ -25,5 +25,6 @@ public class ProfileCommonCategoryProvider : ICategoryProvider
     public void Build(BlocksRegister it) => it
         .AddLabel("日程模式下，仅支持读取课表/时间表信息，暂不支持修改。")
         .AddBlock<EmptyGuidBlock>()
+        .AddBlock<IsScheduleModeRuleBlock>()
         .AddBlock<SaveProfileBlock>();
 }

@@ -145,6 +145,10 @@ preSetupCategory('调试', 'debug_category');
 await import('./blocks/debug');
 postSetupCategory();
 
+toolbox.contents.push({
+    kind: 'sep',
+});
+
 for (let pluginName in window.extraBlocks) {
     preSetupCategory(pluginName);
 
