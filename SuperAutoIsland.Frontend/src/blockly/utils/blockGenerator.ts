@@ -178,9 +178,9 @@ interface _TimeArgDef extends _UnkArgDef {
 }
 
 interface _ColourArgDef extends _UnkArgDef {
-    type: 'field_colour' | 'field_colour_hsv_sliders';
+    type: 'field_color' | 'field_color_preset' | 'field_colour' | 'field_colour_hsv_sliders';
     data: {
-        colour: string;
+        color: string;
     };
 }
 

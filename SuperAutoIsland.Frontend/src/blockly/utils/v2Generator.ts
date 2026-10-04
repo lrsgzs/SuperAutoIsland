@@ -156,6 +156,8 @@ export async function addV2Block(metadata: BlockMetadata) {
                         'field_date',
                         'field_label',
                         'field_label_serializable',
+                        'field_color',
+                        'field_color_preset',
                         'field_colour',
                         'field_colour_hsv_sliders',
                     ].includes(actualType)

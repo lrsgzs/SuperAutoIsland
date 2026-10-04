@@ -14,9 +14,6 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@blockly/continuous-toolbox": "^13.1.0",
-        "@blockly/field-colour": "^13.3.0",
-        "@blockly/field-colour-hsv-sliders": "^13.3.0",
         "@blockly/field-date": "^13.2.0",
         "@blockly/field-multilineinput": "^13.1.0",
         "@blockly/shadow-block-converter": "^13.2.0",

@@ -1,23 +1,16 @@
-﻿import type { Block } from 'blockly';
+import type { Block } from 'blockly';
 import * as Blockly from 'blockly';
 import { type JavascriptGenerator, javascriptGenerator, Order } from 'blockly/javascript';
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 
 import { Backpack } from '@blockly/workspace-backpack';
-import {
-    ContinuousFlyout,
-    ContinuousMetrics,
-    ContinuousToolbox,
-    RecyclableBlockFlyoutInflater,
-} from '@blockly/continuous-toolbox';
 import { textMultiline } from '@blockly/field-multilineinput';
 import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
 import '@blockly/field-date';
-import { registerFieldColour } from '@blockly/field-colour';
-import '@blockly/field-colour-hsv-sliders';
 import './fields/FieldTime';
+import { FieldColor } from './fields/FieldColor';
 import { FieldIcon } from './fields/FieldIcon';
 import { FieldIconPicker } from './fields/FieldIconPicker';
 import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
@@ -33,7 +26,10 @@ import { addV2Block, BlockMetadata } from './utils/v2Generator';
 
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
-registerFieldColour();
+// 旧的颜色字段类型（原来由 @blockly/field-colour 提供）继续注册，
+// 这样历史存档和第三方积木元数据里出现的旧类型也能用新选择器打开。
+Blockly.fieldRegistry.register('field_colour', FieldColor);
+Blockly.fieldRegistry.register('field_colour_hsv_sliders', FieldColor);
 
 const ws = new WebSocket('/');
 await new Promise(resolve => {
@@ -165,12 +161,8 @@ for (let pluginName in window.extraBlocks) {
     postSetupCategory();
 }
 
-// Continuous Toolbox
-Blockly.registry.register(Blockly.registry.Type.METRICS_MANAGER, 'ContinuousMetrics', ContinuousMetrics, true);
-Blockly.registry.register(Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX, 'ContinuousFlyout', ContinuousFlyout, true);
-Blockly.registry.register(Blockly.registry.Type.TOOLBOX, 'ContinuousToolbox', ContinuousToolbox, true);
-Blockly.registry.register(Blockly.registry.Type.FLYOUT_INFLATER, 'block', RecyclableBlockFlyoutInflater, true);
-
+// 使用 Blockly 自带的分类式工具箱（原来的 Continuous Toolbox 会在每次积木改动后
+// 重建整个 flyout，编辑字段时会有明显卡顿）。
 textMultiline.installBlock({
     javascript: javascriptGenerator,
 });
@@ -310,11 +302,6 @@ export const injectBlockly = async (dom: HTMLElement) => {
         zoom: { controls: true },
         media: './media/',
         theme: defaultTheme,
-        plugins: {
-            flyoutsVerticalToolbox: 'ContinuousFlyout',
-            metricsManager: 'ContinuousMetrics',
-            toolbox: 'ContinuousToolbox',
-        },
     }) as Blockly.Workspace;
 
     const backpack = new Backpack(workspace as any);

@@ -1,5 +1,10 @@
 import { addBlock } from '../utils/blockGenerator';
 import { Order } from 'blockly/javascript';
+import { DEFAULT_COLOR } from '../utils/colorUtils';
+import { DEFAULT_PRESET_COLOR } from '../utils/colorPalette';
+
+// 注意：积木类型（colour_slider / colour_preset）与字段名（COLOUR）会写进存档，
+// Interface 里的 BasicFields.Color 也依赖它们，所以保持不变。
 
 addBlock(
     {
@@ -7,9 +12,10 @@ addBlock(
         message: '%1',
         inputs: {
             COLOUR: {
-                type: 'field_colour_hsv_sliders',
+                // 与 ClassIsland / FluentAvalonia 一致的颜色选择器：预设颜色 + 自定义取色。
+                type: 'field_color',
                 data: {
-                    colour: '#FF0000',
+                    color: DEFAULT_COLOR,
                 },
             },
         },
@@ -19,8 +25,8 @@ addBlock(
         isReporter: true,
     },
     (block, generator) => {
-        const colour = block.getFieldValue('COLOUR') || '#FF0000';
-        return [`"${colour}"`, Order.MEMBER];
+        const color = block.getFieldValue('COLOUR') || DEFAULT_COLOR;
+        return [`"${color}"`, Order.MEMBER];
     },
 );
 
@@ -30,9 +36,10 @@ addBlock(
         message: '预设颜色 %1',
         inputs: {
             COLOUR: {
-                type: 'field_colour',
+                // 只提供 FluentAvalonia 的预设颜色分类。
+                type: 'field_color_preset',
                 data: {
-                    colour: '#FF0000',
+                    color: DEFAULT_PRESET_COLOR,
                 },
             },
         },
@@ -42,7 +49,7 @@ addBlock(
         isReporter: true,
     },
     (block, generator) => {
-        const colour = block.getFieldValue('COLOUR') || '#FF0000';
-        return [`"${colour}"`, Order.MEMBER];
+        const color = block.getFieldValue('COLOUR') || DEFAULT_PRESET_COLOR;
+        return [`"${color}"`, Order.MEMBER];
     },
 );

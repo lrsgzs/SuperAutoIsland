@@ -1,4 +1,4 @@
-﻿@import 'tailwindcss';
+@import 'tailwindcss';
 
 html,
 body,
@@ -393,6 +393,538 @@ body,
 
 .sai-ip-button.primary:active {
     background: var(--sai-accent-pressed);
+}
+
+/* ---------------------------------------------------------------------------
+   颜色选择器
+   完全对齐 FluentAvalonia 的 ColorView / ColorPicker：顶部是「光谱 / 调色板 /
+   组件」三个分类页，底部是颜色预览条；下拉框本身是 Fluent 的浮出层样式。
+--------------------------------------------------------------------------- */
+
+/* 下拉框容器，对应 FluentAvalonia 的 FlyoutPresenter（无内边距、圆角、投影） */
+.blocklyDropDownDiv.sai-color-dropdown {
+    padding: 0;
+    border-radius: 8px;
+    box-shadow:
+        rgba(0, 0, 0, 0.14) 0 8px 16px 0,
+        rgba(0, 0, 0, 0.12) 0 0 2px 0;
+}
+
+/* Blockly 默认限制下拉内容高度为 300px，这里放开，避免底部被裁掉 */
+.blocklyDropDownDiv.sai-color-dropdown > .blocklyDropDownContent {
+    max-height: none;
+}
+
+.sai-cp {
+    --sai-cp-accent: #0078d4;
+    --sai-cp-accent-hover: #006cbe;
+    --sai-cp-text: rgba(0, 0, 0, 0.89);
+    --sai-cp-text-secondary: rgba(0, 0, 0, 0.62);
+    --sai-cp-text-tertiary: rgba(0, 0, 0, 0.45);
+    --sai-cp-fill: rgba(255, 255, 255, 0.7);
+    --sai-cp-fill-secondary: rgba(249, 249, 249, 0.5);
+    --sai-cp-fill-input: #ffffff;
+    --sai-cp-fill-disabled: rgba(0, 0, 0, 0.024);
+    --sai-cp-stroke: rgba(0, 0, 0, 0.059);
+    --sai-cp-stroke-secondary: rgba(0, 0, 0, 0.161);
+    --sai-cp-stroke-strong: rgba(0, 0, 0, 0.447);
+
+    /* 用 flex 列布局，避免子元素的外边距溢出容器导致高度抖动 */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 288px;
+    font-family:
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--sai-cp-text);
+    background: #f9f9f9;
+    user-select: none;
+}
+
+.sai-cp-checker {
+    background-color: #fff;
+    background-image:
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%);
+    background-size: 10px 10px;
+    background-position:
+        0 0,
+        5px 5px;
+}
+
+/* 分类页 TabStrip，对应 ColorView 的 ColorViewTabItemTheme */
+.sai-cp-tabs {
+    display: flex;
+    height: 40px;
+    border-bottom: 1px solid var(--sai-cp-stroke);
+}
+
+.sai-cp-tab {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font: inherit;
+    color: var(--sai-cp-text-tertiary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.sai-cp-tab-icon {
+    font-family: 'Fluent System Icons';
+    font-size: 16px;
+    line-height: 1;
+}
+
+.sai-cp-tab:hover {
+    color: var(--sai-cp-text-secondary);
+}
+
+.sai-cp-tab.active {
+    color: var(--sai-cp-text);
+}
+
+.sai-cp-tab-pipe {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 16px;
+    height: 3px;
+    margin-left: -8px;
+    background: var(--sai-cp-accent);
+    border-radius: 1.5px 1.5px 0 0;
+    opacity: 0;
+    transform: scaleX(0.4);
+    transition:
+        opacity 167ms ease,
+        transform 167ms ease;
+}
+
+.sai-cp-tab.active .sai-cp-tab-pipe {
+    opacity: 1;
+    transform: none;
+}
+
+/* 分类页内容区 */
+.sai-cp-body {
+    position: relative;
+    height: 196px;
+    overflow: hidden;
+}
+
+.sai-cp-panel {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* ------------------------------- 光谱分类 ------------------------------- */
+
+.sai-cp-spectrum {
+    display: grid;
+    grid-template-columns: 18px 1fr 18px;
+    gap: 10px;
+    padding: 8px;
+}
+
+.sai-cp-spectrum-box {
+    position: relative;
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 4px;
+    cursor: crosshair;
+}
+
+.sai-cp-spectrum-thumb {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.45),
+        0 0 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+/* 竖向滑条（明度 / 透明度），对应 ColorSlider 的竖向样式 */
+.sai-cp-vslider {
+    position: relative;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.sai-cp-vtrack {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    /* 竖向滑条上下两端是半圆 */
+    border-radius: 999px;
+}
+
+/* 第三个分量（明度）：底部黑，顶部是当前色相/饱和度的最亮色 */
+.sai-cp-vslider[data-channel='v'] .sai-cp-vtrack {
+    background: var(--sai-cp-value-gradient, linear-gradient(to top, #000, #fff));
+}
+
+.sai-cp-vslider[data-channel='a'] .sai-cp-vtrack {
+    background-color: #fff;
+    background-image:
+        var(--sai-cp-alpha-gradient, none),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%);
+    background-size:
+        100% 100%,
+        10px 10px,
+        10px 10px;
+    background-position:
+        0 0,
+        0 0,
+        5px 5px;
+}
+
+.sai-cp-vthumb {
+    position: absolute;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.45),
+        0 0 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+/* ------------------------------ 调色板分类 ------------------------------ */
+
+/* 与其他分类页保持完全相同的盒模型：内边距 8px、高度撑满，避免切换时高度抖动 */
+.sai-cp-palette {
+    padding: 8px;
+}
+
+.sai-cp-palette-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 0;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 4px;
+}
+
+.sai-cp-swatch {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.sai-cp-swatch:hover {
+    box-shadow: inset 0 0 0 3px var(--sai-cp-swatch-ring-soft, rgba(0, 0, 0, 0.45));
+}
+
+.sai-cp-swatch.active {
+    box-shadow: inset 0 0 0 3px var(--sai-cp-swatch-ring, #000);
+}
+
+.sai-cp-swatch:focus-visible {
+    outline: 2px solid var(--sai-cp-accent);
+    outline-offset: -2px;
+}
+
+/* ------------------------------- 组件分类 ------------------------------- */
+
+.sai-cp-components {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+
+.sai-cp-components-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    height: 32px;
+}
+
+/* RGB / HSV 分段控件，对应 ColorView 的 RadioButton 组合 */
+.sai-cp-segmented {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.sai-cp-segment {
+    min-width: 54px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--sai-cp-text);
+    background: var(--sai-cp-fill);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    cursor: pointer;
+}
+
+.sai-cp-segment:first-child {
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.sai-cp-segment:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.sai-cp-segment:hover {
+    background: var(--sai-cp-fill-secondary);
+}
+
+.sai-cp-segment.active {
+    color: #fff;
+    background: var(--sai-cp-accent);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 颜色代码输入框，对应 ColorView 组件页的 Hex 输入 */
+.sai-cp-hex {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: center;
+    height: 32px;
+}
+
+.sai-cp-hex-prefix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sai-cp-text-tertiary);
+    background: var(--sai-cp-fill-disabled);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.sai-cp-hex-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    padding: 3px 8px;
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--sai-cp-text);
+    text-transform: uppercase;
+    background: var(--sai-cp-fill-input);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 0 4px 4px 0;
+    outline: none;
+}
+
+.sai-cp-hex-input::placeholder {
+    color: var(--sai-cp-text-secondary);
+    text-transform: none;
+}
+
+.sai-cp-hex-input:focus {
+    border-color: var(--sai-cp-accent);
+}
+
+/* 组件行：标签与数值是一体的（间距 0），数值与滑块之间留 8px */
+.sai-cp-component-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 28px 62px 8px 1fr;
+    gap: 0;
+    align-items: center;
+    min-height: 28px;
+}
+
+.sai-cp-component-label {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sai-cp-text-tertiary);
+    background: var(--sai-cp-fill-disabled);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.sai-cp-component-number {
+    grid-column: 2;
+    box-sizing: border-box;
+    width: 100%;
+    height: 26px;
+    padding: 2px 6px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--sai-cp-text);
+    background: var(--sai-cp-fill-input);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 0 4px 4px 0;
+    outline: none;
+}
+
+.sai-cp-component-number:focus {
+    border-color: var(--sai-cp-accent);
+}
+
+/* 滑块，样式对齐 FluentAvalonia 的 ColorSlider */
+.sai-cp-component-slider {
+    grid-column: 4;
+    width: 100%;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 10px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.sai-cp-component-slider:focus {
+    outline: none;
+}
+
+.sai-cp-component-slider:focus-visible {
+    outline: 2px solid var(--sai-cp-accent);
+    outline-offset: 2px;
+}
+
+.sai-cp-component-slider::-webkit-slider-runnable-track {
+    height: 12px;
+    background: var(--sai-range-track, #d6d6d6);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 6px;
+}
+
+.sai-cp-component-slider::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -3px;
+    background: #fff;
+    border: 1px solid var(--sai-cp-stroke-strong);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.7),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+    appearance: none;
+}
+
+.sai-cp-component-slider::-moz-range-track {
+    height: 12px;
+    background: var(--sai-range-track, #d6d6d6);
+    border: 1px solid var(--sai-cp-stroke-secondary);
+    border-radius: 6px;
+}
+
+.sai-cp-component-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 1px solid var(--sai-cp-stroke-strong);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.7),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 透明度滑块与透明度滑条需要棋盘格底，才能看出多透明 */
+.sai-cp-component-slider[data-channel='a']::-webkit-slider-runnable-track {
+    background-color: #fff;
+    background-image:
+        var(--sai-range-track, none),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%);
+    background-size:
+        100% 100%,
+        10px 10px,
+        10px 10px;
+    background-position:
+        0 0,
+        0 0,
+        5px 5px;
+}
+
+.sai-cp-component-slider[data-channel='a']::-moz-range-track {
+    background-color: #fff;
+    background-image:
+        var(--sai-range-track, none),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%),
+        linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%);
+    background-size:
+        100% 100%,
+        10px 10px,
+        10px 10px;
+    background-position:
+        0 0,
+        0 0,
+        5px 5px;
+}
+
+/* ------------------------------- 颜色预览 ------------------------------- */
+
+.sai-cp-previewer {
+    display: grid;
+    grid-template-columns: 32px 32px 1fr 32px 32px;
+    height: 36px;
+    margin: 0 8px 8px;
+}
+
+.sai-cp-accent {
+    height: 24px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.sai-cp-accent:hover {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.75);
+}
+
+.sai-cp-accent:focus-visible {
+    outline: 2px solid var(--sai-cp-accent);
+    outline-offset: 1px;
+}
+
+.sai-cp-accent:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.sai-cp-accent:nth-child(5) {
+    border-radius: 0 4px 4px 0;
+}
+
+.sai-cp-preview-main {
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sai-cp-preview-colour {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
 }
 
 dialog.blocklyDialog {

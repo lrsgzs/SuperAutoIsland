@@ -93,7 +93,7 @@ public static class BasicFields
         });
     }
 
-    public static InputField Color(string name, string defaultValue = "#FF0000", InputFieldSetter? setter = null)
+    public static InputField Color(string name, string defaultValue = "#FFFF0000", InputFieldSetter? setter = null)
     {
         return CreateInputField(name, x =>
         {
