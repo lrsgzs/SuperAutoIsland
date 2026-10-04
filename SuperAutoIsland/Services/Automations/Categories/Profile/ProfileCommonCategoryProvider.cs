@@ -13,7 +13,7 @@ public class ProfileCommonCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("SAI 档案操作")
     {
-        Icon = ("通用", FluentIcons.DocumentRegular)
+        Icon = ("通用", FluentIcons.DocumentBulletListRegular)
     };
 
     /// <inheritdoc />
