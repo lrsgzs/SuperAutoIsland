@@ -18,9 +18,9 @@ public class SaiBlocksRegistry
     public static List<ICategoryProvider> CategoryProviders { get; } = [];
 
     /// <summary>
-    ///     分类名称 -> 分类下的积木元数据（由 <see cref="CategoryProviders" /> 构建，重建时整体替换）
+    ///     分类名称 -> 分类内容（含完整分类元数据，由 <see cref="CategoryProviders" /> 构建，重建时整体替换）
     /// </summary>
-    public static OrderedDictionary<string, List<BlockMetadata>> Categories { get; private set; } = new();
+    public static OrderedDictionary<string, CategoryContent> Categories { get; private set; } = new();
 
     /// <summary>
     ///     积木 id -> 积木实例（由 <see cref="CategoryProviders" /> 构建，重建时整体替换）
@@ -42,7 +42,7 @@ public class SaiBlocksRegistry
     /// </summary>
     public static void Rebuild()
     {
-        var categories = new OrderedDictionary<string, List<BlockMetadata>>();
+        var categories = new OrderedDictionary<string, CategoryContent>();
         var blocks = new Dictionary<string, BlockBase>();
 
         foreach (var provider in CategoryProviders)
@@ -61,7 +61,8 @@ public class SaiBlocksRegistry
                 continue;
             }
 
-            categories[name] = register.Items;
+            // 完整元数据（名称、图标等）一并保留，供前端建立分类
+            categories[name] = new CategoryContent(provider.Metadata, register.Items);
             foreach (var (id, block) in register.Blocks)
             {
                 blocks[id] = block;

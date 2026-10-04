@@ -33,6 +33,16 @@ export interface BlockMetadata {
     dataOutput: string;
 }
 
+export interface CategoryMetadata {
+    name: string;
+    icon: [name: string, glyph: string];
+}
+
+export interface CategoryContent {
+    metadata: CategoryMetadata;
+    blocks: BlockMetadata[];
+}
+
 const generateField = (field: Field) => {
     return {
         type: field.type,

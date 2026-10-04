@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Fixed Blockly Toolbox Type Define
  */
 
@@ -72,7 +72,11 @@ export type ButtonOrLabelInfo = ButtonInfo | LabelInfo;
  * The information needed to create a category in the toolbox.
  */
 export interface StaticCategoryInfo {
-    kind: 'category';
+    /**
+     * 类别类型：`category` 是 Blockly 自带分类，`sai_category` 是带分类图标的分类
+     * （见 utils/toolboxCategory.ts），其它已注册的工具箱项类型也可以使用。
+     */
+    kind: 'category' | 'sai_category';
     name: string;
     contents: ToolboxItemInfo[];
     id?: string;

@@ -932,6 +932,23 @@ dialog.blocklyDialog {
     padding: 1em;
 }
 
+/* 工具箱分类图标（来自后端分类元数据），样式对齐 Blockly 自带的分类图标 */
+.sai-toolbox-category-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    font-family: 'Fluent System Icons';
+    font-size: 16px;
+    line-height: 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.sai-toolbox-category-icon-empty {
+    visibility: hidden;
+}
+
 /*
  * 标准工具箱（分类式）的 flyout 滚动条是 injectionDiv 的直接子元素，
  * Blockly 收起 flyout 时只把 .blocklyFlyout 设为 display: none，

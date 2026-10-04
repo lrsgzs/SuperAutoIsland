@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
@@ -156,14 +156,13 @@ public class SaiServer
                         _logger.Debug($"Type: {messageType}");
                         switch (messageType)
                         {
-                            // 获取额外积木
-                            case "getExtraBlocks":
-                                var extraBlocks =
-                                    JsonSerializer.Serialize(SaiBlocksRegistry.Categories, ExtraBlocksOptions);
+                            case "getCategories":
+                                var categories =
+                                    JsonSerializer.Serialize(SaiBlocksRegistry.Categories.Values, ExtraBlocksOptions);
                                 jsonReturnData = new
                                 {
                                     type = "result",
-                                    blocksString = extraBlocks // 直接返回 json 避免问题。前端有 JSON.parse
+                                    blocksString = categories // 直接返回 json 避免问题。前端有 JSON.parse
                                 };
                                 break;
                             // 运行行动

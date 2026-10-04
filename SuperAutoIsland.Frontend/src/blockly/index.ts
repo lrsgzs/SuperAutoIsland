@@ -14,6 +14,7 @@ import { FieldColor } from './fields/FieldColor';
 import { FieldIcon } from './fields/FieldIcon';
 import { FieldIconPicker } from './fields/FieldIconPicker';
 import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
+import { SAI_CATEGORY_KIND, setCategoryIcon } from './utils/toolboxCategory';
 import { addLabel } from './utils/blockGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
@@ -22,7 +23,7 @@ import './types/extraData.d.ts';
 import * as prettier from 'prettier/standalone';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
-import { addV2Block, BlockMetadata } from './utils/v2Generator';
+import { addV2Block, type CategoryContent } from './utils/v2Generator';
 
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
@@ -36,8 +37,8 @@ await new Promise(resolve => {
     setTimeout(resolve, 500);
 });
 
-const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getExtraBlocks' });
-window.extraBlocks = JSON.parse(data.blocksString) as Record<string, BlockMetadata[]>;
+const data = await wsWaitMessage<{ blocksString: string }>(ws, { type: 'getCategories' });
+window.extraBlocks = JSON.parse(data.blocksString) as CategoryContent[];
 window.saiWS = ws;
 window.saiWaitMessage = wsWaitMessage;
 
@@ -145,16 +146,16 @@ toolbox.contents.push({
     kind: 'sep',
 });
 
-for (let pluginName in window.extraBlocks) {
-    preSetupCategory(pluginName);
+// 后端送来的分类：使用完整分类元数据（名称 + 图标）建立 Blockly 分类
+for (const category of window.extraBlocks) {
+    preSetupCategory(category.metadata.name, 'my_category', SAI_CATEGORY_KIND);
+    setCategoryIcon(category.metadata.name, category.metadata.icon);
 
-    let blocks = window.extraBlocks[pluginName];
-
-    for (let block of blocks) {
+    for (const block of category.blocks) {
         await addV2Block(block);
     }
 
-    if (blocks.length == 0) {
+    if (category.blocks.length == 0) {
         addLabel('滚木分类？');
     }
 
