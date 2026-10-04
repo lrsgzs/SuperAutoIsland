@@ -14,7 +14,8 @@ public class ProfileTimePointCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("档案 - 时间点")
     {
-        Icon = ("时间点", FluentIcons.ClockRegular)
+        Icon = ("时间点", FluentIcons.ClockRegular),
+        Colors = new CategoryColors("#9B8F80")
     };
 
     /// <inheritdoc />

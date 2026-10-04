@@ -244,6 +244,8 @@ interface _DataObject {
     forBlock?: Record<string, GeneratorFunction>;
     category?: StaticCategoryInfo;
     blocks?: BlocklyBlockDefinition[];
+    /** 当前分类下积木用的样式名（由 preSetupCategory 按分类配色注册） */
+    blockStyle?: string;
 }
 
 export const data: _DataObject = {
@@ -257,10 +259,12 @@ export function setup(
     forBlock: Record<string, GeneratorFunction>,
     category: StaticCategoryInfo,
     blocks: BlocklyBlockDefinition[],
+    blockStyle?: string,
 ) {
     data.forBlock = forBlock;
     data.category = category;
     data.blocks = blocks;
+    data.blockStyle = blockStyle;
     data.initialized = true;
 }
 
@@ -270,6 +274,9 @@ export function setup(
  */
 export function generateBlock(block: BlockDefinition): GeneratorOutput {
     if (!data.initialized) throw new Error('未初始化 generator!');
+
+    /** 这个积木用的样式：自己写了就用自己写的，否则用当前分类的配色 */
+    const style = block.style ?? data.blockStyle;
 
     const toolboxInputs: Record<string, any> = {};
     const definitionArgs = [];
@@ -313,8 +320,10 @@ export function generateBlock(block: BlockDefinition): GeneratorOutput {
             output: block.output,
             tooltip: block.tooltip,
             helpUrl: block.helpUrl,
-            colour: block.colour,
-            style: block.style,
+            // 积木没自己写样式时用当前分类的配色（后端插件积木走这条路）。
+            // 注意 Blockly 不允许一个积木同时有 colour 和 style（会直接抛错），
+            // 所以有样式时就不带 colour 了。
+            ...(style ? { style } : { colour: block.colour }),
             inputsInline: block.inline,
             mutator: block.mutator,
             ...(block.isReporter

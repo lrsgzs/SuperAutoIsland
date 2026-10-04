@@ -1,4 +1,5 @@
 import { addBlock, type ArgDefinition, data } from './blockGenerator';
+import type { CategoryColorsInput } from './categoryColors';
 import { Order } from 'blockly/javascript';
 import { wsWaitMessage } from './wsUtils';
 
@@ -36,6 +37,8 @@ export interface BlockMetadata {
 export interface CategoryMetadata {
     name: string;
     icon: [name: string, glyph: string];
+    /** 分类配色（三个颜色），见 utils/categoryColors.ts；不填用默认蓝 */
+    colors?: CategoryColorsInput | null;
 }
 
 export interface CategoryContent {
@@ -132,7 +135,7 @@ export async function addV2Block(metadata: BlockMetadata) {
             inputs: inputs,
             inline: metadata.inlineBlock,
             tooltip: metadata.tooltip,
-            style: 'my_blocks',
+            // 样式由所属分类的配色决定（preSetupCategory 注册），这里不写死
             output: metadata.kind == 'rule' ? 'Boolean' : metadata.kind == 'data' ? metadata.dataOutput : undefined,
             isReporter: metadata.kind == 'rule' || metadata.kind == 'data',
         },

@@ -15,6 +15,7 @@ import { FieldIcon } from './fields/FieldIcon';
 import { FieldIconPicker } from './fields/FieldIconPicker';
 import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
 import { CategoryGlyph } from './utils/toolboxCategory';
+import { categoryBlockStyles } from './utils/categoryColors';
 import { addLabel } from './utils/blockGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
@@ -27,8 +28,6 @@ import { addV2Block, type CategoryContent } from './utils/v2Generator';
 
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
-// 旧的颜色字段类型（原来由 @blockly/field-colour 提供）继续注册，
-// 这样历史存档和第三方积木元数据里出现的旧类型也能用新选择器打开。
 Blockly.fieldRegistry.register('field_colour', FieldColor);
 Blockly.fieldRegistry.register('field_colour_hsv_sliders', FieldColor);
 
@@ -120,24 +119,41 @@ javascriptGenerator.forBlock['procedures_callreturn'] = function (
     return [code, Order.FUNCTION_CALL];
 };
 
-preSetupCategory('日期与时间', 'date_category', ['日期与时间', CategoryGlyph.date]);
+preSetupCategory('日期与时间', {
+    style: 'date_blocks',
+    icon: ['日期与时间', CategoryGlyph.date],
+    colors: { primary: '#A6A65B', secondary: '#C8C87D', tertiary: '#848448' },
+});
 // @ts-ignore
 await import('./blocks/date');
 postSetupCategory();
 
-preSetupCategory('字典', 'dict_category', ['字典', CategoryGlyph.dict]);
+preSetupCategory('字典', {
+    style: 'dict_blocks',
+    icon: ['字典', CategoryGlyph.dict],
+    colors: { primary: '#5B6EA6' },
+});
 // @ts-ignore
 await import('./blocks/dict');
 postSetupCategory();
 
-preSetupCategory('杂项', 'my_category', ['杂项', CategoryGlyph.misc]);
+preSetupCategory('杂项', {
+    style: 'my_blocks',
+    icon: ['杂项', CategoryGlyph.misc],
+    // 只给主色，secondary / tertiary 按规则推导
+    colors: { primary: '#0078D7' },
+});
 // @ts-ignore
 await import('./blocks/colour');
 // @ts-ignore
 await import('./blocks/icon');
 postSetupCategory();
 
-preSetupCategory('调试', 'debug_category', ['调试', CategoryGlyph.debug]);
+preSetupCategory('调试', {
+    style: 'debug_blocks',
+    icon: ['调试', CategoryGlyph.debug],
+    colors: { primary: '#666666', secondary: '#888888', tertiary: '#444444' },
+});
 // @ts-ignore
 await import('./blocks/debug');
 postSetupCategory();
@@ -146,9 +162,12 @@ toolbox.contents.push({
     kind: 'sep',
 });
 
-// 后端送来的分类：使用完整分类元数据（名称 + 图标）建立 Blockly 分类
+// 后端送来的分类：使用完整分类元数据（名称 + 图标 + 配色）建立 Blockly 分类
 for (const category of window.extraBlocks) {
-    preSetupCategory(category.metadata.name, 'my_category', category.metadata.icon);
+    preSetupCategory(category.metadata.name, {
+        icon: category.metadata.icon,
+        colors: category.metadata.colors,
+    });
 
     for (const block of category.blocks) {
         await addV2Block(block);
@@ -161,48 +180,18 @@ for (const category of window.extraBlocks) {
     postSetupCategory();
 }
 
-// 使用 Blockly 自带的分类式工具箱（原来的 Continuous Toolbox 会在每次积木改动后
-// 重建整个 flyout，编辑字段时会有明显卡顿）。
 textMultiline.installBlock({
     javascript: javascriptGenerator,
 });
 Blockly.setLocale(blocklyLangZhHans);
 Blockly.ContextMenuItems.registerCommentOptions();
 
+// 积木样式由各个分类的配色决定（preSetupCategory 里注册，见 utils/categoryColors.ts），
+// 分类行的颜色直接用主色，所以这里不再需要 categoryStyles
 const defaultTheme = Blockly.Theme.defineTheme('default', {
     base: Theme,
     name: 'default',
-    blockStyles: {
-        my_blocks: {
-            colourPrimary: '#00AAFF',
-            colourSecondary: '#00C2FF',
-            colourTertiary: '#007cb8',
-        },
-        date_blocks: {
-            colourPrimary: '#A6A65B',
-            colourSecondary: '#C8C87D',
-            colourTertiary: '#848448',
-        },
-        debug_blocks: {
-            colourPrimary: '#666666',
-            colourSecondary: '#888888',
-            colourTertiary: '#444444',
-        },
-    },
-    categoryStyles: {
-        my_category: {
-            colour: '#00AAFF',
-        },
-        date_category: {
-            colour: '#A6A65B',
-        },
-        debug_category: {
-            colour: '#666666',
-        },
-        dict_category: {
-            colour: '#5B6EA6',
-        },
-    },
+    blockStyles: categoryBlockStyles,
 });
 
 let projectUuid = new URLSearchParams(location.search).get('id') || '';

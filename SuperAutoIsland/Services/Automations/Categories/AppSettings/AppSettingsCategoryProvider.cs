@@ -17,7 +17,8 @@ public class AppSettingsCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("CI 应用设置")
     {
-        Icon = ("应用设置", FluentIcons.AppsRegular)
+        Icon = ("应用设置", FluentIcons.AppsRegular),
+        Colors = new CategoryColors("#318098")
     };
 
     /// <inheritdoc />

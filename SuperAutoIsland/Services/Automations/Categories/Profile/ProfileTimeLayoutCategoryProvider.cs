@@ -14,7 +14,8 @@ public class ProfileTimeLayoutCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("档案 - 时间表")
     {
-        Icon = ("时间表", FluentIcons.TableRegular)
+        Icon = ("时间表", FluentIcons.TableRegular),
+        Colors = new CategoryColors("#9B8F80")
     };
 
     /// <inheritdoc />

@@ -14,7 +14,8 @@ public class ProfileSubjectCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("档案 - 科目")
     {
-        Icon = ("科目", FluentIcons.BookRegular)
+        Icon = ("科目", FluentIcons.BookRegular),
+        Colors = new CategoryColors("#9B8F80")
     };
 
     /// <inheritdoc />

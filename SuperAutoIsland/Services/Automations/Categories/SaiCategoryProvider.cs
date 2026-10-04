@@ -15,7 +15,8 @@ public class SaiCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("SuperAutoIsland")
     {
-        Icon = ("皮皮岛", FluentIcons.VehicleCarRegular)
+        Icon = ("皮皮岛", FluentIcons.VehicleCarRegular),
+        Colors = new CategoryColors("#3A608F")
     };
 
     /// <inheritdoc />

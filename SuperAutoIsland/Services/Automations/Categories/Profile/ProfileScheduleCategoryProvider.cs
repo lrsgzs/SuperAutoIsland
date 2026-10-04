@@ -14,7 +14,8 @@ public class ProfileScheduleCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("档案 - 日程")
     {
-        Icon = ("日程", FluentIcons.CalendarRegular)
+        Icon = ("日程", FluentIcons.CalendarRegular),
+        Colors = new CategoryColors("#9B8F80")
     };
 
     /// <inheritdoc />

@@ -27,7 +27,8 @@ public class ClassIslandCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("ClassIsland")
     {
-        Icon = ("ClassIsland", FluentIcons.WindowAppsRegular)
+        Icon = ("ClassIsland", FluentIcons.WindowAppsRegular),
+        Colors = new CategoryColors("#318098")
     };
 
     /// <inheritdoc />

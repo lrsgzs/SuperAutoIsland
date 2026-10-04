@@ -14,7 +14,8 @@ public class ProfileClassPlanCategoryProvider : ICategoryProvider
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("档案 - 课表")
     {
-        Icon = ("课表", FluentIcons.CalendarLtrRegular)
+        Icon = ("课表", FluentIcons.CalendarLtrRegular),
+        Colors = new CategoryColors("#9B8F80")
     };
 
     /// <inheritdoc />
