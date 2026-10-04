@@ -1,10 +1,11 @@
 ﻿import type { ToolboxInfo } from './types/toolbox';
+import { CategoryGlyph, SAI_CATEGORY_KIND, setCategoryIcon } from './utils/toolboxCategory';
 
 export const toolbox: ToolboxInfo = {
     kind: 'categoryToolbox',
     contents: [
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '逻辑',
             categorystyle: 'logic_category',
             contents: [
@@ -39,7 +40,7 @@ export const toolbox: ToolboxInfo = {
             ],
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '循环',
             categorystyle: 'loop_category',
             contents: [
@@ -102,7 +103,7 @@ export const toolbox: ToolboxInfo = {
             ],
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '数学',
             categorystyle: 'math_category',
             contents: [
@@ -308,7 +309,7 @@ export const toolbox: ToolboxInfo = {
             ],
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '文本',
             categorystyle: 'text_category',
             contents: [
@@ -486,7 +487,7 @@ export const toolbox: ToolboxInfo = {
             ],
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '列表',
             categorystyle: 'list_category',
             contents: [
@@ -588,13 +589,13 @@ export const toolbox: ToolboxInfo = {
             kind: 'sep',
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '变量',
             categorystyle: 'variable_category',
             custom: 'VARIABLE',
         },
         {
-            kind: 'category',
+            kind: SAI_CATEGORY_KIND,
             name: '函数',
             categorystyle: 'procedure_category',
             custom: 'PROCEDURE',
@@ -604,3 +605,18 @@ export const toolbox: ToolboxInfo = {
         },
     ],
 };
+
+/** 内置分类的图标（分类名 -> 字形），见 utils/toolboxCategory.ts 的 CategoryGlyph */
+const builtinCategoryIcons: Record<string, string> = {
+    逻辑: CategoryGlyph.logic,
+    循环: CategoryGlyph.loop,
+    数学: CategoryGlyph.math,
+    文本: CategoryGlyph.text,
+    列表: CategoryGlyph.list,
+    变量: CategoryGlyph.variable,
+    函数: CategoryGlyph.procedure,
+};
+
+for (const [name, glyph] of Object.entries(builtinCategoryIcons)) {
+    setCategoryIcon(name, [name, glyph]);
+}

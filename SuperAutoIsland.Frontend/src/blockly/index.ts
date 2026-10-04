@@ -14,7 +14,7 @@ import { FieldColor } from './fields/FieldColor';
 import { FieldIcon } from './fields/FieldIcon';
 import { FieldIconPicker } from './fields/FieldIconPicker';
 import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
-import { SAI_CATEGORY_KIND, setCategoryIcon } from './utils/toolboxCategory';
+import { CategoryGlyph } from './utils/toolboxCategory';
 import { addLabel } from './utils/blockGenerator';
 import { wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
@@ -120,24 +120,24 @@ javascriptGenerator.forBlock['procedures_callreturn'] = function (
     return [code, Order.FUNCTION_CALL];
 };
 
-preSetupCategory('日期与时间', 'date_category');
+preSetupCategory('日期与时间', 'date_category', ['日期与时间', CategoryGlyph.date]);
 // @ts-ignore
 await import('./blocks/date');
 postSetupCategory();
 
-preSetupCategory('字典', 'dict_category');
+preSetupCategory('字典', 'dict_category', ['字典', CategoryGlyph.dict]);
 // @ts-ignore
 await import('./blocks/dict');
 postSetupCategory();
 
-preSetupCategory('杂项');
+preSetupCategory('杂项', 'my_category', ['杂项', CategoryGlyph.misc]);
 // @ts-ignore
 await import('./blocks/colour');
 // @ts-ignore
 await import('./blocks/icon');
 postSetupCategory();
 
-preSetupCategory('调试', 'debug_category');
+preSetupCategory('调试', 'debug_category', ['调试', CategoryGlyph.debug]);
 // @ts-ignore
 await import('./blocks/debug');
 postSetupCategory();
@@ -148,8 +148,7 @@ toolbox.contents.push({
 
 // 后端送来的分类：使用完整分类元数据（名称 + 图标）建立 Blockly 分类
 for (const category of window.extraBlocks) {
-    preSetupCategory(category.metadata.name, 'my_category', SAI_CATEGORY_KIND);
-    setCategoryIcon(category.metadata.name, category.metadata.icon);
+    preSetupCategory(category.metadata.name, 'my_category', category.metadata.icon);
 
     for (const block of category.blocks) {
         await addV2Block(block);

@@ -1,5 +1,6 @@
 import { BlocklyBlockDefinition, GeneratorFunction, setup } from './blockGenerator';
 import type { StaticCategoryInfo } from '../types/toolbox';
+import { SAI_CATEGORY_KIND, setCategoryIcon } from './toolboxCategory';
 import { toolbox } from '../toolbox';
 import * as Blockly from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
@@ -22,17 +23,18 @@ export const settingUpCategory: CategoryData = {
  * 初始化当前设置的类别
  * @param name 类别名称
  * @param style 类别样式
- * @param kind 类别类型（决定使用哪个工具箱分类类，例如带分类图标的 `sai_category`）
+ * @param icon 分类图标 `[名称, 字形]`，见 utils/toolboxCategory.ts
  */
 export function preSetupCategory(
     name: string,
     style: string = 'my_category',
-    kind: StaticCategoryInfo['kind'] = 'category',
+    icon?: readonly [string, string] | null,
 ) {
+    setCategoryIcon(name, icon);
     settingUpCategory.blocks = [];
     settingUpCategory.forBlocks = {};
     settingUpCategory.category = {
-        kind: kind,
+        kind: SAI_CATEGORY_KIND,
         name: name,
         categorystyle: style,
         contents: [],

@@ -91,7 +91,11 @@ export interface StaticCategoryInfo {
  * The information needed to create a custom category.
  */
 export interface DynamicCategoryInfo {
-    kind: 'category';
+    /**
+     * 类别类型：`category` 是 Blockly 自带分类，`sai_category` 是带分类图标的分类
+     * （见 utils/toolboxCategory.ts）。
+     */
+    kind: 'category' | 'sai_category';
     custom: 'VARIABLE' | 'VARIABLE_DYNAMIC' | 'PROCEDURE';
     id?: string;
     categorystyle?: string;

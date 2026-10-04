@@ -949,6 +949,11 @@ dialog.blocklyDialog {
     visibility: hidden;
 }
 
+/* 分类被选中时行背景变成分类颜色，图标跟着标题一起变白（对齐 Blockly 自己的 .blocklyToolboxCategoryLabel 规则） */
+.blocklyToolboxSelected .sai-toolbox-category-icon {
+    color: #fff;
+}
+
 /*
  * 标准工具箱（分类式）的 flyout 滚动条是 injectionDiv 的直接子元素，
  * Blockly 收起 flyout 时只把 .blocklyFlyout 设为 display: none，
