@@ -4,11 +4,11 @@ import { type JavascriptGenerator, javascriptGenerator, Order } from 'blockly/ja
 import { toolbox } from './toolbox';
 import blocklyLangZhHans from './langs/zh-hans';
 
-import { Backpack } from '@blockly/workspace-backpack';
 import { textMultiline } from '@blockly/field-multilineinput';
 import { shadowBlockConversionChangeListener } from '@blockly/shadow-block-converter';
 import Theme from '@blockly/theme-modern';
 import '@blockly/field-date';
+import { installBackpack } from './utils/backpackStorage';
 import './fields/FieldTime';
 import { FieldColor } from './fields/FieldColor';
 import { FieldIcon } from './fields/FieldIcon';
@@ -302,10 +302,10 @@ export const injectBlockly = async (dom: HTMLElement) => {
         zoom: { controls: true },
         media: './media/',
         theme: defaultTheme,
-    }) as Blockly.Workspace;
+    }) as Blockly.WorkspaceSvg;
 
-    const backpack = new Backpack(workspace as any);
-    backpack.init();
+    // 背包内容存在 localStorage 里，不写进项目存档
+    const backpack = installBackpack(workspace);
     workspace.addChangeListener(shadowBlockConversionChangeListener);
 
     window.workspace = workspace;
