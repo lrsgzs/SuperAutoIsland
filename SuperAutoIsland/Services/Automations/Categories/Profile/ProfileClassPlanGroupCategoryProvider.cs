@@ -30,7 +30,7 @@ public class ProfileClassPlanGroupCategoryProvider : ICategoryProvider
             .AddBlock<ClassPlanGroupExistsBlock>();
 
         if (features.ClassPlanGroup.Read)
-            it.AddLabel("课表群 - 信息")
+            it.AddLabel("信息")
               .AddBlock<GetClassPlanGroupNameBlock>()
               .AddBlock<CurrentClassPlanGroupBlock>();
 

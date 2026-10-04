@@ -30,7 +30,7 @@ public class ProfileSubjectCategoryProvider : ICategoryProvider
             .AddBlock<SubjectExistsBlock>();
 
         if (features.Subject.Read)
-            it.AddLabel("科目 - 信息")
+            it.AddLabel("信息")
               .AddBlock<GetSubjectNameBlock>()
               .AddBlock<GetSubjectInitialBlock>()
               .AddBlock<GetSubjectTeacherNameBlock>()
@@ -41,12 +41,12 @@ public class ProfileSubjectCategoryProvider : ICategoryProvider
 
         if (features.Subject.Write)
         {
-            it.AddLabel("科目 - 操作")
+            it.AddLabel("操作")
               .AddBlock<CreateSubjectBlock>()
               .AddBlock<CopySubjectBlock>()
               .AddBlock<DeleteSubjectBlock>();
 
-            it.AddLabel("科目 - 信息编辑")
+            it.AddLabel("信息编辑")
               .AddBlock<SetSubjectNameBlock>()
               .AddBlock<SetSubjectInitialBlock>()
               .AddBlock<SetSubjectTeacherNameBlock>()

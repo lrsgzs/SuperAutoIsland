@@ -932,6 +932,15 @@ dialog.blocklyDialog {
     padding: 1em;
 }
 
+/*
+ * 标准工具箱（分类式）的 flyout 滚动条是 injectionDiv 的直接子元素，
+ * Blockly 收起 flyout 时只把 .blocklyFlyout 设为 display: none，
+ * 不会收回滚动条，于是它就一直残留在右侧。这里让滚动条跟随 flyout 的显隐。
+ */
+.injectionDiv:not(:has(.blocklyFlyout[style*='display: block'])) .blocklyFlyoutScrollbar {
+    display: none;
+}
+
 .blocklyDialogButtonRow button {
     border: var(--color-neutral-600) solid 1px;
     border-radius: 4px;

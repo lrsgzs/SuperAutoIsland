@@ -28,14 +28,14 @@ public class ProfileTimePointCategoryProvider : ICategoryProvider
 
         if (features.TimePoint.Read)
         {
-            it.AddLabel("时间点 - 获取")
+            it.AddLabel("获取")
               .AddBlock<TimeLayoutItemBlock>()
               .AddBlock<GetClassPeriodItemBlock>()
               .AddBlock<TimeLayoutItemExistsRuleBlock>()
               .AddBlock<TimePointIndexBlock>()
               .AddBlock<TimePointClassIndexBlock>();
 
-            it.AddLabel("时间点 - 信息")
+            it.AddLabel("信息")
               .AddBlock<GetTimePointItemTypeBlock>()
               .AddBlock<GetTimePointStartTimeBlock>()
               .AddBlock<GetTimePointEndTimeBlock>()

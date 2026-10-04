@@ -26,7 +26,7 @@ public class ProfileScheduleCategoryProvider : ICategoryProvider
           .AddBlock<ScheduleItemByGuidBlock>();
 
         if (features.Schedule.Read)
-            it.AddLabel("日程 - 信息")
+            it.AddLabel("信息")
               .AddBlock<GetScheduleItemSubjectBlock>()
               .AddBlock<GetScheduleItemStartTimeBlock>()
               .AddBlock<GetScheduleItemEndTimeBlock>()
@@ -36,17 +36,17 @@ public class ProfileScheduleCategoryProvider : ICategoryProvider
 
         if (features.Schedule.Write)
         {
-            it.AddLabel("日程 - 操作")
+            it.AddLabel("操作")
               .AddBlock<CreateScheduleItemBlock>()
               .AddBlock<CopyScheduleItemBlock>()
               .AddBlock<DeleteScheduleItemBlock>();
 
-            it.AddLabel("日程 - 信息编辑")
+            it.AddLabel("信息编辑")
               .AddBlock<SetScheduleItemSubjectBlock>()
               .AddBlock<SetScheduleItemStartTimeBlock>()
               .AddBlock<SetScheduleItemEndTimeBlock>();
 
-            it.AddLabel("日程 - 触发规则")
+            it.AddLabel("触发规则")
               .AddBlock<SetScheduleItemWeeklyRuleBlock>()
               .AddBlock<SetScheduleItemWeeklyCycleRuleBlock>()
               .AddBlock<SetScheduleItemDateRuleBlock>()

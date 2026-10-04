@@ -30,17 +30,17 @@ public class ProfileTimeLayoutCategoryProvider : ICategoryProvider
             .AddBlock<TimeLayoutExistsBlock>();
 
         if (features.TimeLayout.Read)
-            it.AddLabel("时间表 - 信息")
+            it.AddLabel("信息")
               .AddBlock<GetTimeLayoutNameBlock>();
 
         if (features.TimeLayout.Write)
         {
-            it.AddLabel("时间表 - 操作")
+            it.AddLabel("操作")
               .AddBlock<CreateTimeLayoutBlock>()
               .AddBlock<CopyTimeLayoutBlock>()
               .AddBlock<DeleteTimeLayoutBlock>();
 
-            it.AddLabel("时间表 - 信息编辑")
+            it.AddLabel("信息编辑")
               .AddBlock<SetTimeLayoutNameBlock>();
         }
     }
