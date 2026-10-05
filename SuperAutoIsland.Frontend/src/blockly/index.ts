@@ -17,7 +17,7 @@ import { postSetupCategory, preSetupCategory } from './utils/quickSetup';
 import { CategoryGlyph } from './utils/toolboxCategory';
 import { categoryBlockStyles } from './utils/categoryColors';
 import { addLabel } from './utils/blockGenerator';
-import { wsWaitMessage } from './utils/wsUtils';
+import { onServerPush, wsWaitMessage } from './utils/wsUtils';
 import { v4 as uuid } from 'uuid';
 import './types/extraData.d.ts';
 
@@ -199,74 +199,52 @@ if (projectUuid === '') {
     location.href = `/?id=${uuid()}`;
 }
 
-const callActionDefinition = `
-async function callAction(id, data) {
-    console.log("Calling Action:", id, data);
-    await window.saiWaitMessage(window.saiWS, {
-        type: "runAction",
-        id: id, 
-        settings: data,
-    });
-}`;
-
-const getRuleStateDefinition = `
-async function getRuleState(id, data) {
-    console.log("Getting Rule State:", id, data);
-    const result = await window.saiWaitMessage(window.saiWS, {
-        type: "runRule",
-        id: id,
-        settings: data,
-    });
-    return result.result;
-}`;
-
-const getDataDefinition = `
-async function getData(id, data) {
-    console.log("Getting Data:", id, data);
-    const result = await window.saiWaitMessage(window.saiWS, {
-        type: "runData",
-        id: id,
-        settings: data,
-    });
-    return result.data;
-}`;
+const prettierOptions = {
+    semi: true,
+    singleQuote: true,
+    trailingComma: 'all' as const,
+    parser: 'babel' as const,
+    plugins: [prettierEstreePlugin, prettierBabelPlugin],
+};
 
 /**
- * 运行代码
+ * 生成代码（存盘和后端运行共用同一份）
+ * @param workspace 工作区实例
+ */
+export const generateCode = async (workspace: Blockly.Workspace = window.workspace) => {
+    let code = javascriptGenerator.workspaceToCode(workspace);
+    code = `(async () => {\n${code}\n})();\n`;
+    return await prettier.format(code, prettierOptions);
+};
+
+/**
+ * 运行代码：跑在后端 Jint 上，和自动化真正执行的是同一套运行时，但不落盘
  * @param workspace 工作区实例
  */
 export const runCode = async (workspace: Blockly.Workspace = window.workspace) => {
-    console.log(workspace);
-    let code = javascriptGenerator.workspaceToCode(workspace);
-    code = `${callActionDefinition}\n${getRuleStateDefinition}\n${getDataDefinition}\n\n` + code;
-    code = `(async () => {\n${code}\n})();\n`;
-    code = await prettier.format(code, {
-        semi: true,
-        singleQuote: true,
-        trailingComma: 'all',
-        parser: 'babel',
-        plugins: [prettierEstreePlugin, prettierBabelPlugin],
-    });
+    const code = await generateCode(workspace);
     console.log(code);
-    eval(code);
+
+    // 只是「开始运行」的回包，运行日志和结果由后端推送（见 onServerPush）
+    await wsWaitMessage(ws, { type: 'run', code });
 };
 window.runCode = runCode;
+
+/**
+ * 停止当前正在跑的脚本
+ */
+export const stopRun = async () => {
+    await wsWaitMessage(ws, { type: 'stopRun' });
+};
+window.stopRun = stopRun;
+window.saiOnServerPush = onServerPush;
 
 /**
  * 保存代码
  * @param workspace 工作区实例
  */
 export const saveCode = async (workspace: Blockly.Workspace = window.workspace) => {
-    console.log(workspace);
-    let code = javascriptGenerator.workspaceToCode(workspace);
-    code = `(async () => {\n${code}\n})();\n`;
-    code = await prettier.format(code, {
-        semi: true,
-        singleQuote: true,
-        trailingComma: 'all',
-        parser: 'babel',
-        plugins: [prettierEstreePlugin, prettierBabelPlugin],
-    });
+    const code = await generateCode(workspace);
     console.log(code);
 
     await wsWaitMessage(ws, {

@@ -1,16 +1,5 @@
 using System.Net;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
-using ClassIsland.Core;
-using ClassIsland.Platforms.Abstraction;
 using ClassIsland.Shared;
-using SuperAutoIsland.Enums;
-using SuperAutoIsland.Interface.Metadata;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
@@ -21,26 +10,25 @@ namespace SuperAutoIsland.Services;
 /// </summary>
 public class SaiServer
 {
-    private static readonly JsonSerializerOptions ExtraBlocksOptions = new()
-    {
-        WriteIndented = false,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Converters =
-        {
-            new StringTupleConverter(),
-            new JsonStringEnumConverter<BlockKind>(JsonNamingPolicy.CamelCase)
-        }
-    };
-
     public readonly string Url;
     private readonly HttpListener _listener;
     private readonly Logger<SaiServer> _logger = new();
-    private readonly SaiBlockRunner _runner = IAppHost.GetService<SaiBlockRunner>();
+    private readonly SaiBlockRunner _runner;
+    private readonly BlocklyRunner.BlocklyRunner _blocklyRunner;
     private readonly string _wwwRoot;
     private bool _isRunning;
 
-    public SaiServer(string port)
+    /// <summary>
+    ///     构造函数
+    /// </summary>
+    /// <param name="port">监听端口</param>
+    /// <param name="runner">行动/规则/数据运行器，为 null 时从宿主取</param>
+    /// <param name="blocklyRunner">Blockly 运行器，为 null 时从宿主取</param>
+    public SaiServer(string port, SaiBlockRunner? runner = null,
+                     BlocklyRunner.BlocklyRunner? blocklyRunner = null)
     {
+        _runner = runner ?? IAppHost.GetService<SaiBlockRunner>();
+        _blocklyRunner = blocklyRunner ?? IAppHost.GetService<BlocklyRunner.BlocklyRunner>();
         Url = $"http://localhost:{port}/";
         _wwwRoot = Path.Combine(GlobalConstants.PluginFolder!, "Assets", "wwwroot");
         _isRunning = true;
@@ -109,308 +97,12 @@ public class SaiServer
     /// <param name="context">listener 上下文</param>
     private async Task HandleWebSocketAsync(HttpListenerContext context)
     {
-        WebSocketContext wsContext = await context.AcceptWebSocketAsync(null);
-        var websocket = wsContext.WebSocket;
+        var wsContext = await context.AcceptWebSocketAsync(null);
         _logger.Info($"WebSocket连接已建立: {context.Request.RemoteEndPoint}");
 
-        try
-        {
-            var chunk = new byte[4096];
-            var receiveBuffer = new ArraySegment<byte>(chunk);
-
-            while (websocket.State == WebSocketState.Open)
-            {
-                using var ms = new MemoryStream();
-                WebSocketReceiveResult result;
-
-                do
-                {
-                    result = await websocket.ReceiveAsync(receiveBuffer, CancellationToken.None);
-                    ms.Write(chunk, 0, result.Count);
-                } while (!result.EndOfMessage);
-
-                ms.Position = 0;
-
-                if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    await websocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-                    _logger.Info("WebSocket连接关闭");
-                }
-                else
-                {
-                    string message;
-                    using (var reader = new StreamReader(ms, Encoding.UTF8))
-                    {
-                        message = await reader.ReadToEndAsync();
-                    }
-
-                    _logger.Info($"收到消息: {message}");
-                    object jsonReturnData;
-                    string? messageId = null;
-
-                    try
-                    {
-                        var messageJson = JsonDocument.Parse(message);
-                        var messageJsonType = messageJson.RootElement.GetProperty("type");
-                        var messageType = messageJsonType.GetString()!;
-
-                        if (messageJson.RootElement.TryGetProperty("msgId", out var msgIdElement) &&
-                            msgIdElement.ValueKind == JsonValueKind.String)
-                        {
-                            messageId = msgIdElement.GetString();
-                        }
-
-                        // TODO: 以后有时间了抽离此处逻辑
-                        _logger.Debug($"Type: {messageType}");
-                        switch (messageType)
-                        {
-                            case "getCategories":
-                                var categories =
-                                    JsonSerializer.Serialize(SaiBlocksRegistry.Categories.Values, ExtraBlocksOptions);
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    blocksString = categories // 直接返回 json 避免问题。前端有 JSON.parse
-                                };
-                                break;
-                            // 运行行动
-                            case "runAction":
-                                var actionId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                var actionSettings = messageJson.RootElement.GetProperty("settings");
-                                await _runner.RunAction(actionId, actionSettings);
-                                jsonReturnData = new
-                                {
-                                    type = "result"
-                                };
-                                break;
-                            // 运行规则
-                            case "runRule":
-                                var ruleId = messageJson.RootElement.GetProperty("id").GetString()!;
-                                var ruleSettings = messageJson.RootElement.GetProperty("settings");
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    result = await _runner.RunRule(ruleId, ruleSettings)
-                                };
-                                break;
-                            // 运行数据
-                            case "runData":
-                                var dataId = messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
-                                var dataSettings = messageJson.RootElement.GetProperty("settings");
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    data = await _runner.RunData(dataId, dataSettings)
-                                };
-                                break;
-                            // 保存项目
-                            case "save":
-                                var projectData = messageJson.RootElement.GetProperty("data");
-                                switch (projectData.GetProperty("type").GetString()!)
-                                {
-                                    case "blocklyAction":
-                                        var guid1 = projectData.GetProperty("guid").GetGuid();
-                                        if (guid1 == Guid.Empty)
-                                        {
-                                            guid1 = Guid.NewGuid();
-                                        }
-
-                                        var project1 = ProjectsConfigManager.GetOrCreateProject(
-                                            ProjectsType.BlocklyAction,
-                                            guid1, null);
-                                        ProjectsConfigManager.SaveBlocklyProject(
-                                            project1,
-                                            projectData.GetProperty("workspace").GetString()!,
-                                            projectData.GetProperty("code").GetString()!);
-
-                                        jsonReturnData = new
-                                        {
-                                            type = "result"
-                                        };
-                                        break;
-                                    default:
-                                        jsonReturnData = new
-                                        {
-                                            type = "bad-project-type"
-                                        };
-                                        break;
-                                }
-
-                                break;
-                            // 加载项目
-                            case "load":
-                                var guid2 = messageJson.RootElement.GetProperty("guid").GetGuid();
-                                if (guid2 == Guid.Empty)
-                                {
-                                    guid2 = Guid.NewGuid();
-                                }
-
-                                var project2 = ProjectsConfigManager.GetOrCreateProject(
-                                    ProjectsType.BlocklyAction,
-                                    guid2, null);
-                                string workspace;
-                                try
-                                {
-                                    workspace = ProjectsConfigManager.LoadBlocklyProjectWorkspace(project2);
-                                }
-                                catch (Exception e)
-                                {
-                                    _logger.FormatException(e);
-                                    workspace = "{}";
-                                }
-
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    workspace,
-                                    guid = project2.Id
-                                };
-                                break;
-                            // 动态下拉框
-                            case "getDynamicDropdownContent":
-                                var dynamicDropdownId =
-                                    messageJson.RootElement.GetProperty("id").GetString() ?? "<null>";
-                                var getter =
-                                    SaiBlocksRegistry.DynamicDropdowns.GetValueOrDefault(dynamicDropdownId);
-                                List<(string, string)> options;
-
-                                if (getter != null)
-                                {
-                                    options = await getter();
-                                }
-                                else
-                                {
-                                    _logger.Warn($"未找到 DynamicDropdown getter {dynamicDropdownId}");
-                                    options = [("???", "???")];
-                                }
-
-                                jsonReturnData = new
-                                {
-                                    type = "result",
-                                    options = options.Select(t => (List<string>)[t.Item1, t.Item2]).ToList()
-                                };
-                                break;
-                            // 选取本地文件
-                            case "pickFile":
-                                var pickKind = messageJson.RootElement.TryGetProperty("kind", out var kindElement)
-                                                   ? kindElement.GetString()
-                                                   : null;
-                                var allowMultiple = messageJson.RootElement.TryGetProperty(
-                                                        "allowMultiple", out var multipleElement) &&
-                                                    multipleElement.ValueKind == JsonValueKind.True;
-                                var pickTitle = messageJson.RootElement.TryGetProperty("title", out var titleElement)
-                                                    ? titleElement.GetString()
-                                                    : null;
-                                jsonReturnData = await PickFilesAsync(pickKind, allowMultiple, pickTitle);
-                                break;
-                            // 默认行为
-                            default:
-                                jsonReturnData = new
-                                {
-                                    type = "bad-command-type"
-                                };
-                                break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.FormatException(e);
-                        jsonReturnData = new
-                        {
-                            type = "error"
-                        };
-                    }
-
-                    var returnNode = JsonSerializer.SerializeToNode(jsonReturnData);
-                    if (returnNode is JsonObject returnObject && !string.IsNullOrEmpty(messageId))
-                    {
-                        returnObject["msgId"] = messageId;
-                    }
-
-                    var returnJson = returnNode?.ToJsonString() ?? "{}";
-                    _logger.Log("TRACE", $"服务器回复: {returnJson}");
-                    var responseBytes = Encoding.UTF8.GetBytes(returnJson);
-                    await websocket.SendAsync(
-                        new ArraySegment<byte>(responseBytes),
-                        WebSocketMessageType.Text,
-                        true,
-                        CancellationToken.None);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.FormatException(e);
-        }
-    }
-
-    /// <summary>
-    ///     打开本地文件选择器并返回可用的本地路径。
-    /// </summary>
-    /// <param name="kind">文件类型，如 image、json、text</param>
-    /// <param name="allowMultiple">是否允许选择多个文件</param>
-    /// <param name="title">选择器标题</param>
-    private async Task<object> PickFilesAsync(string? kind, bool allowMultiple, string? title)
-    {
-        return await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            try
-            {
-                var root = AppBase.Current.GetRootWindow();
-                var files = await PlatformServices.FilePickerService.OpenFilesPickerAsync(
-                                new FilePickerOpenOptions
-                                {
-                                    Title = title ?? "选择文件",
-                                    AllowMultiple = allowMultiple,
-                                    FileTypeFilter = GetFileTypeFilter(kind)
-                                }, root);
-
-                var paths = new List<string>();
-                var invalid = 0;
-                foreach (var path in files)
-                {
-                    if (PlatformServices.FilePickerService.IsBookmark(path) ||
-                        !Path.IsPathFullyQualified(path))
-                    {
-                        invalid++;
-                        continue;
-                    }
-
-                    paths.Add(path);
-                }
-
-                return new
-                {
-                    type = "result",
-                    paths,
-                    message = invalid > 0 ? "无法直接引用所选文件。请先将它保存到本地，再输入文件路径。" : ""
-                };
-            }
-            catch (Exception e)
-            {
-                _logger.FormatException(e);
-                return (object)new
-                {
-                    type = "result",
-                    paths = Array.Empty<string>(),
-                    message = "打开文件选择器失败，请直接输入文件路径。"
-                };
-            }
-        });
-    }
-
-    /// <summary>
-    ///     获取文件类型过滤器
-    /// </summary>
-    private static FilePickerFileType[]? GetFileTypeFilter(string? kind)
-    {
-        return kind?.ToLowerInvariant() switch
-        {
-            "image" => [FilePickerFileTypes.ImageAll],
-            "json"  => [FilePickerFileTypes.Json],
-            "text"  => [FilePickerFileTypes.TextPlain],
-            _       => null
-        };
+        // 收发和命令分发都在 SaiConnection 里（那边不依赖 HttpListener，可以单独测）
+        var connection = new SaiConnection(wsContext.WebSocket, _runner, _blocklyRunner, _logger);
+        await connection.HandleAsync();
     }
 
     /// <summary>
@@ -444,7 +136,7 @@ public class SaiServer
         catch (Exception ex)
         {
             context.Response.StatusCode = 500;
-            var error = Encoding.UTF8.GetBytes($"Server Error: {ex.Message}");
+            var error = System.Text.Encoding.UTF8.GetBytes($"Server Error: {ex.Message}");
             await context.Response.OutputStream.WriteAsync(error, 0, error.Length);
             _logger.Warn($"文件处理错误: {ex.Message}");
         }

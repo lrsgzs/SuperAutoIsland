@@ -37,14 +37,16 @@ public class BlocklyRunner
     /// </summary>
     /// <param name="script">脚本代码</param>
     /// <param name="cancellationToken">中断 token</param>
-    public async Task RunJavaScript(string script, CancellationToken cancellationToken = default)
+    /// <param name="logSink">日志回流口</param>
+    public async Task RunJavaScript(string script, CancellationToken cancellationToken = default,
+                                    Action<string, string>? logSink = null)
     {
         _logger.Log("开始运行 JavaScript 脚本");
         _logger.Debug(script);
 
         await Task.Run(async () =>
         {
-            using var engine = CreateEngine(cancellationToken);
+            using var engine = CreateEngine(cancellationToken, logSink);
             await engine.EvaluateAsync(script, "main.js", cancellationToken);
         }, cancellationToken);
 
@@ -71,7 +73,8 @@ public class BlocklyRunner
     ///     创建一个配置好的引擎
     /// </summary>
     /// <param name="cancellationToken">中断 token</param>
-    private Engine CreateEngine(CancellationToken cancellationToken)
+    /// <param name="logSink">日志回流口，见 <see cref="RunJavaScript" /></param>
+    private Engine CreateEngine(CancellationToken cancellationToken, Action<string, string>? logSink)
     {
         var engine = new Engine(options =>
         {
@@ -82,7 +85,7 @@ public class BlocklyRunner
             options.CancellationToken(cancellationToken);
         });
 
-        var jsNamespace = new JavaScriptNamespace();
+        var jsNamespace = new JavaScriptNamespace(logSink);
         engine.SetValue("logger", _logger);
         engine.SetValue("console", jsNamespace.Console);
         engine.SetValue("callAction", jsNamespace.CallAction);
