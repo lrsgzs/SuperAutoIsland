@@ -70,6 +70,21 @@
                              SelectedItem="{Binding ViewModel.SelectedProject, Mode=TwoWay}"
                              SelectionChanged="ProjectsListBox_OnSelectionChanged"
                              SelectionMode="Single">
+                        <!--  拖动排序：由 AdvancedItemDragBehavior 直接移动 ItemsSource 中的元素，与 ClassIsland 的自动化列表一致  -->
+                        <ListBox.Styles>
+                            <Style Selector="ListBox:not(.no-drag) ListBoxItem">
+                                <Setter Property="Interaction.Behaviors">
+                                    <BehaviorCollectionTemplate>
+                                        <BehaviorCollection>
+                                            <ci:AdvancedItemDragBehavior HorizontalDragThreshold="2738046906"
+                                                                         Orientation="Vertical"
+                                                                         VerticalDragThreshold="3" />
+                                        </BehaviorCollection>
+                                    </BehaviorCollectionTemplate>
+                                </Setter>
+                            </Style>
+                        </ListBox.Styles>
+
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel Classes="animated-intro" />
@@ -79,17 +94,22 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent"
-                                      ColumnDefinitions="* Auto"
+                                      ColumnDefinitions="Auto * Auto"
                                       Height="32">
+                                    <!--  触摸拖动把手  -->
+                                    <ci:TouchDragThumb Grid.Column="0"
+                                                       Margin="-12 0 0 0"
+                                                       Width="20" />
+
                                     <!--  Name  -->
-                                    <TextBlock Grid.Column="0"
+                                    <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                Text="{Binding Name}"
                                                FontSize="13"
                                                TextWrapping="Wrap" />
 
                                     <!--  Type  -->
-                                    <TextBlock Grid.Column="1"
+                                    <TextBlock Grid.Column="2"
                                                VerticalAlignment="Center"
                                                Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
