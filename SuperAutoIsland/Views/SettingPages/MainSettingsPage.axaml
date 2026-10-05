@@ -6,7 +6,6 @@
                      xmlns:ci="http://classisland.tech/schemas/xaml/core"
                      xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
                      xmlns:settingPages="clr-namespace:SuperAutoIsland.Views.SettingPages"
-                     xmlns:controls="clr-namespace:SuperAutoIsland.Controls"
                      xmlns:system="clr-namespace:System;assembly=System.Runtime"
                      xmlns:shared="clr-namespace:SuperAutoIsland.Shared"
                      mc:Ignorable="d">
@@ -54,55 +53,6 @@
                                  InputMethod.IsInputMethodEnabled="False"
                                  Text="{Binding Settings.ServerPort, Mode=TwoWay}" />
                     </fa:FASettingsExpander.Footer>
-                </fa:FASettingsExpander>
-
-                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI GroupRegular}}"
-                                       Header="启用档案功能"
-                                       Description="实验性功能。指定是否启用档案功能。目前为 Blockly 独占功能。修改此开关需要重启应用。"
-                                       IsExpanded="{Binding Settings.EnableProfileFeatures, Mode=OneWay}">
-                    <fa:FASettingsExpander.Footer>
-                        <ToggleSwitch IsChecked="{Binding Settings.EnableProfileFeatures}" />
-                    </fa:FASettingsExpander.Footer>
-
-                    <fa:FASettingsExpanderItem Content="要启用的档案功能部分"
-                                               Description="此处更改无需重启即可生效，重新打开 Blockly 编辑器后可见。" />
-
-                    <controls:ProfileFeatureToggle Label="科目"
-                                                   Settings="{Binding Settings.ProfileFeatures.Subject}" />
-
-                    <controls:ProfileFeatureToggle Label="时间点"
-                                                   Settings="{Binding Settings.ProfileFeatures.TimePoint}" />
-
-                    <controls:ProfileFeatureToggle Label="时间表"
-                                                   Settings="{Binding Settings.ProfileFeatures.TimeLayout}" />
-
-                    <controls:ProfileFeatureToggle Label="课表"
-                                                   Settings="{Binding Settings.ProfileFeatures.ClassPlan}" />
-
-                    <controls:ProfileFeatureToggle Label="课表群"
-                                                   Settings="{Binding Settings.ProfileFeatures.ClassPlanGroup}" />
-
-                    <controls:ProfileFeatureToggle Label="日程"
-                                                   Settings="{Binding Settings.ProfileFeatures.Schedule}" />
-                </fa:FASettingsExpander>
-
-                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI AppsRegular}}"
-                                       Header="应用设置积木"
-                                       Description="实验性功能。把 ClassIsland 的应用设置转成 Blockly 积木。修改此开关需要重启应用。"
-                                       IsExpanded="{Binding Settings.EnableAppSettingsBlocks, Mode=OneWay}">
-                    <fa:FASettingsExpander.Footer>
-                        <ToggleSwitch IsChecked="{Binding Settings.EnableAppSettingsBlocks}" />
-                    </fa:FASettingsExpander.Footer>
-
-                    <fa:FASettingsExpanderItem Content="选择要展示的设置项…"
-                                               Description="此处更改无需重启即可生效，刷新 Blockly 编辑器后可见。"
-                                               IsClickEnabled="True"
-                                               Click="SelectAppSettingsButton_OnClick" />
-
-                    <TextBlock Margin="0 4 0 0"
-                               TextWrapping="Wrap"
-                               Foreground="{DynamicResource SystemFillColorCriticalBrush}"
-                               Text="⚠ 实验性功能：应用设置积木会直接修改 ClassIsland 的应用配置并立即生效，请谨慎使用。" />
                 </fa:FASettingsExpander>
 
                 <fa:FASettingsExpander IconSource="{ci:FluentIconSource {ci:FI BugRegular}}" Header="调试"

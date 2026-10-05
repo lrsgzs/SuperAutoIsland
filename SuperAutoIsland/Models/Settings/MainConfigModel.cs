@@ -33,7 +33,7 @@ public partial class MainConfigModel : ObservableObject
         {
             if (value == field) return;
             field = value;
-            RestartPropertyChanged?.Invoke();
+            RestartPropertyChanged?.Invoke(nameof(ServerPort));
             OnPropertyChanged();
         }
     } = "21870";
@@ -48,7 +48,7 @@ public partial class MainConfigModel : ObservableObject
         {
             if (value == field) return;
             field = value;
-            RestartPropertyChanged?.Invoke();
+            RestartPropertyChanged?.Invoke(nameof(EnableProfileFeatures));
             OnPropertyChanged();
         }
     } = false;
@@ -79,7 +79,7 @@ public partial class MainConfigModel : ObservableObject
         {
             if (value == field) return;
             field = value;
-            RestartPropertyChanged?.Invoke();
+            RestartPropertyChanged?.Invoke(nameof(EnableAppSettingsBlocks));
             OnPropertyChanged();
         }
     } = false;
@@ -101,9 +101,13 @@ public partial class MainConfigModel : ObservableObject
     } = new();
 
     /// <summary>
-    ///     需要重启的类型修改时触发的事件。
+    ///     需要重启的类型修改时触发的事件。参数为发生变化的属性名。
+    ///     <para>
+    ///         设置项分散在多个设置页面，因此带上属性名，便于各页面只响应自己展示的设置项，
+    ///         避免同一个开关触发多次重启提示。
+    ///     </para>
     /// </summary>
-    public event Action? RestartPropertyChanged;
+    public event Action<string>? RestartPropertyChanged;
 
     /// <summary>
     ///     档案功能子开关变化时保存配置（不请求重启）。
