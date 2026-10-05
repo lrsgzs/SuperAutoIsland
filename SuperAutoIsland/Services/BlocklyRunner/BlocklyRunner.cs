@@ -1,5 +1,3 @@
-﻿using System.Reflection;
-using Acornima.Ast;
 using Jint;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
@@ -10,13 +8,29 @@ namespace SuperAutoIsland.Services.BlocklyRunner;
 /// <summary>
 ///     Blockly 项目运行器
 /// </summary>
+/// <remarks>
+///     运行策略：
+///     <list type="bullet">
+///         <item>
+///             每次运行新建一个 <see cref="Engine" />。Jint 的引擎不是线程安全的（官方原话：one engine, one
+///             thread），而运行会被「编辑器点运行」「自动化触发」「设置页运行」并发发起，所以不做引擎复用。
+///         </item>
+///         <item>脚本一律丢到线程池执行，不在调用线程（可能是 UI 线程）上跑。</item>
+///     </list>
+/// </remarks>
 public class BlocklyRunner
 {
-    private readonly Logger<BlocklyRunner> _logger = new();
-    private Engine? _engine;
+    /// <summary>
+    ///     单次运行的语句预算，用来兜住 <c>while (true) { }</c> 之类的死循环。
+    /// </summary>
+    public const int DefaultMaxStatements = 10_000_000;
 
-    private HashSet<Script>? _evaluatedScripts;
-    private JavaScriptNamespace? _jsNamespace;
+    /// <summary>
+    ///     单次运行的最大递归深度。
+    /// </summary>
+    public const int DefaultMaxRecursionDepth = 256;
+
+    private readonly Logger<BlocklyRunner> _logger = new();
 
     /// <summary>
     ///     运行 js 脚本
@@ -25,28 +39,16 @@ public class BlocklyRunner
     /// <param name="cancellationToken">中断 token</param>
     public async Task RunJavaScript(string script, CancellationToken cancellationToken = default)
     {
-        if (_engine == null)
-        {
-            _engine = new Engine(options => { options.Constraints.PromiseTimeout = TimeSpan.Zero; });
-            _jsNamespace = new JavaScriptNamespace();
-            _evaluatedScripts = TryGetEngineEvaluatedScriptsHashSet(_engine);
-
-            _engine.SetValue("logger", _logger);
-            _engine.SetValue("console", _jsNamespace.Console);
-            _engine.SetValue("callAction", _jsNamespace.CallAction);
-            _engine.SetValue("getRuleState", _jsNamespace.GetRuleState);
-            _engine.SetValue("getData", _jsNamespace.GetData);
-        }
-
         _logger.Log("开始运行 JavaScript 脚本");
         _logger.Debug(script);
 
-        await _engine.EvaluateAsync(script, "main.js", cancellationToken);
-
-        if (_evaluatedScripts?.Count >= 256)
+        await Task.Run(async () =>
         {
-            _evaluatedScripts.Clear();
-        }
+            using var engine = CreateEngine(cancellationToken);
+            await engine.EvaluateAsync(script, "main.js", cancellationToken);
+        }, cancellationToken);
+
+        _logger.Log("JavaScript 脚本运行完毕");
     }
 
     /// <summary>
@@ -60,16 +62,32 @@ public class BlocklyRunner
         if (project.Type != ProjectsType.BlocklyAction)
             throw new NotSupportedException();
 
+        _logger.Info($"正在运行 Blockly 项目 {project.Name}");
         var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
         await RunJavaScript(script, cancellationToken);
     }
 
-    private static HashSet<Script>? TryGetEngineEvaluatedScriptsHashSet(Engine engine)
+    /// <summary>
+    ///     创建一个配置好的引擎
+    /// </summary>
+    /// <param name="cancellationToken">中断 token</param>
+    private Engine CreateEngine(CancellationToken cancellationToken)
     {
-        var engineType = typeof(Engine);
-        var evaluatedScriptsField = engineType.GetField("_evaluatedScripts",
-                                                        BindingFlags.Default | BindingFlags.Instance |
-                                                        BindingFlags.NonPublic);
-        return evaluatedScriptsField?.GetValue(engine) as HashSet<Script>;
+        var engine = new Engine(options =>
+        {
+            options.Constraints.PromiseTimeout = TimeSpan.Zero;
+            options.MaxStatements(DefaultMaxStatements);
+            options.LimitRecursion(DefaultMaxRecursionDepth);
+            options.Constraints.StackOverflowGuard = true;
+            options.CancellationToken(cancellationToken);
+        });
+
+        var jsNamespace = new JavaScriptNamespace();
+        engine.SetValue("logger", _logger);
+        engine.SetValue("console", jsNamespace.Console);
+        engine.SetValue("callAction", jsNamespace.CallAction);
+        engine.SetValue("getRuleState", jsNamespace.GetRuleState);
+        engine.SetValue("getData", jsNamespace.GetData);
+        return engine;
     }
 }
