@@ -32,6 +32,7 @@ public class ProfileTimePointCategoryProvider : ICategoryProvider
             it.AddLabel("获取")
               .AddBlock<TimeLayoutItemBlock>()
               .AddBlock<GetClassPeriodItemBlock>()
+              .AddBlock<FindTimePointByTimeBlock>()
               .AddBlock<TimeLayoutItemExistsRuleBlock>()
               .AddBlock<TimePointIndexBlock>()
               .AddBlock<TimePointClassIndexBlock>();
@@ -42,6 +43,23 @@ public class ProfileTimePointCategoryProvider : ICategoryProvider
               .AddBlock<GetTimePointEndTimeBlock>()
               .AddBlock<GetTimePointDurationBlock>()
               .AddBlock<GetTimePointBreakNameBlock>();
+        }
+
+        if (features.TimePoint.Write)
+        {
+            it.AddLabel("操作")
+              .AddBlock<AddTimePointBlock>()
+              .AddBlock<DeleteTimePointBlock>();
+
+            it.AddLabel("信息编辑")
+              .AddBlock<SetTimePointStartTimeBlock>()
+              .AddBlock<SetTimePointEndTimeBlock>()
+              .AddBlock<SetTimePointTypeBlock>()
+              .AddBlock<SetTimePointBreakNameBlock>()
+              .AddBlock<SetTimePointDefaultSubjectBlock>()
+              .AddBlock<SetTimePointHideDefaultBlock>()
+              .AddBlock<SetTimePointActionSetBlock>()
+              .AddBlock<OverwriteAllClassPlanSubjectsBlock>();
         }
     }
 }

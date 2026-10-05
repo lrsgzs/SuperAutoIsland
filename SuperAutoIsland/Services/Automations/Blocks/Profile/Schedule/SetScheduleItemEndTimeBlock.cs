@@ -20,7 +20,7 @@ public class SetScheduleItemEndTimeBlock : ActionBlockBase
     {
         it
             .AddField("ScheduleItem", ProfileFields.ScheduleItem(""))
-            .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(45)));
+            .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(40)));
     }
 
     public override Task Handler(ActionItem actionItem)

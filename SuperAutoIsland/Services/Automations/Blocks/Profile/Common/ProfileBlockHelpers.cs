@@ -336,4 +336,192 @@ public static class ProfileBlockHelpers
     {
         return id.ToString();
     }
+
+    #region 时间点写入
+
+    /// <summary>
+    ///     一天中最晚的时间。与宿主拖动调整时间时使用的上限一致。
+    /// </summary>
+    private static readonly TimeSpan MaxTime = new(23, 59, 59);
+
+    /// <summary>
+    ///     解析「时间表 GUID[序号]」所指向的时间点及其所在时间表，用于写入。
+    ///     日程模式引用（「[sched]日期」）不会被解析，避免误改日程模式生成的临时时间表。
+    /// </summary>
+    public static (ProfileTimeLayout Layout, ProfileTimeLayoutItem Item)? WritableTimePoint(
+        JsonElement settings, string name = "TimeLayoutItem")
+    {
+        var (reference, index) = TimeLayoutItem(settings, name);
+        if (index < 1 || !System.Guid.TryParse(reference, out var layoutId))
+            return null;
+
+        var layout = IAppHost.GetService<IProfileService>().Profile.TimeLayouts.GetValueOrDefault(layoutId);
+        var item = layout?.Layouts.ElementAtOrDefault(index - 1);
+        return item is null ? null : (layout!, item);
+    }
+
+    /// <summary>
+    ///     在时间表末尾追加一个时间点，并返回新时间点的序号（从 0 开始）。
+    ///     <para>
+    ///         只能追加到末尾，从而保证时间点的顺序与脚本的顺序一致，也避免中间插入导致的序号漂移。
+    ///         开始时间早于末尾时间点的结束时间时会被钳制到该结束时间；分割线与行动的时长为 0。
+    ///     </para>
+    /// </summary>
+    public static int AppendTimePoint(ProfileTimeLayout layout, ProfileTimeLayoutItem item)
+    {
+        var last = layout.Layouts.Count > 0 ? layout.Layouts[^1] : null;
+        var start = ClampTime(item.StartTime, last?.EndTime ?? TimeSpan.Zero, MaxTime);
+
+        item.StartTime = start;
+        if (item.TimeType is not (2 or 3))
+            item.EndTime = ClampTime(item.EndTime, start, MaxTime);
+
+        // 必须通过 InsertTimePoint 增删时间点，宿主据此同步课表中的课程列表。
+        layout.InsertTimePoint(layout.Layouts.Count, item);
+        return layout.Layouts.Count - 1;
+    }
+
+    /// <summary>
+    ///     删除时间表的最后一个时间点。时间表为空时不做修改。
+    /// </summary>
+    public static bool RemoveLastTimePoint(ProfileTimeLayout layout)
+    {
+        if (layout.Layouts.Count == 0)
+            return false;
+
+        layout.RemoveTimePoint(layout.Layouts[^1]);
+        return true;
+    }
+
+    /// <summary>
+    ///     时间点在时间表中允许的时间范围。
+    ///     上下界取相邻的「上课/课间」时间点（分割线不参与），与宿主的拖动钳制行为一致，
+    ///     因此调整时间不会改变时间点之间的相对顺序。
+    /// </summary>
+    public static (TimeSpan Min, TimeSpan Max) AllowedRange(ProfileTimeLayout layout, ProfileTimeLayoutItem item)
+    {
+        var index = layout.Layouts.IndexOf(item);
+        if (index < 0)
+            return (TimeSpan.Zero, MaxTime);
+
+        TimeSpan? min = null;
+        TimeSpan? max = null;
+
+        for (var i = index - 1; i >= 0; i--)
+        {
+            if (layout.Layouts[i].TimeType is 0 or 1)
+            {
+                min = layout.Layouts[i].EndTime;
+                break;
+            }
+        }
+
+        for (var i = index + 1; i < layout.Layouts.Count; i++)
+        {
+            if (layout.Layouts[i].TimeType is 0 or 1)
+            {
+                max = layout.Layouts[i].StartTime;
+                break;
+            }
+        }
+
+        return (min ?? TimeSpan.Zero, max ?? MaxTime);
+    }
+
+    /// <summary>
+    ///     设置时间点的开始时间。
+    ///     <para>
+    ///         为不丢失时间点本身的信息，会尽量保持时长整体平移；放不下时向内钳制，
+    ///         不会让开始时间越过结束时间，也不会与相邻时间点重叠。
+    ///         分割线与行动没有时长，开始时间同时也是结束时间。
+    ///     </para>
+    /// </summary>
+    public static void SetTimePointStartTime(ProfileTimeLayout layout, ProfileTimeLayoutItem item, TimeSpan value)
+    {
+        var (min, max) = AllowedRange(layout, item);
+        var start = ClampTime(value, min, max);
+
+        if (item.TimeType is 2 or 3)
+        {
+            item.StartTime = start;
+            return;
+        }
+
+        var duration = item.EndTime - item.StartTime;
+        if (duration < TimeSpan.Zero)
+            duration = TimeSpan.Zero;
+
+        var end = start + duration;
+        if (end > max)
+        {
+            end = max;
+            start = end - duration;
+        }
+
+        if (start < min)
+        {
+            start = min;
+            end = ClampTime(start + duration, min, max);
+        }
+
+        item.StartTime = start;
+        item.EndTime = end;
+    }
+
+    /// <summary>
+    ///     设置时间点的结束时间，并钳制到与相邻时间点不重叠的范围。分割线与行动没有时长，不做修改。
+    /// </summary>
+    public static void SetTimePointEndTime(ProfileTimeLayout layout, ProfileTimeLayoutItem item, TimeSpan value)
+    {
+        if (item.TimeType is 2 or 3)
+            return;
+
+        var (min, max) = AllowedRange(layout, item);
+        if (min < item.StartTime)
+            min = item.StartTime;
+
+        item.EndTime = ClampTime(value, min, max);
+    }
+
+    /// <summary>
+    ///     查找时间区间包含指定时刻、类型匹配的第一个时间点。
+    ///     比较精确到秒，毫秒被忽略；找不到时返回 null。
+    /// </summary>
+    public static ProfileTimeLayoutItem? FindTimePoint(ProfileTimeLayout layout, TimeSpan time, int? timeType)
+    {
+        time = TruncateToSecond(time);
+
+        foreach (var item in layout.Layouts)
+        {
+            if (timeType is not null && item.TimeType != timeType)
+                continue;
+
+            // 分割线与行动的区间长度为 0，此时等价于「开始时间等于该时刻」。
+            if (TruncateToSecond(item.StartTime) <= time && TruncateToSecond(item.EndTime) >= time)
+                return item;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    ///     截断到秒，忽略毫秒。
+    /// </summary>
+    public static TimeSpan TruncateToSecond(TimeSpan value)
+    {
+        return TimeSpan.FromSeconds(Math.Floor(value.TotalSeconds));
+    }
+
+    /// <summary>
+    ///     把时间限制在指定范围内。范围无效时取下界。
+    /// </summary>
+    private static TimeSpan ClampTime(TimeSpan value, TimeSpan min, TimeSpan max)
+    {
+        if (max < min)
+            max = min;
+
+        return value < min ? min : value > max ? max : value;
+    }
+
+    #endregion
 }

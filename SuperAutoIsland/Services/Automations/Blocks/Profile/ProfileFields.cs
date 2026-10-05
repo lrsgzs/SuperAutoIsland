@@ -51,6 +51,7 @@ public static class ProfileFields
 
     /// <summary>
     ///     时间点类型下拉框。后台值为数字：0-上课，1-课间，2-分割线，3-行动。
+    ///     仅供「时间点类型」积木自身使用，其余积木请用 <see cref="TimePointTypeInput" /> 复用该积木。
     /// </summary>
     public static Field TimePointType(string name)
     {
@@ -60,5 +61,21 @@ public static class ProfileFields
             ("分割线", "2"),
             ("行动", "3")
         ], true);
+    }
+
+    /// <summary>
+    ///     时间点类型输入。可插入已有的「时间点类型」积木，后台值为类型编号。
+    /// </summary>
+    public static InputField TimePointTypeInput(string name)
+    {
+        return Create(name, "SAI_Profile_TimeLayoutItemType", "sai_profile_data_timePointType");
+    }
+
+    /// <summary>
+    ///     可复用的行动组（SAI 项目）下拉框，后台值为项目 GUID。
+    /// </summary>
+    public static Field ActionSet(string name)
+    {
+        return BasicFields.DynamicDropdown(name, "sai.actions.runActionSet.options");
     }
 }

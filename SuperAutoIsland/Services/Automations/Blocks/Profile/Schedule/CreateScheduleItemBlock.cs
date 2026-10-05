@@ -29,7 +29,7 @@ public class CreateScheduleItemBlock : DataBlockBase
                 ("周一", "1"), ("周二", "2"), ("周三", "3"), ("周四", "4"), ("周五", "5"), ("周六", "6"), ("周日", "0")
             ], true))
             .AddField("StartTime", BasicFields.Time("开始时间", TimeSpan.FromHours(8)))
-            .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(45)));
+            .AddField("EndTime", BasicFields.Time("结束时间", TimeSpan.FromHours(8) + TimeSpan.FromMinutes(40)));
     }
 
     public override Task<object> Handler(object? data)
