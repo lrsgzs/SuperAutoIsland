@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -145,12 +146,19 @@ public class SaiServer
 
                     _logger.Info($"收到消息: {message}");
                     object jsonReturnData;
+                    string? messageId = null;
 
                     try
                     {
                         var messageJson = JsonDocument.Parse(message);
                         var messageJsonType = messageJson.RootElement.GetProperty("type");
                         var messageType = messageJsonType.GetString()!;
+
+                        if (messageJson.RootElement.TryGetProperty("msgId", out var msgIdElement) &&
+                            msgIdElement.ValueKind == JsonValueKind.String)
+                        {
+                            messageId = msgIdElement.GetString();
+                        }
 
                         // TODO: 以后有时间了抽离此处逻辑
                         _logger.Debug($"Type: {messageType}");
@@ -313,8 +321,14 @@ public class SaiServer
                         };
                     }
 
-                    var returnJson = JsonSerializer.Serialize(jsonReturnData);
-                    _logger.Info($"服务器回复: {returnJson}");
+                    var returnNode = JsonSerializer.SerializeToNode(jsonReturnData);
+                    if (returnNode is JsonObject returnObject && !string.IsNullOrEmpty(messageId))
+                    {
+                        returnObject["msgId"] = messageId;
+                    }
+
+                    var returnJson = returnNode?.ToJsonString() ?? "{}";
+                    _logger.Log("TRACE", $"服务器回复: {returnJson}");
                     var responseBytes = Encoding.UTF8.GetBytes(returnJson);
                     await websocket.SendAsync(
                         new ArraySegment<byte>(responseBytes),
@@ -417,7 +431,7 @@ public class SaiServer
                 context.Response.ContentType = GetMimeType(Path.GetExtension(fullPath));
                 context.Response.ContentLength64 = content.Length;
                 await context.Response.OutputStream.WriteAsync(content, 0, content.Length);
-                _logger.Info($"已发送文件: {path}");
+                _logger.Log("TRACE", $"已发送文件: {path}");
             }
             else
             {
