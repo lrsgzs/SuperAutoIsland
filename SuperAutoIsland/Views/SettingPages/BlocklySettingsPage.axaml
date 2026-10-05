@@ -19,6 +19,15 @@
 
         <ScrollViewer Grid.Row="1">
             <StackPanel Classes="settings-container animated-intro">
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI AppsListDetailRegular}}"
+                                       Header="管理积木分类"
+                                       Description="调整 Blockly 工具箱里的分类显示。"
+                                       ActionIconSource="{ci:FluentIconSource &#xEC2E;}"
+                                       IsClickEnabled="True"
+                                       Click="ManageCategoriesButton_OnClick">
+                </fa:FASettingsExpander>
+
+                <Separator Margin="0 12 0 4" />
                 <ci:IconText Glyph="{ci:FI AppsRegular}" Text="实验性分类" Margin="0 0 0 4" />
 
                 <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI GroupRegular}}"
@@ -61,6 +70,7 @@
 
                     <fa:FASettingsExpanderItem Content="选择要展示的设置项…"
                                                Description="此处更改无需重启即可生效，刷新 Blockly 编辑器后可见。"
+                                               ActionIconSource="{ci:FluentIconSource &#xEC2E;}"
                                                IsClickEnabled="True"
                                                Click="SelectAppSettingsButton_OnClick" />
 

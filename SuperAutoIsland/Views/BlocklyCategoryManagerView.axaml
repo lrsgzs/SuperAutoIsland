@@ -1,0 +1,146 @@
+<ci:ViewBase x:Class="SuperAutoIsland.Views.BlocklyCategoryManagerView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ci="http://classisland.tech/schemas/xaml/core"
+             xmlns:views="clr-namespace:SuperAutoIsland.Views"
+             xmlns:vm="clr-namespace:SuperAutoIsland.ViewModel.SettingPages"
+             mc:Ignorable="d"
+             x:DataType="views:BlocklyCategoryManagerView"
+             d:DataContext="{d:DesignInstance views:BlocklyCategoryManagerView}"
+             Header="积木分类管理"
+             HostWidth="720" HostHeight="800"
+             HostStartupLocation="CenterOwner"
+             ShowAsDialog="True">
+    <ci:ViewBase.Resources>
+        <!--  与 ClassIsland 的科目主题色显示用同一套：#RRGGBB 文本转画刷，解析不了就是透明  -->
+        <ci:StringColorHexToSolidBrushConverter x:Key="ColorHexToBrushConverter" />
+    </ci:ViewBase.Resources>
+
+    <ci:ViewBase.Styles>
+        <Style Selector="ci|IconText.missing">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+        <Style Selector="TextBlock.missing">
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+        </Style>
+    </ci:ViewBase.Styles>
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:BlocklyCategoryManagerView}}"
+          MaxWidth="{StaticResource SettingsContainerWidth}"
+          RowDefinitions="Auto Auto * Auto"
+          RowSpacing="8"
+          Margin="24 12 24 16"
+          Classes="animated-intro">
+        <TextBlock Grid.Row="0"
+                   TextWrapping="Wrap"
+                   Classes="l-instructive"
+                   Text="拖动调整分类在 Blockly 工具箱中的顺序，勾选决定是否展示。新注册的分类会自动追加到列表末尾。" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
+            <Button Content="恢复默认" Command="{Binding ViewModel.RestoreDefaultsCommand}" />
+
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Text="{Binding ViewModel.CountText}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <ListBox ItemsSource="{Binding ViewModel.Rows}" Margin="0 0 16 0">
+                <ListBox.Styles>
+                    <Style Selector="ListBox:not(.no-drag) ListBoxItem">
+                        <Setter Property="Interaction.Behaviors">
+                            <BehaviorCollectionTemplate>
+                                <BehaviorCollection>
+                                    <ci:AdvancedItemDragBehavior Orientation="Vertical"
+                                                                 HorizontalDragThreshold="21879066"
+                                                                 VerticalDragThreshold="3" />
+                                </BehaviorCollection>
+                            </BehaviorCollectionTemplate>
+                        </Setter>
+                    </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:BlocklyCategoryRowViewModel">
+                        <Grid Background="Transparent"
+                              ColumnDefinitions="Auto Auto Auto * Auto"
+                              ColumnSpacing="8"
+                              Height="36">
+                            <ci:TouchDragThumb Grid.Column="0"
+                                               Width="20"
+                                               IsExplicitVisible="True"
+                                               Classes="in-listbox" />
+
+                            <CheckBox Grid.Column="1"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsVisible}"
+                                      Padding="0"
+                                      ToolTip.Tip="是否在 Blockly 工具箱中展示" />
+
+                            <Border Grid.Column="2"
+                                    Width="24" Height="24"
+                                    CornerRadius="4"
+                                    VerticalAlignment="Center"
+                                    Background="{Binding PrimaryColor, Converter={StaticResource ColorHexToBrushConverter}}"
+                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    IsHitTestVisible="False" />
+
+                            <ci:IconText Grid.Column="3"
+                                         VerticalAlignment="Center"
+                                         Glyph="{Binding Glyph}"
+                                         Text="{Binding Name}"
+                                         Classes.missing="{Binding IsMissing}" />
+
+                            <StackPanel Grid.Column="4"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
+                                <TextBlock VerticalAlignment="Center"
+                                           FontSize="12"
+                                           Text="已不存在"
+                                           IsVisible="{Binding IsMissing}"
+                                           Classes.missing="{Binding IsMissing}" />
+
+                                <Button VerticalAlignment="Center"
+                                        Theme="{StaticResource TransparentButton}"
+                                        Command="{Binding DeleteCommand}"
+                                        IsVisible="{Binding IsMissing}"
+                                        ToolTip.Tip="从列表中删除">
+                                    <ci:IconText Glyph="{ci:FI DeleteRegular}" Text="删除" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="3" Spacing="4">
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                       Text="⚠ 取消展示已保存项目中正在使用的分类后，这些积木在编辑器中会无法显示和编辑，请谨慎操作。" />
+
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Text="上述更改只影响 Blockly 工具箱的展示，不影响积木的注册和运行时调用。修改后刷新 Blockly 编辑器即生效。" />
+
+            <TextBlock TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Text="标黄的分类已经不存在。它会被保留，以便插件恢复后仍落在原来的位置；也可以直接删除。" />
+        </StackPanel>
+    </Grid>
+</ci:ViewBase>

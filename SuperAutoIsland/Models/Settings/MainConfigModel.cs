@@ -21,6 +21,7 @@ public partial class MainConfigModel : ObservableObject
     public MainConfigModel()
     {
         AppSettingsBlocks.PropertyChanged += OnAppSettingsBlocksChanged;
+        BlocklyCategories.PropertyChanged += OnBlocklyCategoriesChanged;
     }
 
     /// <summary>
@@ -101,6 +102,22 @@ public partial class MainConfigModel : ObservableObject
     } = new();
 
     /// <summary>
+    ///     Blockly 分类展示设置（工具箱中的顺序与是否展示）。子项变化无需重启即可生效。
+    /// </summary>
+    public BlocklyCategoriesModel BlocklyCategories
+    {
+        get;
+        set
+        {
+            if (value is null || ReferenceEquals(value, field)) return;
+            field.PropertyChanged -= OnBlocklyCategoriesChanged;
+            field = value;
+            field.PropertyChanged += OnBlocklyCategoriesChanged;
+            OnPropertyChanged();
+        }
+    } = new();
+
+    /// <summary>
     ///     需要重启的类型修改时触发的事件。参数为发生变化的属性名。
     ///     <para>
     ///         设置项分散在多个设置页面，因此带上属性名，便于各页面只响应自己展示的设置项，
@@ -123,5 +140,13 @@ public partial class MainConfigModel : ObservableObject
     private void OnAppSettingsBlocksChanged(object? sender, PropertyChangedEventArgs e)
     {
         OnPropertyChanged(nameof(AppSettingsBlocks));
+    }
+
+    /// <summary>
+    ///     分类顺序或显示选择变化时向上转发，便于配置保存与积木分类重建（不请求重启）。
+    /// </summary>
+    private void OnBlocklyCategoriesChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(BlocklyCategories));
     }
 }

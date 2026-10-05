@@ -70,13 +70,12 @@
                              SelectedItem="{Binding ViewModel.SelectedProject, Mode=TwoWay}"
                              SelectionChanged="ProjectsListBox_OnSelectionChanged"
                              SelectionMode="Single">
-                        <!--  拖动排序：由 AdvancedItemDragBehavior 直接移动 ItemsSource 中的元素，与 ClassIsland 的自动化列表一致  -->
                         <ListBox.Styles>
                             <Style Selector="ListBox:not(.no-drag) ListBoxItem">
                                 <Setter Property="Interaction.Behaviors">
                                     <BehaviorCollectionTemplate>
                                         <BehaviorCollection>
-                                            <ci:AdvancedItemDragBehavior HorizontalDragThreshold="2738046906"
+                                            <ci:AdvancedItemDragBehavior HorizontalDragThreshold="21879066"
                                                                          Orientation="Vertical"
                                                                          VerticalDragThreshold="3" />
                                         </BehaviorCollection>

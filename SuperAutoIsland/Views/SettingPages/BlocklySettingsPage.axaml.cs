@@ -30,6 +30,7 @@ public partial class BlocklySettingsPage : SettingsPageBase
         Settings.RestartPropertyChanged += SettingsOnRestartPropertyChanged;
         Settings.ProfileFeatures.PropertyChanged += ProfileFeaturesOnPropertyChanged;
         Settings.AppSettingsBlocks.PropertyChanged += AppSettingsBlocksOnPropertyChanged;
+        Settings.BlocklyCategories.PropertyChanged += BlocklyCategoriesOnPropertyChanged;
     }
 
     public MainConfigModel Settings { get; set; }
@@ -87,6 +88,35 @@ public partial class BlocklySettingsPage : SettingsPageBase
     private async void SelectAppSettingsButton_OnClick(object? sender, RoutedEventArgs e)
     {
         var view = new AppSettingsSelectorView();
+        var owner = this.FindAncestorOfType<ViewBase>();
+
+        if (owner != null)
+        {
+            await view.ShowModal(owner);
+        }
+        else
+        {
+            await view.ShowModal();
+        }
+    }
+
+    /// <summary>
+    ///     分类顺序或显示选择变化：重建后端分类（无需重启）。
+    ///     <para>
+    ///         只影响发给 Blockly 工具箱的分类列表，积木本身照常注册，运行时调用不受影响。
+    ///     </para>
+    /// </summary>
+    private void BlocklyCategoriesOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        IAppHost.GetService<ISaiServer>().NotifyCategoryUpdated();
+    }
+
+    /// <summary>
+    ///     打开「积木分类管理」视图
+    /// </summary>
+    private async void ManageCategoriesButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var view = new BlocklyCategoryManagerView();
         var owner = this.FindAncestorOfType<ViewBase>();
 
         if (owner != null)

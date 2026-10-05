@@ -42,7 +42,8 @@ public class SaiBlocksRegistry
     /// </summary>
     public static void Rebuild()
     {
-        var categories = new OrderedDictionary<string, CategoryContent>();
+        var contents = new Dictionary<string, CategoryContent>(StringComparer.Ordinal);
+        var registered = new List<string>();
         var blocks = new Dictionary<string, BlockBase>();
 
         foreach (var provider in CategoryProviders)
@@ -61,12 +62,24 @@ public class SaiBlocksRegistry
                 continue;
             }
 
+            if (!contents.ContainsKey(name))
+            {
+                registered.Add(name);
+            }
+
             // 完整元数据（名称、图标等）一并保留，供前端建立分类
-            categories[name] = new CategoryContent(provider.Metadata, register.Items);
+            contents[name] = new CategoryContent(provider.Metadata, register.Items);
+
             foreach (var (id, block) in register.Blocks)
             {
                 blocks[id] = block;
             }
+        }
+        
+        var categories = new OrderedDictionary<string, CategoryContent>();
+        foreach (var name in BlocklyCategorySelection.ResolveDisplayOrder(registered))
+        {
+            categories[name] = contents[name];
         }
 
         Categories = categories;
