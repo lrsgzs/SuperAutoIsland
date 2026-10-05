@@ -57,10 +57,11 @@ public partial class AutomationSettingsPage : SettingsPageBase
     /// </summary>
     public static readonly FuncValueConverter<ProjectsType, string> ProjectsTypeNameConverter = new(x => x switch
     {
-        ProjectsType.BlocklyAction => "Blockly 行动",
-        ProjectsType.CiRuleset     => "可复用的规则集",
-        ProjectsType.CiActionSet   => "可复用的行动组",
-        _                          => "未知"
+        ProjectsType.BlocklyAction    => "Blockly 行动",
+        ProjectsType.JavaScriptAction => "JavaScript 行动",
+        ProjectsType.CiRuleset        => "可复用的规则集",
+        ProjectsType.CiActionSet      => "可复用的行动组",
+        _                             => "未知"
     });
 
     private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
@@ -72,6 +73,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
         if (GlobalConstants.Configs.MainConfig!.Data.EnableEasterEggs)
         {
             ProjectTypeNodes[0].ToolTip = "析构万理的 Blockly 先生";
+            ProjectTypeNodes[1].ToolTip = "闪耀千星的 JS 女士";
         }
 
         DataContext = this;
@@ -88,6 +90,13 @@ public partial class AutomationSettingsPage : SettingsPageBase
             Name = "Blockly 行动",
             IconGlyph = FluentIcons.AlignSpaceEvenlyVerticalRegular,
             ToolTip = "更自由的自动化行动"
+        },
+        new()
+        {
+            Type = ProjectsType.JavaScriptAction,
+            Name = "JavaScript 行动",
+            IconGlyph = FluentIcons.JavascriptRegular,
+            ToolTip = "代码化的自动化行动"
         },
         new()
         {
@@ -121,6 +130,10 @@ public partial class AutomationSettingsPage : SettingsPageBase
             case ProjectsType.BlocklyAction:
                 ViewModel.SelectedProject =
                     ProjectsConfigManager.CreateProject(ProjectsType.BlocklyAction, "新 Blockly 行动");
+                break;
+            case ProjectsType.JavaScriptAction:
+                ViewModel.SelectedProject =
+                    ProjectsConfigManager.CreateProject(ProjectsType.JavaScriptAction, "新 JavaScript 行动");
                 break;
             case ProjectsType.CiRuleset:
                 ViewModel.SelectedProject = ProjectsConfigManager.CreateProject(ProjectsType.CiRuleset, "新可复用的规则集");

@@ -5,6 +5,7 @@ using ClassIsland.Core.Models.Ruleset;
 using ClassIsland.Shared.Models.Automation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SuperAutoIsland.Enums;
+using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Models;
 
@@ -14,10 +15,10 @@ namespace SuperAutoIsland.Models;
 public partial class Project : ObservableRecipient
 {
     /// <summary>
-    ///     行动组（仅在 ProjectsType.CiActionSet 下可用）。
+    ///     项目类型
     /// </summary>
     [ObservableProperty]
-    private ObservableCollection<ActionItem> _actions = [];
+    private ProjectsType _type = ProjectsType.BlocklyAction;
 
     /// <summary>
     ///     项目 Guid
@@ -30,6 +31,12 @@ public partial class Project : ObservableRecipient
     /// </summary>
     [ObservableProperty]
     private string _name = "新项目";
+    
+    /// <summary>
+    ///     行动组（仅在 ProjectsType.CiActionSet 下可用）。
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<ActionItem> _actions = [];
 
     /// <summary>
     ///     规则集（仅在 ProjectsType.CiRuleset 下可用）。
@@ -40,26 +47,24 @@ public partial class Project : ObservableRecipient
         Mode = RulesetLogicalMode.Or
     };
 
-    private bool? _rulesetState;
-
-    /// <summary>
-    ///     项目类型
-    /// </summary>
-    [ObservableProperty]
-    private ProjectsType _type = ProjectsType.BlocklyAction;
-
     /// <summary>
     ///     规则集状态（仅在 ProjectsType.CiRuleset 下可用）。
     /// </summary>
     [JsonIgnore]
     public bool? RulesetState
     {
-        get => _rulesetState;
+        get;
         set
         {
             OnPropertyChanging();
-            _rulesetState = value;
+            field = value;
             OnPropertyChanged();
         }
     }
+
+    /// <summary>
+    ///     js 文件 id
+    /// </summary>
+    [ObservableProperty]
+    private string _jsId = Utils.GenerateRandomId();
 }

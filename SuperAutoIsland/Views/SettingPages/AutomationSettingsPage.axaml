@@ -151,32 +151,30 @@
                                         <ci:IconText Glyph="&#xE9E4;" Text="项目信息" />
                                     </Expander.Header>
                                     <StackPanel>
-                                        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *">
-                                            <TextBlock Grid.Row="0" Grid.Column="0"
-                                                       VerticalAlignment="Center" Margin="0 0 4 4"
-                                                       Text="项目名称：" />
-                                            <TextBox Grid.Row="0" Grid.Column="1"
-                                                     VerticalAlignment="Center" Margin="0 0 4 4"
-                                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-
-                                            <TextBlock Grid.Row="1" Grid.Column="0"
-                                                       VerticalAlignment="Center" Margin="0 0 4 4"
-                                                       Text="项目类型：" />
-                                            <TextBlock Grid.Row="1" Grid.Column="1"
-                                                       VerticalAlignment="Center" Margin="0 0 4 4"
-                                                       Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}}" />
-
-
-                                            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                                                        Orientation="Horizontal" Margin="0 0 0 4">
-                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right"
-                                                        Click="OpenProjectEditorButton_Click"
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Margin="2 0 0 0">
+                                                <Run Text="项目类型:" />
+                                                <Run Text="{Binding Type, Converter={x:Static local:AutomationSettingsPage.ProjectsTypeNameConverter}, Mode=OneWay}" />
+                                            </TextBlock>
+                                            
+                                            <ci:Field Label="项目名称">
+                                                <TextBox Text="{Binding Name}" />
+                                            </ci:Field>
+                                            
+                                            <ci:Field Label="JS 文件 ID"
+                                                      IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.JavaScriptAction}}">
+                                                <TextBox Text="{Binding JsId}" />
+                                            </ci:Field>
+                                            
+                                            <Separator Margin="0 4" />
+                                            
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <Button Click="OpenProjectEditorButton_Click"
                                                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.BlocklyAction}}">
                                                     <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
                                                 </Button>
 
-                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right"
-                                                        Click="RunProjectButton_Click">
+                                                <Button Click="RunProjectButton_Click">
                                                     <Button.IsVisible>
                                                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
                                                             <Binding Path="Type"
@@ -193,7 +191,7 @@
                                                     <ci:IconText Glyph="&#xEDBF;" Text="试运行" />
                                                 </Button>
 
-                                                <Button Margin="0 0 4 0" HorizontalAlignment="Right">
+                                                <Button>
                                                     <ci:IconText Glyph="&#xE61D;" Text="删除" Foreground="IndianRed" />
 
                                                     <Button.Flyout>
@@ -212,7 +210,7 @@
                                                     </Button.Flyout>
                                                 </Button>
                                             </StackPanel>
-                                        </Grid>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Expander>
 

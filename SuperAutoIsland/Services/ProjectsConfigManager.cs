@@ -11,18 +11,26 @@ namespace SuperAutoIsland.Services;
 public static class ProjectsConfigManager
 {
     private static readonly Logger Logger = new(typeof(ProjectsConfigManager).ToString());
-    private static string _configPath = string.Empty;
-
+    private static string _blocklyPath = string.Empty;
+    private static string _scriptPath = string.Empty;
+    
     /// <summary>
     ///     初始化项目配置管理器，设置配置路径并创建项目文件夹（如果不存在）。
     /// </summary>
     public static void Initialization()
     {
-        _configPath = Path.Combine(GlobalConstants.PluginConfigFolder!, "Projects");
-        if (!Directory.Exists(_configPath))
+        _blocklyPath = Path.Combine(GlobalConstants.PluginConfigFolder!, "Projects");
+        if (!Directory.Exists(_blocklyPath))
         {
-            Directory.CreateDirectory(_configPath);
+            Directory.CreateDirectory(_blocklyPath);
             Logger.Info("已创建项目文件夹");
+        }
+        
+        _scriptPath = Path.Combine(GlobalConstants.PluginConfigFolder!, "Scripts");
+        if (!Directory.Exists(_scriptPath))
+        {
+            Directory.CreateDirectory(_scriptPath);
+            Logger.Info("已创建 JavaScript 脚本文件夹");
         }
     }
 
@@ -89,32 +97,6 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
-    ///     检查指定 Guid 的项目是否存在。
-    /// </summary>
-    /// <param name="id">项目的 Guid。</param>
-    /// <returns>如果项目存在则返回true，否则返回false。</returns>
-    public static bool CheckProject(Guid id)
-    {
-        return GlobalConstants.Configs.ProjectConfig!.Data.Projects.Any(project => project.Id == id);
-    }
-
-    /// <summary>
-    ///     保存 Blockly 类型项目的 workspace 和生成的 JavaScript 代码。
-    /// </summary>
-    /// <param name="project">要保存的项目实例。</param>
-    /// <param name="workspace">Blockly 的工作区数据。</param>
-    /// <param name="code">生成的 JavaScript 代码。</param>
-    /// <exception cref="ArgumentException">如果项目类型不是 BlocklyAction，则抛出此异常。</exception>
-    public static void SaveBlocklyProject(Project project, string workspace, string code)
-    {
-        Logger.Info($"正在保存 Blockly 项目 {project.Name}");
-        if (project.Type is not ProjectsType.BlocklyAction) throw new ArgumentException();
-
-        WriteFile(Path.Combine(_configPath, $"{project.Id}.workspace.json"), workspace);
-        WriteFile(Path.Combine(_configPath, $"{project.Id}.js"), code);
-    }
-
-    /// <summary>
     ///     删除指定的项目。
     /// </summary>
     /// <param name="project">要删除的项目实例。</param>
@@ -124,6 +106,16 @@ public static class ProjectsConfigManager
 
         Logger.Info($"正在删除项目 {project.Name}");
         GlobalConstants.Configs.ProjectConfig!.Data.Projects.Remove(project);
+    }
+
+    /// <summary>
+    ///     检查指定 Guid 的项目是否存在。
+    /// </summary>
+    /// <param name="id">项目的 Guid。</param>
+    /// <returns>如果项目存在则返回true，否则返回false。</returns>
+    public static bool CheckProject(Guid id)
+    {
+        return GlobalConstants.Configs.ProjectConfig!.Data.Projects.Any(project => project.Id == id);
     }
 
     /// <summary>
@@ -138,7 +130,7 @@ public static class ProjectsConfigManager
         if (project.Type is ProjectsType.BlocklyAction)
         {
             Logger.Debug("项目类型：BlocklyAction");
-            return LoadFile(Path.Combine(_configPath, $"{project.Id}.workspace.json"));
+            return LoadFile(Path.Combine(_blocklyPath, $"{project.Id}.workspace.json")) ?? "{}";
         }
 
         throw new NotSupportedException();
@@ -156,10 +148,102 @@ public static class ProjectsConfigManager
         if (project.Type is ProjectsType.BlocklyAction)
         {
             Logger.Debug("项目类型：BlocklyAction");
-            return LoadFile(Path.Combine(_configPath, $"{project.Id}.js"));
+            return LoadFile(Path.Combine(_blocklyPath, $"{project.Id}.js")) ?? GlobalConstants.JavaScriptEmptyFile;
         }
 
         throw new NotSupportedException();
+    }
+
+    /// <summary>
+    ///     加载 JavaScript 类型项目的代码。
+    /// </summary>
+    /// <param name="project">要加载的项目实例。</param>
+    /// <returns>项目的 JavaScript 代码。</returns>
+    /// <exception cref="NotSupportedException">如果项目类型不是 JavaScriptAction，则抛出此异常。</exception>
+    public static string LoadJavaScriptProjectJs(Project project)
+    {
+        Logger.Info($"正在加载项目 {project.Name}");
+        if (project.Type is ProjectsType.JavaScriptAction)
+        {
+            Logger.Debug("项目类型：JavaScriptAction");
+            return LoadFile(Path.Combine(_scriptPath, $"{project.JsId}.js")) ?? GlobalConstants.JavaScriptEmptyFile;
+        }
+
+        throw new NotSupportedException();
+    }
+    
+    /// <summary>
+    ///     获取 JavaScript 类型项目的路径。
+    /// </summary>
+    /// <param name="project">要加载的项目实例。</param>
+    /// <returns>项目的 JavaScript 代码。</returns>
+    /// <exception cref="NotSupportedException">如果项目类型不是 JavaScriptAction，则抛出此异常。</exception>
+    public static string GetJavaScriptJsPath(Project project)
+    {
+        Logger.Info($"正在获取项目 {project.Name}");
+        if (project.Type is ProjectsType.JavaScriptAction)
+        {
+            Logger.Debug("项目类型：JavaScriptAction");
+            var path = Path.Combine(_scriptPath, $"{project.JsId}.js");
+
+            if (!File.Exists(path))
+            {
+                WriteFile(path, GlobalConstants.JavaScriptEmptyFile);
+            }
+            
+            return path;
+        }
+
+        throw new NotSupportedException();
+    }
+
+    /// <summary>
+    ///     保存 Blockly 类型项目的 workspace 和生成的 JavaScript 代码。
+    /// </summary>
+    /// <param name="project">要保存的项目实例。</param>
+    /// <param name="workspace">Blockly 的工作区数据。</param>
+    /// <param name="code">生成的 JavaScript 代码。</param>
+    /// <exception cref="ArgumentException">如果项目类型不是 BlocklyAction，则抛出此异常。</exception>
+    public static void SaveBlocklyProject(Project project, string workspace, string code)
+    {
+        Logger.Info($"正在保存 Blockly 项目 {project.Name}");
+        if (project.Type is not ProjectsType.BlocklyAction) throw new ArgumentException();
+
+        WriteFile(Path.Combine(_blocklyPath, $"{project.Id}.workspace.json"), workspace);
+        WriteFile(Path.Combine(_blocklyPath, $"{project.Id}.js"), code);
+    }
+
+    /// <summary>
+    ///     保存 JavaScript 类型项目的 JavaScript 代码。
+    /// </summary>
+    /// <param name="project">要保存的项目实例。</param>
+    /// <param name="code">JavaScript 代码。</param>
+    /// <exception cref="ArgumentException">如果项目类型不是 JavaScriptAction，则抛出此异常。</exception>
+    public static void SaveJavaScriptProject(Project project, string code)
+    {
+        Logger.Info($"正在保存 Blockly 项目 {project.Name}");
+        if (project.Type is not ProjectsType.JavaScriptAction) throw new ArgumentException();
+
+        WriteFile(Path.Combine(_scriptPath, $"{project.JsId}.js"), code);
+    }
+
+    /// <summary>
+    ///     从指定路径的文件中读取内容。
+    /// </summary>
+    /// <param name="path">文件路径。</param>
+    /// <returns>文件内容。</returns>
+    private static string? LoadFile(string path)
+    {
+        Logger.Debug($"正在读取文件 {path}");
+        
+        try
+        {
+            return File.ReadAllText(path);
+        }
+        catch (FileNotFoundException)
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -174,16 +258,5 @@ public static class ProjectsConfigManager
         using var streamWriter = new StreamWriter(fileStream);
         streamWriter.Write(content);
         fileStream.Flush(true);
-    }
-
-    /// <summary>
-    ///     从指定路径的文件中读取内容。
-    /// </summary>
-    /// <param name="path">文件路径。</param>
-    /// <returns>文件内容。</returns>
-    private static string LoadFile(string path)
-    {
-        Logger.Debug($"正在读取文件 {path}");
-        return File.ReadAllText(path);
     }
 }

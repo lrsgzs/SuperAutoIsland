@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentAvalonia.UI.Controls;
+using SuperAutoIsland.Shared;
 
 namespace SuperAutoIsland.Models.Components;
 
@@ -11,7 +12,7 @@ public partial class DynamicTextSettings : ObservableObject
     private double _iconSize = 24;
 
     [ObservableProperty]
-    private string _id = GenerateRandomId();
+    private string _id = Utils.GenerateRandomId();
 
     [property: JsonIgnore]
     [ObservableProperty]
@@ -24,9 +25,4 @@ public partial class DynamicTextSettings : ObservableObject
     [property: JsonIgnore]
     [ObservableProperty]
     private string _lastText = string.Empty;
-
-    private static string GenerateRandomId()
-    {
-        return Guid.NewGuid().ToString("N")[..8];
-    }
 }

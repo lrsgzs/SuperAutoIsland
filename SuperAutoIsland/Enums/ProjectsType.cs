@@ -18,7 +18,12 @@ public enum ProjectsType
     /// <summary>
     ///     可复用的行动组
     /// </summary>
-    CiActionSet
+    CiActionSet,
+    
+    /// <summary>
+    ///     JavaScript 行动
+    /// </summary>
+    JavaScriptAction
 
     // 预留的瓜
     // BlocklyRuleset,
