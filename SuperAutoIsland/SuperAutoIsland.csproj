@@ -19,6 +19,7 @@
         <PackageReference Include="ClassIsland.PluginSdk" Version="2.1.1.1-misha-dev3225">
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
+        <PackageReference Include="Avalonia.Controls.WebView" Version="12.1.0"/>
         <PackageReference Include="Jint" Version="4.16.4"/>
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj"/>
         <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj"/>
@@ -55,6 +56,13 @@
                 <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
                 <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
             </Content>
+        </ItemGroup>
+    </Target>
+
+    <Target Name="ExcludeHostProvidedAvaloniaAssemblies" AfterTargets="ResolvePackageAssets">
+        <ItemGroup>
+            <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)"
+                                   Condition="'%(Filename)' != 'Avalonia.Controls.WebView' And ($([System.String]::Copy('%(Filename)').StartsWith('Avalonia')) Or '%(Filename)' == 'MicroCom.Runtime')"/>
         </ItemGroup>
     </Target>
 </Project>
