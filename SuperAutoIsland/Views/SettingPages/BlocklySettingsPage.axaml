@@ -87,6 +87,16 @@
                         <ToggleSwitch IsChecked="{Binding Settings.EnableInAppBlocklyEditor}" />
                     </fa:FASettingsExpander.Footer>
                 </fa:FASettingsExpander>
+
+                <!-- 安卓端没有文件关联与外部编辑器，强制使用应用内 JS 编辑器，故隐藏该开关 -->
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI JavascriptRegular}}"
+                                       Header="应用内 JS 编辑器"
+                                       Description="实验性功能。启用后，JavaScript 行动的「打开编辑器」会在应用内编辑脚本；关闭时用系统默认程序打开脚本文件。安卓端强制启用。"
+                                       IsVisible="{Binding !IsAndroid}">
+                    <fa:FASettingsExpander.Footer>
+                        <ToggleSwitch IsChecked="{Binding Settings.EnableInAppJsEditor}" />
+                    </fa:FASettingsExpander.Footer>
+                </fa:FASettingsExpander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

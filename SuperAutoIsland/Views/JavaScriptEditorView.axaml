@@ -1,0 +1,96 @@
+<ci:ViewBase x:Class="SuperAutoIsland.Views.JavaScriptEditorView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ci="http://classisland.tech/schemas/xaml/core"
+             xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d"
+             Header="JavaScript 编辑器"
+             HostWidth="1000"
+             HostHeight="700"
+             HostStartupLocation="CenterScreen"
+             MinWidth="600"
+             MinHeight="420">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+        <Grid Grid.Row="0" ColumnDefinitions="* Auto">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4" Margin="8">
+                <SelectableTextBlock x:Name="ScriptPathText"
+                                     VerticalAlignment="Center"
+                                     MaxWidth="420"
+                                     TextTrimming="CharacterEllipsis"
+                                     Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                
+                <TextBlock x:Name="DirtyIndicator"
+                           Margin="6 0 0 0"
+                           VerticalAlignment="Center"
+                           Text="● 未保存"
+                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                           IsVisible="False" />
+            </StackPanel>
+            
+            <fa:FACommandBar Grid.Column="1" DefaultLabelPosition="Right">
+                <fa:FACommandBar.PrimaryCommands>
+                    <fa:FACommandBarElementContainer>
+                        <TextBlock x:Name="StatusText"
+                                   Text="就绪"
+                                   Margin="0 0 8 0"
+                                   VerticalAlignment="Center" />
+                    </fa:FACommandBarElementContainer>
+                    
+                    <fa:FACommandBarButton Label="保存"
+                                           IconSource="{ci:FluentIconSource {ci:FI ArrowDownloadRegular}}"
+                                           Click="SaveButton_OnClick" />
+
+                    <fa:FACommandBarButton x:Name="SaveAndRunButton"
+                                           Label="保存并运行"
+                                           IconSource="{ci:FluentIconSource {ci:FI PlayRegular}}"
+                                           Click="SaveAndRunButton_OnClick" />
+
+                    <fa:FACommandBarButton x:Name="StopButton"
+                                           Label="停止"
+                                           IconSource="{ci:FluentIconSource {ci:FI PauseRegular}}"
+                                           IsEnabled="False"
+                                           Click="StopButton_OnClick" />
+                </fa:FACommandBar.PrimaryCommands>
+            </fa:FACommandBar>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Margin="0 8"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                CornerRadius="4">
+            <!-- 编辑器的配色在高亮定义加载时按深/浅色一并设置，见 JavaScriptEditorView.axaml.cs -->
+            <avaloniaEdit:TextEditor x:Name="ScriptEditor"
+                                     ShowLineNumbers="True"
+                                     FontFamily="Maple Mono NF CN, Maple Mono, JetBrains Mono, Cascadia Code, Consolas, Menlo, Monospace"
+                                     FontSize="14"
+                                     Padding="4" />
+        </Border>
+
+        <Expander Grid.Row="2" x:Name="LogExpander" Classes="compact stretch-header" IsExpanded="False">
+            <Expander.Header>
+                <Grid ColumnDefinitions="* Auto" Margin="0 0 0 0">
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="运行输出" />
+
+                    <ci:AnimatedIconButton Grid.Column="1" Text="清空输出"
+                                           Glyph="{ci:FI BroomRegular}"
+                                           Height="32" Padding="4"
+                                           Click="ClearLogButton_OnClick"
+                                           Theme="{StaticResource TransparentButton}">
+                    </ci:AnimatedIconButton>
+                </Grid>
+            </Expander.Header>
+
+            <TextBox x:Name="LogTextBox"
+                     Height="140"
+                     AcceptsReturn="True"
+                     IsReadOnly="True"
+                     TextWrapping="NoWrap"
+                     FontFamily="Maple Mono NF CN, Maple Mono, JetBrains Mono, Cascadia Code, Consolas, Menlo, Monospace"
+                     FontSize="12" />
+        </Expander>
+    </Grid>
+</ci:ViewBase>

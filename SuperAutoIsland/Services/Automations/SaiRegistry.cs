@@ -23,6 +23,15 @@ public static class SaiRegistry
                                                   new ValueTuple<string, string>("???",
                                                       GlobalConstants.Assets.ProjectNullGuid.ToString())));
 
+        SaiServer.RegisterDynamicDropdown("sai.actions.runJavaScript.options", async () =>
+                                              EnsureListHasItemOrDefaultListItem(
+                                                  GlobalConstants.Configs.ProjectConfig!.Data.Projects
+                                                                 .Where(e => e.Type is ProjectsType.JavaScriptAction)
+                                                                 .Select(e => (e.Name, e.Id.ToString()))
+                                                                 .ToList(),
+                                                  new ValueTuple<string, string>("???",
+                                                      GlobalConstants.Assets.ProjectNullGuid.ToString())));
+
         SaiServer.RegisterDynamicDropdown("sai.actions.runActionSet.options", async () =>
                                               EnsureListHasItemOrDefaultListItem(
                                                   GlobalConstants.Configs.ProjectConfig!.Data.Projects

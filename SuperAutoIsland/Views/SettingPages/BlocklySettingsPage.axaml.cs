@@ -36,6 +36,11 @@ public partial class BlocklySettingsPage : SettingsPageBase
     public MainConfigModel Settings { get; set; }
 
     /// <summary>
+    ///     是否为安卓端。安卓端强制使用应用内 JS 编辑器，对应的开关隐藏。
+    /// </summary>
+    public bool IsAndroid { get; } = OperatingSystem.IsAndroid();
+
+    /// <summary>
     ///     本页的某个开关需要重启才能生效：请求重启应用。
     ///     只响应本页展示的设置项，避免与其它设置页重复提示。
     /// </summary>

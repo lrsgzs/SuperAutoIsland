@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Shared;
@@ -16,25 +16,24 @@ using SuperAutoIsland.Shared.Logger;
 namespace SuperAutoIsland.Controls.ActionSettingsControls;
 
 /// <summary>
-///     「运行 Blockly 项目」行动
+///     「运行 JavaScript 行动」行动
 /// </summary>
-public partial class RunBlocklyActionSettingsControl : ActionSettingsControlBase<RunBlocklyActionSettings>
+public partial class RunJavaScriptActionSettingsControl : ActionSettingsControlBase<RunJavaScriptActionSettings>
 {
     private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
     private readonly ReadOnlyObservableCollection<Project> _filteredProjects;
-    private readonly Logger<RunBlocklyActionSettingsControl> _logger = new();
+    private readonly Logger<RunJavaScriptActionSettingsControl> _logger = new();
 
     /// <summary>
     ///     构造函数，初始化组件并设置过滤后的项目集合
-    ///     <see cref="RunBlocklyActionSettingsControl" />
     /// </summary>
-    public RunBlocklyActionSettingsControl()
+    public RunJavaScriptActionSettingsControl()
     {
         InitializeComponent();
 
         ProjectConfig.Projects
                      .ToObservableChangeSet()
-                     .Filter(e => e.Type is ProjectsType.BlocklyAction)
+                     .Filter(e => e.Type is ProjectsType.JavaScriptAction)
                      .Bind(out _filteredProjects)
                      .DisposeMany()
                      .Subscribe();
@@ -51,7 +50,7 @@ public partial class RunBlocklyActionSettingsControl : ActionSettingsControlBase
         try
         {
             var selectedProject = ProjectsConfigManager.GetProject(Settings.ProjectGuid);
-            _ = _blocklyRunner.RunBlocklyProject(selectedProject);
+            _ = _blocklyRunner.RunJavaScriptProject(selectedProject);
         }
         catch (Exception exception)
         {

@@ -1,4 +1,4 @@
-﻿using ClassIsland.Core.Abstractions.Automation;
+using ClassIsland.Core.Abstractions.Automation;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
@@ -8,10 +8,10 @@ using SuperAutoIsland.Shared;
 namespace SuperAutoIsland.Services.Automations.Actions;
 
 /// <summary>
-///     「运行 Blockly 项目」
+///     「运行 JavaScript 行动」
 /// </summary>
-[ActionInfo("sai.actions.runBlockly", "运行 Blockly 项目", FluentIcons.AlignSpaceEvenlyVerticalRegular, false)]
-public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
+[ActionInfo("sai.actions.runJavaScript", "运行 JavaScript 行动", FluentIcons.JavascriptRegular, false)]
+public class RunJavaScriptAction : ActionBase<RunJavaScriptActionSettings>
 {
     private static readonly BlocklyRunner.BlocklyRunner Runner = IAppHost.GetService<BlocklyRunner.BlocklyRunner>();
 
@@ -24,7 +24,7 @@ public class RunBlocklyAction : ActionBase<RunBlocklyActionSettings>
         if (Settings.ProjectGuid == GlobalConstants.Assets.ProjectNullGuid)
             return;
 
-        await Runner.RunBlocklyProject(
+        await Runner.RunJavaScriptProject(
             ProjectsConfigManager.GetProject(Settings.ProjectGuid),
             InterruptCancellationToken);
     }

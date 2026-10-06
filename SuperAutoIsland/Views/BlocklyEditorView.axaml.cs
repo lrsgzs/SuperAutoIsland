@@ -23,8 +23,6 @@ public partial class BlocklyEditorView : ViewBase
     {
         InitializeComponent();
         Closing += OnClosing;
-
-        AndroidSaveWarning.IsVisible = OperatingSystem.IsAndroid();
     }
 
     public void LoadEditor(Uri uri, string? title = null)

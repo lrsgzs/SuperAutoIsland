@@ -48,6 +48,13 @@ public static class ProjectsConfigManager
             Name = name
         };
         GlobalConstants.Configs.ProjectConfig!.Data.Projects.Add(newProject);
+
+        // JavaScript 行动的脚本保存在独立文件里：建项目时顺手落盘一份模板，用户可以直接编辑。
+        if (type is ProjectsType.JavaScriptAction)
+        {
+            GetJavaScriptJsPath(newProject);
+        }
+
         return newProject;
     }
 
@@ -184,7 +191,7 @@ public static class ProjectsConfigManager
         if (project.Type is ProjectsType.JavaScriptAction)
         {
             Logger.Debug("项目类型：JavaScriptAction");
-            var path = Path.Combine(_scriptPath, $"{project.JsId}.js");
+            var path = Path.GetFullPath(Path.Combine(_scriptPath, $"{project.JsId}.js"));
 
             if (!File.Exists(path))
             {

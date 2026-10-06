@@ -80,6 +80,18 @@ public class SaiCategoryProvider : ICategoryProvider
                             "", "sai.actions.runBlockly.options")
                 }
             })
+            .AddBlock(new BlockMetadata("sai.actions.runJavaScript")
+            {
+                Kind = BlockKind.Action,
+                Name = "运行 JavaScript 行动",
+                Icon = ("JavaScript 项目", FluentIcons.JavascriptRegular),
+                Fields = new Dictionary<string, Field>
+                {
+                    ["ProjectGuid"] =
+                        BasicFields.DynamicDropdown(
+                            "", "sai.actions.runJavaScript.options")
+                }
+            })
             .AddBlock(new BlockMetadata("sai.actions.runActionSet")
             {
                 Kind = BlockKind.Action,

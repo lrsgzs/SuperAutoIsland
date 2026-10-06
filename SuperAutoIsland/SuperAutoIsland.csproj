@@ -28,6 +28,8 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets/icon.png"/>
         <AvaloniaResource Include="Assets/sandrone.png"/>
+        <!-- 应用内 JS 编辑器用的深色 JavaScript 语法高亮定义 -->
+        <AvaloniaResource Include="Assets/Highlighting/JavaScript-Dark.xshd"/>
     </ItemGroup>
 
     <ItemGroup>

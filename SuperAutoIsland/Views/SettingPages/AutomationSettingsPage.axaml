@@ -174,12 +174,33 @@
                                                     <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
                                                 </Button>
 
+                                                <!-- JavaScript 行动：应用内编辑器（安卓端强制启用）或系统默认程序 -->
+                                                <Button Click="OpenJavaScriptEditorButton_OnClick"
+                                                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.JavaScriptAction}}">
+                                                    <ci:IconText Glyph="{ci:FI CodeRegular}" Text="打开编辑器" />
+                                                </Button>
+
+                                                <Button Click="OpenJavaScriptFolderButton_OnClick">
+                                                    <Button.IsVisible>
+                                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                            <Binding Path="Type"
+                                                                     Converter="{x:Static ObjectConverters.Equal}"
+                                                                     ConverterParameter="{x:Static enums:ProjectsType.JavaScriptAction}" />
+                                                            <Binding Path="#Page.IsDesktop" />
+                                                        </MultiBinding>
+                                                    </Button.IsVisible>
+                                                    <ci:IconText Glyph="{ci:FI FolderOpenRegular}" Text="打开所在文件夹" />
+                                                </Button>
+
                                                 <Button Click="RunProjectButton_Click">
                                                     <Button.IsVisible>
                                                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
                                                             <Binding Path="Type"
                                                                      Converter="{x:Static ObjectConverters.Equal}"
                                                                      ConverterParameter="{x:Static enums:ProjectsType.BlocklyAction}" />
+                                                            <Binding Path="Type"
+                                                                     Converter="{x:Static ObjectConverters.Equal}"
+                                                                     ConverterParameter="{x:Static enums:ProjectsType.JavaScriptAction}" />
                                                             <Binding Path="Type"
                                                                      Converter="{x:Static ObjectConverters.Equal}"
                                                                      ConverterParameter="{x:Static enums:ProjectsType.CiRuleset}" />

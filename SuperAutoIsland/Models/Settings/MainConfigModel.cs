@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SuperAutoIsland.Models.Settings;
@@ -110,6 +111,26 @@ public partial class MainConfigModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _enableInAppBlocklyEditor = false;
+
+    /// <summary>
+    ///     是否使用应用内 JS 编辑器（实验性功能）。
+    ///     <para>
+    ///         启用后，JavaScript 行动的「打开编辑器」使用应用内的代码编辑器；关闭时改用系统默认程序打开脚本文件。
+    ///         此开关在打开编辑器时读取，无需重启即可生效。
+    ///     </para>
+    /// </summary>
+    [ObservableProperty]
+    private bool _enableInAppJsEditor = false;
+
+    /// <summary>
+    ///     实际是否使用应用内 JS 编辑器。
+    ///     <para>
+    ///         安卓端没有文件关联，也没有可用的外部编辑器，因此强制启用应用内编辑器
+    ///         （对应的设置项在安卓端会隐藏）。
+    ///     </para>
+    /// </summary>
+    [JsonIgnore]
+    public bool IsInAppJsEditorEnabled => EnableInAppJsEditor || OperatingSystem.IsAndroid();
 
     /// <summary>
     ///     Blockly 分类展示设置（工具箱中的顺序与是否展示）。子项变化无需重启即可生效。

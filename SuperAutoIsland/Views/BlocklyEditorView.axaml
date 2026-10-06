@@ -12,16 +12,6 @@
              HostStartupLocation="CenterScreen"
              MinWidth="720"
              MinHeight="480">
-    <NavigationPage.TopCommandBar>
-        <TextBlock x:Name="AndroidSaveWarning"
-                   Text="⚠ 记得保存"
-                   Margin="0 0 12 0"
-                   FontSize="13"
-                   VerticalAlignment="Center"
-                   Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                   IsVisible="False" />
-    </NavigationPage.TopCommandBar>
-
     <av:NativeWebView x:Name="EditorWebView"
                       Background="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
 </ci:ViewBase>

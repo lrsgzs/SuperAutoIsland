@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
@@ -9,6 +10,7 @@ using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using CommunityToolkit.Mvvm.Input;
 using SuperAutoIsland.Enums;
+using SuperAutoIsland.Models;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Shared;
@@ -83,6 +85,11 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     public AutomationViewModel ViewModel { get; } = IAppHost.GetService<AutomationViewModel>();
+
+    /// <summary>
+    ///     是否为桌面端。安卓端没有文件关联与外部编辑器，相关入口（用默认程序打开、打开所在文件夹）会隐藏。
+    /// </summary>
+    public bool IsDesktop { get; } = !OperatingSystem.IsAndroid();
 
     public ProjectTypeNode[] ProjectTypeNodes { get; } =
     [
@@ -201,6 +208,95 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
+    ///     打开 JavaScript 行动的编辑器点击事件。
+    ///     <para>
+    ///         启用「应用内 JS 编辑器」（安卓端强制启用）时用应用内代码编辑器打开；
+    ///         否则用系统默认程序打开脚本文件。
+    ///     </para>
+    /// </summary>
+    private void OpenJavaScriptEditorButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var project = ViewModel.SelectedProject;
+        if (project == null)
+        {
+            return;
+        }
+
+        if (GlobalConstants.Configs.MainConfig!.Data.IsInAppJsEditorEnabled)
+        {
+            try
+            {
+                var editorView = IAppHost.GetService<JavaScriptEditorView>();
+                editorView.LoadProject(project);
+                editorView.Open();
+                return;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error("无法在应用内打开 JavaScript 编辑器，将改用系统默认程序打开。");
+                _logger.FormatException(exception);
+                this.ShowErrorToast("无法在应用内打开 JavaScript 编辑器，已改用系统默认程序打开。", exception);
+            }
+        }
+
+        OpenJavaScriptFileWithDefaultProgram(project);
+    }
+
+    /// <summary>
+    ///     用系统默认程序打开脚本文件（第三方编辑器兜底）。
+    /// </summary>
+    private void OpenJavaScriptFileWithDefaultProgram(Project project)
+    {
+        try
+        {
+            var path = ProjectsConfigManager.GetJavaScriptJsPath(project);
+            Process.Start(new ProcessStartInfo(path)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("无法用系统默认程序打开脚本文件。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("无法打开脚本文件，请手动打开插件配置目录下的 Scripts 文件夹。", exception);
+        }
+    }
+
+    /// <summary>
+    ///     打开脚本所在文件夹点击事件。
+    /// </summary>
+    private void OpenJavaScriptFolderButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var project = ViewModel.SelectedProject;
+        if (project == null)
+        {
+            return;
+        }
+
+        try
+        {
+            var path = ProjectsConfigManager.GetJavaScriptJsPath(project);
+            var folder = Path.GetDirectoryName(path);
+            if (folder == null)
+            {
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo(folder)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("无法打开脚本所在文件夹。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("无法打开脚本所在文件夹。", exception);
+        }
+    }
+
+    /// <summary>
     ///     运行项目点击事件
     /// </summary>
     private async void RunProjectButton_Click(object? sender, RoutedEventArgs e)
@@ -210,7 +306,10 @@ public partial class AutomationSettingsPage : SettingsPageBase
             switch (ViewModel.SelectedProject!.Type)
             {
                 case ProjectsType.BlocklyAction:
-                    await _blocklyRunner.RunActionProject(ViewModel.SelectedProject!);
+                    await _blocklyRunner.RunBlocklyProject(ViewModel.SelectedProject!);
+                    break;
+                case ProjectsType.JavaScriptAction:
+                    await _blocklyRunner.RunJavaScriptProject(ViewModel.SelectedProject!);
                     break;
                 case ProjectsType.CiRuleset:
                     _ciRunner.RunRulesetProject(ViewModel.SelectedProject);

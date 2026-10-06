@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SuperAutoIsland 深色 JavaScript 高亮定义。
+  规则结构取自 AvaloniaEdit 内置的 JavaScript-Mode.xshd（原作者 Svante Lidman / Siegfried Pammer，MIT），
+  配色改为 VS Code Dark+ 一套（与 ClassIsland 自带 Lua.xshd 的取色保持一致），并补上了模板字符串、
+  现代关键字与常见内置对象。编辑器背景色 #1E1E1E 与之配套。
+-->
+<SyntaxDefinition name="JavaScript (Dark)" extensions=".js" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Digits" foreground="#B5CEA8" />
+	<Color name="Comment" foreground="#6A9955" />
+	<Color name="String" foreground="#CE9178" />
+	<Color name="Character" foreground="#CE9178" />
+	<Color name="Regex" foreground="#D16969" />
+	<Color name="JavaScriptKeyWords" foreground="#569CD6" />
+	<Color name="JavaScriptIntrinsics" foreground="#4EC9B0" />
+	<Color name="JavaScriptLiterals" foreground="#569CD6" />
+	<Color name="JavaScriptGlobalFunctions" foreground="#DCDCAA" />
+	<RuleSet ignoreCase="false">
+		<Keywords color="JavaScriptKeyWords">
+			<Word>break</Word>
+			<Word>continue</Word>
+			<Word>delete</Word>
+			<Word>else</Word>
+			<Word>for</Word>
+			<Word>function</Word>
+			<Word>if</Word>
+			<Word>in</Word>
+			<Word>new</Word>
+			<Word>return</Word>
+			<Word>this</Word>
+			<Word>typeof</Word>
+			<Word>var</Word>
+			<Word>void</Word>
+			<Word>while</Word>
+			<Word>with</Word>
+			<Word>abstract</Word>
+			<Word>boolean</Word>
+			<Word>byte</Word>
+			<Word>case</Word>
+			<Word>catch</Word>
+			<Word>char</Word>
+			<Word>class</Word>
+			<Word>const</Word>
+			<Word>debugger</Word>
+			<Word>default</Word>
+			<Word>do</Word>
+			<Word>double</Word>
+			<Word>enum</Word>
+			<Word>export</Word>
+			<Word>extends</Word>
+			<Word>final</Word>
+			<Word>finally</Word>
+			<Word>float</Word>
+			<Word>goto</Word>
+			<Word>implements</Word>
+			<Word>import</Word>
+			<Word>instanceof</Word>
+			<Word>int</Word>
+			<Word>interface</Word>
+			<Word>long</Word>
+			<Word>native</Word>
+			<Word>package</Word>
+			<Word>private</Word>
+			<Word>protected</Word>
+			<Word>public</Word>
+			<Word>short</Word>
+			<Word>static</Word>
+			<Word>super</Word>
+			<Word>switch</Word>
+			<Word>synchronized</Word>
+			<Word>throw</Word>
+			<Word>throws</Word>
+			<Word>transient</Word>
+			<Word>try</Word>
+			<Word>volatile</Word>
+			<Word>let</Word>
+			<Word>of</Word>
+			<Word>async</Word>
+			<Word>await</Word>
+			<Word>yield</Word>
+		</Keywords>
+		<Keywords color="JavaScriptIntrinsics">
+			<Word>Array</Word>
+			<Word>Boolean</Word>
+			<Word>Date</Word>
+			<Word>Function</Word>
+			<Word>Global</Word>
+			<Word>Math</Word>
+			<Word>Number</Word>
+			<Word>Object</Word>
+			<Word>RegExp</Word>
+			<Word>String</Word>
+			<Word>JSON</Word>
+			<Word>console</Word>
+			<Word>logger</Word>
+			<Word>Promise</Word>
+			<Word>Map</Word>
+			<Word>Set</Word>
+			<Word>WeakMap</Word>
+			<Word>WeakSet</Word>
+			<Word>WeakRef</Word>
+			<Word>Symbol</Word>
+			<Word>BigInt</Word>
+			<Word>Proxy</Word>
+			<Word>Reflect</Word>
+			<Word>Intl</Word>
+			<Word>Atomics</Word>
+			<Word>Iterator</Word>
+			<Word>globalThis</Word>
+			<Word>Error</Word>
+			<Word>TypeError</Word>
+			<Word>RangeError</Word>
+			<Word>ReferenceError</Word>
+			<Word>SyntaxError</Word>
+			<Word>ArrayBuffer</Word>
+			<Word>SharedArrayBuffer</Word>
+			<Word>DataView</Word>
+			<Word>Int8Array</Word>
+			<Word>Uint8Array</Word>
+			<Word>Int16Array</Word>
+			<Word>Uint16Array</Word>
+			<Word>Int32Array</Word>
+			<Word>Uint32Array</Word>
+			<Word>Float32Array</Word>
+			<Word>Float64Array</Word>
+			<Word>BigInt64Array</Word>
+			<Word>BigUint64Array</Word>
+		</Keywords>
+		<Keywords color="JavaScriptLiterals">
+			<Word>false</Word>
+			<Word>null</Word>
+			<Word>true</Word>
+			<Word>NaN</Word>
+			<Word>Infinity</Word>
+			<Word>undefined</Word>
+		</Keywords>
+		<Keywords color="JavaScriptGlobalFunctions">
+			<Word>eval</Word>
+			<Word>parseInt</Word>
+			<Word>parseFloat</Word>
+			<Word>escape</Word>
+			<Word>unescape</Word>
+			<Word>isNaN</Word>
+			<Word>isFinite</Word>
+			<Word>encodeURI</Word>
+			<Word>decodeURI</Word>
+			<Word>encodeURIComponent</Word>
+			<Word>decodeURIComponent</Word>
+			<Word>setTimeout</Word>
+			<Word>clearTimeout</Word>
+			<Word>setInterval</Word>
+			<Word>clearInterval</Word>
+			<Word>queueMicrotask</Word>
+			<Word>structuredClone</Word>
+			<Word>fetch</Word>
+			<Word>require</Word>
+			<Word>atob</Word>
+			<Word>btoa</Word>
+			<Word>callAction</Word>
+			<Word>getRuleState</Word>
+			<Word>getData</Word>
+		</Keywords>
+		<Span color="Comment">
+			<Begin>//</Begin>
+		</Span>
+		<Span color="Comment" multiline="true">
+			<Begin>/\*</Begin>
+			<End>\*/</End>
+		</Span>
+		<Span color="Regex">
+			<Begin>(?&lt;!([})\]\w]+\s*))/</Begin>
+			<End>/</End>
+		</Span>
+		<Span color="String" multiline="true">
+			<Begin>"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Span color="Character">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Span color="String" multiline="true">
+			<Begin>`</Begin>
+			<End>`</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Rule color="Digits">\b0[xX][0-9a-fA-F]+|(\b\d+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?</Rule>
+	</RuleSet>
+</SyntaxDefinition>

@@ -85,6 +85,7 @@ public class Plugin : PluginBase
         services.AddAction<SetDynamicTextIconAction, SetDynamicTextIconActionSettingsControl>();
         services.AddAction<ConfirmExecuteAction, ConfirmExecuteActionSettingsControl>();
         services.AddAction<RunBlocklyAction, RunBlocklyActionSettingsControl>();
+        services.AddAction<RunJavaScriptAction, RunJavaScriptActionSettingsControl>();
         services.AddAction<RunActionSet, RunActionSetSettingsControl>();
 
         // 行动树
@@ -105,10 +106,18 @@ public class Plugin : PluginBase
                                                    FluentIcons.IconsRegular)
                         }
                     },
-                    new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目",
-                                           FluentIcons.AlignSpaceEvenlyVerticalRegular),
-                    new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组",
-                                           FluentIcons.AirplaneTakeOffRegular),
+                    new ActionMenuTreeGroup("运行...", FluentIcons.RunRegular)
+                    {
+                        Children =
+                        {
+                            new ActionMenuTreeItem("sai.actions.runBlockly", "运行 Blockly 项目",
+                                                   FluentIcons.AlignSpaceEvenlyVerticalRegular),
+                            new ActionMenuTreeItem("sai.actions.runJavaScript", "运行 JavaScript 行动",
+                                                   FluentIcons.JavascriptRegular),
+                            new ActionMenuTreeItem("sai.actions.runActionSet", "运行可复用的行动组",
+                                                   FluentIcons.AirplaneTakeOffRegular)
+                        }
+                    },
                     new ActionMenuTreeItem("sai.actions.dialogs.confirmExecute", "工作流执行确认",
                                            FluentIcons.AirplaneLandingRegular)
                 }
@@ -127,6 +136,8 @@ public class Plugin : PluginBase
         services.AddSingleton<SaiLogsView>();
         // 应用内编辑器（实验性功能）：打开时若已存在则复用当前窗口
         services.AddTransientView<BlocklyEditorView>();
+        // 应用内 JS 编辑器（实验性功能）
+        services.AddTransientView<JavaScriptEditorView>();
         services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<BlocklySettingsPage>();
