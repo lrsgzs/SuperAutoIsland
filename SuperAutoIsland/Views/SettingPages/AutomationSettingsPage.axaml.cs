@@ -173,7 +173,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
         var uri = new Uri($"http://localhost:{GlobalConstants.Configs.MainConfig!.Data.ServerPort}/" +
                           $"?id={project.Id}");
 
-        if (GlobalConstants.Configs.MainConfig!.Data.EnableInAppBlocklyEditor && TryOpenInAppEditor(uri, project.Name))
+        if (GlobalConstants.Configs.MainConfig!.Data.EnableInAppBlocklyEditor && TryOpenInAppEditor(project, uri))
         {
             return;
         }
@@ -184,16 +184,16 @@ public partial class AutomationSettingsPage : SettingsPageBase
     /// <summary>
     ///     通过「应用内编辑器」视图（非模态）打开项目编辑器。
     /// </summary>
+    /// <param name="project">目标项目</param>
     /// <param name="uri">编辑器前端地址</param>
-    /// <param name="projectName">项目名称，用于窗口标题</param>
     /// <returns>是否成功打开。失败时返回 <c>false</c>，由调用方回退到浏览器打开。</returns>
-    private bool TryOpenInAppEditor(Uri uri, string projectName)
+    private bool TryOpenInAppEditor(Project project, Uri uri)
     {
         try
         {
-            var editorView = IAppHost.GetService<BlocklyEditorView>();
-            editorView.LoadEditor(uri, projectName);
-            editorView.Open();
+            EditorViewRegistry.OpenOrActivate(project.Id.ToString(),
+                () => new BlocklyEditorView(),
+                editorView => editorView.LoadEditor(uri, project.Name));
             return true;
         }
         catch (Exception exception)
@@ -226,9 +226,10 @@ public partial class AutomationSettingsPage : SettingsPageBase
         {
             try
             {
-                var editorView = IAppHost.GetService<JavaScriptEditorView>();
-                editorView.LoadProject(project);
-                editorView.Open();
+                // 同一个项目只保留一个编辑器窗口：已经打开则置前，否则新开一个窗口
+                EditorViewRegistry.OpenOrActivate(project.Id.ToString(),
+                    () => new JavaScriptEditorView(),
+                    editorView => editorView.LoadProject(project));
                 return;
             }
             catch (Exception exception)

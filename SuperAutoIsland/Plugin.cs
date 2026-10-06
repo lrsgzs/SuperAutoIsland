@@ -134,10 +134,7 @@ public class Plugin : PluginBase
 
         _logger.Info("添加设置页面...");
         services.AddSingleton<SaiLogsView>();
-        // 应用内编辑器（实验性功能）：打开时若已存在则复用当前窗口
-        services.AddTransientView<BlocklyEditorView>();
-        // 应用内 JS 编辑器（实验性功能）
-        services.AddTransientView<JavaScriptEditorView>();
+        
         services.AddSettingsPageGroup("sai.settings", FluentIcons.VehicleCarRegular, "SuperAutoIsland");
         services.AddSettingsPage<MainSettingsPage>();
         services.AddSettingsPage<BlocklySettingsPage>();
