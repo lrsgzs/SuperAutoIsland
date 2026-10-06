@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Abstractions.Services;
 using ClassIsland.Core.Attributes;
+using ClassIsland.Core.Helpers.UI;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
 using CommunityToolkit.Mvvm.Input;
@@ -13,6 +14,7 @@ using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 using SuperAutoIsland.ViewModel.SettingPages;
+using SuperAutoIsland.Views;
 
 namespace SuperAutoIsland.Views.SettingPages;
 
@@ -147,13 +149,55 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
-    ///     打开项目编辑器点击事件
+    ///     打开项目编辑器点击事件。
+    ///     <para>
+    ///         启用「应用内编辑器」时，以非模态的 <see cref="BlocklyEditorView" /> 展示编辑器前端界面；
+    ///         否则沿用系统浏览器打开。
+    ///     </para>
     /// </summary>
     private void OpenProjectEditorButton_Click(object? sender, RoutedEventArgs e)
     {
+        var project = ViewModel.SelectedProject;
+        if (project == null)
+        {
+            return;
+        }
+
         var uri = new Uri($"http://localhost:{GlobalConstants.Configs.MainConfig!.Data.ServerPort}/" +
-                          $"?id={ViewModel.SelectedProject!.Id}");
+                          $"?id={project.Id}");
+
+        if (GlobalConstants.Configs.MainConfig!.Data.EnableInAppBlocklyEditor && TryOpenInAppEditor(uri, project.Name))
+        {
+            return;
+        }
+
         IAppHost.TryGetService<IUriNavigationService>()?.NavigateWrapped(uri);
+    }
+
+    /// <summary>
+    ///     通过「应用内编辑器」视图（非模态）打开项目编辑器。
+    /// </summary>
+    /// <param name="uri">编辑器前端地址</param>
+    /// <param name="projectName">项目名称，用于窗口标题</param>
+    /// <returns>是否成功打开。失败时返回 <c>false</c>，由调用方回退到浏览器打开。</returns>
+    private bool TryOpenInAppEditor(Uri uri, string projectName)
+    {
+        try
+        {
+            var editorView = IAppHost.GetService<BlocklyEditorView>();
+            editorView.LoadEditor(uri, projectName);
+            editorView.Open();
+            return true;
+        }
+        catch (Exception exception)
+        {
+            // 例如平台缺少 WebView 后端（Windows 上未安装 WebView2 运行时）：
+            // 回退到浏览器，至少保证编辑器仍然可用。
+            _logger.Error("无法在应用内打开编辑器，将改用浏览器打开。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("无法在应用内打开编辑器，已改用浏览器打开。", exception);
+            return false;
+        }
     }
 
     /// <summary>

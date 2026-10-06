@@ -1,0 +1,27 @@
+<ci:ViewBase x:Class="SuperAutoIsland.Views.BlocklyEditorView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ci="http://classisland.tech/schemas/xaml/core"
+             xmlns:av="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.WebView"
+             mc:Ignorable="d"
+             Header="Blockly 编辑器"
+             HostWidth="1280"
+             HostHeight="800"
+             HostStartupLocation="CenterScreen"
+             MinWidth="720"
+             MinHeight="480">
+    <NavigationPage.TopCommandBar>
+        <TextBlock x:Name="AndroidSaveWarning"
+                   Text="⚠ 记得保存"
+                   Margin="0 0 12 0"
+                   FontSize="13"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                   IsVisible="False" />
+    </NavigationPage.TopCommandBar>
+
+    <av:NativeWebView x:Name="EditorWebView"
+                      Background="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+</ci:ViewBase>

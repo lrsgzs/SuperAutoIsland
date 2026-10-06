@@ -102,6 +102,16 @@ public partial class MainConfigModel : ObservableObject
     } = new();
 
     /// <summary>
+    ///     是否使用应用内编辑器（实验性功能）。
+    ///     <para>
+    ///         启用后，打开 Blockly 编辑器时会在应用内的独立视图（非模态）中展示前端界面，
+    ///         而不是把编辑器交给系统浏览器。此开关在打开编辑器时读取，无需重启即可生效。
+    ///     </para>
+    /// </summary>
+    [ObservableProperty]
+    private bool _enableInAppBlocklyEditor = false;
+
+    /// <summary>
     ///     Blockly 分类展示设置（工具箱中的顺序与是否展示）。子项变化无需重启即可生效。
     /// </summary>
     public BlocklyCategoriesModel BlocklyCategories
