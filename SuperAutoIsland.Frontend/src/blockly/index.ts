@@ -25,6 +25,7 @@ import * as prettier from 'prettier/standalone';
 import * as prettierEstreePlugin from 'prettier/plugins/estree';
 import * as prettierBabelPlugin from 'prettier/plugins/babel';
 import { addV2Block, type CategoryContent } from './utils/v2Generator';
+import { installTextQuotingFix } from './utils/textQuoting';
 
 Blockly.fieldRegistry.register('field_icon', FieldIcon);
 Blockly.fieldRegistry.register('field_icon_picker', FieldIconPicker);
@@ -119,6 +120,10 @@ javascriptGenerator.forBlock['procedures_callreturn'] = function (
     return [code, Order.FUNCTION_CALL];
 };
 
+// Blockly 的 quote_ / multiline_quote_ 不转义 \r，CRLF 文本（粘贴的 CSV 等）会生成非法代码，
+// 照源码覆盖一遍，见 utils/textQuoting.ts
+installTextQuotingFix(javascriptGenerator);
+
 preSetupCategory('日期与时间', {
     style: 'date_blocks',
     icon: ['日期与时间', CategoryGlyph.date],
@@ -147,6 +152,12 @@ preSetupCategory('杂项', {
 await import('./blocks/colour');
 // @ts-ignore
 await import('./blocks/icon');
+// @ts-ignore
+await import('./blocks/json');
+// @ts-ignore
+await import('./blocks/csv');
+// @ts-ignore
+await import('./blocks/type');
 postSetupCategory();
 
 preSetupCategory('调试', {

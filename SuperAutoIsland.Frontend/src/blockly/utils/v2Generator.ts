@@ -3,10 +3,10 @@ import type { CategoryColorsInput } from './categoryColors';
 import { Order } from 'blockly/javascript';
 import { wsWaitMessage } from './wsUtils';
 
-const quote_ = (text: string) => {
-    // @ts-ignore
-    return "'" + text.replaceAll("'", "\\'") + "'";
-};
+// 注意：拼字符串一律用 generator.quote_（见下面的生成器），别在这儿自己手搓转义。
+// 以前这里有一份只转义单引号的 quote_，反斜杠 / 换行 / 回车全会漏，
+// 插件积木里填个 C:\Users\... 就能把生成的代码搞崩（\x 这种还是非法转义）。
+// generator.quote_ 在 index.ts 里被 utils/textQuoting.ts 覆盖过，补上了 \r。
 
 export interface Field {
     name: string;
@@ -154,8 +154,7 @@ export async function addV2Block(metadata: BlockMetadata) {
                         }
                         break;
                     case 'dropdown':
-                        value = block.getFieldValue(fieldId);
-                        value = quote_(value);
+                        value = generator.quote_(block.getFieldValue(fieldId));
                         break;
                     case 'dropdown-number':
                         value = block.getFieldValue(fieldId);
@@ -175,7 +174,7 @@ export async function addV2Block(metadata: BlockMetadata) {
                         'field_colour_hsv_sliders',
                     ].includes(actualType)
                 ) {
-                    value = quote_(value);
+                    value = generator.quote_(value);
                 }
 
                 if (fieldId.includes('.')) {

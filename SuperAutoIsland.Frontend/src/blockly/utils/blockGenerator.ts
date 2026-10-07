@@ -2,7 +2,7 @@ import type { BlockInfo, StaticCategoryInfo } from '../types/toolbox';
 import * as Blockly from 'blockly/core';
 // @ts-ignore
 import type { ConnectionState } from 'blockly/core/serialization/blocks';
-import { Order } from 'blockly/javascript';
+import { type JavascriptGenerator, Order } from 'blockly/javascript';
 
 /**
  * Blockly 参数定义
@@ -236,8 +236,11 @@ export interface GeneratorOutput {
 
 /**
  * 代码生成器函数
+ *
+ * 项目里所有积木都生成 JS，所以这里直接用 JavascriptGenerator（比基类 CodeGenerator 多
+ * quote_ / provideFunction_ 这些方法）。
  */
-export type GeneratorFunction = (block: Blockly.Block, generator: Blockly.CodeGenerator) => string | [string, Order];
+export type GeneratorFunction = (block: Blockly.Block, generator: JavascriptGenerator) => string | [string, Order];
 
 interface _DataObject {
     initialized: boolean;
