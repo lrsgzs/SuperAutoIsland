@@ -16,6 +16,7 @@ using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.BlocklyRunner;
+using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Views;
@@ -48,10 +49,17 @@ public partial class JavaScriptEditorView : ViewBase
     private readonly BlocklyRunner _blocklyRunner = IAppHost.GetService<BlocklyRunner>();
     private readonly List<string> _logLines = [];
 
+    /// <summary>
+    ///     prettier 格式化器。第一次点「格式化」时才去读那几百 KB 的 bundle（见 <see cref="PrettierFormatter" />）。
+    /// </summary>
+    private readonly Lazy<PrettierFormatter> _formatter = new(() => new PrettierFormatter(
+        Path.Combine(GlobalConstants.PluginFolder!, "Assets", "wwwroot", "prettier")));
+
     private Project? _project;
     private bool _isUpdatingEditor;
     private bool _isDirty;
     private bool _isRunning;
+    private bool _isFormatting;
     private bool _isExitConfirmed;
     private bool _isExitConfirmationShowing;
     private CancellationTokenSource? _runCancellation;
@@ -389,6 +397,59 @@ public partial class JavaScriptEditorView : ViewBase
     private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
     {
         SaveScript();
+    }
+
+    /// <summary>
+    ///     用 prettier 格式化当前脚本。
+    /// </summary>
+    private async void FormatButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_isFormatting)
+        {
+            return;
+        }
+
+        var original = ScriptEditor.Text ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(original))
+        {
+            return;
+        }
+
+        _isFormatting = true;
+        FormatButton.IsEnabled = false;
+        StatusText.Text = "格式化中…";
+
+        try
+        {
+            var formatted = await _formatter.Value.FormatAsync(original);
+            if (formatted == original)
+            {
+                StatusText.Text = "已经是最新格式";
+                return;
+            }
+
+            // 整篇替换算一步撤销；光标尽量留在原来的位置
+            var caretOffset = ScriptEditor.CaretOffset;
+            using (ScriptEditor.Document.RunUpdate())
+            {
+                ScriptEditor.Document.Replace(0, ScriptEditor.Document.TextLength, formatted);
+            }
+
+            ScriptEditor.CaretOffset = Math.Min(caretOffset, ScriptEditor.Document.TextLength);
+            StatusText.Text = "已格式化";
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("格式化 JavaScript 脚本失败。");
+            _logger.FormatException(exception);
+            StatusText.Text = "格式化失败";
+            this.ShowErrorToast("格式化失败，脚本内容未改动。", exception);
+        }
+        finally
+        {
+            _isFormatting = false;
+            FormatButton.IsEnabled = true;
+        }
     }
 
     private async void SaveAndRunButton_OnClick(object? sender, RoutedEventArgs e)

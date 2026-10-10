@@ -38,6 +38,11 @@
                                    Margin="0 0 8 0"
                                    VerticalAlignment="Center" />
                     </fa:FACommandBarElementContainer>
+
+                    <fa:FACommandBarButton x:Name="FormatButton"
+                                           Label="格式化"
+                                           IconSource="{ci:FluentIconSource {ci:FI TextGrammarWandRegular}}"
+                                           Click="FormatButton_OnClick" />
                     
                     <fa:FACommandBarButton Label="保存"
                                            IconSource="{ci:FluentIconSource {ci:FI ArrowDownloadRegular}}"
