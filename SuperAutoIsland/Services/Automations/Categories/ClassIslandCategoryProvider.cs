@@ -11,18 +11,18 @@ namespace SuperAutoIsland.Services.Automations.Categories;
 public class ClassIslandCategoryProvider : ICategoryProvider
 {
     private static readonly List<(string, string)> WeatherOptions =
-        [
-            ("晴", "0"), ("多云", "1"), ("阴", "2"), ("阵雨", "3"), ("雷阵雨", "4"),
-            ("雷阵雨并伴有冰雹", "5"), ("雨夹雪", "6"), ("小雨", "7"), ("中雨", "8"),
-            ("大雨", "9"), ("暴雨", "10"), ("大暴雨", "11"), ("特大暴雨", "12"),
-            ("阵雪", "13"), ("小雪", "14"), ("中雪", "15"), ("大雪", "16"), ("暴雪", "17"),
-            ("雾", "18"), ("冻雨", "19"), ("沙尘暴", "20"), ("小雨-中雨", "21"),
-            ("中雨-大雨", "22"), ("大雨-暴雨", "23"), ("暴雨-大暴雨", "24"),
-            ("大暴雨-特大暴雨", "25"), ("小雪-中雪", "26"), ("中雪-大雪", "27"),
-            ("大雪-暴雪", "28"), ("浮尘", "29"), ("扬沙", "30"), ("强沙尘暴", "31"),
-            ("飑", "32"), ("龙卷风", "33"), ("弱高吹雪", "34"), ("轻雾", "35"),
-            ("霾", "53"), ("雨", "301"), ("雪", "302"), ("未知", "99")
-        ];
+    [
+        ("晴", "0"), ("多云", "1"), ("阴", "2"), ("阵雨", "3"), ("雷阵雨", "4"),
+        ("雷阵雨并伴有冰雹", "5"), ("雨夹雪", "6"), ("小雨", "7"), ("中雨", "8"),
+        ("大雨", "9"), ("暴雨", "10"), ("大暴雨", "11"), ("特大暴雨", "12"),
+        ("阵雪", "13"), ("小雪", "14"), ("中雪", "15"), ("大雪", "16"), ("暴雪", "17"),
+        ("雾", "18"), ("冻雨", "19"), ("沙尘暴", "20"), ("小雨-中雨", "21"),
+        ("中雨-大雨", "22"), ("大雨-暴雨", "23"), ("暴雨-大暴雨", "24"),
+        ("大暴雨-特大暴雨", "25"), ("小雪-中雪", "26"), ("中雪-大雪", "27"),
+        ("大雪-暴雪", "28"), ("浮尘", "29"), ("扬沙", "30"), ("强沙尘暴", "31"),
+        ("飑", "32"), ("龙卷风", "33"), ("弱高吹雪", "34"), ("轻雾", "35"),
+        ("霾", "53"), ("雨", "301"), ("雪", "302"), ("未知", "99")
+    ];
 
     /// <inheritdoc />
     public CategoryMetadata Metadata => new("ClassIsland")
@@ -340,6 +340,14 @@ public class ClassIslandCategoryProvider : ICategoryProvider
                     ["Mask"] = BasicFields.Text("标题内容"),
                     ["MaskDurationSeconds"] =
                         BasicFields.Number("标题持续时间(秒)", 5),
+                    ["IsLeftIconEnabled"] =
+                        BasicFields.Boolean("启用标题左侧图标", true),
+                    ["LeftIcon"] = BasicFields.Icon(
+                        "标题左侧图标", $"lucide({LucideIcons.Info})"),
+                    ["IsRightIconEnabled"] =
+                        BasicFields.Boolean("启用标题右侧图标"),
+                    ["RightIcon"] = BasicFields.Icon(
+                        "标题右侧图标", $"lucide({LucideIcons.BellRing})"),
                     ["Content"] = BasicFields.Text("正文内容"),
                     ["ContentDurationSeconds"] =
                         BasicFields.Number("正文持续时长(秒)", 10),
