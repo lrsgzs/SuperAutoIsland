@@ -63,7 +63,7 @@ public class SaiServer
             }
             catch (HttpListenerException ex) when (ex.ErrorCode == 995)
             {
-                _logger.Info("哦齁齁齁齁，服务器已经关了呢喵...");
+                _logger.Info("服务器已关闭。");
             }
             catch (Exception e)
             {
