@@ -1,25 +1,31 @@
 using System.ComponentModel;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ClassIsland.Core.Abstractions.Controls;
 using ClassIsland.Core.Attributes;
 using ClassIsland.Core.Helpers.UI;
 using ClassIsland.Core.Icons;
 using ClassIsland.Shared;
+using FluentAvalonia.UI.Controls;
 using SuperAutoIsland.Interface.Services;
 using SuperAutoIsland.Models.Settings;
 using SuperAutoIsland.Shared;
+using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Views.SettingPages;
 
 /// <summary>
-///     「Blockly 设置」视图。集中管理 Blockly 的实验性积木分类。
+///     「Blockly 设置」视图。
 /// </summary>
 [HidePageTitle]
 [Group("sai.settings")]
 [SettingsPageInfo("sai.settings.blockly", "Blockly 设置", FluentIcons.AppsListRegular, FluentIcons.AppsListFilled)]
 public partial class BlocklySettingsPage : SettingsPageBase
 {
+    private readonly Logger<BlocklySettingsPage> _logger = new();
     private bool _isRequestedRestart;
 
     public BlocklySettingsPage()
@@ -31,6 +37,9 @@ public partial class BlocklySettingsPage : SettingsPageBase
         Settings.ProfileFeatures.PropertyChanged += ProfileFeaturesOnPropertyChanged;
         Settings.AppSettingsBlocks.PropertyChanged += AppSettingsBlocksOnPropertyChanged;
         Settings.BlocklyCategories.PropertyChanged += BlocklyCategoriesOnPropertyChanged;
+        Settings.PropertyChanged += SettingsOnPropertyChanged;
+
+        UpdateStorageSummary();
     }
 
     public MainConfigModel Settings { get; set; }
@@ -131,6 +140,98 @@ public partial class BlocklySettingsPage : SettingsPageBase
         else
         {
             await view.ShowModal();
+        }
+    }
+
+    /// <summary>
+    ///     主配置变化：脚本跑完把 localStorage 落盘时会通知这个属性，顺手刷新「脚本存储」的摘要。
+    ///     <para>
+    ///         脚本在后台线程跑，所以通知可能来自非 UI 线程，刷控件要回到 UI 线程。
+    ///     </para>
+    /// </summary>
+    private void SettingsOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is not nameof(MainConfigModel.ScriptLocalStorage))
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(UpdateStorageSummary);
+    }
+
+    /// <summary>
+    ///     刷新「脚本存储」的摘要文本与清理按钮的可用状态。
+    /// </summary>
+    private void UpdateStorageSummary()
+    {
+        var items = Settings.ScriptLocalStorage;
+
+        StorageSummaryText.Text = items.Count == 0
+            ? "当前没有脚本存储的数据"
+            : $"当前 {items.Count} 项，约 {FormatSize(EstimateSize(items))}";
+        ClearStorageButton.IsEnabled = items.Count > 0;
+    }
+
+    /// <summary>
+    ///     估算存储占用。Jint 按 UTF-16 计费（每个字符 2 字节），这里跟它保持一致。
+    /// </summary>
+    private static long EstimateSize(Dictionary<string, string> items)
+    {
+        return items.Sum(item => (long)(item.Key.Length + item.Value.Length) * 2);
+    }
+
+    /// <summary>
+    ///     把字节数写成人类看得懂的形式。
+    /// </summary>
+    private static string FormatSize(long bytes)
+    {
+        return bytes < 1024 ? $"{bytes} 字节" : $"{bytes / 1024.0:0.#} KB";
+    }
+
+    /// <summary>
+    ///     清理脚本存储：先弹 ContentDialog 确认，再清空配置里的字典并落盘。
+    /// </summary>
+    private async void ClearStorageButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var items = Settings.ScriptLocalStorage;
+        if (items.Count == 0)
+        {
+            return;
+        }
+
+        var count = items.Count;
+        var size = FormatSize(EstimateSize(items));
+
+        try
+        {
+            var dialog = new FAContentDialog
+            {
+                Title = "清理脚本存储",
+                Content = new TextBlock
+                {
+                    Text = $"将删除脚本通过 localStorage 写入的 {count} 项数据（约 {size}），此操作无法撤销。",
+                    TextWrapping = TextWrapping.Wrap
+                },
+                PrimaryButtonText = "清理",
+                CloseButtonText = "取消",
+                DefaultButton = FAContentDialogButton.Close
+            };
+
+            if (await dialog.ShowAsync(TopLevel.GetTopLevel(this)) != FAContentDialogResult.Primary)
+            {
+                return;
+            }
+
+            items.Clear();
+            Settings.NotifyScriptLocalStorageChanged();
+            UpdateStorageSummary();
+            this.ShowSuccessToast($"已清理 {count} 项脚本存储数据。");
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("清理脚本存储失败。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("清理脚本存储失败。", exception);
         }
     }
 }

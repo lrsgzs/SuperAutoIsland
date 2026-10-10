@@ -149,6 +149,26 @@ public partial class MainConfigModel : ObservableObject
     } = new();
 
     /// <summary>
+    ///     脚本 localStorage 的数据（键值都是字符串）。
+    ///     <para>
+    ///         由脚本通过 <c>localStorage</c> 读写（见 <c>ScriptLocalStorageProvider</c>），不展示在设置页面。
+    ///         字典自身的变化不会触发通知，由一次脚本运行结束时调用
+    ///         <see cref="NotifyScriptLocalStorageChanged" /> 落盘。
+    ///     </para>
+    /// </summary>
+    public Dictionary<string, string> ScriptLocalStorage
+    {
+        get;
+        // 配置文件里没有这一项、或者被写成 null 时兜住，避免脚本侧空引用
+        set => field = value ?? [];
+    } = [];
+
+    /// <summary>
+    ///     脚本改动了 <see cref="ScriptLocalStorage" /> 之后调用，触发主配置保存。
+    /// </summary>
+    public void NotifyScriptLocalStorageChanged() => OnPropertyChanged(nameof(ScriptLocalStorage));
+
+    /// <summary>
     ///     需要重启的类型修改时触发的事件。参数为发生变化的属性名。
     ///     <para>
     ///         设置项分散在多个设置页面，因此带上属性名，便于各页面只响应自己展示的设置项，

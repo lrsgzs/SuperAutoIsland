@@ -1,6 +1,8 @@
 using Jint;
+using Jint.WebApi;
 using SuperAutoIsland.Enums;
 using SuperAutoIsland.Models;
+using SuperAutoIsland.Shared;
 using SuperAutoIsland.Shared.Logger;
 
 namespace SuperAutoIsland.Services.BlocklyRunner;
@@ -30,6 +32,13 @@ public class BlocklyRunner
     /// </summary>
     public const int DefaultMaxRecursionDepth = 256;
 
+    /// <summary>
+    ///     脚本可用的 Web API：<see cref="WebApiFeatures" /> 里除 IndexedDB 外的全部功能。
+    /// </summary>
+    private static readonly WebApiFeatures EnabledWebApiFeatures =
+        Enum.GetValues<WebApiFeatures>().Aggregate(WebApiFeatures.None, (all, feature) => all | feature)
+        & ~WebApiFeatures.IndexedDb;
+
     private readonly Logger<BlocklyRunner> _logger = new();
 
     /// <summary>
@@ -46,8 +55,20 @@ public class BlocklyRunner
 
         await Task.Run(async () =>
         {
-            using var engine = CreateEngine(cancellationToken, logSink);
-            await engine.EvaluateAsync(script, "main.js", cancellationToken);
+            // localStorage 落在主配置里，一次运行结束时统一落盘（见 ScriptLocalStorageProvider）
+            var localStorage = new ScriptLocalStorageProvider(
+                GlobalConstants.Configs.MainConfig!.Data.ScriptLocalStorage,
+                () => GlobalConstants.Configs.MainConfig!.Data.NotifyScriptLocalStorageChanged());
+
+            using var engine = CreateEngine(cancellationToken, logSink, localStorage);
+            try
+            {
+                await engine.EvaluateAsync(script, "main.js", cancellationToken);
+            }
+            finally
+            {
+                localStorage.Flush();
+            }
         }, cancellationToken);
 
         _logger.Log("JavaScript 脚本运行完毕");
@@ -92,20 +113,25 @@ public class BlocklyRunner
     /// </summary>
     /// <param name="cancellationToken">中断 token</param>
     /// <param name="logSink">日志回流口，见 <see cref="RunJavaScript" /></param>
-    private Engine CreateEngine(CancellationToken cancellationToken, Action<string, string>? logSink)
+    /// <param name="localStorage">脚本 localStorage 的后端，见 <see cref="ScriptLocalStorageProvider" /></param>
+    private Engine CreateEngine(CancellationToken cancellationToken, Action<string, string>? logSink,
+                                ScriptLocalStorageProvider localStorage)
     {
         var engine = new Engine(options =>
         {
             options.Constraints.PromiseTimeout = TimeSpan.Zero;
-            options.MaxStatements(DefaultMaxStatements);
-            options.LimitRecursion(DefaultMaxRecursionDepth);
+            options.LimitStatements(DefaultMaxStatements);
+            options.Constraints.MaxRecursionDepth = DefaultMaxRecursionDepth;
             options.Constraints.StackOverflowGuard = true;
-            options.CancellationToken(cancellationToken);
+            options.ObserveCancellation(cancellationToken);
+
+            options.UseWebApis(EnabledWebApiFeatures);
+            options.UseConsole(new ScriptConsoleSink(logSink));
+            options.UseStorage(localStorage, new InMemoryStorageProvider());
         });
 
-        var jsNamespace = new JavaScriptNamespace(logSink);
+        var jsNamespace = new JavaScriptNamespace();
         engine.SetValue("logger", _logger);
-        engine.SetValue("console", jsNamespace.Console);
         engine.SetValue("callAction", jsNamespace.CallAction);
         engine.SetValue("getRuleState", jsNamespace.GetRuleState);
         engine.SetValue("getData", jsNamespace.GetData);

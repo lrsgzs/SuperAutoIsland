@@ -9,24 +9,7 @@ namespace SuperAutoIsland.Services.BlocklyRunner;
 /// </summary>
 public class JavaScriptNamespace
 {
-    /// <summary>
-    ///     假的 console object
-    /// </summary>
-    public readonly DummyConsole Console;
-
     private readonly Logger<JavaScriptNamespace> _logger = new();
-
-    /// <summary>
-    ///     构造函数
-    /// </summary>
-    /// <param name="logSink">
-    ///     日志回流口：把脚本里 console.* 的输出同时交给调用方（例如把运行日志推给编辑器）。
-    ///     参数依次是日志等级和内容。
-    /// </param>
-    public JavaScriptNamespace(Action<string, string>? logSink = null)
-    {
-        Console = new DummyConsole(logSink);
-    }
 
     /// <summary>
     ///     内部的 CallAction 实现
@@ -102,52 +85,5 @@ public class JavaScriptNamespace
     {
         _logger.BaseLog("TRACE", "收到 GetData");
         return _getData(id, data);
-    }
-
-    /// <summary>
-    ///     假的 console object
-    /// </summary>
-    public class DummyConsole(Action<string, string>? logSink = null)
-    {
-        private readonly Logger _logger = new("DummyConsole");
-
-        // 忽略方法名。
-
-        public void log(params object[] message)
-        {
-            Write("INFO", message);
-        }
-
-        public void info(params object[] message)
-        {
-            Write("INFO", message);
-        }
-
-        public void warn(params object[] message)
-        {
-            Write("WARN", message);
-        }
-
-        public void error(params object[] message)
-        {
-            Write("ERROR", message);
-        }
-
-        public void debug(params object[] message)
-        {
-            Write("DEBUG", message);
-        }
-
-        /// <summary>
-        ///     写日志：既进插件日志，也（有回流口时）交给调用方
-        /// </summary>
-        /// <param name="level">日志等级</param>
-        /// <param name="message">日志内容</param>
-        private void Write(string level, object[] message)
-        {
-            var text = message.Aggregate("", (current, obj) => current + obj + " ");
-            _logger.BaseLog(level, text);
-            logSink?.Invoke(level, text);
-        }
     }
 }

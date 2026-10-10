@@ -97,6 +97,27 @@
                         <ToggleSwitch IsChecked="{Binding Settings.EnableInAppJsEditor}" />
                     </fa:FASettingsExpander.Footer>
                 </fa:FASettingsExpander>
+
+                <Separator Margin="0 12 0 4" />
+                <ci:IconText Glyph="{ci:FI StorageRegular}" Text="存储管理" Margin="0 0 0 4" />
+
+                <fa:FASettingsExpander IconSource="{ci:FluentIconSource Glyph={ci:FI StorageRegular}}"
+                                       Header="脚本存储"
+                                       Description="JS 脚本通过 localStorage 写下的数据。">
+                    <WrapPanel Classes="animated-resize">
+                        <TextBlock x:Name="StorageSummaryText"
+                                   Margin="0 0 8 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+
+                        <Button x:Name="ClearStorageButton" Click="ClearStorageButton_OnClick">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <ci:FluentIcon Glyph="{ci:FI BroomRegular}" FontSize="16" />
+                                <TextBlock Text="清理数据" />
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
+                </fa:FASettingsExpander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

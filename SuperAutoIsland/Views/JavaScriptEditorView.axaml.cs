@@ -231,7 +231,7 @@ public partial class JavaScriptEditorView : ViewBase
             StatusText.Text = $"运行完成（{stopwatch.ElapsedMilliseconds} ms）";
             AppendLog("INFO", $"运行完成，用时 {stopwatch.ElapsedMilliseconds} ms");
         }
-        catch (OperationCanceledException)
+        catch (Exception) when (cancellation.IsCancellationRequested)
         {
             StatusText.Text = "运行已停止";
             AppendLog("WARN", "运行已停止");

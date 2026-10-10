@@ -20,7 +20,8 @@
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
         <PackageReference Include="Avalonia.Controls.WebView" Version="12.1.0"/>
-        <PackageReference Include="Jint" Version="4.16.4"/>
+        <!-- Jint 5 尚未发布正式版，锁死当前的预览版本号 -->
+        <PackageReference Include="Jint" Version="5.0.0-preview-2246"/>
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj"/>
         <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj"/>
     </ItemGroup>
