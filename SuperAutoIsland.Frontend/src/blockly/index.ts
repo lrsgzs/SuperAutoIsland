@@ -152,6 +152,7 @@ preSetupCategory('杂项', {
 await import('./blocks/colour');
 // @ts-ignore
 await import('./blocks/icon');
+addLabel('解析');
 // @ts-ignore
 await import('./blocks/json');
 // @ts-ignore

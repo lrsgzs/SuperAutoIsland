@@ -56,7 +56,8 @@ public partial class BlocklySettingsPage : SettingsPageBase
     private void SettingsOnRestartPropertyChanged(string propertyName)
     {
         if (propertyName is not (nameof(MainConfigModel.EnableProfileFeatures)
-            or nameof(MainConfigModel.EnableAppSettingsBlocks)))
+            or nameof(MainConfigModel.EnableAppSettingsBlocks)
+            or nameof(MainConfigModel.EnableFileBlocks)))
         {
             return;
         }

@@ -17,6 +17,7 @@ using SuperAutoIsland.Models.Rules;
 using SuperAutoIsland.Services;
 using SuperAutoIsland.Services.Automations;
 using SuperAutoIsland.Services.Automations.Actions;
+using SuperAutoIsland.Services.Automations.Categories;
 using SuperAutoIsland.Services.BlocklyRunner;
 using SuperAutoIsland.Services.Config;
 using SuperAutoIsland.Shared;
@@ -161,6 +162,11 @@ public class Plugin : PluginBase
             }
 
             SaiRegistry.Register();
+
+            if (GlobalConstants.Configs.MainConfig.Data.EnableFileBlocks)
+            {
+                saiServer.AddCategory<FileCategoryProvider>();
+            }
 
             if (GlobalConstants.Configs.MainConfig.Data.EnableProfileFeatures)
             {

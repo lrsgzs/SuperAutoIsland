@@ -87,6 +87,21 @@ public partial class MainConfigModel : ObservableObject
     } = false;
 
     /// <summary>
+    ///     是否启用「SAI 文件操作」积木（实验性功能）。
+    /// </summary>
+    public bool EnableFileBlocks
+    {
+        get;
+        set
+        {
+            if (value == field) return;
+            field = value;
+            RestartPropertyChanged?.Invoke(nameof(EnableFileBlocks));
+            OnPropertyChanged();
+        }
+    } = false;
+
+    /// <summary>
     ///     应用设置积木设置（要展示的设置项）。子项变化无需重启即可生效。
     /// </summary>
     public AppSettingsBlocksModel AppSettingsBlocks
