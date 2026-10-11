@@ -19,6 +19,6 @@ public class GetTodayScheduleItemListBlock : DataBlockBase
     {
         return Task.FromResult<object>(ProfileBlockHelpers.TodayScheduleItems().Keys
                                                           .Select(x => x.ToString())
-                                                          .ToList());
+                                                          .ToArray());
     }
 }

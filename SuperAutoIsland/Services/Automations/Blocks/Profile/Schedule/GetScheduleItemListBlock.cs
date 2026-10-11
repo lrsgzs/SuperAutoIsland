@@ -19,6 +19,6 @@ public class GetScheduleItemListBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var scheduleItems = IAppHost.GetService<IProfileService>().Profile.ScheduleItems;
-        return Task.FromResult<object>(scheduleItems.Keys.Select(x => x.ToString()).ToList());
+        return Task.FromResult<object>(scheduleItems.Keys.Select(x => x.ToString()).ToArray());
     }
 }

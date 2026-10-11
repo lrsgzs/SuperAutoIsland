@@ -19,6 +19,6 @@ public class GetTimeLayoutListBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var timeLayouts = IAppHost.GetService<IProfileService>().Profile.TimeLayouts;
-        return Task.FromResult<object>(timeLayouts.Keys.Select(x => x.ToString()).ToList());
+        return Task.FromResult<object>(timeLayouts.Keys.Select(x => x.ToString()).ToArray());
     }
 }

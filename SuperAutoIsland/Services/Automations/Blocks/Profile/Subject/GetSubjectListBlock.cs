@@ -19,6 +19,6 @@ public class GetSubjectListBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var subjects = IAppHost.GetService<IProfileService>().Profile.Subjects;
-        return Task.FromResult<object>(subjects.Keys.Select(x => x.ToString()).ToList());
+        return Task.FromResult<object>(subjects.Keys.Select(x => x.ToString()).ToArray());
     }
 }

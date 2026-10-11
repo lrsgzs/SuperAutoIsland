@@ -19,6 +19,6 @@ public class GetClassPlanGroupListBlock : DataBlockBase
     public override Task<object> Handler(object? data)
     {
         var classPlanGroups = IAppHost.GetService<IProfileService>().Profile.ClassPlanGroups;
-        return Task.FromResult<object>(classPlanGroups.Keys.Select(x => x.ToString()).ToList());
+        return Task.FromResult<object>(classPlanGroups.Keys.Select(x => x.ToString()).ToArray());
     }
 }

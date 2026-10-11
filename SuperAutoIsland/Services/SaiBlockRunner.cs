@@ -131,7 +131,20 @@ public class SaiBlockRunner(IActionService actionService, IRulesetService rulese
             return "???";
         }
 
-        var data = settings.Deserialize(block.SettingsType);
+        object? data;
+        try
+        {
+            data = settings.Deserialize(block.SettingsType);
+        }
+        catch (Exception e)
+        {
+            // 参数和积木声明的类型对不上（手写 JS 往文本参数里塞了数字、字段改过名之类）不该把整个脚本带崩：
+            // 记日志后返回「取不到值」的哨兵值，与积木未注册时的行为保持一致。
+            _logger.FormatException(e);
+            _logger.Warn($"数据积木 {id} 的参数无法解析为 {block.SettingsType.Name}，已按 ??? 处理");
+            return "???";
+        }
+
         var result = await Dispatcher.UIThread.InvokeAsync(async () =>
                                                                await block.Handler(data));
 
