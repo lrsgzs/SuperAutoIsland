@@ -158,7 +158,18 @@ await import('./blocks/json');
 // @ts-ignore
 await import('./blocks/csv');
 // @ts-ignore
+await import('./blocks/url');
+// @ts-ignore
 await import('./blocks/type');
+postSetupCategory();
+
+preSetupCategory('网络请求', {
+    style: 'network_blocks',
+    icon: ['网络请求', CategoryGlyph.network],
+    colors: { primary: '#0F8A80' },
+});
+// @ts-ignore
+await import('./blocks/network');
 postSetupCategory();
 
 preSetupCategory('调试', {

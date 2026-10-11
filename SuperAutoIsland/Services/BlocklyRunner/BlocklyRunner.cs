@@ -28,6 +28,17 @@ public class BlocklyRunner
     public const int DefaultMaxStatements = 10_000_000;
 
     /// <summary>
+    ///     网络请求单个响应体的字节上限（8 MiB），防止脚本一个请求把内存吃满。
+    /// </summary>
+    public const long FetchMaxResponseBytes = 8L * 1024 * 1024;
+
+    /// <summary>
+    ///     网络请求的默认 UserAgent（桌面 Edge 的 UA）。
+    /// </summary>
+    public const string FetchDefaultUserAgent =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0";
+
+    /// <summary>
     ///     单次运行的最大递归深度。
     /// </summary>
     public const int DefaultMaxRecursionDepth = 256;
@@ -126,8 +137,15 @@ public class BlocklyRunner
             options.ObserveCancellation(cancellationToken);
 
             options.UseWebApis(EnabledWebApiFeatures);
+
+            // features
             options.UseConsole(new ScriptConsoleSink(logSink));
             options.UseStorage(localStorage, new InMemoryStorageProvider());
+            options.UseFetch(fetch =>
+            {
+                fetch.MaxResponseBytes = FetchMaxResponseBytes;
+                fetch.UserAgent = FetchDefaultUserAgent;
+            });
         });
 
         var jsNamespace = new JavaScriptNamespace();

@@ -38,6 +38,8 @@ export const CategoryGlyph = {
     misc: '\uEE29',
     /** ic_fluent_bug_20_regular */
     debug: '\uE2C8',
+    /** ic_fluent_globe_20_regular */
+    network: '\uE905',
 } as const;
 
 /** 分类名称 -> 元数据里的图标 */
