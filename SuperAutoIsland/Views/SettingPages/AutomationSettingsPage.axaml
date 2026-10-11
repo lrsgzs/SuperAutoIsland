@@ -224,6 +224,10 @@
                                         <Button Click="OpenProjectEditorButton_Click">
                                             <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
                                         </Button>
+
+                                        <Button Click="ViewBlocklyCodeButton_OnClick">
+                                            <ci:IconText Glyph="{ci:FI CodeRegular}" Text="查看 JS 代码" />
+                                        </Button>
                                     </StackPanel>
                                 </Expander>
 

@@ -58,6 +58,7 @@ public partial class JavaScriptEditorView : ViewBase
     private Project? _project;
     private bool _isUpdatingEditor;
     private bool _isDirty;
+    private bool _isReadOnly;
     private bool _isRunning;
     private bool _isFormatting;
     private bool _isExitConfirmed;
@@ -153,6 +154,8 @@ public partial class JavaScriptEditorView : ViewBase
         _isExitConfirmed = false;
         Header = $"JavaScript 编辑器 - {project.Name}";
 
+        SetReadOnly(false);
+
         var path = ProjectsConfigManager.GetJavaScriptJsPath(project);
         ScriptPathText.Text = path;
         ToolTip.SetTip(ScriptPathText, path);
@@ -172,12 +175,60 @@ public partial class JavaScriptEditorView : ViewBase
     }
 
     /// <summary>
+    ///     以只读方式载入并查看一段 JavaScript 代码（目前用于查看 Blockly 行动生成的代码）。
+    /// </summary>
+    /// <param name="project">代码所属的项目，用于窗口标题与「运行」</param>
+    /// <param name="path">代码文件路径，展示在工具栏下方</param>
+    /// <param name="code">要展示的代码</param>
+    public void LoadReadOnlyCode(Project project, string path, string code)
+    {
+        _project = project;
+        _isExitConfirmed = false;
+        Header = $"JavaScript 代码 - {project.Name}";
+
+        ScriptPathText.Text = path;
+        ToolTip.SetTip(ScriptPathText, path);
+
+        SetReadOnly(true);
+
+        _isUpdatingEditor = true;
+        try
+        {
+            ScriptEditor.Text = code;
+            SetDirty(false);
+        }
+        finally
+        {
+            _isUpdatingEditor = false;
+        }
+
+        StatusText.Text = "只读";
+    }
+
+    /// <summary>
+    ///     切换编辑器的只读状态，并同步工具栏上会改动脚本的命令。
+    ///     <para>
+    ///         只读时禁用「保存」与「格式化」（两者都会改动脚本），并把「保存并运行」替换为单纯「运行」。
+    ///     </para>
+    /// </summary>
+    /// <param name="isReadOnly">是否进入只读模式</param>
+    private void SetReadOnly(bool isReadOnly)
+    {
+        _isReadOnly = isReadOnly;
+        ScriptEditor.IsReadOnly = isReadOnly;
+        SaveButton.IsEnabled = !isReadOnly;
+        FormatButton.IsEnabled = !isReadOnly;
+        SaveAndRunButton.Label = isReadOnly ? "运行" : "保存并运行";
+    }
+
+    /// <summary>
     ///     保存脚本到文件。
     /// </summary>
     /// <returns>是否保存成功</returns>
     private bool SaveScript()
     {
-        if (_project is null)
+        // 只读模式下没有可保存的内容（代码由 Blockly 编辑器生成并落盘）
+        if (_project is null || _isReadOnly)
         {
             return false;
         }
@@ -233,8 +284,18 @@ public partial class JavaScriptEditorView : ViewBase
 
         try
         {
-            await _blocklyRunner.RunJavaScriptProject(_project, cancellation.Token,
-                (level, message) => Dispatcher.UIThread.Post(() => AppendLog(level, message)));
+            // 日志回流口：Jint 的 console 输出搬到「运行输出」面板上
+            Action<string, string> logSink =
+                (level, message) => Dispatcher.UIThread.Post(() => AppendLog(level, message));
+
+            if (_project.Type is ProjectsType.BlocklyAction)
+            {
+                await _blocklyRunner.RunBlocklyProject(_project, cancellation.Token, logSink);
+            }
+            else
+            {
+                await _blocklyRunner.RunJavaScriptProject(_project, cancellation.Token, logSink);
+            }
 
             StatusText.Text = $"运行完成（{stopwatch.ElapsedMilliseconds} ms）";
             AppendLog("INFO", $"运行完成，用时 {stopwatch.ElapsedMilliseconds} ms");
@@ -304,8 +365,8 @@ public partial class JavaScriptEditorView : ViewBase
             return;
         }
 
-        // 没有未保存的改动就不需要询问
-        if (!_isDirty)
+        // 没有未保存的改动就不需要询问；只读查看器不会有改动，直接放行
+        if (_isReadOnly || !_isDirty)
         {
             return;
         }
@@ -386,7 +447,7 @@ public partial class JavaScriptEditorView : ViewBase
 
     private void ScriptEditor_OnTextChanged(object? sender, EventArgs e)
     {
-        if (_isUpdatingEditor)
+        if (_isUpdatingEditor || _isReadOnly)
         {
             return;
         }
@@ -404,7 +465,8 @@ public partial class JavaScriptEditorView : ViewBase
     /// </summary>
     private async void FormatButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_isFormatting)
+        // 只读模式下不改动脚本：按钮已经被禁用，这里再兜一层（改写文档不受 IsReadOnly 限制）
+        if (_isFormatting || _isReadOnly)
         {
             return;
         }
@@ -448,13 +510,14 @@ public partial class JavaScriptEditorView : ViewBase
         finally
         {
             _isFormatting = false;
-            FormatButton.IsEnabled = true;
+            FormatButton.IsEnabled = !_isReadOnly;
         }
     }
 
     private async void SaveAndRunButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (!SaveScript())
+        // 只读模式下这个按钮就是「运行」：代码由项目自己落盘，不需要（也不能）先保存
+        if (!_isReadOnly && !SaveScript())
         {
             return;
         }

@@ -90,15 +90,17 @@ public class BlocklyRunner
     /// </summary>
     /// <param name="project">项目实例</param>
     /// <param name="cancellationToken">中断 token</param>
+    /// <param name="logSink">日志回流口，见 <see cref="RunJavaScript" />（例如把运行日志推给编辑器）</param>
     /// <exception cref="NotSupportedException">遇到不支持的项目会报这个错误</exception>
-    public async Task RunBlocklyProject(Project project, CancellationToken cancellationToken = default)
+    public async Task RunBlocklyProject(Project project, CancellationToken cancellationToken = default,
+                                        Action<string, string>? logSink = null)
     {
         if (project.Type != ProjectsType.BlocklyAction)
             throw new NotSupportedException();
 
         _logger.Info($"正在运行 Blockly 项目 {project.Name}");
         var script = ProjectsConfigManager.LoadBlocklyProjectJs(project);
-        await RunJavaScript(script, cancellationToken);
+        await RunJavaScript(script, cancellationToken, logSink);
     }
 
     /// <summary>

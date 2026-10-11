@@ -208,6 +208,71 @@ public partial class AutomationSettingsPage : SettingsPageBase
     }
 
     /// <summary>
+    ///     查看 Blockly 项目生成的 JavaScript 代码点击事件。
+    /// </summary>
+    private void ViewBlocklyCodeButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var project = ViewModel.SelectedProject;
+        if (project is null || project.Type is not ProjectsType.BlocklyAction)
+        {
+            return;
+        }
+
+        string path;
+        try
+        {
+            path = ProjectsConfigManager.GetBlocklyProjectJsPath(project);
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("无法获取 Blockly 项目生成的代码路径。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("无法查看生成的 JavaScript 代码。", exception);
+            return;
+        }
+
+        if (!File.Exists(path))
+        {
+            this.ShowWarningToast("项目还没有生成 JavaScript 代码，请先在 Blockly 编辑器中保存项目。");
+            return;
+        }
+
+        if (GlobalConstants.Configs.MainConfig!.Data.IsInAppJsEditorEnabled)
+        {
+            // 读的是生成代码文件：窗口已经开着时也要重读一遍，免得看到的是上一次保存前的内容
+            Action<JavaScriptEditorView> loadCode = editorView => editorView.LoadReadOnlyCode(
+                project, path, ProjectsConfigManager.LoadBlocklyProjectJs(project));
+
+            try
+            {
+                // 同一个项目只保留一个编辑器窗口：已经打开则刷新并置前，否则新开一个只读窗口
+                EditorViewRegistry.OpenOrActivate(project.Id.ToString(),
+                    () => new JavaScriptEditorView(),
+                    loadCode,
+                    loadCode);
+                return;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error("无法在应用内查看生成的 JavaScript 代码，将改用系统默认程序打开。");
+                _logger.FormatException(exception);
+                this.ShowErrorToast("无法在应用内查看生成的 JavaScript 代码，已改用系统默认程序打开。", exception);
+            }
+        }
+
+        try
+        {
+            OpenFileWithDefaultProgram(path);
+        }
+        catch (Exception exception)
+        {
+            _logger.Error("无法用系统默认程序打开生成的代码文件。");
+            _logger.FormatException(exception);
+            this.ShowErrorToast("无法打开生成的代码文件。", exception);
+        }
+    }
+
+    /// <summary>
     ///     打开 JavaScript 行动的编辑器点击事件。
     ///     <para>
     ///         启用「应用内 JS 编辑器」（安卓端强制启用）时用应用内代码编辑器打开；
@@ -250,11 +315,7 @@ public partial class AutomationSettingsPage : SettingsPageBase
     {
         try
         {
-            var path = ProjectsConfigManager.GetJavaScriptJsPath(project);
-            Process.Start(new ProcessStartInfo(path)
-            {
-                UseShellExecute = true
-            });
+            OpenFileWithDefaultProgram(ProjectsConfigManager.GetJavaScriptJsPath(project));
         }
         catch (Exception exception)
         {
@@ -262,6 +323,18 @@ public partial class AutomationSettingsPage : SettingsPageBase
             _logger.FormatException(exception);
             this.ShowErrorToast("无法打开脚本文件，请手动打开插件配置目录下的 Scripts 文件夹。", exception);
         }
+    }
+
+    /// <summary>
+    ///     用系统默认程序打开指定文件。
+    /// </summary>
+    /// <param name="path">要打开的文件路径</param>
+    private static void OpenFileWithDefaultProgram(string path)
+    {
+        Process.Start(new ProcessStartInfo(path)
+        {
+            UseShellExecute = true
+        });
     }
 
     /// <summary>

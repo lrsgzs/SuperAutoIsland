@@ -44,7 +44,8 @@
                                            IconSource="{ci:FluentIconSource {ci:FI TextGrammarWandRegular}}"
                                            Click="FormatButton_OnClick" />
                     
-                    <fa:FACommandBarButton Label="保存"
+                    <fa:FACommandBarButton x:Name="SaveButton"
+                                           Label="保存"
                                            IconSource="{ci:FluentIconSource {ci:FI ArrowDownloadRegular}}"
                                            Click="SaveButton_OnClick" />
 
@@ -95,7 +96,11 @@
                      IsReadOnly="True"
                      TextWrapping="NoWrap"
                      FontFamily="Maple Mono NF CN, Maple Mono, JetBrains Mono, Cascadia Code, Consolas, Menlo, Monospace"
-                     FontSize="12" />
+                     FontSize="12"
+                     Margin="-8"
+                     Background="Transparent"
+                     BorderThickness="0 0 0 1"
+                     CornerRadius="0" />
         </Expander>
     </Grid>
 </ci:ViewBase>

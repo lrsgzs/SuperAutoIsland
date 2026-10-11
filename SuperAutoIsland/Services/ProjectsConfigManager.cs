@@ -144,10 +144,26 @@ public static class ProjectsConfigManager
     }
 
     /// <summary>
+    ///     获取 Blockly 类型项目生成的 JavaScript 代码路径。
+    /// </summary>
+    /// <param name="project">要获取路径的项目实例。</param>
+    /// <returns>项目生成代码的路径。</returns>
+    /// <exception cref="NotSupportedException">如果项目类型不是 BlocklyAction，则抛出此异常。</exception>
+    public static string GetBlocklyProjectJsPath(Project project)
+    {
+        if (project.Type is not ProjectsType.BlocklyAction)
+        {
+            throw new NotSupportedException();
+        }
+
+        return Path.Combine(_blocklyPath, $"{project.Id}.js");
+    }
+
+    /// <summary>
     ///     加载 Blockly 类型项目的 JavaScript 代码。
     /// </summary>
     /// <param name="project">要加载的项目实例。</param>
-    /// <returns>项目的 JavaScript 代码。</returns>
+    /// <returns>项目的 JavaScript 代码。代码文件还不存在时返回空脚本模板。</returns>
     /// <exception cref="NotSupportedException">如果项目类型不是 BlocklyAction，则抛出此异常。</exception>
     public static string LoadBlocklyProjectJs(Project project)
     {
@@ -155,7 +171,7 @@ public static class ProjectsConfigManager
         if (project.Type is ProjectsType.BlocklyAction)
         {
             Logger.Debug("项目类型：BlocklyAction");
-            return LoadFile(Path.Combine(_blocklyPath, $"{project.Id}.js")) ?? GlobalConstants.JavaScriptEmptyFile;
+            return LoadFile(GetBlocklyProjectJsPath(project)) ?? GlobalConstants.JavaScriptEmptyFile;
         }
 
         throw new NotSupportedException();
@@ -217,7 +233,7 @@ public static class ProjectsConfigManager
         if (project.Type is not ProjectsType.BlocklyAction) throw new ArgumentException();
 
         WriteFile(Path.Combine(_blocklyPath, $"{project.Id}.workspace.json"), workspace);
-        WriteFile(Path.Combine(_blocklyPath, $"{project.Id}.js"), code);
+        WriteFile(GetBlocklyProjectJsPath(project), code);
     }
 
     /// <summary>
