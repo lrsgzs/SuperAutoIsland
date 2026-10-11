@@ -95,7 +95,7 @@
                                 <Grid Background="Transparent"
                                       ColumnDefinitions="Auto * Auto"
                                       Height="32">
-                                    <!--  触摸拖动把手  -->
+                                    <!--  Thumb  -->
                                     <ci:TouchDragThumb Grid.Column="0"
                                                        Margin="-12 0 0 0"
                                                        Width="20" />
@@ -140,6 +140,7 @@
                                         <Setter Property="Background"
                                                 Value="{DynamicResource CustomizedAccentBarBackground1Brush}" />
                                     </Style>
+                                    
                                     <Style Selector="StackPanel > Expander">
                                         <Setter Property="IsExpanded" Value="True" />
                                         <Setter Property="Margin" Value="2 2 2 10" />
@@ -150,6 +151,7 @@
                                     <Expander.Header>
                                         <ci:IconText Glyph="&#xE9E4;" Text="项目信息" />
                                     </Expander.Header>
+                                    
                                     <StackPanel>
                                         <StackPanel Spacing="4">
                                             <TextBlock Margin="2 0 0 0">
@@ -169,29 +171,6 @@
                                             <Separator Margin="0 4" />
                                             
                                             <StackPanel Orientation="Horizontal" Spacing="4">
-                                                <Button Click="OpenProjectEditorButton_Click"
-                                                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.BlocklyAction}}">
-                                                    <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
-                                                </Button>
-
-                                                <!-- JavaScript 行动：应用内编辑器（安卓端强制启用）或系统默认程序 -->
-                                                <Button Click="OpenJavaScriptEditorButton_OnClick"
-                                                        IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.JavaScriptAction}}">
-                                                    <ci:IconText Glyph="{ci:FI CodeRegular}" Text="打开编辑器" />
-                                                </Button>
-
-                                                <Button Click="OpenJavaScriptFolderButton_OnClick">
-                                                    <Button.IsVisible>
-                                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                                            <Binding Path="Type"
-                                                                     Converter="{x:Static ObjectConverters.Equal}"
-                                                                     ConverterParameter="{x:Static enums:ProjectsType.JavaScriptAction}" />
-                                                            <Binding Path="#Page.IsDesktop" />
-                                                        </MultiBinding>
-                                                    </Button.IsVisible>
-                                                    <ci:IconText Glyph="{ci:FI FolderOpenRegular}" Text="打开所在文件夹" />
-                                                </Button>
-
                                                 <Button Click="RunProjectButton_Click">
                                                     <Button.IsVisible>
                                                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
@@ -236,6 +215,19 @@
                                 </Expander>
 
                                 <Expander Classes="compact stretch-header"
+                                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.BlocklyAction}}">
+                                    <Expander.Header>
+                                        <ci:IconText Glyph="&#xE01F;" Text="Blockly" />
+                                    </Expander.Header>
+                                    
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <Button Click="OpenProjectEditorButton_Click">
+                                            <ci:IconText Glyph="&#xEC2E;" Text="打开编辑器" />
+                                        </Button>
+                                    </StackPanel>
+                                </Expander>
+
+                                <Expander Classes="compact stretch-header"
                                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.CiRuleset}}">
                                     <Expander.Header>
                                         <ci:IconText Glyph="&#xF17E;" Text="规则集" />
@@ -250,6 +242,24 @@
                                     </Expander.Header>
                                     <ciControlsAutomation:ActionControl
                                         ActionSet="{Binding Converter={StaticResource ActionsToActionSetConverter}, Mode=TwoWay}" />
+                                </Expander>
+
+                                <Expander Classes="compact stretch-header"
+                                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static enums:ProjectsType.JavaScriptAction}}">
+                                    <Expander.Header>
+                                        <ci:IconText Glyph="&#xE01F;" Text="JavaScript" />
+                                    </Expander.Header>
+                                    
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <Button Click="OpenJavaScriptEditorButton_OnClick">
+                                            <ci:IconText Glyph="{ci:FI CodeRegular}" Text="打开编辑器" />
+                                        </Button>
+
+                                        <Button Click="OpenJavaScriptFolderButton_OnClick"
+                                                IsVisible="{Binding #Page.IsDesktop}">
+                                            <ci:IconText Glyph="{ci:FI FolderOpenRegular}" Text="打开所在文件夹" />
+                                        </Button>
+                                    </StackPanel>
                                 </Expander>
                             </StackPanel>
                         </ScrollViewer>
