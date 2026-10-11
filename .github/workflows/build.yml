@@ -1,0 +1,48 @@
+name: Build
+
+# 仅负责日常构建（产出 cipx 构建产物），不负责发版。
+on:
+  push:
+    branches: ["master"]
+
+# 同一分支只保留最新一次构建
+concurrency:
+  group: "build-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: 'windows-2022'
+    name: Build Plugin
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # 前端是 esproj，构建时会调用 npm，因此需要 Node.js
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: 'SuperAutoIsland.Frontend/package-lock.json'
+
+      - name: Install Frontend Dependencies
+        working-directory: SuperAutoIsland.Frontend
+        run: npm ci
+
+      - name: Build
+        run: 'pwsh -ep bypass ./scripts/build.ps1'
+
+      - name: Upload Plugin to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'SuperAutoIsland_CIPX'
+          if-no-files-found: error
+          path: |
+            ./SuperAutoIsland/cipx/*.cipx
+            ./SuperAutoIsland/cipx/*.md
