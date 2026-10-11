@@ -5,14 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDynamicLoading>True</EnableDynamicLoading>
         <RootNamespace>SuperAutoIsland</RootNamespace>
-        <Version>0.3.9.2</Version>
+        <Version>0.3.9.3</Version>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <PropertyGroup>
         <Authors>lrs2187</Authors>
-        <PackageVersion>0.3.9.2-dev.3</PackageVersion>
+        <PackageVersion>0.3.9.3-dev.4</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,7 +20,6 @@
             <ExcludeAssets>runtime; native</ExcludeAssets>
         </PackageReference>
         <PackageReference Include="Avalonia.Controls.WebView" Version="12.1.0"/>
-        <!-- Jint 5 尚未发布正式版，锁死当前的预览版本号 -->
         <PackageReference Include="Jint" Version="5.0.0-preview-2246"/>
         <ProjectReference Include="..\SuperAutoIsland.Interface\SuperAutoIsland.Interface.csproj"/>
         <ProjectReference Include="..\SuperAutoIsland.Frontend\SuperAutoIsland.Frontend.esproj"/>
