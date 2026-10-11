@@ -1,5 +1,5 @@
-import {addBlock, addLabel} from '../utils/blockGenerator';
-import {Order} from 'blockly/javascript';
+import { addBlock, addLabel } from '../utils/blockGenerator';
+import { Order } from 'blockly/javascript';
 
 /**
  * 网络请求积木。

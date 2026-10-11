@@ -64,17 +64,9 @@ function parseHex(input?: string | null): Rgb | null {
     switch (hex.length) {
         // #AARRGGBB：头两位是 Alpha，丢掉
         case 8:
-            return [
-                parseInt(hex.slice(2, 4), 16),
-                parseInt(hex.slice(4, 6), 16),
-                parseInt(hex.slice(6, 8), 16),
-            ];
+            return [parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16), parseInt(hex.slice(6, 8), 16)];
         case 6:
-            return [
-                parseInt(hex.slice(0, 2), 16),
-                parseInt(hex.slice(2, 4), 16),
-                parseInt(hex.slice(4, 6), 16),
-            ];
+            return [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
         // #ARGB：头一位是 Alpha，丢掉
         case 4:
             return expand(hex.slice(1));
@@ -107,11 +99,7 @@ export function toBlocklyColor(input?: string | null, fallback?: string): string
 
 /** 主色与白色按比例混合（`t` = 0 保持原色，1 变纯白） */
 function mixWithWhite(rgb: Rgb, t: number): Rgb {
-    return [
-        rgb[0] + (255 - rgb[0]) * t,
-        rgb[1] + (255 - rgb[1]) * t,
-        rgb[2] + (255 - rgb[2]) * t,
-    ];
+    return [rgb[0] + (255 - rgb[0]) * t, rgb[1] + (255 - rgb[1]) * t, rgb[2] + (255 - rgb[2]) * t];
 }
 
 /** 各个通道按比例缩放（`k` < 1 变暗） */

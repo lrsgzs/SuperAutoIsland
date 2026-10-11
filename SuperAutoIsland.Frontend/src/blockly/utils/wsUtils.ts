@@ -67,11 +67,7 @@ function ensureState(ws: WebSocket): SocketState {
         let key: string | undefined;
         if (typeof message.msgId === 'string' && state.waiters.has(message.msgId)) {
             key = message.msgId;
-        } else if (
-            message.msgId === undefined &&
-            REPLY_TYPES.has(message.type ?? '') &&
-            state.waiters.size === 1
-        ) {
+        } else if (message.msgId === undefined && REPLY_TYPES.has(message.type ?? '') && state.waiters.size === 1) {
             console.warn('[SAI] 回包没有 msgId，按唯一在途请求兜底处理', message);
             key = state.waiters.keys().next().value;
         }

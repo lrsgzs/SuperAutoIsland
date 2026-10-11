@@ -7,7 +7,8 @@ import {
     toCssColor,
     type HsvColor,
     type RgbaColor,
-} from '../utils/colorUtils';import { FLUENT_PALETTE } from '../utils/colorPalette';
+} from '../utils/colorUtils';
+import { FLUENT_PALETTE } from '../utils/colorPalette';
 
 /**
  * @fileoverview 仿照 FluentAvalonia `ColorView` 的颜色选择面板。
@@ -279,7 +280,10 @@ export function createColorPickerPanel(options: ColorPickerPanelOptions = {}): C
         // 选中/悬停的描边取对比色，与 FluentAvalonia 的 ContrastBrushConverter 一致。
         const light = (0.299 * parsed.r + 0.587 * parsed.g + 0.114 * parsed.b) / 255 > 0.55;
         button.style.setProperty('--sai-cp-swatch-ring', light ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.95)');
-        button.style.setProperty('--sai-cp-swatch-ring-soft', light ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.55)');
+        button.style.setProperty(
+            '--sai-cp-swatch-ring-soft',
+            light ? 'rgba(0, 0, 0, 0.45)' : 'rgba(255, 255, 255, 0.55)',
+        );
         on(button, 'click', () => {
             applyRgb(parsed);
             sync();
@@ -368,8 +372,7 @@ export function createColorPickerPanel(options: ColorPickerPanelOptions = {}): C
 
     // --------------------------------------------------------------- 预览条
     // ColorPreviewer：中间是当前颜色，两侧各两级明度色阶，四个色阶都可以点击。
-    const shadeColor = (delta: number): RgbaColor =>
-        hsvToRgb({ ...hsv, v: clamp(hsv.v + delta * 10, 0, 100) }, alpha);
+    const shadeColor = (delta: number): RgbaColor => hsvToRgb({ ...hsv, v: clamp(hsv.v + delta * 10, 0, 100) }, alpha);
 
     const previewer = element('div', 'sai-cp-previewer', root);
     const shadeSlots: { slot: HTMLElement; delta: number; label: string }[] = [];
@@ -448,9 +451,10 @@ export function createColorPickerPanel(options: ColorPickerPanelOptions = {}): C
             .map(h => toCssColor(hsvToRgb({ h, s: 100, v: hsv.v }), false))
             .join(', ');
         const gray = hsvToRgb({ h: hsv.h, s: 0, v: hsv.v });
-        spectrumBox.style.backgroundImage = `linear-gradient(to bottom, ${toCssColor(
-            { ...gray, a: 0 },
-        )}, ${toCssColor(gray, false)}), linear-gradient(to right, ${hueStops})`;
+        spectrumBox.style.backgroundImage = `linear-gradient(to bottom, ${toCssColor({
+            ...gray,
+            a: 0,
+        })}, ${toCssColor(gray, false)}), linear-gradient(to right, ${hueStops})`;
         spectrumThumb.style.left = `${clamp(hsv.h / 3.6, 0, 100)}%`;
         spectrumThumb.style.top = `${clamp(100 - hsv.s, 0, 100)}%`;
         spectrumThumb.style.background = toCssColor(color, false);
